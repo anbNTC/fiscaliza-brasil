@@ -20,7 +20,8 @@ jobs:
       - name: Confere os segredos do Cloudflare
         id: seg
         env: { T: "${{ secrets.CLOUDFLARE_API_TOKEN }}" }
-        run: if [ -n "$T" ]; then echo "ok=1" >> $GITHUB_OUTPUT; else echo "::warning::Falta o segredo CLOUDFLARE_API_TOKEN: o site não foi publicado."; fi
+        run: |
+          if [ -n "$T" ]; then echo "ok=1" >> "$GITHUB_OUTPUT"; else echo "::warning::Falta o segredo CLOUDFLARE_API_TOKEN, o site nao foi publicado."; fi
       - name: Publica no Cloudflare Pages
         if: steps.seg.outputs.ok == '1'
         uses: cloudflare/wrangler-action@v3

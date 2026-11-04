@@ -1,0 +1,73 @@
+# Atualiza os dados do Fiscaliza Brasil toda madrugada e grava no repositório.
+# Cada etapa pode falhar sem derrubar as outras; o resultado fica em site/data/_coleta.json.
+name: Dados
+
+on:
+  schedule:
+    - cron: "17 6 * * *"   # 03:17 em Brasília
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["coleta/**", "tools/**", ".github/workflows/dados.yml"]
+
+permissions:
+  contents: write
+
+concurrency: { group: dados, cancel-in-progress: false }
+
+jobs:
+  coleta:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install requests==2.32.3
+
+      - name: Câmara · orientação dos partidos e partido no dia de cada votação
+        id: orient
+        continue-on-error: true
+        run: python coleta/camara_orient.py 2>&1 | tee /tmp/orient.log
+
+      - name: Emendas parlamentares do Brasil todo
+        id: emendas
+        continue-on-error: true
+        run: python coleta/emendas.py 2>&1 | tee /tmp/emendas.log
+
+      - name: Recalcula partidos, ranking, resumo da semana e médias da cota
+        id: calc
+        continue-on-error: true
+        run: |
+          python tools/partidos.py 2>&1 | tail -3 | tee /tmp/calc.log
+          python tools/semana.py 2>&1 | tail -2 | tee -a /tmp/calc.log
+          python tools/cota_media.py 2>&1 | tail -2 | tee -a /tmp/calc.log
+
+      - name: Relatório da coleta
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, datetime, pathlib
+          def tail(f):
+              p = pathlib.Path(f); return p.read_text()[-1500:] if p.exists() else ""
+          rel = {"quando": datetime.datetime.utcnow().isoformat() + "Z",
+                 "etapas": {"orientacoes": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "calculos": "${{ steps.calc.outcome }}"},
+                 "log": {"orientacoes": tail("/tmp/orient.log"), "emendas": tail("/tmp/emendas.log"), "calculos": tail("/tmp/calc.log")}}
+          json.dump(rel, open("site/data/_coleta.json", "w"), ensure_ascii=False, indent=1)
+          PY
+
+      - name: Grava os dados novos
+        if: always()
+        run: |
+          git config user.name "Fiscaliza Brasil (robô)"
+          git config user.email "robo@fiscalizaja.com.br"
+          git add -A site/data
+          git diff --cached --quiet && echo "nada mudou" && exit 0
+          git commit -m "Dados atualizados $(date -u +%Y-%m-%d)"
+          git pull --rebase origin main && git push
+
+  publica:
+    needs: coleta
+    if: always()
+    uses: ./.github/workflows/publica.yml
+    secrets: inherit

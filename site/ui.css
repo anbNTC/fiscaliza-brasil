@@ -1,0 +1,49 @@
+/* Ajustes de acabamento para o site todo (carregado depois dos estilos de cada página).
+   1) títulos de botões em maiúsculas, como na página inicial
+   2) textos de apoio com quebra de linha equilibrada
+   3) espaçamento interno igual em cima, embaixo e nas laterais
+   4) textos longos nunca saem da caixa */
+
+/* 1. títulos dos botões grandes */
+html body .tile b, html body .menu a b {
+  font-family: "Familjen Grotesk", system-ui, sans-serif; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .02em; font-size: 1.22rem; line-height: 1.05;
+}
+
+/* 2. textos de apoio: linhas equilibradas, sem palavra sozinha na última linha */
+html body .go .d, html body .tile small, html body .menu a small, html body .pc small, html body .lead small,
+html body .step span, html body .kv .s, html body .muted, html body .src, html body .note, html body p,
+html body .nw .ti, html body .hot .ti, html body .it > div, html body .it2 span, html body .lk-b p {
+  text-wrap: pretty;
+}
+html body .go .d, html body .tile small, html body .menu a small, html body .lead small, html body .step span, html body .kv .s {
+  text-wrap: balance; line-height: 1.4;
+}
+html body .go .txt, html body .tile > span, html body .menu a > span:nth-child(2), html body .lead > span:nth-child(2) { display: grid; gap: 6px; min-width: 0; }
+
+/* 3. espaçamento simétrico (mesmo valor nos quatro lados) */
+html body .go { padding: 24px; }
+html body .card { padding: 20px; }
+html body .tile, html body .menu a { padding: 18px; }
+html body .lead, html body .pc, html body .step, html body .ufb { padding: 14px; }
+html body .res a { padding: 12px; }
+html body .kv > div, html body .it, html body .nw, html body .sess, html body .hot, html body .lc { padding: 14px; }
+html body .note { padding: 12px; }
+html body .lk-a { padding: 18px; }
+
+/* 4. nada sai da caixa */
+html body .kv > div, html body .pc, html body .lead, html body .it, html body .nw, html body .tl > div { min-width: 0; }
+html body .kv .v, html body .pc b, html body .lead b, html body .it, html body .nw .ti, html body .tl span, html body .kv .s {
+  overflow-wrap: anywhere; word-break: normal; hyphens: manual;
+}
+html body .kv .v { font-size: clamp(1rem, 2.6vw, 1.15rem); }
+
+/* mapa: siglas dos estados por cima de todos os contornos, com contorno branco para não serem cortadas */
+html body .map text { paint-order: stroke; stroke: #FBFBF7; stroke-width: 22px; stroke-linejoin: round; }
+html body .map .labels text { pointer-events: none; }
+
+/* descrições dos botões: mesmo número de linhas em todos, terminando na mesma altura */
+html body .go .d { min-height: 2.8em; max-width: 46ch; }
+html body .menu a small { min-height: 2.8em; max-width: 46ch; display: block; }
+html body .tile small { display: block; max-width: 40ch; }
+html body .step span span { display: block; max-width: 40ch; }

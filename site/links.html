@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Abraão Nery · Links</title>
+<meta name="description" content="Vamos fiscalizar tudo. Fiscaliza Brasil, simulador do voto distrital e outros links.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fiscaliza Brasil">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Abraão Nery · @oabraaonery">
+<meta property="og:description" content="Vamos fiscalizar tudo. Fiscaliza Brasil, simulador do voto distrital e outros links.">
+<meta property="og:url" content="/links">
+<meta property="og:image" content="/og.png">
+<meta property="og:image:width" content="600">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Logo do Fiscaliza Brasil: uma lupa com a bandeira do Brasil">
+<meta name="twitter:card" content="summary">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Fiscaliza">
+<meta name="theme-color" content="#FBFBF7">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='4 4 106 106'%3E%3Crect x='4' y='4' width='106' height='106' rx='26' fill='%23fff'/%3E%3Cdefs%3E%3CclipPath id='fbl'%3E%3Ccircle cx='50' cy='50' r='27'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M50 8 92 50 50 92 8 50Z' fill='%23F7C21B'/%3E%3Crect x='78' y='74' width='34' height='15' rx='7.5' transform='rotate(45 78 74)' fill='%230E8A4B'/%3E%3Ccircle cx='50' cy='50' r='31' fill='%23fff'/%3E%3Ccircle cx='50' cy='50' r='27' fill='%231F4FBF'/%3E%3Cpath clip-path='url(%23fbl)' d='M14 52C34 36 66 36 88 46L88 54C66 45 34 45 14 60Z' fill='%23fff'/%3E%3Ccircle cx='40' cy='38' r='5' fill='%23fff' opacity='.45'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Familjen+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@600&display=swap">
+<link rel="stylesheet" href="links.css">
+<style>html,body{margin:0;min-height:100%;background:#fff}#root{min-height:100svh}#root:empty{background:#fff}</style>
+<link rel="stylesheet" href="ui.css">
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="links.js"></script>
+<script>
+(async () => {
+  const root = document.getElementById("root");
+  const L = window.FBLinks, C = window.FB_CFG || {};
+  let p = L.DEF_PROFILE, ls = L.DEF_LINKS, sb = null;
+  if (C.url && C.key && window.supabase) {
+    try {
+      sb = supabase.createClient(C.url, C.key, { auth: { persistSession: false } });
+      const [pr, lk] = await Promise.all([
+        sb.from("links_profile").select("*").eq("id", 1).maybeSingle(),
+        sb.from("links").select("*").eq("active", true).order("position")
+      ]);
+      if (pr.error || lk.error) throw pr.error || lk.error;
+      if (pr.data) p = pr.data;
+      if (pr.data || (lk.data && lk.data.length)) ls = lk.data || [];
+    } catch (e) { console.warn("links: usando padrão", e); sb = null; }
+  }
+  const pub = (path) => sb ? sb.storage.from("midia").getPublicUrl(path).data.publicUrl : "";
+  document.title = (p.name || "Links") + " · Links";
+  if (p.theme === "escuro") document.querySelector('meta[name="theme-color"]').content = "#0B0B0C";
+  L.render(root, p, ls, {
+    pub,
+    onClick: (l) => { if (sb && l.id) sb.rpc("link_click", { p_id: l.id }).then(() => {}, () => {}); }
+  });
+})();
+</script>
+<script>if("serviceWorker" in navigator&&/^https:/.test(location.protocol))addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));</script>
+</body>
+</html>

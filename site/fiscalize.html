@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fiscalize · Fiscaliza Brasil</title>
+<script src="tema.js"></script>
+<link rel="stylesheet" href="fundo.css">
+<meta name="description" content="Quem te representa, do vereador ao presidente: votos, projetos, gastos e patrimônio, com dados oficiais.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fiscaliza Brasil">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Fiscalize · Fiscaliza Brasil">
+<meta property="og:description" content="Quem te representa, do vereador ao presidente: votos, projetos, gastos e patrimônio, com dados oficiais.">
+<meta property="og:url" content="/fiscalize">
+<meta property="og:image" content="/og.png">
+<meta property="og:image:width" content="600">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Logo do Fiscaliza Brasil: uma lupa com a bandeira do Brasil">
+<meta name="twitter:card" content="summary">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Fiscaliza">
+<meta name="theme-color" content="#FBFBF7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='4 4 106 106'%3E%3Crect x='4' y='4' width='106' height='106' rx='26' fill='%23fff'/%3E%3Cdefs%3E%3CclipPath id='fbl'%3E%3Ccircle cx='50' cy='50' r='27'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M50 8 92 50 50 92 8 50Z' fill='%23F7C21B'/%3E%3Crect x='78' y='74' width='34' height='15' rx='7.5' transform='rotate(45 78 74)' fill='%230E8A4B'/%3E%3Ccircle cx='50' cy='50' r='31' fill='%23fff'/%3E%3Ccircle cx='50' cy='50' r='27' fill='%231F4FBF'/%3E%3Cpath clip-path='url(%23fbl)' d='M14 52C34 36 66 36 88 46L88 54C66 45 34 45 14 60Z' fill='%23fff'/%3E%3Ccircle cx='40' cy='38' r='5' fill='%23fff' opacity='.45'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Familjen+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* App do Fiscalize: barra superior com a marca, conteúdo em cartões de vidro, navegação fixa embaixo
+   (Início, Mapa, Quem é quem, Me representa). Telas: início, mapa, estado, cidade, busca e crachá. */
+:root{--ink:#0B0B0C;--muted:#5A5D63;--line:rgba(11,11,12,.10);--surface:rgba(255,255,255,.32);--edge:rgba(255,255,255,.92);
+  --shadow:0 10px 34px rgba(15,20,30,.08),0 1px 2px rgba(15,20,30,.06);--verde:#1E7A47;--amarelo:#F2C200;--azul:#1F4FBF;--verm:#B3261E;
+  --f-display:"Familjen Grotesk",system-ui,sans-serif;--f-body:"Source Sans 3",system-ui,sans-serif;--f-mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;background:#FBFBF7}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.glass{background:var(--surface);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border:1px solid var(--edge);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.9)}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-left,0px)) 10px;border-radius:0 0 20px 20px}
+.top .brand{display:flex;align-items:center;gap:9px;text-decoration:none;min-width:0}
+.top .brand svg{width:34px;height:34px;flex:none}
+.top .brand b{font-family:"Bricolage Grotesque",var(--f-display);font-weight:800;font-size:1.02rem;letter-spacing:.01em;text-transform:uppercase;white-space:nowrap}
+.top .sp{flex:1}
+.top .home{font-weight:600;font-size:.88rem;text-decoration:none;padding:7px 12px;border-radius:999px;border:1px solid rgba(11,11,12,.12);background:rgba(255,255,255,.6);white-space:nowrap}
+main{max-width:1040px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-left,0px)) calc(110px + env(safe-area-inset-bottom,0px));display:grid;gap:16px}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));width:min(760px,calc(100% - 12px));padding:6px;border-radius:24px}
+.nav a{display:grid;justify-items:center;gap:2px;padding:7px 2px;border-radius:18px;text-decoration:none;font-size:.66rem;white-space:nowrap;letter-spacing:0;font-weight:700;color:var(--muted);letter-spacing:.01em}
+.nav a{letter-spacing:.04em}
+@media (max-width:560px){.nav{padding:4px;border-radius:20px}.nav a{font-size:.5rem;letter-spacing:.02em;white-space:normal;text-align:center;line-height:1.1;padding:6px 0;min-width:0;border-radius:14px}.nav a svg{width:20px;height:20px}}
+@media (max-width:400px){.nav a{font-size:.44rem;letter-spacing:0}}
+.nav a svg{width:22px;height:22px}
+.nav a[aria-current="page"]{background:var(--ink);color:#fff}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.1;letter-spacing:-.01em;text-wrap:balance}
+h1{font-size:clamp(1.7rem,6vw,2.4rem)}
+h2{font-size:1.25rem}
+h3{font-size:1.02rem}
+.kick{font-family:var(--f-mono);font-weight:600;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}.small{font-size:.84rem}
+.card{border-radius:22px;padding:18px;display:grid;gap:12px;min-width:0}
+.fx{display:block;width:72px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--verde) 0 33.3%,var(--amarelo) 33.3% 66.6%,var(--azul) 66.6%)}
+.src{font-family:var(--f-mono);font-size:.7rem;color:var(--muted);line-height:1.5}
+.src a{color:inherit}
+.search{position:relative}
+.search input{width:100%;padding:14px 16px 14px 44px;border-radius:16px;border:1px solid rgba(11,11,12,.12);background:rgba(255,255,255,.8);outline:none;font-size:1rem}
+.search input:focus{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted)}
+.res{display:grid;gap:6px;margin-top:8px}
+.res a{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 14px;border-radius:14px;background:rgba(255,255,255,.75);border:1px solid rgba(11,11,12,.08);text-decoration:none}
+.res a:hover{border-color:var(--ink)}
+.res small{color:var(--muted);white-space:nowrap}
+.steps{display:grid;gap:10px}
+.step{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:center;padding:14px;border-radius:18px;background:rgba(255,255,255,.4);border:1px solid rgba(11,11,12,.08)}
+.step i{font-style:normal;width:40px;height:40px;border-radius:12px;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--f-display);font-weight:700}
+.step b{display:block;font-family:var(--f-display)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:11px 20px;background:var(--ink);color:#fff;font-family:var(--f-display);font-weight:700;text-decoration:none}
+.btn.o{background:rgba(255,255,255,.75);color:var(--ink);border:1px solid rgba(11,11,12,.14)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(11,11,12,.06);white-space:nowrap}
+.chip.ok{background:rgba(30,122,71,.12);color:var(--verde)}.chip.new{background:rgba(31,79,191,.12);color:var(--azul)}.chip.warn{background:rgba(242,194,0,.22);color:#6b5500}
+/* mapa */
+.mapwrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:820px){.mapwrap{grid-template-columns:1fr}}
+.map svg{width:100%;height:auto;display:block}
+.map path{fill:rgba(11,11,12,.10);stroke:#FBFBF7;stroke-width:14;stroke-linejoin:round;cursor:pointer;transition:fill .15s}
+.map path:hover,.map path:focus{fill:var(--ink);outline:none}
+.map text{font-family:var(--f-display);font-weight:700;font-size:118px;fill:var(--ink);pointer-events:none;text-anchor:middle;dominant-baseline:central}
+
+.ufgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.ufb{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.72);border:1px solid rgba(11,11,12,.08);text-decoration:none}
+.ufb:hover{border-color:var(--ink)}
+.ufb b{font-family:var(--f-mono);font-size:.78rem;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--ink);color:#fff;flex:none}
+.ufb span{font-size:.9rem;line-height:1.15}
+.reg{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:6px 0 -2px}
+/* pessoas */
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.pc{display:grid;gap:8px;justify-items:start;padding:12px;border-radius:18px;background:rgba(255,255,255,.4);border:1px solid rgba(11,11,12,.08);text-decoration:none;min-width:0}
+.pc:hover{border-color:var(--ink);transform:translateY(-1px)}
+.pc b{font-family:var(--f-display);line-height:1.15;font-size:.98rem;overflow-wrap:anywhere}
+.pc small{color:var(--muted);font-size:.8rem;line-height:1.3}
+.av{position:relative;width:56px;height:56px;border-radius:16px;overflow:hidden;flex:none;display:grid;place-items:center;background:linear-gradient(135deg,#ECEDEF,#DFE1E5);color:#5E6066;font-family:var(--f-display);font-weight:700;font-size:1.1rem}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0;transition:opacity .25s ease}.av img.ok{opacity:1}
+.av.lg{width:104px;height:124px;border-radius:22px;font-size:2rem}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.row2>*{min-width:0}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.lead{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px;border-radius:18px;background:rgba(255,255,255,.4);border:1px solid rgba(11,11,12,.08);text-decoration:none}
+.lead:hover{border-color:var(--ink)}
+.lead b{font-family:var(--f-display);display:block;line-height:1.15}
+.lead small{color:var(--muted)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:1px solid rgba(11,11,12,.14);background:rgba(255,255,255,.7);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.86rem}
+.tab[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.kv>div{padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.75);border:1px solid rgba(11,11,12,.08)}
+.kv .l{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kv .v{font-family:var(--f-display);font-weight:700;font-size:1.15rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.kv .s{font-size:.78rem;color:var(--muted)}
+.empty{color:var(--muted);text-align:center;padding:24px}
+.filter{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter input{flex:1 1 220px;padding:10px 14px;border-radius:999px;border:1px solid rgba(11,11,12,.12);background:rgba(255,255,255,.8);outline:none}
+.more{justify-self:center}
+.note{font-size:.86rem;padding:10px 14px;border-radius:14px;background:rgba(242,194,0,.16);border:1px solid rgba(242,194,0,.35)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:520px){.top .acl-t{display:none}}
+.top .home+.home{margin-left:6px}
+#est{display:grid;gap:16px;min-width:0}
+</style>
+<link rel="stylesheet" href="ui.css">
+</head>
+<body>
+<header class="top glass">
+  <a class="brand" href="#/" aria-label="Fiscalize: início"><svg viewBox="4 4 106 106" aria-hidden="true"><defs><clipPath id="fbl"><circle cx="50" cy="50" r="27"/></clipPath></defs><path d="M50 8 92 50 50 92 8 50Z" fill="#F7C21B"/><rect x="78" y="74" width="34" height="15" rx="7.5" transform="rotate(45 78 74)" fill="#0E8A4B"/><circle cx="50" cy="50" r="31" fill="#fff"/><circle cx="50" cy="50" r="27" fill="#1F4FBF"/><path clip-path="url(#fbl)" d="M14 52C34 36 66 36 88 46L88 54C66 45 34 45 14 60Z" fill="#fff"/><circle cx="40" cy="38" r="5" fill="#fff" opacity=".45"/></svg><b>Fiscaliza Brasil</b></a>
+  <span class="sp"></span><button class="home acl temab" type="button" onclick="FBTema.alternar()"></button><button class="home acl ouvir" type="button" onclick="FBOuvir.falar()" title="Ouvir esta página">🔊<span class="acl-t"> Ouvir</span></button><a class="home acl" href="#/acompanho" aria-label="Acompanhando">★<span class="acl-t"> Acompanhando</span><span class="acn"></span></a><a class="home" href="index.html">← Início<span class="acl-t"> do site</span></a>
+</header>
+<main id="main"><p class="empty">Carregando…</p></main>
+<nav class="nav glass" aria-label="Navegação">
+  <a href="#/mapa" data-n="mapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg>MAPA</a>
+  <a href="#/quem" data-n="quem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"/></svg>QUEM É QUEM</a>
+  <a href="#/partidos" data-n="partidos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg>PARTIDOS</a>
+  <a href="#/me" data-n="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>ME REPRESENTA</a>
+  <a href="#/congresso" data-n="congresso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M4 10h16M12 3 4 7v3h16V7z"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8"/></svg>CONGRESSO</a>
+  <a href="#/colabore" data-n="colabore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.3-7-9.4A4 4 0 0 1 12 8.2a4 4 0 0 1 7 2.4C19 15.7 12 20 12 20z"/></svg>COLABORE</a>
+  <a href="#/mais" data-n="mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>MAIS</a>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="contador.js"></script>
+<script src="cracha.js"></script>
+<script src="extras.js"></script>
+<script src="dic.js"></script>
+<script src="colab.js"></script>
+<script src="partidos.js"></script>
+<script src="acomp.js"></script>
+<script src="info.js"></script>
+<script src="ferramentas.js"></script>
+<script src="votacoes.js"></script>
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), M=$("#main");
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toUpperCase().replace(/[^A-Z0-9 ]/g," ").replace(/\s+/g," ").trim();
+const title=s=>String(s||"").toLowerCase().replace(/(^|[\s\-'(])([a-zà-ú])/g,(m,a,b)=>a+b.toUpperCase()).replace(/\b(Da|De|Do|Das|Dos|E)\b/g,w=>w.toLowerCase());
+const brl=v=>v==null?"—":v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
+const mil=v=>(v||0).toLocaleString("pt-BR");
+const ini=n=>norm(n).split(" ").filter(w=>w.length>2||/^[A-Z]{1,2}$/.test(w)).slice(0,2).map(w=>w[0]).join("")||"?";
+const idade=d=>{const m=/(\d+)\/(\d+)\/(\d{4})/.exec(d||"");if(!m)return null;const b=new Date(+m[3],+m[2]-1,+m[1]),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;return a};
+const store={get(k){try{return JSON.parse(localStorage.getItem("fb_"+k))}catch(e){return null}},set(k,v){try{localStorage.setItem("fb_"+k,JSON.stringify(v))}catch(e){}}};
+const ICON_S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>';
+const FONTE_TSE='<a href="https://dadosabertos.tse.jus.br" target="_blank" rel="noopener">TSE · Dados Abertos</a>';
+const FONTE_CAM='<a href="https://dadosabertos.camara.leg.br" target="_blank" rel="noopener">Câmara dos Deputados · Dados Abertos</a>';
+const FONTE_SEN='<a href="https://legis.senado.leg.br/dadosabertos" target="_blank" rel="noopener">Senado Federal · Dados Abertos</a>';
+const RICH=new Set(["PR"]); // estados com ficha completa (votos, projetos, emendas) na página do Paraná
+
+/* ---------- dados ---------- */
+let BR=null, CID=null; const UF={};
+const getJSON=async u=>{const r=await fetch(u);if(!r.ok)throw new Error(u+" "+r.status);return r.json()};
+const loadBR=async()=>BR||(BR=await getJSON("data/br.json"));
+const loadCID=async()=>CID||(CID=(await getJSON("data/cidades.json")).map(c=>({ue:c[0],nome:c[1],uf:c[2],n:norm(c[1])})));
+const loadUF=async uf=>UF[uf]||(UF[uf]=await getJSON("data/uf/"+uf+".json"));
+/* pessoa TSE: [urna, nome, partido, federacao, genero, nascimento, ocupacao, instrucao, bens, numero] */
+const CARGO={dep:"Deputado federal",depF:"Deputada federal",sen:"Senador",senF:"Senadora",gov:"Governador",govF:"Governadora",vice:"Vice-governador",viceF:"Vice-governadora",
+  de:"Deputado estadual",deF:"Deputada estadual",dd:"Deputado distrital",ddF:"Deputada distrital",pref:"Prefeito",prefF:"Prefeita",vp:"Vice-prefeito",vpF:"Vice-prefeita",ver:"Vereador",verF:"Vereadora"};
+const cargo=(k,g)=>CARGO[k+(g==="F"?"F":"")]||CARGO[k];
+
+/* ---------- componentes ---------- */
+const PROXY=/\.pages\.dev$|fiscalizaja\.com\.br$/.test(location.hostname);
+const fimg=u=>u&&PROXY&&/^https:\/\//.test(u)?"/img?u="+encodeURIComponent(u):u;
+let AVN=0;
+const av=(nome,foto,cls)=>`<span class="av ${cls||""}"><span class="ai">${esc(ini(nome))}</span>${foto?`<img src="${esc(fimg(foto))}" alt="" ${AVN++<16?'loading="eager" fetchpriority="high"':'loading="lazy"'} decoding="async" referrerpolicy="no-referrer" data-o="${esc(foto)}" onload="this.classList.add('ok')" onerror="if(this.dataset.o&&this.src.indexOf('/img?')>-1){this.src=this.dataset.o;this.removeAttribute('data-o')}else this.remove()">`:""}</span>`;
+const ELEI={2022:2040602022,2024:2045202024,2026:20322002026};
+const ftse=(p,ano,ue)=>p&&p[10]?`https://divulgacandcontas.tse.jus.br/divulga/rest/arquivo/img/${ELEI[ano]}/${p[10]}/${ue}`:"";
+const pcard=(href,nome,sub,foto,chips)=>`<a class="pc" href="${href}">${av(nome,foto)}<b>${esc(nome)}</b><small>${sub}</small>${chips||""}</a>`;
+const lead=(href,nome,sub,foto)=>`<a class="lead" href="${href}">${av(nome,foto)}<span><b>${esc(nome)}</b><small>${sub}</small></span><span aria-hidden="true">→</span></a>`;
+const partido=p=>esc(p[2])+(p[3]?` <span class="muted">(${esc(p[3])})</span>`:"");
+function setNav(n){document.body.classList.remove("wide");document.querySelectorAll(".nav a").forEach(a=>{if(a.dataset.n===n)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})}
+function searchBox(id,ph){return `<label class="search">${ICON_S}<input id="${id}" type="search" placeholder="${esc(ph)}" autocomplete="off" aria-label="${esc(ph)}"></label><div class="res" id="${id}-r"></div>`}
+async function wireSearch(id,withPeople){
+  const inp=$("#"+id),out=$("#"+id+"-r");await loadCID();if(withPeople)await loadBR();
+  inp.addEventListener("input",()=>{const q=norm(inp.value);out.innerHTML="";if(q.length<2)return;
+    const res=[];
+    for(const [uf,u] of Object.entries(BR?BR.ufs:{}))if(norm(u.nome).startsWith(q)||uf===q)res.push(`<a href="#/uf/${uf}"><span><b>${esc(u.nome)}</b></span><small>Estado</small></a>`);
+    const hits=CID.filter(c=>c.n.startsWith(q)).concat(q.length>3?CID.filter(c=>!c.n.startsWith(q)&&c.n.includes(q)):[]).slice(0,8);
+    hits.forEach(c=>res.push(`<a href="#/cidade/${c.uf}/${c.ue}"><span><b>${esc(title(c.nome))}</b></span><small>${c.uf}</small></a>`));
+    if(withPeople&&BR){let k=0;for(const p of peopleIndex()){if(p.n.includes(q)){res.push(`<a href="${p.h}"><span><b>${esc(p.nome)}</b> <span class="muted small">${esc(p.sub)}</span></span><small>${p.uf}</small></a>`);if(++k>=10)break}}}
+    out.innerHTML=res.join("")||'<p class="muted small" style="margin:4px 2px">Nada encontrado.</p>'});
+}
+let PIDX=null;
+function peopleIndex(){if(PIDX)return PIDX;PIDX=[];
+  BR.dep.forEach(d=>PIDX.push({nome:d[1],sub:cargo("dep",d[10])+" · "+d[2],uf:d[3],h:"#/p/c/"+d[0],n:norm(d[1]+" "+d[5])}));
+  BR.sen.forEach(s=>PIDX.push({nome:s[1],sub:(s[6]==="Titular"?"Senador(a)":"Senador(a) suplente")+" · "+s[3],uf:s[4],h:"#/p/s/"+s[0],n:norm(s[1]+" "+s[2])}));
+  for(const [uf,u] of Object.entries(BR.ufs)){if(u.gov[0])PIDX.push({nome:title(u.gov[0][0]),sub:cargo("gov",u.gov[0][4])+" · "+u.gov[0][2],uf,h:"#/p/g/"+uf+"/0/22",n:norm(u.gov[0][0]+" "+u.gov[0][1])});
+    if(u.gov26[0])PIDX.push({nome:title(u.gov26[0][0]),sub:"Eleito governador em 2026 · "+u.gov26[0][2],uf,h:"#/p/g/"+uf+"/0/26",n:norm(u.gov26[0][0]+" "+u.gov26[0][1])})}
+  return PIDX}
+
+/* ---------- telas ---------- */
+async function inicio(){
+  setNav("inicio");
+  M.innerHTML=`<section class="card glass"><span class="kick">Fiscalize</span><h1>Conheça quem te representa e acompanhe o que faz no mandato</h1><span class="fx"></span>
+    <p class="muted" style="margin:0">Dados oficiais, de graça e em linguagem simples. Sem nota, ranking nem opinião: só o que os órgãos públicos publicam, com a fonte de cada número.</p>
+    <div class="steps"><div class="step"><i>1</i><span><b>Escolha o lugar</b><span class="muted small">A sua cidade ou o seu estado, pelo mapa ou pela busca.</span></span></div>
+    <div class="step"><i>2</i><span><b>Veja quem está no cargo</b><span class="muted small">Vereadores, prefeito, deputados, senadores e governador.</span></span></div>
+    <div class="step"><i>3</i><span><b>Abra a ficha</b><span class="muted small">Partido, patrimônio, eleições, votos, projetos e gastos.</span></span></div></div>
+    ${searchBox("q0","Digite sua cidade, estado ou um político")}
+    <div class="btns"><a class="btn" href="#/mapa">Começar pelo mapa</a><a class="btn o" href="#/me">Minha cidade</a></div></section>`;
+  wireSearch("q0",true);
+}
+async function mapa(){
+  setNav("mapa");await loadBR();
+  const all=Object.values(BR.ufs).map(u=>u.bb);const bb=[Math.min(...all.map(b=>b[0])),Math.min(...all.map(b=>b[1])),Math.max(...all.map(b=>b[2])),Math.max(...all.map(b=>b[3]))];
+  const pad=30,vb=[bb[0]-pad,bb[1]-pad,bb[2]-bb[0]+2*pad,bb[3]-bb[1]+2*pad].join(" ");
+  const small=new Set(["DF","SE","AL","RN","PB","ES","RJ"]);
+  const paths=Object.entries(BR.ufs).map(([uf,u])=>{const cx=(u.bb[0]+u.bb[2])/2,cy=(u.bb[1]+u.bb[3])/2;
+    return `<a href="#/uf/${uf}" aria-label="${esc(u.nome)}"><path d="${u.p}" tabindex="-1"/></a>`}).join("")+`<g class="labels">${Object.entries(BR.ufs).filter(([uf])=>!small.has(uf)).map(([uf,u])=>`<text x="${(u.bb[0]+u.bb[2])/2}" y="${(u.bb[1]+u.bb[3])/2}">${uf}</text>`).join("")}</g>`;
+  const regN={N:"Norte",NE:"Nordeste",CO:"Centro-Oeste",SE:"Sudeste",S:"Sul"};
+  M.innerHTML=`<section class="card glass"><span class="kick">Mapa</span><h1>Escolha o estado</h1>${searchBox("q1","Ou digite sua cidade ou estado")}</section>
+   <div class="mapwrap"><section class="card glass map"><svg viewBox="${vb}" role="img" aria-label="Mapa do Brasil por estado">${paths}</svg></section>
+   <section class="card glass">${Object.entries(BR.reg).map(([r,ufs])=>`<div class="reg">${regN[r]}</div><div class="ufgrid">${ufs.split(" ").map(uf=>`<a class="ufb" href="#/uf/${uf}"><b>${uf}</b><span>${esc(BR.ufs[uf].nome)}</span></a>`).join("")}</div>`).join("")}</section></div>`;
+  wireSearch("q1",false);
+}
+const pTSE=(p)=>({nome:title(p[0]),civil:title(p[1]),part:p[2],fed:p[3],g:p[4],nasc:p[5],ocup:p[6],instr:p[7],bens:p[8],num:p[9]});
+async function estado(uf){
+  setNav("mapa");await loadBR();const u=BR.ufs[uf];if(!u)return notFound();
+  const D=await loadUF(uf);const deps=BR.dep.filter(d=>d[3]===uf),sens=BR.sen.filter(s=>s[4]===uf);
+  const [g,v]=u.gov,[g26,v26]=u.gov26;const de=uf==="DF"?"dd":"de";
+  const st=store.get("aba_"+uf)||"atual";
+  M.innerHTML=`<section class="card glass"><a class="muted small" href="#/mapa">← Mapa</a><span class="kick">Estado</span><h1>${esc(u.nome)}</h1><span class="fx"></span>
+    <p class="muted" style="margin:0">Quem representa ${esc(u.nome)}: governador, ${sens.length} senadores, ${deps.length} deputados federais e ${D.de22.length} deputados ${uf==="DF"?"distritais":"estaduais"}. Os eleitos em 2026 tomam posse em 1º de janeiro (governador) e 1º de fevereiro de 2027 (deputados e senadores).</p>
+    <div class="tabs" role="group" aria-label="Período"><button class="tab" data-t="atual" aria-pressed="${st==="atual"}">Mandato atual</button><button class="tab" data-t="26" aria-pressed="${st==="26"}">Eleitos em 2026</button></div></section>
+   <div id="est"></div>
+   <section class="card glass"><h2>Cidades de ${esc(u.nome)}</h2><p class="muted small" style="margin:0">Prefeito, vice e vereadores eleitos em 2024 em cada uma das ${Object.keys(D.mun).length} cidades.</p>
+    <div class="filter"><input id="fc" type="search" placeholder="Filtrar cidade" aria-label="Filtrar cidade"></div><div class="res" id="lc"></div></section>`;
+  const est=$("#est");
+  const draw=t=>{store.set("aba_"+uf,t);document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));
+    if(t==="atual"){
+      est.innerHTML=`<div class="row2"><section class="card glass"><h2>Governo do estado</h2>
+         ${g?lead(`#/p/g/${uf}/0/22`,title(g[0]),cargo("gov",g[4])+" · "+esc(g[2])+" · eleito em 2022",ftse(g,2022,uf)):""}
+         ${v?lead(`#/p/g/${uf}/1/22`,title(v[0]),cargo("vice",v[4])+" · "+esc(v[2]),ftse(v,2022,uf)):""}
+         <p class="src">Eleitos em 2022 (mandato 2023–2026). Se houve renúncia ou afastamento, o TSE não registra: confira no site do governo do estado. Fonte: ${FONTE_TSE}</p></section>
+        <section class="card glass"><h2>Senadores <span class="muted small">(${sens.length})</span></h2>
+         ${sens.map(s=>lead("#/p/s/"+s[0],s[1],esc(s[3])+" · "+(s[7]===2022?"mandato até 2031":"mandato até jan/2027")+(s[6]!=="Titular"?" · suplente":""),s[5])).join("")}
+         <p class="src">Fonte: ${FONTE_SEN}</p></section></div>
+       <section class="card glass"><h2>Deputados federais <span class="muted small">(${deps.length})</span></h2><div class="people">${deps.map(d=>pcard("#/p/c/"+d[0],d[1],esc(d[2]),d[4],d[8]?'<span class="chip new">Reeleito em 2026</span>':"")).join("")}</div><p class="src">Em exercício hoje. Fonte: ${FONTE_CAM}</p></section>
+       <section class="card glass"><h2>Deputados ${uf==="DF"?"distritais":"estaduais"} <span class="muted small">(${D.de22.length})</span></h2>
+         <div class="people">${D.de22.map((p,i)=>pcard(`#/p/e/${uf}/22/${i}`,title(p[0]),partido(p),ftse(p,2022,uf),D.de26.some(q=>q[1]===p[1])?'<span class="chip new">Reeleito em 2026</span>':"")).join("")}</div>
+         <p class="src">Eleitos em 2022 (mandato até jan/2027). Suplentes que assumiram depois não aparecem aqui. Fonte: ${FONTE_TSE}</p></section>`;
+    }else{
+      est.innerHTML=`<div class="note">Eleitos em outubro de 2026. Ainda não tomaram posse.</div>
+       <div class="row2"><section class="card glass"><h2>Governo do estado</h2>
+         ${g26?lead(`#/p/g/${uf}/0/26`,title(g26[0]),cargo("gov",g26[4])+" · "+esc(g26[2]),ftse(g26,2026,uf)):'<p class="muted">Sem dado.</p>'}
+         ${v26?lead(`#/p/g/${uf}/1/26`,title(v26[0]),cargo("vice",v26[4])+" · "+esc(v26[2]),ftse(v26,2026,uf)):""}<p class="src">Posse em 1º/01/2027. Fonte: ${FONTE_TSE}</p></section>
+        <section class="card glass"><h2>Senadores eleitos <span class="muted small">(${D.se26.length})</span></h2>${D.se26.map((p,i)=>lead(`#/p/n/${uf}/26/${i}`,title(p[0]),partido(p)+" · mandato 2027–2035",ftse(p,2026,uf))).join("")}<p class="src">Fonte: ${FONTE_TSE}</p></section></div>
+       <section class="card glass"><h2>Deputados federais eleitos <span class="muted small">(${D.df26.length})</span></h2><div class="people">${D.df26.map((p,i)=>pcard(`#/p/f/${uf}/26/${i}`,title(p[0]),partido(p),ftse(p,2026,uf))).join("")}</div><p class="src">Fonte: ${FONTE_TSE}</p></section>
+       <section class="card glass"><h2>Deputados ${uf==="DF"?"distritais":"estaduais"} eleitos <span class="muted small">(${D.de26.length})</span></h2><div class="people">${D.de26.map((p,i)=>pcard(`#/p/e/${uf}/26/${i}`,title(p[0]),partido(p),ftse(p,2026,uf))).join("")}</div><p class="src">Fonte: ${FONTE_TSE}</p></section>`;
+    }};
+  document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>draw(b.dataset.t));draw(st);
+  const cs=Object.entries(D.mun).sort((a,b)=>a[1][0].localeCompare(b[1][0]));
+  const lc=$("#lc"),fc=$("#fc");let lim=30;
+  const list=()=>{const q=norm(fc.value);const f=cs.filter(([,m])=>!q||norm(m[0]).includes(q));
+    lc.innerHTML=f.slice(0,lim).map(([ue,m])=>`<a href="#/cidade/${uf}/${ue}"><span><b>${esc(title(m[0]))}</b> <span class="muted small">${m[1]?esc(title(m[1][0]))+" ("+esc(m[1][2])+")":""}</span></span><small>${m[3].length} vereadores</small></a>`).join("")+(f.length>lim?`<button class="btn o more" id="mc">Ver mais ${f.length-lim} cidades</button>`:"");
+    const mc=$("#mc");if(mc)mc.onclick=()=>{lim+=60;list()}};
+  fc.oninput=()=>{lim=30;list()};list();
+}
+async function cidade(uf,ue){
+  setNav("mapa");await loadBR();const D=await loadUF(uf);const m=D.mun[ue];if(!m)return notFound();
+  const u=BR.ufs[uf];const nome=title(m[0]);const meu=store.get("cidade");
+  const vs=m[3];const bp={};vs.forEach(p=>bp[p[2]]=(bp[p[2]]||0)+1);const parts=Object.entries(bp).sort((a,b)=>b[1]-a[1]);
+  M.innerHTML=`<section class="card glass"><a class="muted small" href="#/uf/${uf}">← ${esc(u.nome)}</a><span class="kick">Cidade · ${uf}</span><h1>${esc(nome)}</h1><span class="fx"></span>
+    <div class="btns"><button class="btn ${meu&&meu.ue===ue?"o":""}" id="sm">${meu&&meu.ue===ue?"✓ Esta é a minha cidade":"Esta é a minha cidade"}</button><a class="btn o" href="#/uf/${uf}">Deputados, senadores e governador de ${uf}</a></div></section>
+   <div class="row2"><section class="card glass"><h2>Prefeitura</h2>
+     ${m[1]?lead(`#/p/m/${uf}/${ue}/p`,title(m[1][0]),cargo("pref",m[1][4])+" · "+partido(m[1]),ftse(m[1],2024,ue)):'<p class="muted">Sem dado do prefeito (eleição suplementar ou pendente).</p>'}
+     ${m[2]?lead(`#/p/m/${uf}/${ue}/v`,title(m[2][0]),cargo("vp",m[2][4])+" · "+partido(m[2]),ftse(m[2],2024,ue)):""}
+     <p class="src">Eleitos em 2024 (mandato 2025–2028). Fonte: ${FONTE_TSE}</p></section>
+    <section class="card glass"><h2>Câmara Municipal</h2><p style="margin:0"><b class="kv-n" style="font-family:var(--f-display);font-size:1.6rem">${vs.length}</b> <span class="muted">vereadores eleitos em 2024</span></p>
+     <div class="chips">${parts.map(([p,n])=>`<span class="chip">${esc(p)} ${n}</span>`).join("")}</div>
+     ${uf==="PR"&&ue==="75353"?`<a class="btn o" href="parana.html?q=">Projetos e pedidos dos vereadores de Curitiba</a>`:""}
+     <p class="src">Votos e projetos dos vereadores dependem do que cada Câmara publica; a maioria não publica em formato aberto. Fonte: ${FONTE_TSE}</p></section></div>
+   <section class="card glass"><h2>Vereadores <span class="muted small">(${vs.length})</span></h2><div class="people">${vs.map((p,i)=>pcard(`#/p/m/${uf}/${ue}/${i}`,title(p[0]),partido(p),ftse(p,2024,ue))).join("")}</div>
+     <p class="src">Titulares eleitos em 2024. Suplentes que assumiram depois não aparecem. Fonte: ${FONTE_TSE}</p></section>`;
+  $("#sm").onclick=()=>{store.set("cidade",{uf,ue,nome});cidade(uf,ue)};
+  emendasCidade(uf,nome);
+}
+/* emendas que deputados federais e senadores do Paraná mandaram para a cidade */
+const EMUF={};
+async function emendasCidade(uf,nome){
+  let EMPR=EMUF[uf]||(EMUF[uf]=await getJSON("data/emendas/"+uf+".json").catch(()=>null));
+  if(!EMPR&&uf==="PR")EMPR=EMUF[uf]=await getJSON("data/emendas_pr.json").catch(()=>null);
+  if(!EMPR)return;
+  const L=EMPR.cid[String(nome).normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z ]/g,"").trim()]||[];
+  const tot=L.reduce((a,x)=>a+x[4],0);const mx=L.length?L[0][4]:1;
+  const sec=document.createElement("section");sec.className="card glass";
+  sec.innerHTML=`<h2>Emendas para ${esc(title(nome))}</h2>
+   ${L.length?`<p style="margin:0"><b style="font-family:var(--f-display);font-size:1.6rem">${brl(tot)}</b> <span class="muted">pagos por ${L.length} deputado${L.length>1?"s":""} federa${L.length>1?"is":"l"} e senador${L.length>1?"es":""} desde 2023</span></p>
+   <div class="tl">${L.map(x=>`<div><span><a href="#/p/${x[0]==="C"?"c":"s"}/${x[1]}">${esc(x[2])}</a> <small class="muted">${esc(x[3])} · ${x[0]==="C"?"deputado(a) federal":"senador(a)"}</small>${x[5].length?`<br><small class="muted">Para: ${x[5].map(f=>esc(title(f[0]))).join(", ")}</small>`:""}</span><b>${brl(x[4])}</b>${bar(x[4],mx)}</div>`).join("")}</div>`
+   :`<p class="muted" style="margin:0">Nenhuma emenda paga por deputados federais e senadores em exercício para esta cidade desde 2023.</p>`}
+   <p class="src">Valores pagos a favorecidos com endereço na cidade (prefeitura, fundos, hospitais, entidades), de 2023 a 2026. Entram deputados federais e senadores em exercício, de qualquer estado. Fonte: ${esc(EMPR.fonte)}.</p>`;
+  M.append(sec);
+}
+async function me(){
+  setNav("me");const c=store.get("cidade");
+  if(c)return location.replace("#/cidade/"+c.uf+"/"+c.ue);
+  M.innerHTML=`<section class="card glass"><span class="kick">Me representa</span><h1>Qual é a sua cidade?</h1><span class="fx"></span><p class="muted" style="margin:0">Escolha uma vez e esta aba passa a abrir direto nela, com prefeito, vereadores e os representantes do seu estado.</p>${searchBox("q2","Digite sua cidade")}</section>`;
+  wireSearch("q2",false);
+}
+async function quem(){
+  setNav("quem");await loadBR();
+  M.innerHTML=`<section class="card glass"><span class="kick">Quem é quem</span><h1>Busque um político</h1><span class="fx"></span>${searchBox("q3","Nome do deputado, senador ou governador")}
+   <p class="src">Busca entre deputados federais, senadores e governadores. Para deputados estaduais, prefeitos e vereadores, abra o estado ou a cidade.</p></section>
+   <section class="card glass"><h2>Senado <span class="muted small">(81)</span></h2><div class="people">${BR.sen.slice().sort((a,b)=>a[1].localeCompare(b[1])).map(s=>pcard("#/p/s/"+s[0],s[1],esc(s[3])+" · "+s[4],s[5])).join("")}</div><p class="src">Fonte: ${FONTE_SEN}</p></section>`;
+  wireSearch("q3",true);
+}
+function notFound(){M.innerHTML='<section class="card glass"><h2>Página não encontrada</h2><a class="btn" href="#/">Voltar ao início</a></section>'}
+
+/* ---------- rotas ---------- */
+async function route(){AVN=0;
+  const h=(location.hash||"#/").slice(2).split("/").filter(Boolean);
+  try{
+    if(!h.length)await inicio();
+    else if(h[0]==="mapa")await mapa();
+    else if(h[0]==="uf")await estado(h[1]);
+    else if(h[0]==="cidade")await cidade(h[1],h[2]);
+    else if(h[0]==="me")await me();
+    else if(h[0]==="quem")await quem();
+    else if(h[0]==="congresso")await congresso(h[1]);
+    else if(h[0]==="impostometro")await impostometro(h[1]);
+    else if(h[0]==="mais")await mais();
+    else if(h[0]==="governos")await governos(h[1]);
+    else if(h[0]==="stf")await stf();
+    else if(h[0]==="agora")await agora();
+    else if(h[0]==="dicionario")await dicionario(h[1]);
+    else if(h[0]==="colabore")await colabore();
+    else if(h[0]==="partidos")await partidos(h[1]);
+    else if(h[0]==="acompanho")await acompanho();
+    else if(h[0]==="comparar")await comparar();
+    else if(h[0]==="semana")await semanaCongresso(h[1]);
+    else if(h[0]==="votacoes")await votacoesImportam();
+    else if(h[0]==="metodologia")metodologia();
+    else if(h[0]==="privacidade")privacidade();
+    else if(h[0]==="p")await cracha(h.slice(1));
+    else notFound();
+  }catch(e){console.error(e);M.innerHTML=`<section class="card glass"><h2>Não consegui carregar os dados</h2><p class="muted">${esc(e.message)}</p><a class="btn" href="#/">Início</a></section>`}
+  if(h[0]!=="p")window.scrollTo(0,0);
+}
+addEventListener("hashchange",route);route();
+</script>
+<script>if("serviceWorker" in navigator&&/^https:/.test(location.protocol))addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));</script>
+</body>
+</html>

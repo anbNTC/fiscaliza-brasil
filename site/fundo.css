@@ -1,0 +1,18 @@
+/* Fundo da marca: branco quente com um toque de verde, amarelo e azul da bandeira e grão fino por cima.
+   Incluído depois dos estilos de cada página para valer em todas. */
+:root{
+  --fb-base:#FBFBF7;
+  --fb-verde:rgba(0,156,59,.19);
+  --fb-amarelo:rgba(255,214,0,.24);
+  --fb-azul:rgba(30,100,235,.15);
+  --fb-grao:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+html body{
+  background-color:var(--fb-base)!important;
+  background-image:
+    radial-gradient(75vmax 60vmax at -5% -10%,var(--fb-verde),transparent 62%),
+    radial-gradient(60vmax 55vmax at 105% 35%,var(--fb-amarelo),transparent 60%),
+    radial-gradient(80vmax 60vmax at 35% 115%,var(--fb-azul),transparent 64%)!important;
+  background-attachment:fixed!important;
+}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:var(--fb-grao);background-size:180px 180px;opacity:.075;mix-blend-mode:multiply}

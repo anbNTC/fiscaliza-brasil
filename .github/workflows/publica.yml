@@ -1,0 +1,30 @@
+# Publica a pasta site/ no Cloudflare Pages (projeto fiscalizaja).
+# Precisa dos segredos CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID no repositório.
+name: Publica
+
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", ".github/workflows/publica.yml"]
+  workflow_dispatch:
+  workflow_call:
+
+concurrency: { group: publica, cancel-in-progress: true }
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - name: Confere os segredos do Cloudflare
+        id: seg
+        env: { T: "${{ secrets.CLOUDFLARE_API_TOKEN }}" }
+        run: if [ -n "$T" ]; then echo "ok=1" >> $GITHUB_OUTPUT; else echo "::warning::Falta o segredo CLOUDFLARE_API_TOKEN: o site não foi publicado."; fi
+      - name: Publica no Cloudflare Pages
+        if: steps.seg.outputs.ok == '1'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy site --project-name=fiscalizaja --branch=main --commit-dirty=true

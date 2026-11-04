@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Área restrita do Fiscaliza Brasil.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fiscaliza Brasil">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Painel · Fiscaliza Brasil">
+<meta property="og:description" content="Área restrita do Fiscaliza Brasil.">
+<meta property="og:url" content="/painel">
+<meta property="og:image" content="/og.png">
+<meta property="og:image:width" content="600">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Logo do Fiscaliza Brasil: uma lupa com a bandeira do Brasil">
+<meta name="twitter:card" content="summary">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#FBFBF7">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel · Fiscaliza Brasil</title>
+<link rel="stylesheet" href="fundo.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='4 4 106 106'%3E%3Crect x='4' y='4' width='106' height='106' rx='26' fill='%23fff'/%3E%3Cdefs%3E%3CclipPath id='fbl'%3E%3Ccircle cx='50' cy='50' r='27'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M50 8 92 50 50 92 8 50Z' fill='%23F7C21B'/%3E%3Crect x='78' y='74' width='34' height='15' rx='7.5' transform='rotate(45 78 74)' fill='%230E8A4B'/%3E%3Ccircle cx='50' cy='50' r='31' fill='%23fff'/%3E%3Ccircle cx='50' cy='50' r='27' fill='%231F4FBF'/%3E%3Cpath clip-path='url(%23fbl)' d='M14 52C34 36 66 36 88 46L88 54C66 45 34 45 14 60Z' fill='%23fff'/%3E%3Ccircle cx='40' cy='38' r='5' fill='%23fff' opacity='.45'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Familjen+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap">
+<link rel="stylesheet" href="links.css">
+<style>
+/* Painel privado: login, início com atalhos em vidro e editor dos links da bio (formulário, botões, prévia). */
+:root{--bg:#FFFFFF;--ink:#0B0B0C;--muted:#5E6066;--line:rgba(11,11,12,.10);--surface:rgba(255,255,255,.32);--edge:rgba(255,255,255,.9);
+  --shadow:0 10px 36px rgba(15,20,30,.09),0 1px 2px rgba(15,20,30,.06);--erro:#B3261E;--ok:#1E7A47;
+  --f-display:"Familjen Grotesk",system-ui,sans-serif;--f-body:"Source Sans 3",system-ui,sans-serif;--f-mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  background-image:radial-gradient(55vw 45vh at 10% 5%,rgba(150,180,255,.26),transparent 70%),radial-gradient(50vw 45vh at 95% 40%,rgba(255,190,210,.22),transparent 70%),radial-gradient(60vw 45vh at 35% 100%,rgba(160,230,210,.22),transparent 70%);background-attachment:fixed}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.glass{background:var(--surface);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border:1px solid var(--edge);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.9)}
+.emb{width:56px;height:56px;flex:none}
+.center{min-height:100svh;display:grid;place-items:center;padding:40px 16px}
+.stack{width:100%;max-width:420px;display:grid;gap:14px;justify-items:center;text-align:center}
+.kick{font-family:var(--f-mono);font-weight:600;font-size:.72rem;letter-spacing:.3em;padding-left:.3em;color:var(--muted);text-transform:uppercase}
+h1.t{font-family:var(--f-display);font-weight:700;font-size:2rem;line-height:1;margin:0;letter-spacing:-.01em;text-transform:uppercase}
+.fx{display:flex;width:84px;height:3px;border-radius:2px;background:linear-gradient(90deg,#1E7A47 0 33.3%,#F2C200 33.3% 66.6%,#1F4FBF 66.6%)}
+.in{width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(11,11,12,.14);background:rgba(255,255,255,.75);outline:none}
+.in:focus{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+textarea.in{resize:vertical;min-height:72px}
+.btn{border:0;border-radius:999px;padding:12px 24px;background:var(--ink);color:#fff;font-family:var(--f-display);font-weight:700;letter-spacing:.04em}
+.btn.o{background:rgba(255,255,255,.7);color:var(--ink);border:1px solid rgba(11,11,12,.16)}
+.btn:disabled{opacity:.5;cursor:default}
+.lnk{background:none;border:0;padding:6px 2px;font-weight:600;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.err{min-height:20px;font-size:.88rem;color:var(--erro)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* início */
+.tiles{width:100%;display:grid;gap:12px;margin-top:10px}
+.tile{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:16px;padding:18px 20px;border-radius:20px;text-decoration:none;color:var(--ink);text-align:left;transition:transform .18s ease,background .18s ease}
+.tile:hover{transform:translateY(-2px);background:rgba(255,255,255,.5)}
+.tile svg{width:44px;height:44px}
+.tile b{font-family:var(--f-display);font-size:1.15rem;letter-spacing:.02em;display:block;line-height:1.1}
+.tile small{color:var(--muted);font-size:.88rem}
+.tile .ar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);color:var(--ink);border:1px solid rgba(255,255,255,.75);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 8px 22px rgba(15,20,30,.20),0 2px 6px rgba(15,20,30,.10),inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(15,20,30,.06)}
+.out{position:fixed;top:max(14px,env(safe-area-inset-top,0px));right:16px}
+
+/* editor */
+.bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px max(16px,env(safe-area-inset-left,0px));border-radius:0 0 20px 20px}
+.bar .st{flex:1;text-align:center;font-size:.88rem;color:var(--muted);min-width:0}
+.bar .st.e{color:var(--erro)}.bar .st.k{color:var(--ok)}
+.ed{max-width:1320px;margin:0 auto;padding:20px max(16px,env(safe-area-inset-left,0px)) 80px;display:grid;grid-template-columns:minmax(280px,340px) minmax(0,1fr) 390px;gap:24px;align-items:start}
+@media (max-width:1100px){.ed{grid-template-columns:minmax(0,1fr) 390px}.ed>.col:first-child{grid-column:1/-1}}
+@media (max-width:820px){.ed{grid-template-columns:1fr}}
+.col{display:grid;gap:14px;min-width:0}
+.card{border-radius:20px;padding:18px;display:grid;gap:12px;min-width:0}
+.ch{font-family:var(--f-display);font-weight:700;font-size:1.05rem;margin:0;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ch small{font-family:var(--f-body);font-weight:400;font-size:.82rem;color:var(--muted)}
+.fl{display:grid;gap:6px;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fl .in{font-size:.95rem;font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink)}
+.rg{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:.88rem}
+.rg b{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.rg input{grid-column:1/-1;width:100%;accent-color:#0B0B0C}
+.ck{display:flex;gap:8px;align-items:center;font-size:.9rem;cursor:pointer}
+.ck input{accent-color:#0B0B0C;width:18px;height:18px}
+.avr{display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:center}
+.avb{display:grid;gap:10px}.avb .btn{width:100%;justify-content:center;text-align:center;padding:11px 16px}
+.avp{overflow:hidden;width:96px;height:96px;border-radius:50%;background:#0B0B0C center/cover no-repeat;color:#fff;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;flex:none}
+.lc{border-radius:16px;padding:14px;display:grid;gap:10px;background:rgba(255,255,255,.7);border:1px solid rgba(11,11,12,.1)}
+.lc .hd{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lc .hd div{display:flex;gap:6px}
+.lc .hd button{width:32px;height:32px;border-radius:10px;border:1px solid rgba(11,11,12,.14);background:#fff;font-size:.8rem;line-height:1}
+.lc .hd button:hover{border-color:var(--ink)}
+.lc .ft{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--muted)}
+.lc.off{opacity:.6}
+.pv{position:sticky;top:76px}
+.pvbox{position:relative;width:100%;max-width:390px;height:min(760px,calc(100vh - 150px));min-height:520px;margin:0 auto;overflow:auto;border-radius:32px;border:1px solid rgba(11,11,12,.12);box-shadow:var(--shadow);transform:translateZ(0)}
+.pvbox .lk-bg{position:absolute}
+.pvbox .lk-a,.pvbox .lk-f{pointer-events:none}
+.sh{display:flex;gap:8px}.sh .in{min-width:0}
+.empty{color:var(--muted);text-align:center;padding:18px 0}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}
+#toast.on{opacity:1}
+.cfgwarn{max-width:520px;text-align:left;border-radius:20px;padding:20px;display:grid;gap:8px}
+@media (prefers-reduced-motion:reduce){.tile{transition:none}.tile:hover{transform:none}}
+</style>
+<link rel="stylesheet" href="ui.css">
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="links.js"></script>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const APP = $("#app");
+const EMB = '<svg class="emb" viewBox="4 4 106 106" aria-hidden="true"><defs><clipPath id="fbl"><circle cx="50" cy="50" r="27"/></clipPath></defs><path d="M50 8 92 50 50 92 8 50Z" fill="#F7C21B"/><rect x="78" y="74" width="34" height="15" rx="7.5" transform="rotate(45 78 74)" fill="#0E8A4B"/><circle cx="50" cy="50" r="31" fill="#fff"/><circle cx="50" cy="50" r="27" fill="#1F4FBF"/><path clip-path="url(#fbl)" d="M14 52C34 36 66 36 88 46L88 54C66 45 34 45 14 60Z" fill="#fff"/><circle cx="40" cy="38" r="5" fill="#fff" opacity=".45"/></svg>';
+const toast = (m) => { const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("on"), 2200); };
+const C = window.FB_CFG || {};
+const sb = C.url && C.key && window.supabase ? supabase.createClient(C.url, C.key) : null;
+const pub = (path) => sb.storage.from("midia").getPublicUrl(path).data.publicUrl;
+const L = window.FBLinks;
+
+/* Seções do painel. Para criar uma ferramenta nova, acrescente aqui e trate a rota em route(). */
+const IC = {
+  links: '<svg viewBox="0 0 44 44"><rect width="44" height="44" rx="12" fill="#0B0B0C"/><g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M19.5 24.5a5 5 0 0 0 7 0l4-4a5 5 0 0 0-7-7l-1.2 1.2"/><path d="M24.5 19.5a5 5 0 0 0-7 0l-4 4a5 5 0 0 0 7 7l1.2-1.2"/></g></svg>',
+  rep: '<svg viewBox="0 0 44 44"><rect width="44" height="44" rx="12" fill="#0B0B0C"/><g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12 33 31H11z"/><path d="M22 19v6M22 28.5v.5"/></g></svg>',
+  x: '<svg viewBox="0 0 44 44"><rect width="44" height="44" rx="12" fill="#0B0B0C"/><path d="M14 13h5l11 18h-5zM29 13 15.5 31M28.5 13h0" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  pix: '<svg viewBox="0 0 44 44"><rect width="44" height="44" rx="12" fill="#0B0B0C"/><path d="M22 31s-9-5.2-9-11.2A4.8 4.8 0 0 1 22 17a4.8 4.8 0 0 1 9 2.8C31 25.8 22 31 22 31z" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/></svg>',
+  site: '<svg viewBox="0 0 44 44"><rect width="44" height="44" rx="12" fill="#0B0B0C"/><g fill="none" stroke="#fff" stroke-width="2.4"><circle cx="20" cy="20" r="7"/><path d="M25 25l7 7" stroke-linecap="round"/></g></svg>'
+};
+const SECTIONS = [
+  { k: "links", n: "Links da bio", c: "Botões da página de links do Instagram", h: "#/links" },
+  { k: "rep", n: "Reportes de erro", c: "Correções enviadas pelo público do site", h: "#/reportes" },
+  { k: "x", n: "Lateral do X", c: "Lista do X que aparece no ACONTECE AGORA", h: "#/x" },
+  { k: "pix", n: "Colabore (Pix)", c: "Chave Pix e QR code da página de doações", h: "#/pix" },
+  { k: "site", n: "Ver o site", c: "Abre a página inicial pública do site", h: L.go("/"), ext: true }
+];
+
+function cfgWarn() {
+  APP.innerHTML = `<div class="center"><div class="cfgwarn glass">${EMB}<b style="font-family:var(--f-display);font-size:1.2rem">Falta ligar o banco de dados</b>
+  <p style="margin:0">Abra o arquivo <code>config.js</code> e cole o <b>Project URL</b> e a chave <b>anon / publishable</b> do seu projeto Supabase. Depois publique o site de novo.</p></div></div>`;
+}
+
+async function route() {
+  if (!sb) return cfgWarn();
+  const { data } = await sb.auth.getSession();
+  if (!data.session) return loginUI();
+  window.onbeforeunload = null;
+  const h = location.hash || "#/";
+  if (h === "#/links") return linksUI();
+  if (h === "#/reportes") return reportesUI();
+  if (h === "#/x") return xUI();
+  if (h === "#/pix") return pixUI();
+  hubUI(data.session.user.email);
+}
+
+function loginUI() {
+  APP.innerHTML = `<div class="center"><form class="stack" id="lf" autocomplete="on">${EMB}
+    <h1 class="t">Painel</h1><span class="fx"></span><span class="kick">Fiscaliza Brasil</span>
+    <label for="le" style="position:absolute;left:-9999px">E-mail</label><input class="in glass" id="le" type="email" placeholder="E-mail" autocomplete="username" required>
+    <label for="lp" style="position:absolute;left:-9999px">Senha</label><input class="in glass" id="lp" type="password" placeholder="Senha" autocomplete="current-password" required>
+    <div class="err" id="lerr"></div><button class="btn" id="lgb">Entrar</button></form></div>`;
+  $("#lf").onsubmit = async (e) => {
+    e.preventDefault();
+    $("#lgb").disabled = true; $("#lerr").textContent = "";
+    const { error } = await sb.auth.signInWithPassword({ email: $("#le").value.trim(), password: $("#lp").value });
+    $("#lgb").disabled = false;
+    if (error) { $("#lerr").textContent = "E-mail ou senha inválidos."; return; }
+    route();
+  };
+}
+
+function hubUI(email) {
+  document.title = "Painel · Fiscaliza Brasil";
+  APP.innerHTML = `<button class="lnk out" id="so">Sair</button><div class="center"><div class="stack">${EMB}
+    <h1 class="t">Painel</h1><span class="fx"></span><span class="kick">Fiscaliza Brasil</span>
+    <nav class="tiles">${SECTIONS.map((s) => `<a class="tile glass" href="${s.h}"${s.ext ? ' target="_blank" rel="noopener"' : ""}>${IC[s.k]}<span><b>${esc(s.n)}</b><small>${esc(s.c)}</small></span><span class="ar" aria-hidden="true">→</span></a>`).join("")}</nav>
+    <small style="color:var(--muted);margin-top:8px">${esc(email || "")}</small></div></div>`;
+  $("#so").onclick = async () => { await sb.auth.signOut(); location.hash = "#/"; route(); };
+}
+
+/* redimensiona a foto no navegador antes de enviar */
+const resize = (file, max) => new Promise((ok, ko) => {
+  const im = new Image(); const u = URL.createObjectURL(file);
+  im.onload = () => { const s = Math.min(1, max / Math.max(im.width, im.height)); const side = Math.round(Math.min(im.width, im.height) * s);
+    const c = document.createElement("canvas"); c.width = c.height = side;
+    const sx = (im.width - Math.min(im.width, im.height)) / 2, sy = (im.height - Math.min(im.width, im.height)) / 2;
+    c.getContext("2d").drawImage(im, sx, sy, Math.min(im.width, im.height), Math.min(im.width, im.height), 0, 0, side, side);
+    URL.revokeObjectURL(u); c.toBlob((b) => b ? ok(b) : ko(new Error("Não foi possível ler a imagem.")), "image/jpeg", 0.88); };
+  im.onerror = () => { URL.revokeObjectURL(u); ko(new Error("Arquivo de imagem inválido.")); };
+  im.src = u;
+});
+const newId = () => (crypto.randomUUID ? crypto.randomUUID() : "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)));
+
+async function pixUI() {
+  document.title = "Colabore (Pix) · Painel";
+  APP.innerHTML = `<div class="center"><span class="kick">Carregando…</span></div>`;
+  const q = await sb.from("site_config").select("valor").eq("chave", "pix").maybeSingle();
+  if (q.error) { APP.innerHTML = `<div class="center"><div class="cfgwarn glass"><b>Não consegui ler os ajustes.</b><p style="margin:0">Rode de novo o <code>schema.sql</code> no Supabase.</p><small class="err">${esc(q.error.message)}</small><a class="lnk" href="#/">← Início</a></div></div>`; return; }
+  let v = {}; try { v = JSON.parse((q.data && q.data.valor) || "{}"); } catch (e) {}
+  APP.innerHTML = `<div class="bar glass"><a class="lnk" href="#/">← Início</a><div class="st" id="st"></div><span></span></div>
+  <div style="max-width:720px;margin:0 auto;padding:20px 16px 80px;display:grid;gap:14px">
+   <section class="card glass"><h2 style="margin:0">Pix da página COLABORE</h2>
+    <p style="margin:0;color:var(--muted)">O que você salvar aqui aparece na página de doações do site. Dê preferência à <b>chave aleatória</b> ou a um e-mail, em vez de CPF ou telefone, para não expor seus dados pessoais.</p>
+    <label style="display:grid;gap:6px"><b style="font-size:.9rem">Chave Pix</b><input class="in" id="pk" maxlength="140" placeholder="Ex.: chave aleatória ou e-mail" value="${esc(v.chave || "")}"></label>
+    <label style="display:grid;gap:6px"><b style="font-size:.9rem">Nome que aparece no banco</b><input class="in" id="pn" maxlength="80" placeholder="Ex.: Abraão Nery" value="${esc(v.nome || "")}"><small style="color:var(--muted)">Ajuda a pessoa a conferir que está pagando para o lugar certo.</small></label>
+    <label style="display:grid;gap:6px"><b style="font-size:.9rem">Pix copia e cola (opcional)</b><textarea class="in" id="pc" rows="3" placeholder="Código que começa com 000201…">${esc(v.copia || "")}</textarea></label>
+    <div style="display:grid;gap:8px"><b style="font-size:.9rem">QR code</b>
+     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><div id="pqv" style="width:120px;height:120px;border-radius:14px;background:#fff;border:1px solid rgba(11,11,12,.12);display:grid;place-items:center;overflow:hidden;color:var(--muted);font-size:.8rem">${v.qr ? `<img src="${esc(v.qr)}" alt="QR code" style="width:100%;height:100%;object-fit:contain">` : "Sem QR"}</div>
+      <div style="display:grid;gap:8px"><button class="btn o" id="pqb" type="button">Enviar imagem do QR</button>${v.qr ? '<button class="btn o" id="pqx" type="button">Remover QR</button>' : ""}</div>
+      <input type="file" id="pqf" accept="image/png,image/jpeg,image/webp" hidden></div></div>
+    <label class="ck" style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="pa" ${v.ativo === false ? "" : "checked"}> Mostrar o Pix no site</label>
+    <div><button class="btn" id="ps">Salvar</button></div></section></div>`;
+  const st = $("#st"); const stat = (t, c) => { st.className = "st " + (c || ""); st.textContent = t; };
+  const salva = async (extra) => {
+    const nv = { chave: $("#pk").value.trim(), nome: $("#pn").value.trim(), copia: $("#pc").value.trim(), qr: v.qr || "", qr_path: v.qr_path || "", ativo: $("#pa").checked, ...(extra || {}) };
+    stat("Salvando…");
+    const r = await sb.from("site_config").upsert({ chave: "pix", valor: JSON.stringify(nv), atualizado: new Date().toISOString() });
+    if (r.error) { stat("Não salvou: " + r.error.message, "e"); return false; }
+    v = nv; stat("✓ Salvo. Já aparece na página COLABORE.", "k"); return true;
+  };
+  $("#ps").onclick = () => salva();
+  $("#pqb").onclick = () => $("#pqf").click();
+  $("#pqf").onchange = async (e) => {
+    const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+    stat("Enviando QR…");
+    try {
+      const ext = (f.type.split("/")[1] || "png").replace("jpeg", "jpg");
+      const path = "pix/qr_" + Date.now() + "." + ext;
+      const up = await sb.storage.from("midia").upload(path, f, { contentType: f.type, cacheControl: "31536000" });
+      if (up.error) throw up.error;
+      const url = sb.storage.from("midia").getPublicUrl(path).data.publicUrl;
+      const old = v.qr_path;
+      if (await salva({ qr: url, qr_path: path })) { if (old) sb.storage.from("midia").remove([old]).catch(() => {}); pixUI(); }
+    } catch (err) { stat("Não foi possível enviar: " + (err.message || err), "e"); }
+  };
+  if ($("#pqx")) $("#pqx").onclick = async () => { const old = v.qr_path; if (await salva({ qr: "", qr_path: "" })) { if (old) sb.storage.from("midia").remove([old]).catch(() => {}); pixUI(); } };
+}
+
+async function xUI() {
+  document.title = "Lateral do X · Painel";
+  APP.innerHTML = `<div class="center"><span class="kick">Carregando…</span></div>`;
+  const q = await sb.from("site_config").select("valor").eq("chave", "x_lista").maybeSingle();
+  if (q.error) { APP.innerHTML = `<div class="center"><div class="cfgwarn glass"><b>Não consegui ler os ajustes.</b><p style="margin:0">Rode de novo o <code>schema.sql</code> no Supabase (ele cria a tabela de ajustes do site).</p><small class="err">${esc(q.error.message)}</small><a class="lnk" href="#/">← Início</a></div></div>`; return; }
+  const atual = (q.data && q.data.valor) || "";
+  APP.innerHTML = `<div class="bar glass"><a class="lnk" href="#/">← Início</a><div class="st" id="st"></div><span></span></div>
+  <div style="max-width:720px;margin:0 auto;padding:20px 16px 80px;display:grid;gap:14px">
+   <section class="card glass"><h2 style="margin:0">Lista do X na lateral</h2>
+    <p style="margin:0;color:var(--muted)">A coluna da direita do ACONTECE AGORA mostra os posts de uma <b>lista pública do X</b>. É a mesma ideia de uma coluna do X Pro: você escolhe as contas e o site mostra o que elas publicam.</p>
+    <label style="display:grid;gap:6px"><b style="font-size:.9rem">Endereço da lista</b><input class="in" id="xu" type="url" placeholder="https://x.com/i/lists/1234567890" value="${esc(atual)}"></label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="xs">Salvar</button><button class="btn o" id="xr">Tirar a lista</button>${atual ? `<a class="btn o" style="text-decoration:none" href="${esc(atual)}" target="_blank" rel="noopener">Abrir no X</a>` : ""}</div></section>
+   <section class="card glass"><h2 style="margin:0">Como criar a lista</h2>
+    <ol style="margin:0;padding-left:20px;display:grid;gap:8px;line-height:1.45">
+     <li>No X, abra o menu <b>Listas</b> e toque em <b>Criar lista</b>. Deixe a lista <b>pública</b> (não marque "Privada").</li>
+     <li>Dê um nome, por exemplo "Política agora", e adicione as contas: agências, jornais e jornalistas de todos os lados, para a lateral ficar equilibrada.</li>
+     <li>Abra a lista, copie o endereço da página (fica parecido com <code>x.com/i/lists/123…</code>) e cole acima.</li>
+    </ol>
+    <p style="margin:0;font-size:.85rem;color:var(--muted)">Dá para trocar as contas da lista no X a qualquer momento, e o site acompanha sem precisar mexer aqui.</p></section></div>`;
+  const st = $("#st");
+  const salva = async (v) => {
+    st.className = "st"; st.textContent = "Salvando…";
+    const r = v ? await sb.from("site_config").upsert({ chave: "x_lista", valor: v, atualizado: new Date().toISOString() }) : await sb.from("site_config").delete().eq("chave", "x_lista");
+    if (r.error) { st.className = "st e"; st.textContent = "Não salvou: " + r.error.message; return; }
+    st.className = "st k"; st.textContent = v ? "Salvo. Já aparece no ACONTECE AGORA." : "Lista retirada.";
+    setTimeout(xUI, 1200);
+  };
+  $("#xs").onclick = () => {
+    let v = $("#xu").value.trim().replace("twitter.com", "x.com");
+    if (v && !/^https?:\/\//.test(v)) v = "https://" + v;
+    if (!/^https:\/\/(www\.)?x\.com\/(i\/lists\/\d+|[A-Za-z0-9_]{1,15}\/lists\/[^/?#]+|[A-Za-z0-9_]{1,15})\/?(\?.*)?$/.test(v)) { st.className = "st e"; st.textContent = "Cole o endereço de uma lista do X (x.com/i/lists/…)."; return; }
+    salva(v.split("?")[0]);
+  };
+  $("#xr").onclick = () => salva("");
+}
+
+async function reportesUI() {
+  document.title = "Reportes de erro · Painel";
+  APP.innerHTML = `<div class="center"><span class="kick">Carregando…</span></div>`;
+  const r = await sb.from("reportes").select("*").order("created_at", { ascending: false });
+  if (r.error) { APP.innerHTML = `<div class="center"><div class="cfgwarn glass"><b>Não consegui ler os reportes.</b><p style="margin:0">Rode de novo o <code>schema.sql</code> no Supabase (ele cria a tabela de reportes).</p><small class="err">${esc(r.error.message)}</small><a class="lnk" href="#/">← Início</a></div></div>`; return; }
+  let rows = r.data || [], ver = "abertos";
+  APP.innerHTML = `<div class="bar glass"><a class="lnk" href="#/">← Início</a><div class="st" id="st"></div><div style="display:flex;gap:6px"><button class="btn" data-f="abertos">Abertos</button><button class="btn o" data-f="todos">Todos</button></div></div>
+    <div style="max-width:820px;margin:0 auto;padding:20px 16px 80px;display:grid;gap:12px" id="rl"></div>`;
+  const draw = () => {
+    document.querySelectorAll("[data-f]").forEach((b) => b.className = "btn" + (b.dataset.f === ver ? "" : " o"));
+    const f = rows.filter((x) => ver === "todos" || !x.resolvido);
+    $("#st").textContent = rows.filter((x) => !x.resolvido).length + " em aberto";
+    $("#rl").innerHTML = f.length ? f.map((x) => `<section class="card glass"${x.resolvido ? ' style="opacity:.6"' : ""}><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><b>${esc(x.sobre || "Sem assunto")}</b><small style="color:var(--muted)">${new Date(x.created_at).toLocaleString("pt-BR")}</small></div>
+      <p style="margin:0;white-space:pre-wrap">${esc(x.texto)}</p>${x.contato ? `<small>Contato: <b>${esc(x.contato)}</b></small>` : ""}
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><a class="lnk" href="${esc(x.pagina || "#")}" target="_blank" rel="noopener">Abrir a página</a><span style="flex:1"></span>
+      <button class="btn o" data-r="${x.id}">${x.resolvido ? "Reabrir" : "Marcar como resolvido"}</button><button class="lnk" data-d="${x.id}">Apagar</button></div></section>`).join("") : '<p class="empty">Nenhum reporte.</p>';
+    document.querySelectorAll("[data-r]").forEach((b) => b.onclick = async () => { const x = rows.find((y) => y.id === b.dataset.r); const e = (await sb.from("reportes").update({ resolvido: !x.resolvido }).eq("id", x.id)).error; if (e) return alert(e.message); x.resolvido = !x.resolvido; draw(); });
+    document.querySelectorAll("[data-d]").forEach((b) => b.onclick = async () => { if (!confirm("Apagar este reporte?")) return; const e = (await sb.from("reportes").delete().in("id", [b.dataset.d])).error; if (e) return alert(e.message); rows = rows.filter((y) => y.id !== b.dataset.d); draw(); });
+  };
+  document.querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { ver = b.dataset.f; draw(); });
+  draw();
+}
+
+async function linksUI() {
+  document.title = "Links da bio · Painel";
+  APP.innerHTML = `<div class="center"><span class="kick">Carregando…</span></div>`;
+  const [pr, ls] = await Promise.all([
+    sb.from("links_profile").select("*").eq("id", 1).maybeSingle(),
+    sb.from("links").select("*").order("position")
+  ]);
+  if (pr.error || ls.error) {
+    const e = pr.error || ls.error;
+    APP.innerHTML = `<div class="center"><div class="cfgwarn glass"><b>Não consegui ler os links.</b><p style="margin:0">Confira se o arquivo <code>schema.sql</code> foi executado no Supabase.</p><small class="err">${esc(e.message || e)}</small><a class="lnk" href="#/">← Início</a></div></div>`;
+    return;
+  }
+  const prof = Object.assign({}, L.DEF_PROFILE, pr.data || {});
+  let S = L.merge(prof.style);
+  let rows = (ls.data || []).map((r) => Object.assign({}, r)), removed = [], dirty = false;
+  const pubLink = window.FB_PUBLINK || location.origin + "/links";
+
+  const rng = (k, t, mn, mx, u) => `<label class="rg">${t} <b data-v="${k}"></b><input type="range" min="${mn}" max="${mx}" data-k="${k}" data-u="${u || "px"}"></label>`;
+  APP.innerHTML = `<div class="bar glass"><a class="lnk" href="#/" id="bk">← Início</a><div class="st" id="st"></div><div style="display:flex;gap:8px"><a class="btn o" href="${L.go("/links")}" target="_blank" rel="noopener" style="text-decoration:none">Ver</a><button class="btn" id="sv">Salvar</button></div></div>
+  <div class="ed">
+    <div class="col" id="form">
+      <section class="card glass"><h2 class="ch">Perfil</h2>
+        <div class="avr"><div class="avp" id="avp"></div><div class="avb"><button class="btn" id="avb" type="button">Trocar foto</button><button class="btn o" id="avx" type="button">Remover foto</button></div></div>
+        <input type="file" id="avf" accept="image/*" hidden>
+        <label class="fl">Nome<input class="in" id="f-n"></label>
+        <label class="fl">Usuário<input class="in" id="f-h" placeholder="@oabraaonery"></label>
+        <label class="fl">Texto (uma frase por linha)<textarea class="in" id="f-b" rows="3"></textarea></label>
+        <label class="fl">Estilo<select class="in" id="f-t"><option value="claro">Claro (vidro branco)</option><option value="escuro">Escuro (vidro preto)</option></select></label>
+      </section>
+      <section class="card glass"><h2 class="ch">Foto <small>tamanho e enquadramento</small></h2>
+        ${rng("avatar", "Tamanho da foto", 64, 200)}
+        ${rng("foto.zoom", "Zoom", 100, 300, "%")}
+        ${rng("foto.x", "Posição horizontal (esquerda ↔ direita)", 0, 100, "%")}
+        ${rng("foto.y", "Posição vertical (cima ↕ baixo)", 0, 100, "%")}
+        <label class="fl">Formato<select class="in" data-k="foto.forma"><option value="circulo">Círculo</option><option value="arredondada">Quadrada arredondada</option></select></label>
+        <label class="ck"><input type="checkbox" data-k="foto.borda"> Borda branca em volta da foto</label>
+        <button class="lnk" type="button" data-reset="foto" style="justify-self:start">Centralizar de novo</button>
+      </section>
+      <section class="card glass"><h2 class="ch">Textos</h2>
+        ${rng("name.size", "Nome: tamanho", 16, 44)}${rng("name.ls", "Nome: espaço entre letras", 0, 40, "%")}
+        <label class="ck"><input type="checkbox" data-k="name.upper"> Nome em maiúsculas</label>
+        ${rng("handle.size", "Usuário: tamanho", 9, 18)}${rng("bio.size", "Texto: tamanho", 12, 22)}
+        <label class="ck"><input type="checkbox" data-k="stripe"> Faixa verde, amarela e azul</label>
+      </section>
+      <section class="card glass"><h2 class="ch">Espaços</h2>
+        ${rng("gap1", "Entre a foto e o nome", 6, 60)}${rng("gap2", "Entre o texto e os botões", 10, 70)}
+      </section>
+      <section class="card glass"><h2 class="ch">Botões</h2>
+        ${rng("btn.size", "Tamanho da letra", 11, 20)}${rng("btn.ls", "Espaço entre letras", 0, 30, "%")}
+        <label class="ck"><input type="checkbox" data-k="btn.upper"> Botões em maiúsculas</label>
+      </section>
+      <section class="card glass"><button class="lnk" id="rs" type="button" style="justify-self:start">Restaurar todo o estilo padrão</button></section>
+      <section class="card glass"><h2 class="ch">Link para a bio</h2>
+        <div class="sh"><input class="in" id="pl" readonly><button class="btn" id="cp" type="button">Copiar</button></div>
+      </section>
+    </div>
+    <div class="col"><section class="card glass"><h2 class="ch">Botões <small id="nb"></small></h2><div id="rows" style="display:grid;gap:10px"></div>
+      <button class="btn o" id="add" type="button">+ Adicionar botão</button>
+      <p style="margin:0;font-size:.85rem;color:var(--muted)">Para páginas deste site, use o endereço curto: <code>/fiscalize</code>, <code>/distrital</code> ou <code>/</code>.</p></section></div>
+    <div class="col pv"><h2 class="ch" style="padding:0 6px">Prévia <small>como o público vê</small></h2><div class="pvbox" id="pv"></div></div>
+  </div>`;
+
+  const getp = (o, k) => k.split(".").reduce((x, y) => x && x[y], o);
+  const setp = (o, k, v) => { const a = k.split("."), l = a.pop(); a.reduce((x, y) => x[y], o)[l] = v; };
+  const stat = (m, cls) => { const e = $("#st"); e.textContent = m; e.className = "st " + (cls || ""); };
+  const cur = () => ({ name: $("#f-n").value, handle: $("#f-h").value, bio: $("#f-b").value, theme: $("#f-t").value, avatar_path: prof.avatar_path, style: S });
+  const refresh = () => L.render($("#pv"), cur(), rows.filter((r) => r.active !== false && (r.label || "").trim() && (r.url || "").trim()), { pub });
+  const showAv = () => { const a = $("#avp"); const F = S.foto || {}; a.style.borderRadius = F.forma === "arredondada" ? "28%" : "50%"; a.style.backgroundImage = "none";
+    if (prof.avatar_path) { const pos = `${F.x ?? 50}% ${F.y ?? 50}%`; a.innerHTML = `<img src="${pub(prof.avatar_path)}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:${pos};transform-origin:${pos};transform:scale(${(F.zoom || 100) / 100})">`; }
+    else { a.textContent = (prof.name || "AN").split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase(); } };
+  const sync = () => {
+    document.querySelectorAll("#form [data-k]").forEach((c) => { const v = getp(S, c.dataset.k); if (c.type === "checkbox") c.checked = !!v; else c.value = v; });
+    document.querySelectorAll("#form [data-v]").forEach((b) => { const inp = b.nextElementSibling; b.textContent = getp(S, b.dataset.v) + (inp && inp.dataset.u === "%" ? " %" : " px"); });
+  };
+  const mark = () => { dirty = true; stat("● Alterações não salvas"); refresh(); };
+  window.onbeforeunload = () => (dirty ? "Há alterações não salvas." : undefined);
+
+  $("#f-n").value = prof.name || ""; $("#f-h").value = prof.handle || ""; $("#f-b").value = prof.bio || ""; $("#f-t").value = prof.theme === "escuro" ? "escuro" : "claro"; $("#pl").value = pubLink;
+  ["#f-n", "#f-h", "#f-b", "#f-t"].forEach((i) => $(i).addEventListener("input", mark));
+  document.querySelectorAll("#form [data-k]").forEach((c) => { const h = () => { setp(S, c.dataset.k, c.type === "checkbox" ? c.checked : c.tagName === "SELECT" ? c.value : +c.value); sync(); mark(); showAv(); }; c.addEventListener("input", h); c.addEventListener("change", h); });
+  document.querySelectorAll("[data-reset]").forEach((b) => (b.onclick = () => { S.foto = JSON.parse(JSON.stringify(L.DEF_STYLE.foto)); sync(); mark(); showAv(); }));
+  $("#rs").onclick = () => { S = L.merge({}); sync(); mark(); };
+  $("#cp").onclick = async () => { try { await navigator.clipboard.writeText(pubLink); toast("Link copiado."); } catch (e) { $("#pl").select(); toast("Selecione e copie o link."); } };
+  $("#bk").onclick = (e) => { if (dirty && !confirm("Há alterações não salvas. Sair mesmo assim?")) { e.preventDefault(); return; } dirty = false; };
+
+  $("#avb").onclick = () => $("#avf").click();
+  $("#avf").onchange = async (e) => {
+    const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+    stat("Enviando foto…");
+    try {
+      const blob = await resize(f, 600);
+      const path = "links/avatar_" + Date.now() + ".jpg";
+      const up = await sb.storage.from("midia").upload(path, blob, { contentType: "image/jpeg", cacheControl: "31536000" });
+      if (up.error) throw up.error;
+      const old = prof.avatar_path; prof.avatar_path = path;
+      const r = await sb.from("links_profile").upsert({ id: 1, avatar_path: path }); if (r.error) throw r.error;
+      if (old) sb.storage.from("midia").remove([old]).catch(() => {});
+      showAv(); refresh(); stat(dirty ? "● Alterações não salvas" : "✓ Foto atualizada", dirty ? "" : "k"); toast("Foto atualizada.");
+    } catch (err) { console.error(err); stat("Não foi possível enviar a foto: " + (err.message || err), "e"); }
+  };
+  $("#avx").onclick = async () => {
+    if (!prof.avatar_path) return;
+    const old = prof.avatar_path; prof.avatar_path = null;
+    const r = await sb.from("links_profile").upsert({ id: 1, avatar_path: null });
+    if (r.error) { prof.avatar_path = old; stat("Não foi possível remover: " + r.error.message, "e"); return; }
+    sb.storage.from("midia").remove([old]).catch(() => {}); showAv(); refresh(); toast("Foto removida.");
+  };
+
+  const draw = () => {
+    const box = $("#rows"); box.textContent = "";
+    $("#nb").textContent = rows.length + (rows.length === 1 ? " botão" : " botões");
+    if (!rows.length) box.innerHTML = '<p class="empty">Nenhum botão ainda.</p>';
+    rows.forEach((r, i) => {
+      const d = document.createElement("div"); d.className = "lc" + (r.active === false ? " off" : "");
+      d.innerHTML = `<div class="hd"><span>Botão ${i + 1}</span><div><button type="button" data-a="up" title="Subir" aria-label="Subir">▲</button><button type="button" data-a="dn" title="Descer" aria-label="Descer">▼</button><button type="button" data-a="x" title="Remover" aria-label="Remover">✕</button></div></div>
+        <input class="in" data-f="label" placeholder="Nome do botão" value="${esc(r.label || "")}">
+        <input class="in" data-f="url" placeholder="https://… ou /fiscalize" value="${esc(r.url || "")}">
+        <div class="ft"><label class="ck"><input type="checkbox" ${r.active === false ? "" : "checked"}> Ativo</label><span>${r.clicks || 0} ${r.clicks === 1 ? "clique" : "cliques"}</span></div>`;
+      d.querySelector('[data-a="up"]').onclick = () => { if (i > 0) { [rows[i - 1], rows[i]] = [rows[i], rows[i - 1]]; draw(); mark(); } };
+      d.querySelector('[data-a="dn"]').onclick = () => { if (i < rows.length - 1) { [rows[i + 1], rows[i]] = [rows[i], rows[i + 1]]; draw(); mark(); } };
+      d.querySelector('[data-a="x"]').onclick = () => { if (!confirm("Remover este botão?")) return; if (r.created_at) removed.push(r.id); rows.splice(i, 1); draw(); mark(); };
+      d.querySelectorAll("[data-f]").forEach((inp) => inp.oninput = () => { r[inp.dataset.f] = inp.value; mark(); });
+      const cb = d.querySelector(".ft input"); cb.onchange = () => { r.active = cb.checked; d.classList.toggle("off", !cb.checked); mark(); };
+      box.append(d);
+    });
+  };
+  $("#add").onclick = () => { rows.push({ id: newId(), label: "", url: "", active: true, clicks: 0 }); draw(); mark(); const c = [...document.querySelectorAll("#rows .lc")].pop(); if (c) { c.scrollIntoView({ block: "center", behavior: "smooth" }); c.querySelector("input").focus(); } };
+
+  $("#sv").onclick = async () => {
+    for (const r of rows) if (!(r.label || "").trim() || !L.fixUrl(r.url)) { stat("Preencha o nome e o endereço de todos os botões.", "e"); return; }
+    $("#sv").disabled = true; stat("Salvando…");
+    try {
+      const c = cur();
+      let e = (await sb.from("links_profile").upsert({ id: 1, name: c.name.trim() || "Abraão Nery", handle: c.handle.trim(), bio: c.bio.trim(), theme: c.theme, style: S, avatar_path: prof.avatar_path || null })).error; if (e) throw e;
+      if (removed.length) { e = (await sb.from("links").delete().in("id", removed)).error; if (e) throw e; removed = []; }
+      if (rows.length) { e = (await sb.from("links").upsert(rows.map((r, i) => ({ id: r.id, label: r.label.trim(), url: L.fixUrl(r.url), position: i, active: r.active !== false })))).error; if (e) throw e; }
+      const chk = await sb.from("links").select("*").order("position"); if (chk.error) throw chk.error;
+      const have = new Set((chk.data || []).map((d) => d.id));
+      if (rows.some((r) => !have.has(r.id))) throw new Error("O servidor não gravou todos os botões. Confira se você está logado como administrador.");
+      rows = chk.data.map((r) => Object.assign({}, r)); prof.name = c.name; draw(); dirty = false; stat("✓ Alterações salvas", "k"); toast("Alterações salvas.");
+    } catch (err) { console.error(err); stat("Não foi possível salvar: " + (err.message || JSON.stringify(err)), "e"); }
+    $("#sv").disabled = false;
+  };
+
+  showAv(); draw(); sync(); refresh(); stat("");
+}
+
+window.addEventListener("hashchange", route);
+if (sb) sb.auth.onAuthStateChange((ev) => { if (ev === "SIGNED_OUT") route(); });
+route();
+</script>
+</body>
+</html>

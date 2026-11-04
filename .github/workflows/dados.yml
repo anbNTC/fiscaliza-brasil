@@ -2,9 +2,13 @@
 # Cada etapa pode falhar sem derrubar as outras; o resultado fica em site/data/_coleta.json.
 name: Dados
 
-# PAUSADA a pedido: só roda quando alguém clica em "Run workflow" na aba Actions.
 on:
+  schedule:
+    - cron: "17 6 * * *"   # 03:17 em Brasília, todo dia
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["coleta/**", "tools/**", ".github/workflows/dados.yml"]
 
 permissions:
   contents: write
@@ -14,7 +18,7 @@ concurrency: { group: dados, cancel-in-progress: false }
 jobs:
   coleta:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 100
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -24,12 +28,28 @@ jobs:
       - name: Câmara · orientação dos partidos e partido no dia de cada votação
         id: orient
         continue-on-error: true
+        timeout-minutes: 40
+        env: { MAX_MIN: "30" }
         run: python coleta/camara_orient.py 2>&1 | tee /tmp/orient.log
+
+      - name: Salva o progresso (orientações)
+        if: always()
+        run: |
+          git config user.name "Fiscaliza Brasil (robô)"; git config user.email "robo@fiscalizaja.com.br"
+          git add site/data/camara_orient.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "Câmara: orientações e partido no dia $(date -u +%F)" && git pull --rebase origin main && git push)
 
       - name: Emendas parlamentares do Brasil todo
         id: emendas
         continue-on-error: true
+        timeout-minutes: 30
         run: python coleta/emendas.py 2>&1 | tee /tmp/emendas.log
+
+      - name: Salva o progresso (emendas)
+        if: always()
+        run: |
+          git add site/data/emendas 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "Emendas do Brasil $(date -u +%F)" && git pull --rebase origin main && git push)
 
       - name: Recalcula partidos, ranking, resumo da semana e médias da cota
         id: calc
@@ -55,8 +75,6 @@ jobs:
       - name: Grava os dados novos
         if: always()
         run: |
-          git config user.name "Fiscaliza Brasil (robô)"
-          git config user.email "robo@fiscalizaja.com.br"
           git add -A site/data
           git diff --cached --quiet && echo "nada mudou" && exit 0
           git commit -m "Dados atualizados $(date -u +%Y-%m-%d)"

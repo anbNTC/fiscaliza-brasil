@@ -18,9 +18,13 @@ num = lambda s: float(str(s or "0").replace(".", "").replace(",", ".") or 0)
 def baixa():
     for u in URLS:
         try:
-            r = requests.get(u, timeout=600, headers={"user-agent": "Mozilla/5.0 FiscalizaBrasil/1.0"}, allow_redirects=True)
-            if r.ok and r.content[:2] == b"PK": print("baixou", u, len(r.content) // 1024 // 1024, "MB", flush=True); return zipfile.ZipFile(io.BytesIO(r.content))
-            print("sem zip em", u, r.status_code, r.headers.get("content-type"), flush=True)
+            dest = Path("/tmp/emendas.zip")
+            with requests.get(u, timeout=(30, 120), headers={"user-agent": "Mozilla/5.0 FiscalizaBrasil/1.0"}, allow_redirects=True, stream=True) as r:
+                if not r.ok: print("HTTP", r.status_code, "em", u, flush=True); continue
+                with open(dest, "wb") as f:
+                    for ch in r.iter_content(1 << 20): f.write(ch)
+            if dest.read_bytes()[:2] == b"PK": print("baixou", u, dest.stat().st_size // 1024 // 1024, "MB", flush=True); return zipfile.ZipFile(dest)
+            print("o arquivo baixado não é zip:", u, flush=True)
         except Exception as e: print("erro", u, e, flush=True)
     raise RuntimeError("não consegui baixar o arquivo de emendas")
 

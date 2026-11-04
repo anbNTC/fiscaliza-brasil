@@ -2,13 +2,9 @@
 # Cada etapa pode falhar sem derrubar as outras; o resultado fica em site/data/_coleta.json.
 name: Dados
 
+# PAUSADA a pedido: só roda quando alguém clica em "Run workflow" na aba Actions.
 on:
-  schedule:
-    - cron: "17 6 * * *"   # 03:17 em Brasília
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ["coleta/**", "tools/**", ".github/workflows/dados.yml"]
 
 permissions:
   contents: write

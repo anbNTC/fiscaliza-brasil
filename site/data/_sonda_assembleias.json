@@ -1,931 +1,588 @@
 {
- "parlamentares/parlamentar/?page_size=1&ativo=True": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/parlamentares/parlamentar/?ativo=True&page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 130,
-   "total_pages": 130,
-   "page": 1
+ "sp": [
+  {
+   "u": "https://www.al.sp.gov.br/repositorioDados/processo_legislativo/documento_autor.zip",
+   "st": 200,
+   "ct": "application/zip",
+   "len": "6549351",
+   "final": "https://www.al.sp.gov.br/repositorioDados/processo_legislativo/documento_autor.zip",
+   "ini": "PK\u0003\u0004\u0014\u0000\b\b\b\u0000#d]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0013\u0000\u0000\u0000documento_autor.xmlÌ½Û\u001cç­û*¾ß«çLÀ«\u0017XÅ,TdËX¾Ùªf\u0014©Î¬¬¶ø6r_\u0018nÀWFßè¶^lGTQÝí\r/9búÂ²L\tþ2\u000eÿÿ0æ¿ù?¸©GwåþPí¶ÿû\u001fÆÿëÉ?ÊíÕnSm?üïøç÷/þÕ?üúÍfwu¼)··»Ãÿ[\u001cowûòðO¿yöë=mÿä~óÛÍãßÌÖÅoþñ×ÿÕüñýÿ4^<üÿþß¼ÙÝÿâëâ¸ßÎöÅâv÷üïðüÿ:NòøÉ\u0013\t^KðÓ)¶EsãG_\u0017\u001fÍ÷U8{ùÄÌM$z,Ñowåþv7z¹;ÞU\u0011NxÉã'sÖ¯÷Ë]3È¶Åf·ïF]é¼Ðoªæb¿>n(«}Ç«¯%W¿Ø¯ýUY·÷y{ÿ§¢¾+\u000fÑð~³£àÓëwûuUßî¶£\u0017õýÏwUG1YËW{¥_íÇª¾.÷7åèeUlËÛÛ#\u001aàS;|%GÖj&áÍûý}5zzYÆ4\u001eï£¡/×'$ËêOä«Ýåe9zS\u001a¾k÷7\nnóZ\u000fä¾·®Xbû`­\u0007±­Çp\f{ª\u001f´\u001eÈ/ÚÇ¼ÝìFçÇíuÇäb*Áz ?ß\u0017ÝèYUtý:jª\u001eÉÏö÷?\u001fÛ;}Vì÷Çóãlú3èÉ\u0013=Ïïÿ\\WÅèUyÿïá9y\u0002ÆCy¦¡z4\u0017ûzw"
   },
-  "results": [
-   {
-    "id": 18,
-    "__str__": "Ademir Morais",
-    "metadata": {},
-    "nome_completo": "José Ademir Pereira de Morais",
-    "nome_parlamentar": "Ademir Morais",
-    "sexo": "M",
-    "numero_gab_parlamentar": "",
-    "telefone": "(83) 2144507",
-    "telefone_celular": "",
-    "endereco_web": "",
-    "profissao": "Médico",
-    "email": "",
-    "locais_atuacao": "",
-    "ativo": true,
-    "biografia": "0",
-    "fotografia": null,
-    "cropping": "",
-    "nivel_instrucao": 7
-   }
-  ]
- },
- "parlamentares/filiacao/?page_size=1": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/parlamentares/filiacao/?page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 265,
-   "total_pages": 265,
-   "page": 1
+  {
+   "u": "https://www.al.sp.gov.br/repositorioDados/processo_legislativo/proposituras.zip",
+   "st": 200,
+   "ct": "application/zip",
+   "len": "17437532",
+   "final": "https://www.al.sp.gov.br/repositorioDados/processo_legislativo/proposituras.zip",
+   "ini": "PK\u0003\u0004\u0014\u0000\b\b\b\u0000#d]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000proposituras.xmlì½[o\u001bI¶&úW\u0012\u0002\u0006S\u0005P6óB&yNM\u000fhIv©¶UÖH¶³ßÌ\u0010\u0015îÌ\fV&ãÖÛüíî\u001b0p0ÞûáÔcóµVD^HQdeæ\u0004\u001eL£ºJ\u0017¢´â².ßå§ÿú1\n­\u0015OR!ãÿrb?ëX<É@ÄóÿròîíËÓÑÉýÓOD.d*YÂÒÏþôÓ$¯ù\\¤![ü=\u001e\u000fz¾õÅÎdð&\u0011s\u0011³P\u0004,à²öþï§çðÓEÄã%ûÓ9,aVÀ­l)Ô7­Åú÷i(fÌbÖÉ$MåL°õß×\u0016>ìÔâÖ$\u0012sZ\u0001üÿâã/fð\u000bãwN­Éõäâ¤Lx*\u0002ø1ÜzÁ%\u0001O{VÌ~ËxÈ­«,\u0016³õÏ~z®ßÍOçËx°ÝtÉ#ö'§ß÷Nûö©í¿í÷ÿ/úç´ïÀ¿zþè±ðìëÞø©¿Ü©Ýv<³ò¸.s9Ëð\rÀð×®~\u0001¾û+Èð\u0007ö'\u001b¿U|öÓ¯ÉFP\u0003ç§ç[_ûéùFl\u000f\u0004z`2Ðg`ÖY¤\u00184\bß'w\\¬ÿ.\u0019ý¢Ö\u0002W\u0001¼Á;\u000e\u0001ÀY\u0001³n8<ò\"]² c!>ë\"NE,qS\u0001\u001bÂQåî¡ûM\u0003æ¸\u0001ë\fØd\u0006QáV Rz\u001bð\u0013,\u0006ÿ$KØ{3\u001caÎd.á-\nµEópõ¬,iÉé\u0007NOðÍd<&\u0016Ë2\u0011¬\b\u0016D\"p"
   },
-  "results": [
-   {
-    "id": 112,
-    "__str__": "Ademir Morais - DEM - Democratas",
-    "metadata": {},
-    "data": "2011-01-01",
-    "data_desfiliacao": null,
-    "parlamentar": 18,
-    "partido": 5
-   }
-  ]
- },
- "parlamentares/mandato/?page_size=1": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/parlamentares/mandato/?page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 325,
-   "total_pages": 325,
-   "page": 1
+  {
+   "u": "https://www.al.sp.gov.br/repositorioDados/deputados/deputados.xml",
+   "st": 200,
+   "ct": "application/xml",
+   "len": null,
+   "final": "https://www.al.sp.gov.br/repositorioDados/deputados/deputados.xml",
+   "ini": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Deputados><Deputado><IdDeputado>1139</IdDeputado><IdSPL>1000000335</IdSPL><IdUA>20455</IdUA><Situacao>EXE</Situacao><Andar>2Âº andar</Andar><Aniversario>26/08</Aniversario><txtAreaAtuacao>Combate Ã  CorrupÃ§Ã£o;\nFiscalizaÃ§Ã£o e Controle das Contas PÃºblicas;\nSeguranÃ§a;\nSaÃºde;\nEducaÃ§Ã£o; \nEsporte;\nCultura;</txtAreaAtuacao><txtBaseEleitoral>RegiÃ£o Metropolitana de Sorocaba, Itapetininga e Itapeva;\nDemais Macro RegiÃµes do Estado de SÃ£o Paulo.</txtBaseEleitoral><Biografia>&lt;p&gt;\"&lt;i&gt;O deputado Danilo Balas Ã© atuante, aguerrido e foi meu parcei"
   },
-  "results": [
-   {
-    "id": 16,
-    "__str__": "Ademir Morais 14ª (1999 - 2003) ",
-    "metadata": {},
-    "tipo_causa_fim_mandato": null,
-    "data_inicio_mandato": "1999-02-01",
-    "data_fim_mandato": "2003-01-31",
-    "votos_recebidos": null,
-    "data_expedicao_diploma": null,
-    "titular": true,
-    "observacao": "",
-    "parlamentar": 18,
-    "tipo_afastamento": null,
-    "legislatura": 14,
-    "coligacao": null
-   }
-  ]
- },
- "parlamentares/legislatura/?page_size=1": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/parlamentares/legislatura/?page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 20,
-   "total_pages": 20,
-   "page": 1
+  {
+   "u": "https://www.al.sp.gov.br/repositorioDados/deputados/deputados.zip",
+   "st": 404,
+   "ct": "text/html;charset=utf-8",
+   "len": null,
+   "final": "https://www.al.sp.gov.br/repositorioDados/deputados/deputados.zip",
+   "ini": "<html><head><title>Apache Tomcat/7.0.47 - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {c"
   },
-  "results": [
-   {
-    "id": 20,
-    "__str__": "20ª (2023 - 2027) (Atual)",
-    "metadata": {},
-    "numero": 20,
-    "data_inicio": "2023-02-01",
-    "data_fim": "2027-01-31",
-    "data_eleicao": "2022-10-02",
-    "observacao": ""
-   }
-  ]
- },
- "materia/materialegislativa/?page_size=1&ano=2025": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/materia/materialegislativa/?ano=2025&page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 15402,
-   "total_pages": 15402,
-   "page": 1
+  {
+   "u": "https://www.al.sp.gov.br/repositorioDados/processo_legislativo/documento_andamento_atual.zip",
+   "st": 200,
+   "ct": "application/zip",
+   "len": "1807201",
+   "final": "https://www.al.sp.gov.br/repositorioDados/processo_legislativo/documento_andamento_atual.zip",
+   "ini": "PK\u0003\u0004\u0014\u0000\b\b\b\u0000ª#d]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u001d\u0000\u0000\u0000documento_andamento_atual.xmlì½Mo+É6¸\u001e\u0003þ\u000f^\u0001}ä7e¿=à\u0015ye\u0015D-ªj\u0006ïf\u0010\"ãòf\r©Ê$ÛwÕ@/\fô¾7ïª=³(Ø@\u0003\u0003ØÞÔ²øÇ&\"¤\u0014#\u0019È/¦QÖ(¢sâ\u0013çã9øß¿Ìgà\u0015\u0017øÿãô+í\u0000òÇÁÄó§ÿã¾úxéþÓÿþÏ\u0004ãå\u001cù ú¿ ?ñ§ÿüîæáÎæAü\u0018Æ¡7Á?wÂÞ+\u0004à\u0005Í\u00020B \u0004\u0013\u0004âÇ\u0003àC0Þ\u0017\btóJ³®tÛùÃõÛOÿ¡\u000b\u0017ð\rÍ°/u\u001dÿ÷¤ißÒÿ.5\u0003ÄO%ßÿÃÝä&{Q\u0002?¶ó\u0015þÎöíý³ÞÒ\r|ûí!üýÞ\u0002¾@ü=òøsüàÓËÛ\u001fc\u001aä[»üáa\u001e?sýGüázóÀ\u001f\u001eÂA8Asò66þa÷G{¸N¼ÒõAôª¨i\u001bÕGt¸|áO0¢OÞØ\u000bÀÃ¯¿\u0000Í¸Æ(97ËÑMïîæ²Ó¿íÞ\\\tÄC´¡\u0007\tî½hA~\u0014?~³-!¼\u0000½qàcÀ @àÎ¬~\u0016ä¹7øÃ\u0002K.º §\u000bÎ=ÿ3>G\u0001\bÀ#ÁÅêo¡G_¦äMà\u0004EôE)ò«ÿ7 2~3\u000f®~Æ_^\u0010}B!þ[\u0010\u0001Ðñ[Æ¿eðïBä©äÍ_a\u0018Q\u0014\u0005 sß\u001b\rñ;!Äz\u0003|ü|ÃjÛîuüÄoºW«\u000bð²úóô\n\u0018¿;"
   },
-  "results": [
+  {
+   "u": "https://www.al.sp.gov.br/dados-abertos/recurso/61",
+   "st": 200,
+   "ct": "text/html;charset=ISO-8859-1",
+   "len": null,
+   "final": "https://www.al.sp.gov.br/dados-abertos/recurso/61",
+   "ini": "\r\n\r\n\r\n<!DOCTYPE html>\r\n<!--[if lt IE 7]>      <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\r\n<!--[if IE 7]>         <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->\r\n<!--[if IE 8]>         <html class=\"no-js lt-ie9\"> <![endif]-->\r\n<!--[if gt IE 8]><!-->\r\n<html lang=\"pt-br\" xmlns:og=\"http://opengraphprotocol.org/schema/\">\r\n<!--<![endif]-->\r\n<head>\r\n<meta charset=\"utf-8\">\r\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\r\n<meta name=\"viewport\" content=\"width=device-width\">\r\n\r\n<meta name=\"keywords\" content=\"alesp, dados abertos, projetos, proposições, processo, projeto de le"
+  }
+ ],
+ "sites": {
+  "GO": [
    {
-    "id": 130047,
-    "__str__": "Autógrafo nº 1103 de 2025",
-    "metadata": {},
-    "numero": 1103,
-    "ano": 2025,
-    "numero_protocolo": null,
-    "data_apresentacao": "2025-02-12",
-    "tipo_apresentacao": "",
-    "data_publicacao": null,
-    "numero_origem_externa": "",
-    "ano_origem_externa": null,
-    "data_origem_externa": null,
-    "apelido": "",
-    "dias_prazo": null,
-    "data_fim_prazo": null,
-    "em_tramitacao": true,
-    "polemica": false,
-    "objeto": "",
-    "complementar": false,
-    "ementa": "Institui o Programa “Livros que \r\nEmpoderam” no Estado da Paraíba e \r\ndá outras providências",
-    "indexacao": "",
-    "observacao": "",
-    "resultado": "",
-    "texto_original": "http://sapl.al.pb.leg.br/media/sapl/public/materialegislativa/2025/130047/autografo_ao_pl_2836.pdf",
-    "data_ultima_atualizacao": "2025-03-11T15:36:24.169088-03:00",
-    "ip": "10.83.19.254",
-    "ultima_edicao": "2025-02-12T14:28:03.776914-03:00",
-    "tipo": 21,
-    "regime_tramitacao": 2,
-    "tipo_origem_externa": null,
-    "local_origem_externa": null,
-    "user": 144,
-    "anexadas": [
-     124753
+    "u": "https://transparencia.al.go.leg.br/",
+    "st": 200,
+    "final": "https://transparencia.al.go.leg.br/",
+    "apis": [
+     "https://opine.al.go.leg.br/api/opine-cidadao/usuarios/callback-facebook",
+     "https://opine.al.go.leg.br/api/opine-cidadao/usuarios/callback-google",
+     "https://transparencia.al.go.leg.br/api/transparencia/contratos-e-convenios/atas-de-registro-de-preco.{formato}?todos=true",
+     "https://transparencia.al.go.leg.br/api/transparencia/contratos-e-convenios/contratos.{formato}?todos=true&contrato_vigente=sim",
+     "https://transparencia.al.go.leg.br/api/transparencia/contratos-e-convenios/convenios.{formato}?todos=true",
+     "https://transparencia.al.go.leg.br/api/transparencia/contratos-e-convenios/outras-contratacoes.{formato}?todos=true",
+     "https://transparencia.al.go.leg.br/api/transparencia/despesas-com-pessoal/servidores-licenciados-e-afastados.{formato}?todos=true&tipo=afastamento",
+     "https://transparencia.al.go.leg.br/api/transparencia/despesas-com-pessoal/servidores-terceirizados.{formato}?todos=true&status_pessoa=Terceirizado",
+     "https://transparencia.al.go.leg.br/api/transparencia/diarias.{formato}?ano={ano}&mes={m\\xeas}?motivo=&tipo=&favorecido=&todos=true",
+     "https://transparencia.al.go.leg.br/api/transparencia/expedientes.{formato}?todos=true",
+     "https://transparencia.al.go.leg.br/api/transparencia/licitacoes/avisos.{formato}?todos=true",
+     "https://transparencia.al.go.leg.br/api/transparencia/remuneracoes{formato}?todos=true&ano={ano}&mes={m\\xeas}&status_pessoa=Inativo%20e%20Pensionista",
+     "https://www.google.com/recaptcha/api.js",
+     "https://www.google.com/recaptcha/api.js?onload=",
+     "https://www.googleapis.com/calendar/v3/calendars"
     ],
-    "autores": [],
-    "selos_ods": []
-   }
-  ]
- },
- "materia/autoria/?page_size=1": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/materia/autoria/?page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 142834,
-   "total_pages": 142834,
-   "page": 1
-  },
-  "results": [
-   {
-    "id": 35273,
-    "__str__": "Autoria: Ademir Morais - Projeto de Lei Ordinária nº 770 de 2005",
-    "metadata": {},
-    "primeiro_autor": true,
-    "autor": 28,
-    "materia": 7965
-   }
-  ]
- },
- "base/autor/?page_size=1&tipo=1": {
-  "pagination": {
-   "links": {
-    "next": null,
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": null,
-   "start_index": 0,
-   "end_index": 0,
-   "total_entries": 0,
-   "total_pages": 1,
-   "page": 1
-  },
-  "results": []
- },
- "materia/tipomaterialegislativa/?page_size=50": {
-  "pagination": {
-   "links": {
-    "next": null,
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": null,
-   "start_index": 1,
-   "end_index": 37,
-   "total_entries": 37,
-   "total_pages": 1,
-   "page": 1
-  },
-  "results": [
-   {
-    "id": 21,
-    "__str__": "Autógrafo",
-    "metadata": {},
-    "sigla": "AUT",
-    "descricao": "Autógrafo",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
+    "links": []
    },
    {
-    "id": 27,
-    "__str__": "Destaques em Bloco",
-    "metadata": {},
-    "sigla": "DESTC",
-    "descricao": "Destaques em Bloco",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 37,
-    "__str__": "Eleição Mesa Diretora",
-    "metadata": {},
-    "sigla": "EMD",
-    "descricao": "Eleição Mesa Diretora",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 29,
-    "__str__": "Emenda Aditiva",
-    "metadata": {},
-    "sigla": "EMADT",
-    "descricao": "Emenda Aditiva",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 28,
-    "__str__": "Emenda LOA",
-    "metadata": {},
-    "sigla": "ELOA",
-    "descricao": "Emenda LOA",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 30,
-    "__str__": "Emenda Modificativa",
-    "metadata": {},
-    "sigla": "EMMOD",
-    "descricao": "Emenda Modificativa",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 31,
-    "__str__": "Emenda Modificativa/Supressiva",
-    "metadata": {},
-    "sigla": "EM/ES",
-    "descricao": "Emenda Modificativa/Supressiva",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 38,
-    "__str__": "Emenda Plenário",
-    "metadata": {},
-    "sigla": "EMPL",
-    "descricao": "Emenda Plenário",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 39,
-    "__str__": "Emenda PPA",
-    "metadata": {},
-    "sigla": "EPPA",
-    "descricao": "Emenda PPA",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 22,
-    "__str__": "Emendas",
-    "metadata": {},
-    "sigla": "EME",
-    "descricao": "Emendas",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 26,
-    "__str__": "Emendas LDO",
-    "metadata": {},
-    "sigla": "ELDO",
-    "descricao": "Emendas LDO",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 32,
-    "__str__": "Emenda Substitutiva a Projetos de Lei",
-    "metadata": {},
-    "sigla": "EMSUB",
-    "descricao": "Emenda Substitutiva a Projetos de Lei",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 33,
-    "__str__": "Emenda Supressiva",
-    "metadata": {},
-    "sigla": "EMSUP",
-    "descricao": "Emenda Supressiva",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 9,
-    "__str__": "Indicação",
-    "metadata": {},
-    "sigla": "IND",
-    "descricao": "Indicação",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 15,
-    "__str__": "Medida Provisória",
-    "metadata": {},
-    "sigla": "MP",
-    "descricao": "Medida Provisória",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 5,
-    "__str__": "Mensagem",
-    "metadata": {},
-    "sigla": "MSG",
-    "descricao": "Mensagem",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 8,
-    "__str__": "Moção",
-    "metadata": {},
-    "sigla": "MOC",
-    "descricao": "Moção",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 17,
-    "__str__": "Oficio",
-    "metadata": {},
-    "sigla": "OF",
-    "descricao": "Oficio",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 10,
-    "__str__": "Pedido de Informação",
-    "metadata": {},
-    "sigla": "PINF",
-    "descricao": "Pedido de Informação",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 36,
-    "__str__": "Prestação de Contas Anuais",
-    "metadata": {},
-    "sigla": "PCA",
-    "descricao": "Prestação de Contas Anuais",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 12,
-    "__str__": "Processo",
-    "metadata": {},
-    "sigla": "PRO",
-    "descricao": "Processo",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 24,
-    "__str__": "Projeto de Código",
-    "metadata": {},
-    "sigla": "PC",
-    "descricao": "Projeto de Código",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 7,
-    "__str__": "Projeto de Decreto Legislativo",
-    "metadata": {},
-    "sigla": "PDL",
-    "descricao": "Projeto de Decreto Legislativo",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 6,
-    "__str__": "Projeto de Lei Complementar",
-    "metadata": {},
-    "sigla": "PLC",
-    "descricao": "Projeto de Lei Complementar",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 1,
-    "__str__": "Projeto de Lei Ordinária",
-    "metadata": {},
-    "sigla": "PLO",
-    "descricao": "Projeto de Lei Ordinária",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 3,
-    "__str__": "Projeto de Resolução",
-    "metadata": {},
-    "sigla": "PRE",
-    "descricao": "Projeto de Resolução",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 2,
-    "__str__": "Proposta de Emenda Constitucional",
-    "metadata": {},
-    "sigla": "PEC",
-    "descricao": "Proposta de Emenda Constitucional",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 35,
-    "__str__": "Questão de ordem",
-    "metadata": {},
-    "sigla": "QORD",
-    "descricao": "Questão de ordem",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 16,
-    "__str__": "Recebido em Plenário",
-    "metadata": {},
-    "sigla": "RE",
-    "descricao": "Recebido em Plenário",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 14,
-    "__str__": "Recurso",
-    "metadata": {},
-    "sigla": "REC",
-    "descricao": "Recurso",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 4,
-    "__str__": "Requerimento",
-    "metadata": {},
-    "sigla": "REQ",
-    "descricao": "Requerimento",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 11,
-    "__str__": "Requerimento de Sessão Especial",
-    "metadata": {},
-    "sigla": "RSE",
-    "descricao": "Requerimento de Sessão Especial",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 20,
-    "__str__": "Retirado de Pauta por haver outro de igual teor nº",
-    "metadata": {},
-    "sigla": "RP",
-    "descricao": "Retirado de Pauta por haver outro de igual teor nº",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 34,
-    "__str__": "Sub-Emenda",
-    "metadata": {},
-    "sigla": "SEMD",
-    "descricao": "Sub-Emenda",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 23,
-    "__str__": "TESTE REQUIMENTO",
-    "metadata": {},
-    "sigla": "TES",
-    "descricao": "TESTE REQUIMENTO",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 13,
-    "__str__": "Veto",
-    "metadata": {},
-    "sigla": "VET",
-    "descricao": "Veto",
-    "num_automatica": true,
-    "quorum_minimo_votacao": 1,
-    "sequencia_numeracao": "A",
-    "sequencia_regimental": 1
-   },
-   {
-    "id": 40,
-    "__str__": "Justificativa de Ausência",
-    "metadata": {},
-    "sigla": "JAUS",
-    "descricao": "Justificativa de Ausência",
-    "num_automatica": false,
-    "quorum_minimo_votacao": null,
-    "sequencia_numeracao": "L",
-    "sequencia_regimental": 2
-   }
-  ]
- },
- "sessao/votoparlamentar/?page_size=1": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/sessao/votoparlamentar/?page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 17148,
-   "total_pages": 17148,
-   "page": 1
-  },
-  "results": [
-   {
-    "id": 1,
-    "__str__": "Votação: Ordem: Ordem do Dia/Expediente: 2 - TESTE REQUIMENTO nº 2 de 2018 em 1ª Teste Painel da 4ª Sessão Legislativa da 18ª Legislatura - Votação: Matéria não votada - Matéria: TESTE REQUIMENTO nº 2 de 2018 - Parlamentar: Renato Gadelha",
-    "metadata": {},
-    "voto": "Abstenção",
-    "ip": "",
-    "data_hora": null,
-    "votacao": 1104,
-    "parlamentar": 137,
-    "user": 81,
-    "ordem": 3011,
-    "expediente": null
-   }
-  ]
- },
- "sessao/registrovotacao/?page_size=1": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/sessao/registrovotacao/?page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 56539,
-   "total_pages": 56539,
-   "page": 1
-  },
-  "results": [
-   {
-    "id": 437,
-    "__str__": "Ordem: Ordem do Dia/Expediente: 1 - Veto nº 209 de 2017 em 8ª Sessão Ordinária  da 4ª Sessão Legislativa da 18ª Legislatura - Votação: Matéria não votada - Matéria: Veto nº 209 de 2017",
-    "metadata": {},
-    "numero_votos_sim": 0,
-    "numero_votos_nao": 0,
-    "numero_abstencoes": 0,
-    "observacao": "",
-    "ip": "",
-    "data_hora": null,
-    "tipo_resultado_votacao": 1,
-    "materia": 56845,
-    "ordem": 1307,
-    "expediente": null,
-    "user": null
-   }
-  ]
- },
- "sessao/sessaoplenaria/?page_size=1": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/sessao/sessaoplenaria/?page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 911,
-   "total_pages": 911,
-   "page": 1
-  },
-  "results": [
-   {
-    "id": 461,
-    "__str__": "1ª Teste Painel da 3ª Sessão Legislativa da 18ª Legislatura",
-    "metadata": {},
-    "cod_andamento_sessao": null,
-    "painel_aberto": false,
-    "data_inicio": "2013-08-03",
-    "hora_inicio": "08:00",
-    "hora_fim": "11:30",
-    "numero": 1,
-    "data_fim": "2023-06-22",
-    "url_audio": "",
-    "url_video": "",
-    "upload_pauta": null,
-    "upload_ata": null,
-    "upload_anexo": null,
-    "iniciada": false,
-    "finalizada": true,
-    "interativa": false,
-    "tema_solene": "",
-    "data_ultima_atualizacao": null,
-    "publicar_pauta": true,
-    "tipo": 22,
-    "sessao_legislativa": 59,
-    "legislatura": 18,
-    "correspondencias": []
-   }
-  ]
- },
- "sessao/ordemdia/?page_size=1": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/sessao/ordemdia/?page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 99202,
-   "total_pages": 99202,
-   "page": 1
-  },
-  "results": [
-   {
-    "id": 451,
-    "__str__": "Ordem do Dia/Expediente: 1 - Requerimento nº 5496 de 2016 em 43ª Sessão Ordinária  da 2ª Sessão Legislativa da 18ª Legislatura",
-    "metadata": {},
-    "data_ordem": "2016-08-02",
-    "observacao": "\tSOLICITANDO AO GOVERNADOR DO ESTADO E AO COMANDANTE GERAL DA POLÍCIA, A IMPLANTAÇÃO DE RONDA RURAL NO MUNICÍPIO DE JUAZEIRINHO/PB.",
-    "numero_ordem": 1,
-    "resultado": "",
-    "tipo_votacao": 1,
-    "votacao_aberta": false,
-    "registro_aberto": null,
-    "sessao_plenaria": 306,
-    "materia": 50838,
-    "tramitacao": null
-   }
-  ]
- },
- "parlamentares/partido/?page_size=1": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/parlamentares/partido/?page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 54,
-   "total_pages": 54,
-   "page": 1
-  },
-  "results": [
-   {
-    "id": 29,
-    "__str__": "ARENA - Aliança Renovadora Nacional",
-    "metadata": {},
-    "sigla": "ARENA",
-    "nome": "Aliança Renovadora Nacional",
-    "data_criacao": "1966-04-04",
-    "data_extincao": "1979-12-20",
-    "logo_partido": null,
-    "observacao": ""
-   }
-  ]
- },
- "materia/materialegislativa/?page_size=1&ano=2025&o=-data_apresentacao": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/materia/materialegislativa/?ano=2025&o=-data_apresentacao&page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 15402,
-   "total_pages": 15402,
-   "page": 1
-  },
-  "results": [
-   {
-    "id": 144905,
-    "__str__": "Autógrafo nº 1918 de 2025",
-    "metadata": {},
-    "numero": 1918,
-    "ano": 2025,
-    "numero_protocolo": null,
-    "data_apresentacao": "2026-01-13",
-    "tipo_apresentacao": "",
-    "data_publicacao": null,
-    "numero_origem_externa": "",
-    "ano_origem_externa": null,
-    "data_origem_externa": null,
-    "apelido": "",
-    "dias_prazo": null,
-    "data_fim_prazo": null,
-    "em_tramitacao": true,
-    "polemica": false,
-    "objeto": "",
-    "complementar": false,
-    "ementa": "Estima a Receita e fixa a Despesa do Estado para o Exercício Financeiro de 2026 e dá outras providências.",
-    "indexacao": "",
-    "observacao": "",
-    "resultado": "",
-    "texto_original": "http://sapl.al.pb.leg.br/media/sapl/public/materialegislativa/2025/144905/autografo_ao_pl_5352_-_loa_2026.pdf",
-    "data_ultima_atualizacao": "2026-03-03T14:23:35.761175-03:00",
-    "ip": "187.64.93.229",
-    "ultima_edicao": "2026-01-13T13:38:38.384306-03:00",
-    "tipo": 21,
-    "regime_tramitacao": 2,
-    "tipo_origem_externa": null,
-    "local_origem_externa": null,
-    "user": 144,
-    "anexadas": [
-     140112
+    "u": "https://portal.al.go.leg.br/",
+    "st": 200,
+    "final": "https://portal.al.go.leg.br/",
+    "apis": [
+     "https://api.pinterest.com/v1/urls/count.json?url={url}&callback=jsonp",
+     "https://thumbor.al.go.leg.br/KFsrPz3yo_Pe_ernwSqRFVRD24M",
+     "https://www.google.com/recaptcha/api.js",
+     "https://www.google.com/recaptcha/api.js?onload="
     ],
-    "autores": [],
-    "selos_ods": []
-   }
-  ]
- },
- "sessao/votoparlamentar/?page_size=1&o=-id": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/sessao/votoparlamentar/?o=-id&page=2&page_size=1",
-    "previous": null
+    "links": [
+     "/contatos/deputados/",
+     "/deputados/fora-exercicio",
+     "/deputados/galeria-presidentes",
+     "/deputados/liderancas-parlamentares",
+     "/deputados/mesa-diretora",
+     "/deputados/perfil/117",
+     "/deputados/perfil/122",
+     "/deputados/perfil/125",
+     "/deputados/perfil/131",
+     "/deputados/perfil/134",
+     "/deputados/perfil/137",
+     "/deputados/perfil/138",
+     "/deputados/perfil/139",
+     "/deputados/perfil/140",
+     "/deputados/perfil/142",
+     "/deputados/perfil/143",
+     "/deputados/perfil/145",
+     "/deputados/perfil/148",
+     "/deputados/perfil/149",
+     "/deputados/perfil/152",
+     "/deputados/perfil/153",
+     "/deputados/perfil/28",
+     "/deputados/perfil/40",
+     "/deputados/perfil/406",
+     "/deputados/perfil/51",
+     "/deputados/perfil/6",
+     "/deputados/perfil/62",
+     "/deputados/perfil/63",
+     "/deputados/perfil/64",
+     "/deputados/perfil/68",
+     "/deputados/perfil/808",
+     "/deputados/perfil/809",
+     "/deputados/perfil/810",
+     "/deputados/perfil/811",
+     "/deputados/perfil/812",
+     "/deputados/perfil/813",
+     "/deputados/perfil/814",
+     "/deputados/perfil/815",
+     "/deputados/perfil/817",
+     "/deputados/perfil/818",
+     "/deputados/perfil/819",
+     "/deputados/perfil/820",
+     "/deputados/perfil/821",
+     "/deputados/perfil/822",
+     "/deputados/perfil/823",
+     "/deputados/perfil/824",
+     "/deputados/perfil/825",
+     "/deputados/perfil/831",
+     "/materias-especiais",
+     "/noticias-dos-gabinetes/168216/deputado-mauro-rubem-denuncia-perseguicao-politica-contra-trabalhadores-e-boicote-a-comercios-em-goias",
+     "/noticias-dos-gabinetes/168221/deputado-antonio-gomide-cobra-explicacoes-sobre-orcamento-do-governo-de-goias-para-2027",
+     "/noticias-dos-gabinetes/168240/deputado-antonio-gomide-destina-mais-r-600-mil-ao-combate-ao-cancer-pelo-sus-em-goias",
+     "/noticias-dos-gabinetes/168304/deputado-antonio-gomide-questiona-aumento-do-icms-sobre-combustiveis-em-goias",
+     "/noticias/168225/por-iniciativa-do-deputado-ricardo-quirino-evento-no-palacio-maguito-vilela-celebra-o-dia-estadual-da-musica-gospel",
+     "/noticias/168293/mesa-diretora-recepciona-materias-da-governadoria-e-relatorios-da-saude",
+     "/noticias/168295/deputados-apresentam-projetos-e-requerimentos-a-mesa-diretora",
+     "/noticias/168296/deputados-debatem-melhorias-na-saude-orcamento-e-regionalizacao-durante-audiencia-na-alego",
+     "/noticias/168303/casa-de-leis-carimba-semana-dedicada-a-liderancas-femininas",
+     "/noticias/168309/carnaval-de-tres-ranchos-pode-ser-reconhecido-como-patrimonio-cultural-imaterial-de-goias",
+     "/noticias/168312/deputados-acolhem-criacao-de-comenda-dedicada-a-atletas-e-ex-atletas"
+    ]
    },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 17148,
-   "total_pages": 17148,
-   "page": 1
-  },
-  "results": [
    {
-    "id": 17531,
-    "__str__": "Votação: Ordem: Ordem do Dia/Expediente: 2 - Veto nº 366 de 2025 em 28ª Sessão Ordinária  da 4ª Sessão Legislativa da 20ª Legislatura - Votação: Mantida - Matéria: Veto nº 366 de 2025 - Parlamentar: Wilson Filho",
-    "metadata": {},
-    "voto": "Não",
-    "ip": "187.33.254.34",
-    "data_hora": "2026-08-17T15:41:08.695095-03:00",
-    "votacao": 56481,
-    "parlamentar": 163,
-    "user": 137,
-    "ordem": 98992,
-    "expediente": null
+    "u": "https://www.al.go.leg.br/",
+    "st": 200,
+    "final": "https://portal.al.go.leg.br",
+    "apis": [
+     "https://api.pinterest.com/v1/urls/count.json?url={url}&callback=jsonp",
+     "https://thumbor.al.go.leg.br/KFsrPz3yo_Pe_ernwSqRFVRD24M",
+     "https://www.google.com/recaptcha/api.js",
+     "https://www.google.com/recaptcha/api.js?onload="
+    ],
+    "links": [
+     "/contatos/deputados/",
+     "/deputados/fora-exercicio",
+     "/deputados/galeria-presidentes",
+     "/deputados/liderancas-parlamentares",
+     "/deputados/mesa-diretora",
+     "/deputados/perfil/117",
+     "/deputados/perfil/122",
+     "/deputados/perfil/125",
+     "/deputados/perfil/131",
+     "/deputados/perfil/134",
+     "/deputados/perfil/137",
+     "/deputados/perfil/138",
+     "/deputados/perfil/139",
+     "/deputados/perfil/140",
+     "/deputados/perfil/142",
+     "/deputados/perfil/143",
+     "/deputados/perfil/145",
+     "/deputados/perfil/148",
+     "/deputados/perfil/149",
+     "/deputados/perfil/152",
+     "/deputados/perfil/153",
+     "/deputados/perfil/28",
+     "/deputados/perfil/40",
+     "/deputados/perfil/406",
+     "/deputados/perfil/51",
+     "/deputados/perfil/6",
+     "/deputados/perfil/62",
+     "/deputados/perfil/63",
+     "/deputados/perfil/64",
+     "/deputados/perfil/68",
+     "/deputados/perfil/808",
+     "/deputados/perfil/809",
+     "/deputados/perfil/810",
+     "/deputados/perfil/811",
+     "/deputados/perfil/812",
+     "/deputados/perfil/813",
+     "/deputados/perfil/814",
+     "/deputados/perfil/815",
+     "/deputados/perfil/817",
+     "/deputados/perfil/818",
+     "/deputados/perfil/819",
+     "/deputados/perfil/820",
+     "/deputados/perfil/821",
+     "/deputados/perfil/822",
+     "/deputados/perfil/823",
+     "/deputados/perfil/824",
+     "/deputados/perfil/825",
+     "/deputados/perfil/831",
+     "/materias-especiais",
+     "/noticias-dos-gabinetes/168216/deputado-mauro-rubem-denuncia-perseguicao-politica-contra-trabalhadores-e-boicote-a-comercios-em-goias",
+     "/noticias-dos-gabinetes/168221/deputado-antonio-gomide-cobra-explicacoes-sobre-orcamento-do-governo-de-goias-para-2027",
+     "/noticias-dos-gabinetes/168240/deputado-antonio-gomide-destina-mais-r-600-mil-ao-combate-ao-cancer-pelo-sus-em-goias",
+     "/noticias-dos-gabinetes/168304/deputado-antonio-gomide-questiona-aumento-do-icms-sobre-combustiveis-em-goias",
+     "/noticias/168225/por-iniciativa-do-deputado-ricardo-quirino-evento-no-palacio-maguito-vilela-celebra-o-dia-estadual-da-musica-gospel",
+     "/noticias/168293/mesa-diretora-recepciona-materias-da-governadoria-e-relatorios-da-saude",
+     "/noticias/168295/deputados-apresentam-projetos-e-requerimentos-a-mesa-diretora",
+     "/noticias/168296/deputados-debatem-melhorias-na-saude-orcamento-e-regionalizacao-durante-audiencia-na-alego",
+     "/noticias/168303/casa-de-leis-carimba-semana-dedicada-a-liderancas-femininas",
+     "/noticias/168309/carnaval-de-tres-ranchos-pode-ser-reconhecido-como-patrimonio-cultural-imaterial-de-goias",
+     "/noticias/168312/deputados-acolhem-criacao-de-comenda-dedicada-a-atletas-e-ex-atletas"
+    ]
    }
-  ]
- },
- "sessao/registrovotacao/?page_size=1&o=-id": {
-  "pagination": {
-   "links": {
-    "next": "http://sapl.al.pb.leg.br/api/sessao/registrovotacao/?o=-id&page=2&page_size=1",
-    "previous": null
-   },
-   "previous_page": null,
-   "next_page": 2,
-   "start_index": 1,
-   "end_index": 1,
-   "total_entries": 56539,
-   "total_pages": 56539,
-   "page": 1
-  },
-  "results": [
+  ],
+  "SC": [
    {
-    "id": 57476,
-    "__str__": "Ordem: Ordem do Dia/Expediente: 275 - Requerimento nº 31891 de 2026 em 31ª Sessão Ordinária  da 4ª Sessão Legislativa da 20ª Legislatura - Votação: Aprovado por unanimidade - Matéria: Requerimento nº 31891 de 2026",
-    "metadata": {},
-    "numero_votos_sim": 31,
-    "numero_votos_nao": 0,
-    "numero_abstencoes": 0,
-    "observacao": "",
-    "ip": "187.33.254.34",
-    "data_hora": "2026-10-13T09:38:29.778479-03:00",
-    "tipo_resultado_votacao": 2,
-    "materia": 152469,
-    "ordem": 100439,
-    "expediente": null,
-    "user": 137
+    "u": "https://portalelegis.alesc.sc.gov.br/",
+    "st": 200,
+    "final": "https://portalelegis.alesc.sc.gov.br/proposicoes/processo-legislativo",
+    "apis": [
+     "https://www.youtube.com/iframe_api"
+    ],
+    "links": [
+     "/proposicoes/5GR8Z",
+     "/proposicoes/5GR8Z/documentos",
+     "/proposicoes/5aB6j",
+     "/proposicoes/5aB6j/documentos",
+     "/proposicoes/5d3L0",
+     "/proposicoes/5d3L0/documentos",
+     "/proposicoes/K4rgr",
+     "/proposicoes/K4rgr/documentos",
+     "/proposicoes/Np3kY",
+     "/proposicoes/Np3kY/documentos",
+     "/proposicoes/NxlyD",
+     "/proposicoes/NxlyD/documentos",
+     "/proposicoes/atividade-parlamentar",
+     "/proposicoes/processo-legislativo",
+     "/proposicoes/processo-legislativo?page=2",
+     "/proposicoes/processo-legislativo?page=3",
+     "/proposicoes/processo-legislativo?page=3515",
+     "/proposicoes/processo-legislativo?page=4",
+     "/proposicoes/processo-legislativo?page=5",
+     "/proposicoes/processo-legislativo?page=6",
+     "/proposicoes/z3r1G",
+     "/proposicoes/z3r1G/documentos",
+     "/proposicoes/z8bJy",
+     "/proposicoes/z8bJy/documentos",
+     "/proposicoes/zV8ZR",
+     "/proposicoes/zV8ZR/documentos",
+     "/proposicoes/ze37R",
+     "/proposicoes/ze37R/documentos"
+    ]
+   },
+   {
+    "u": "https://www.alesc.sc.gov.br/",
+    "st": 200,
+    "final": "https://www.alesc.sc.gov.br/",
+    "apis": [
+     "https://fonts.googleapis.com",
+     "https://fonts.googleapis.com/css2",
+     "https://www.alesc.sc.gov.br/imprensa/noticia/newsletter-26-a-29-de-outubro/",
+     "https://www.alesc.sc.gov.br/radio/noticia/alesc-aprova-reconhecimento-de-bc-como-capital-do-beach-tennis/"
+    ],
+    "links": [
+     "https://api.whatsapp.com/send?1=pt_BR&phone=5548999601127",
+     "https://fonts.googleapis.com",
+     "https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap",
+     "https://leis.alesc.sc.gov.br",
+     "https://www.alesc.sc.gov.br/agencia/noticia/comissao-aprova-projetos-saude-concursos-doenca-rara/",
+     "https://www.alesc.sc.gov.br/deputado/alex-brasil/",
+     "https://www.alesc.sc.gov.br/deputado/altair-silva/",
+     "https://www.alesc.sc.gov.br/deputado/ana-campagnolo/",
+     "https://www.alesc.sc.gov.br/deputado/antidio-lunelli/",
+     "https://www.alesc.sc.gov.br/deputado/berlanda/",
+     "https://www.alesc.sc.gov.br/deputado/camilo-martins/",
+     "https://www.alesc.sc.gov.br/deputado/carlos-humberto/",
+     "https://www.alesc.sc.gov.br/deputado/carolline-sarda/",
+     "https://www.alesc.sc.gov.br/deputado/dr-vicente-caropreso/",
+     "https://www.alesc.sc.gov.br/deputado/fabiano-da-luz/",
+     "https://www.alesc.sc.gov.br/deputado/fernando-krelling/",
+     "https://www.alesc.sc.gov.br/deputado/ivan-naatz/",
+     "https://www.alesc.sc.gov.br/deputado/jair-miotto/",
+     "https://www.alesc.sc.gov.br/deputado/jerry-comper/",
+     "https://www.alesc.sc.gov.br/deputado/jesse-lopes/",
+     "https://www.alesc.sc.gov.br/deputado/jose-milton-scheffer/",
+     "https://www.alesc.sc.gov.br/deputado/julio-garcia/",
+     "https://www.alesc.sc.gov.br/deputado/junior-cardoso/",
+     "https://www.alesc.sc.gov.br/deputado/lucas-neves/",
+     "https://www.alesc.sc.gov.br/deputado/luciane-carminatti/",
+     "https://www.alesc.sc.gov.br/deputado/marcius-machado/",
+     "https://www.alesc.sc.gov.br/deputado/marcos-da-rosa/",
+     "https://www.alesc.sc.gov.br/deputado/marcos-vieira/",
+     "https://www.alesc.sc.gov.br/deputado/mario-motta/",
+     "https://www.alesc.sc.gov.br/deputado/matheus-cadorin/",
+     "https://www.alesc.sc.gov.br/deputado/mauricio-eskudlark/",
+     "https://www.alesc.sc.gov.br/deputado/mauricio-peixer/",
+     "https://www.alesc.sc.gov.br/deputado/mauro-de-nadal/",
+     "https://www.alesc.sc.gov.br/deputado/napoleao-bernardes/",
+     "https://www.alesc.sc.gov.br/deputado/neodi-saretta/",
+     "https://www.alesc.sc.gov.br/deputado/oscar-gutz/",
+     "https://www.alesc.sc.gov.br/deputado/padre-pedro-baldissera/",
+     "https://www.alesc.sc.gov.br/deputado/paulinha/",
+     "https://www.alesc.sc.gov.br/deputado/pepe-collaco/",
+     "https://www.alesc.sc.gov.br/deputado/rodrigo-minotto/",
+     "https://www.alesc.sc.gov.br/deputado/sargento-lima/",
+     "https://www.alesc.sc.gov.br/deputado/sergio-guimaraes/",
+     "https://www.alesc.sc.gov.br/deputado/sergio-motta/",
+     "https://www.alesc.sc.gov.br/deputado/tiago-zilli/",
+     "https://www.alesc.sc.gov.br/deputado/volnei-weber/",
+     "https://www.alesc.sc.gov.br/deputados/",
+     "https://www.alesc.sc.gov.br/deputados/noticias/",
+     "https://www.alesc.sc.gov.br/radio/noticia/alesc-aprova-reconhecimento-de-bc-como-capital-do-beach-tennis/",
+     "https://www.alesc.sc.gov.br/radio/noticia/projeto-amplia-direito-ao-porte-de-arma-para-membros-da-policia-cientifica-de-sc/",
+     "https://www.alesc.sc.gov.br/sugira-um-projeto-de-lei/"
+    ]
+   }
+  ],
+  "CE": [
+   {
+    "u": "https://www.al.ce.leg.br/",
+    "st": 200,
+    "final": "https://www.al.ce.gov.br/",
+    "apis": [
+     "https://eventapi.libring.com/v1/event",
+     "https://fonts.googleapis.com",
+     "https://fonts.googleapis.com/css2",
+     "https://intranet.al.ce.gov.br/siabi-web-php/Telas/w_busca_rapida.php",
+     "https://www.al.ce.gov.br/paginas/lei-geral-de-protecao-de-dados-pessoais-lgpd",
+     "https://www.google.com/recaptcha/api.js",
+     "https://www.google.com/recaptcha/api2/",
+     "https://www.youtube.com/iframe_api"
+    ],
+    "links": [
+     "/legislativo/ordem-do-dia/avulso-de-projeto",
+     "https://fonts.googleapis.com",
+     "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap",
+     "https://intranet.al.ce.gov.br/siabi-web-php/Telas/w_busca_rapida.php",
+     "https://www.al.ce.gov.br/deputados",
+     "https://www.al.ce.gov.br/deputados/mesa-diretora",
+     "https://www.al.ce.gov.br/legislativo/ordem-do-dia/avulso-de-projeto",
+     "https://www.al.ce.gov.br/noticias/54237-plenario-da-alece-aprova-dois-projetos-de-lei-do-governo-do-estado",
+     "https://www.al.ce.gov.br/paginas/289-celula-de-projetos-especiais?menu=261",
+     "https://www.al.ce.gov.br/paginas/constituicao-emendas-leis-normativos-internos-e-resolucoes?menu=97",
+     "https://www.al.ce.gov.br/paginas/lei-geral-de-protecao-de-dados-pessoais-lgpd",
+     "https://www.al.ce.gov.br/paginas/malce-memorial-da-alece-deputado-pontes-neto?menu=193",
+     "https://www.al.ce.gov.br/paginas/proposicoes?menu=96",
+     "https://www.al.ce.gov.br/userfiles/files/deputadosnahistoria.pdf"
+    ]
+   },
+   {
+    "u": "https://www.al.ce.gov.br/",
+    "st": 200,
+    "final": "https://www.al.ce.gov.br/",
+    "apis": [
+     "https://eventapi.libring.com/v1/event",
+     "https://fonts.googleapis.com",
+     "https://fonts.googleapis.com/css2",
+     "https://intranet.al.ce.gov.br/siabi-web-php/Telas/w_busca_rapida.php",
+     "https://www.al.ce.gov.br/paginas/lei-geral-de-protecao-de-dados-pessoais-lgpd",
+     "https://www.google.com/recaptcha/api.js",
+     "https://www.google.com/recaptcha/api2/",
+     "https://www.youtube.com/iframe_api"
+    ],
+    "links": [
+     "/legislativo/ordem-do-dia/avulso-de-projeto",
+     "https://fonts.googleapis.com",
+     "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap",
+     "https://intranet.al.ce.gov.br/siabi-web-php/Telas/w_busca_rapida.php",
+     "https://www.al.ce.gov.br/deputados",
+     "https://www.al.ce.gov.br/deputados/mesa-diretora",
+     "https://www.al.ce.gov.br/legislativo/ordem-do-dia/avulso-de-projeto",
+     "https://www.al.ce.gov.br/noticias/54237-plenario-da-alece-aprova-dois-projetos-de-lei-do-governo-do-estado",
+     "https://www.al.ce.gov.br/paginas/289-celula-de-projetos-especiais?menu=261",
+     "https://www.al.ce.gov.br/paginas/constituicao-emendas-leis-normativos-internos-e-resolucoes?menu=97",
+     "https://www.al.ce.gov.br/paginas/lei-geral-de-protecao-de-dados-pessoais-lgpd",
+     "https://www.al.ce.gov.br/paginas/malce-memorial-da-alece-deputado-pontes-neto?menu=193",
+     "https://www.al.ce.gov.br/paginas/proposicoes?menu=96",
+     "https://www.al.ce.gov.br/userfiles/files/deputadosnahistoria.pdf"
+    ]
+   }
+  ],
+  "BA": [
+   {
+    "u": "https://www.al.ba.gov.br/",
+    "st": 200,
+    "final": "https://www.al.ba.gov.br/",
+    "apis": [
+     "https://fonts.googleapis.com/css",
+     "https://www.youtube.com/iframe_api"
+    ],
+    "links": [
+     "/atividade-legislativa-nova/proposicoes",
+     "/deputados",
+     "/deputados/contatos-deputados",
+     "/deputados/deputados-estaduais",
+     "/deputados/ex-deputados-estaduais",
+     "/deputados/legislatura-atual",
+     "/deputados/todos-deputados",
+     "https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,600i,700,700i,800,800i"
+    ]
+   },
+   {
+    "u": "https://www.al.ba.gov.br/atividade-legislativa/proposicoes",
+    "st": 200,
+    "final": "https://www.al.ba.gov.br/atividade-legislativa/proposicoes",
+    "apis": [
+     "https://fonts.googleapis.com/css",
+     "https://www.youtube.com/iframe_api"
+    ],
+    "links": [
+     "/atividade-legislativa-nova/proposicoes",
+     "/atividade-legislativa/proposicao/OF.-2.576-2021",
+     "/atividade-legislativa/proposicao/OF.-2.577-2021",
+     "/atividade-legislativa/proposicao/OF.-2.578-2021",
+     "/atividade-legislativa/proposicao/OF.-2.579-2021",
+     "/atividade-legislativa/proposicao/OF.-2.580-2021",
+     "/atividade-legislativa/proposicao/OF.-2.581-2021",
+     "/atividade-legislativa/proposicao/OF.-2.582-2021",
+     "/atividade-legislativa/proposicao/OF.-2.583-2021",
+     "/atividade-legislativa/proposicao/PDL-2.923-2021",
+     "/atividade-legislativa/proposicao/PDL-2.924-2021",
+     "/atividade-legislativa/proposicao/PDL-2.925-2021",
+     "/atividade-legislativa/proposicao/PDL-2.926-2021",
+     "/atividade-legislativa/proposicao/PDL-2.927-2021",
+     "/atividade-legislativa/proposicao/PL.-24.054-2021",
+     "/atividade-legislativa/proposicao/PL.-24.055-2021",
+     "/atividade-legislativa/proposicao/PL.-24.056-2021",
+     "/atividade-legislativa/proposicao/PRS-2.927-2021",
+     "/atividade-legislativa/proposicao/PRS-2.928-2021",
+     "/atividade-legislativa/proposicao/REQ-9.698-2021",
+     "/atividade-legislativa/proposicao/REQ-9.699-2021",
+     "/atividade-legislativa/proposicoes",
+     "/atividade-legislativa/proposicoes-por-ano",
+     "/deputados",
+     "/deputados/contatos-deputados",
+     "/deputados/deputados-estaduais",
+     "/deputados/ex-deputados-estaduais",
+     "/deputados/legislatura-atual",
+     "/deputados/todos-deputados",
+     "/fserver/:docs:Proposicoes2021:OF__2_576_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:OF__2_577_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:OF__2_578_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:OF__2_579_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:OF__2_580_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:OF__2_581_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:OF__2_582_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:OF__2_583_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:PDL_2_923_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:PDL_2_924_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:PDL_2_925_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:PDL_2_926_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:PDL_2_927_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:PL__24_054_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:PL__24_055_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:PL__24_056_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:PRS_2_927_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:PRS_2_928_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:REQ_9_698_2021_1.rtf",
+     "/fserver/:docs:Proposicoes2021:REQ_9_699_2021_1.rtf",
+     "https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,600i,700,700i,800,800i"
+    ]
+   }
+  ],
+  "RJ": [
+   {
+    "u": "https://www.alerj.rj.gov.br/",
+    "st": 200,
+    "final": "https://www.alerj.rj.gov.br/",
+    "apis": [
+     "https://fonts.googleapis.com/css",
+     "https://maps.googleapis.com/maps/api/js"
+    ],
+    "links": []
+   },
+   {
+    "u": "https://www3.alerj.rj.gov.br/lotus_notes/default.asp",
+    "st": 200,
+    "final": "https://www3.alerj.rj.gov.br/lotus_notes/default.asp",
+    "apis": [],
+    "links": []
+   },
+   {
+    "u": "http://alerjln1.alerj.rj.gov.br/scpro2327.nsf",
+    "st": 404,
+    "final": "http://alerjln1.alerj.rj.gov.br/scpro2327.nsf",
+    "apis": [],
+    "links": []
+   }
+  ],
+  "MS": [
+   {
+    "u": "https://www.al.ms.gov.br/",
+    "st": 200,
+    "final": "https://al.ms.gov.br/",
+    "apis": [
+     "https://www.google.com/recaptcha/api.js",
+     "https://www.google.com/recaptcha/api2/"
+    ],
+    "links": [
+     "/Noticias/146022/deputados-denunciam-desastre-ambiental-em-corumba-e-cobram-providencias",
+     "/Noticias/146024/projeto-determina-fixacao-das-traves-de-futebol-em-espacos-publicos-e-privados",
+     "/Noticias/146025/alems-vota-projeto-que-equipara-transplantados-a-pessoas-com-deficiencia-e-amplia",
+     "/Noticias/146031/proposta-garante-privacidade-de-paciente-internado-em-enfermaria-de-hospitais-pri",
+     "/Noticias/146033/pec-vai-permitir-que-deputados-estaduais-assumam-secretarias-municipais-sem-perd",
+     "/upload/Pdf/LeiseResoluçõesdeConcessõesdaALEMS.pdf",
+     "Noticias/146031/proposta-garante-privacidade-de-paciente-internado-em-enfermaria-de-hospitais-pri",
+     "Noticias/146033/pec-vai-permitir-que-deputados-estaduais-assumam-secretarias-municipais-sem-perd"
+    ]
+   }
+  ],
+  "RN": [
+   {
+    "u": "https://www.al.rn.leg.br/",
+    "st": 200,
+    "final": "https://www.al.rn.leg.br/",
+    "apis": [
+     "https://player.vimeo.com/api/player.js",
+     "https://www.al.rn.leg.br/storage/deputados/2023/P64JTe4GPXslJO8rbjzwSysZzuAJzbPIoDHHmFVJ.jpg",
+     "https://www.al.rn.leg.br/storage/deputados/2023/cppb73aFa1HLlhCrP9wWsB1GRQKljAX9Ivg8v5et.png",
+     "https://www.al.rn.leg.br/storage/deputados/2023/h5zMRSVE68IzGCO9Z2xLeYWAVSXDAfx2D5pF5tWS.jpg",
+     "https://www.google.com/recaptcha/api.js",
+     "https://www.youtube.com/iframe_api"
+    ],
+    "links": [
+     "https://iframe.leisestaduais.com.br/rn?origin=instituicao",
+     "https://www.al.rn.leg.br/deputado/100/hermano-morais",
+     "https://www.al.rn.leg.br/deputado/110/galeno-torquato",
+     "https://www.al.rn.leg.br/deputado/114/cristiane-dantas",
+     "https://www.al.rn.leg.br/deputado/119/eudiane-macedo",
+     "https://www.al.rn.leg.br/deputado/120/isolda-dantas",
+     "https://www.al.rn.leg.br/deputado/122/francisco-do-pt",
+     "https://www.al.rn.leg.br/deputado/123/kleber-rodrigues",
+     "https://www.al.rn.leg.br/deputado/124/dr-bernardo",
+     "https://www.al.rn.leg.br/deputado/125/ubaldo-fernandes",
+     "https://www.al.rn.leg.br/deputado/126/coronel-azevedo",
+     "https://www.al.rn.leg.br/deputado/131/terezinha-maia",
+     "https://www.al.rn.leg.br/deputado/132/dr-kerginaldo",
+     "https://www.al.rn.leg.br/deputado/133/ivanilson-oliveira",
+     "https://www.al.rn.leg.br/deputado/134/neilton-diogenes",
+     "https://www.al.rn.leg.br/deputado/135/taveira-junior",
+     "https://www.al.rn.leg.br/deputado/136/luiz-eduardo",
+     "https://www.al.rn.leg.br/deputado/137/adjuto-dias",
+     "https://www.al.rn.leg.br/deputado/138/divaneide-basilio",
+     "https://www.al.rn.leg.br/deputado/72/ezequiel-ferreira",
+     "https://www.al.rn.leg.br/deputado/77/gustavo-carvalho",
+     "https://www.al.rn.leg.br/deputado/79/jose-dias",
+     "https://www.al.rn.leg.br/deputado/85/nelter-queiroz",
+     "https://www.al.rn.leg.br/deputado/92/vivaldo-costa",
+     "https://www.al.rn.leg.br/deputado/99/tomba-farias",
+     "https://www.al.rn.leg.br/deputados",
+     "https://www.al.rn.leg.br/deputados/expresidentes",
+     "https://www.al.rn.leg.br/deputados/mesadiretora",
+     "https://www.al.rn.leg.br/documentos/LISTA_DE_CONTATOS_DEPUTADOS_2025nn.pdf",
+     "https://www.al.rn.leg.br/legislacao/leis-complementares",
+     "https://www.al.rn.leg.br/legislacao/leis-ordinarias",
+     "https://www.al.rn.leg.br/leisestaduais",
+     "https://www.al.rn.leg.br/noticia/33867/comissao-aprova-projetos-nas-areas-de-saude-esporte-direitos-da-mulher-e-patrimonio"
+    ]
+   }
+  ],
+  "SE": [
+   {
+    "u": "https://al.se.leg.br/",
+    "st": 200,
+    "final": "https://al.se.leg.br/",
+    "apis": [
+     "https://fonts.googleapis.com/css",
+     "https://www.youtube.com/iframe_api"
+    ],
+    "links": []
+   }
+  ],
+  "DF": [
+   {
+    "u": "https://www.cl.df.gov.br/",
+    "erro": "ConnectTimeout"
    }
   ]
  }

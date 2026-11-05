@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["coleta/**", "tools/**", ".github/workflows/dados.yml"]
+    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "tools/**", ".github/workflows/dados.yml"]
 
 permissions:
   contents: write
@@ -18,7 +18,7 @@ concurrency: { group: dados, cancel-in-progress: false }
 jobs:
   coleta:
     runs-on: ubuntu-latest
-    timeout-minutes: 100
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -51,6 +51,19 @@ jobs:
           git add site/data/emendas 2>/dev/null || true
           git diff --cached --quiet || (git commit -m "Emendas do Brasil $(date -u +%F)" && git pull --rebase origin main && git push)
 
+      - name: Assembleias estaduais (SAPL) · projetos e votos dos deputados estaduais
+        id: assembleias
+        continue-on-error: true
+        timeout-minutes: 45
+        env: { MAX_MIN: "35" }
+        run: python coleta/assembleias_sapl.py 2>&1 | tee /tmp/assembleias.log
+
+      - name: Salva o progresso (Assembleias)
+        if: always()
+        run: |
+          git add site/data/est 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "Assembleias estaduais $(date -u +%F)" && git pull --rebase origin main && git push)
+
       - name: Recalcula partidos, ranking, resumo da semana e médias da cota
         id: calc
         continue-on-error: true
@@ -67,8 +80,8 @@ jobs:
           def tail(f):
               p = pathlib.Path(f); return p.read_text()[-1500:] if p.exists() else ""
           rel = {"quando": datetime.datetime.utcnow().isoformat() + "Z",
-                 "etapas": {"orientacoes": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "calculos": "${{ steps.calc.outcome }}"},
-                 "log": {"orientacoes": tail("/tmp/orient.log"), "emendas": tail("/tmp/emendas.log"), "calculos": tail("/tmp/calc.log")}}
+                 "etapas": {"orientacoes": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "calculos": "${{ steps.calc.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}"},
+                 "log": {"orientacoes": tail("/tmp/orient.log"), "emendas": tail("/tmp/emendas.log"), "calculos": tail("/tmp/calc.log"), "assembleias": tail("/tmp/assembleias.log")}}
           json.dump(rel, open("site/data/_coleta.json", "w"), ensure_ascii=False, indent=1)
           PY
 

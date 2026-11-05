@@ -242,13 +242,14 @@ async function cracha(parts) {
       const ck = t === "e" ? (uf === "DF" ? "dd" : "de") : t === "f" ? "dep" : "sen"; o = { nome: pp.nome, cargo: cargo(ck, pp.g) + " · " + uf, part: pp.part, uf };
       o.mand = parts[2] === "26" ? "Eleito em 2026 · posse em fev/2027" : "Eleito em 2022 · mandato até jan/2027"; if (parts[2] === "26") chips.push('<span class="chip new">Eleito em 2026</span>');
       if (t === "e" && parts[2] === "22" && D.de26.some((q) => q[1] === P[1])) chips.push('<span class="chip new">Reeleito em 2026</span>');
-      rich = t === "e" && uf === "PR" && parts[2] === "22"; }
+      rich = t === "e" && uf === "PR" && parts[2] === "22";
+      if (t === "e" && parts[2] === "22") { const E = await getJSON("data/est/" + uf + ".json").catch(() => null); if (E && E.dep[parts[3]]) { o.est = E.dep[parts[3]]; o.estInfo = E; } } }
     else if (t === "m") { const m = D.mun[parts[2]]; if (!m) return notFound(); P = parts[3] === "p" ? m[1] : parts[3] === "v" ? m[2] : m[3][+parts[3]]; if (!P) return notFound(); const pp = pTSE(P);
       o = { nome: pp.nome, cargo: cargo(parts[3] === "p" ? "pref" : parts[3] === "v" ? "vp" : "ver", pp.g) + " · " + title(m[0]), part: pp.part, uf }; o.mand = "Eleito em 2024 · mandato 2025–2028"; voltar = `#/cidade/${uf}/${parts[2]}`;
       rich = parts[3] !== "p" && parts[3] !== "v" && uf === "PR" && parts[2] === "75353"; }
     o.patList = (await loadPat(uf))[keyTSE(P[1], P[5])] || null;
     const ano = t === "m" ? 2024 : (parts[2] === "26" || parts[3] === "26") ? 2026 : 2022;
-    o.foto = ftse(P, ano, t === "m" ? parts[2] : uf); o.ano = ano;
+    o.foto = (o.est && o.est.foto) || ftse(P, ano, t === "m" ? parts[2] : uf); o.ano = ano;
     o.vc = (await loadV(uf))[P[10]] || null;
     if ((t === "g" && parts[2] === "0") || (t === "m" && parts[3] === "p")) o.plano = planoURL(uf, ano, t === "m" ? parts[2] : uf, P[10]);
   }
@@ -266,6 +267,7 @@ async function cracha(parts) {
   if (pp && pp.instr) kv.push(["Escolaridade", esc(title(pp.instr)), ""]);
   const tabs = [["resumo", "Resumo"]];
   if (casa) tabs.push(["custo", "Custo do mandato"], ["votos", "Votações"], ["proj", "Projetos"], ["disc", "Discursos"]);
+  if (o.est) { tabs.push(["eproj", "Projetos"]); if (o.estInfo.temVotos) tabs.push(["evot", "Votações"]); }
   if (o.vc) tabs.push(["camp", "Votos e campanha"]);
   tabs.push(["pat", "Patrimônio"]);
   tabs.push(["card", "Card p/ Stories"]);
@@ -288,6 +290,8 @@ async function cracha(parts) {
     else if (k === "proj") { tb.innerHTML = `<h2>Projetos apresentados</h2><div id="pp" style="display:grid;gap:10px"></div><p class="src">Desde 2023. Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; secProjetos(X, casa, $("#pp")); }
     else if (k === "disc") tb.innerHTML = `<h2>Discursos</h2>${secDisc(X)}<p class="src">Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}. Resumos e assuntos são os oficiais da Casa.</p>`;
     else if (k === "camp") tb.innerHTML = `<h2>Votos e campanha · ${o.ano}</h2>${secCamp(o.vc, t)}`;
+    else if (k === "eproj") tb.innerHTML = secEstProj(o);
+    else if (k === "evot") tb.innerHTML = secEstVot(o);
     else if (k === "pat") tb.innerHTML = `<h2>Patrimônio declarado</h2>${secPat(o.patList)}`;
     else if (k === "card") { tb.innerHTML = `<h2>Card para Stories</h2><div id="stc"><p class="muted">Montando a imagem…</p></div>`; await cardStories($("#stc"), Object.assign({}, o, { cargo: String(o.cargo || "").split(" · ")[0] }), await statsCard(o, X, casa), await notaCard(o, X, casa)); }
   };
@@ -309,6 +313,8 @@ async function statsCard(o, X, casa) {
     const au = (X.au && X.au.c) || {}; st.push([["PL", "PLP", "PEC", "PDL", "PRS"].reduce((s, t) => s + (au[t] || 0), 0), "Projetos apresentados"]);
     if (X.cota) st.push([brlc(Object.values(X.cota.a).reduce((s, t) => s + Object.values(t).reduce((x, y) => x + y, 0), 0)), "Cota parlamentar gasta"]);
   }
+  if (o.est) { const pc = ["PLO", "PL", "PLC", "PEC", "PDL", "PRE"].reduce((x, k) => x + ((o.est.cont || {})[k] || 0), 0); st.push([mil(pc), "Projetos na Assembleia desde 2023"]);
+    const tv = Object.values(o.est.votos || {}).reduce((x, y) => x + y, 0); if (tv) st.push([mil(tv), "Votos registrados na Assembleia"]); }
   if (st.length < 4 && o.vc && o.vc.v) st.push([mil(o.vc.v[0]), "Votos em " + o.ano]);
   if (st.length < 4 && o.vc && o.vc.c) st.push([brlc(o.vc.c[0]), "Arrecadou na campanha"]);
   const p = o.patList && o.patList.length ? o.patList[o.patList.length - 1] : null;
@@ -323,3 +329,20 @@ async function notaCard(o, X, casa) { const cp = await contaPartido(o, X, casa);
 /* link para a página do candidato no DivulgaCandContas do TSE, onde fica o plano de governo registrado */
 const REGIAO = { AC: "NORTE", AM: "NORTE", AP: "NORTE", PA: "NORTE", RO: "NORTE", RR: "NORTE", TO: "NORTE", AL: "NORDESTE", BA: "NORDESTE", CE: "NORDESTE", MA: "NORDESTE", PB: "NORDESTE", PE: "NORDESTE", PI: "NORDESTE", RN: "NORDESTE", SE: "NORDESTE", DF: "CENTROOESTE", GO: "CENTROOESTE", MS: "CENTROOESTE", MT: "CENTROOESTE", ES: "SUDESTE", MG: "SUDESTE", RJ: "SUDESTE", SP: "SUDESTE", PR: "SUL", RS: "SUL", SC: "SUL" };
 function planoURL(uf, ano, ue, sq) { if (!sq || !ELEI[ano]) return ""; return `https://divulgacandcontas.tse.jus.br/divulga/#/candidato/${REGIAO[uf] || "BR"}/${uf}/${ELEI[ano]}/${sq}/${ano}/${ue}`; }
+
+/* deputados estaduais: dados das Assembleias que publicam no SAPL */
+const TIPOS_EST = { PLO: "Projetos de lei", PL: "Projetos de lei", PLC: "Projetos de lei complementar", PEC: "Propostas de emenda à Constituição", PDL: "Projetos de decreto legislativo", PRE: "Projetos de resolução", IND: "Indicações", REQ: "Requerimentos", MOC: "Moções", PINF: "Pedidos de informação" };
+function secEstProj(o) {
+  const e = o.est, I = o.estInfo; const c = Object.entries(e.cont || {}).sort((a, b) => b[1] - a[1]);
+  return `<h2>Projetos na Assembleia</h2>
+   <div class="kv">${c.slice(0, 6).map(([k, n]) => `<div><div class="l">${esc(TIPOS_EST[k] || k)}</div><div class="v">${mil(n)}</div><div class="s">desde 2023</div></div>`).join("") || '<div><div class="v">0</div><div class="s">nenhuma proposição registrada desde 2023</div></div>'}</div>
+   ${e.props.length ? `<h3>Projetos apresentados (mais recentes)</h3><div class="lst">${e.props.map((p) => `<div class="it"><div class="hd"><span class="cd">${esc(p[0])} · ${p[2] ? new Date(p[2] + "T12:00").toLocaleDateString("pt-BR") : ""}</span>${p[3] ? '<span class="vt n0">Em tramitação</span>' : ""}</div><div>${esc(p[1])}</div></div>`).join("")}</div>` : ""}
+   <p class="src">Fonte: <a href="${esc(e.sapl)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>. Inclui autoria e coautoria. Atualizado em ${new Date(I.gerado + "T12:00").toLocaleDateString("pt-BR")}.</p>`;
+}
+function secEstVot(o) {
+  const e = o.est, I = o.estInfo; const v = e.votos || {}; const t = Object.values(v).reduce((a, b) => a + b, 0);
+  return `<h2>Como votou na Assembleia</h2>
+   <div class="chips">${[["S", "Sim"], ["N", "Não"], ["A", "Abstenção"], ["O", "Obstrução"]].filter(([k]) => v[k]).map(([k, n]) => `<span class="chip">${n} ${mil(v[k])}</span>`).join("")}<span class="chip">Total ${mil(t)}</span></div>
+   ${e.vlist.length ? `<div class="lst">${e.vlist.map((x) => `<div class="it"><div class="hd"><span class="cd">${esc(x[0] || "Votação")} · ${x[3] ? new Date(x[3] + "T12:00").toLocaleDateString("pt-BR") : ""}</span><span class="vt ${x[2] === "S" ? "ok" : x[2] === "N" ? "no" : "n0"}">${x[2] === "S" ? "Sim" : x[2] === "N" ? "Não" : x[2] === "A" ? "Abstenção" : esc(x[2])}</span></div><div>${esc(x[1])}</div>${x[4] != null ? `<div class="small muted">Sim ${x[4]} × Não ${x[5]}</div>` : ""}</div>`).join("")}</div>` : '<p class="muted">Nenhum voto nominal registrado desde 2023.</p>'}
+   <p class="src">Votos nominais registrados pela Assembleia no SAPL. Fonte: <a href="${esc(e.sapl)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>.</p>`;
+}

@@ -1,0 +1,18 @@
+name: Sonda
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sonda:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install requests==2.32.3
+      - run: python coleta/sonda_assembleias.py
+      - run: |
+          git config user.name "Fiscaliza Brasil (robô)"; git config user.email "robo@fiscalizaja.com.br"
+          git add site/data/_sonda_assembleias.json && git commit -m "Sonda das Assembleias" && git pull --rebase origin main && git push

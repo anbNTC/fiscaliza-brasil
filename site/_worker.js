@@ -250,12 +250,32 @@ async function paginaPropria(request, env, url) {
     .transform(new Response(res.body, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=600" } }));
 }
 
+/* ---------- sonda: testa, a partir do centro de dados do Cloudflare mais próximo de quem abre, se as Assembleias respondem (lista fixa, sem parâmetros) ---------- */
+const SONDA_BR = [
+  "https://dadosabertos.almg.gov.br/ws/deputados/em_exercicio?formato=json",
+  "https://dadosabertos.almg.gov.br/ws/proposicoes/pesquisa/direcionada?tp=10&formato=json&ano=2026",
+  "https://dadosabertos.alepe.pe.gov.br/", "https://www.alepe.pe.gov.br/",
+  "https://www.al.rs.gov.br/", "https://ww4.al.rs.gov.br/", "https://www.al.es.gov.br/", "https://www3.al.es.gov.br/",
+  "https://www.al.ma.leg.br/", "https://sapl.al.ma.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "https://www.al.ap.gov.br/", "https://sapl.al.ap.leg.br/api/parlamentares/parlamentar/?page_size=1", "https://www.cl.df.gov.br/",
+];
+async function sondaBR(request) {
+  const R = await Promise.all(SONDA_BR.map(async (u) => {
+    const t0 = Date.now();
+    try { const r = await fetch(u, { headers: { "user-agent": "Mozilla/5.0 (FiscalizaBrasil/1.0)" }, signal: AbortSignal.timeout(12000) }); const tx = await r.text();
+      return { u, st: r.status, ms: Date.now() - t0, tipo: r.headers.get("content-type"), ini: tx.slice(0, 160) }; }
+    catch (e) { return { u, erro: String(e).slice(0, 120), ms: Date.now() - t0 }; }
+  }));
+  return new Response(JSON.stringify({ local: request.cf && request.cf.colo, pais: request.cf && request.cf.country, R }, null, 1), { headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/noticias") return noticias(request, ctx);
     if (url.pathname === "/api/tendencias") return tendencias(request, ctx);
     if (url.pathname === "/img") return foto(request, ctx);
+    if (url.pathname === "/api/sonda-br") return sondaBR(request);
     if (url.pathname.startsWith("/p/") || url.pathname.startsWith("/partido/")) return paginaPropria(request, env, url);
     const res = await env.ASSETS.fetch(request);
     if (!(res.headers.get("content-type") || "").includes("text/html")) return res;

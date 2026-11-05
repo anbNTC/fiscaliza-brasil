@@ -15,4 +15,4 @@ jobs:
       - run: python coleta/sonda_assembleias.py
       - run: |
           git config user.name "Fiscaliza Brasil (robô)"; git config user.email "robo@fiscalizaja.com.br"
-          git add site/data/_sonda_assembleias.json && git commit -m "Sonda das Assembleias" && git pull --rebase origin main && git push
+          git add site/data/_sonda_assembleias.json site/data/_sonda 2>/dev/null; git add site/data/_sonda && git commit -m "Sonda das Assembleias" && git pull --rebase origin main && git push

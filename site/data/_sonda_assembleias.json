@@ -1,0 +1,702 @@
+[
+ {
+  "u": "https://al.sp.gov.br/api/deputado",
+  "st": 404,
+  "ct": "text/html",
+  "n": 28935,
+  "final": "https://al.sp.gov.br/api/deputado",
+  "ini": "<!DOCTYPE html>\r\n<html lang=\"pt-br\" xmlns:og=\"http://ogp.me/ns#\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script type=\"text/javascript\" src=\"/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\" data-dtconfig=\"rid=RID_-102617345|rpid=-1132211577|domain=sp.gov.br|reportUrl=/rb_bf32302csu|app=da4214bfad2bf73e|owasp=1|featureHash=ICA7NVfgqrux|rdnt=1|uxrgce=1|c"
+ },
+ {
+  "u": "https://al.sp.gov.br/api/propositura",
+  "st": 404,
+  "ct": "text/html",
+  "n": 28932,
+  "final": "https://al.sp.gov.br/api/propositura",
+  "ini": "<!DOCTYPE html>\r\n<html lang=\"pt-br\" xmlns:og=\"http://ogp.me/ns#\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script type=\"text/javascript\" src=\"/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\" data-dtconfig=\"rid=RID_44515795|rpid=-515859111|domain=sp.gov.br|reportUrl=/rb_bf32302csu|app=da4214bfad2bf73e|owasp=1|featureHash=ICA7NVfgqrux|rdnt=1|uxrgce=1|cuc="
+ },
+ {
+  "u": "https://dadosabertos.almg.gov.br/ws/deputados/em_exercicio?formato=json",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.almg.gov.br', port=443): Max retries exceeded with url: /ws/deputados/em_exercici"
+ },
+ {
+  "u": "https://dadosabertos.almg.gov.br/ws/proposicoes/pesquisa/direcionada?tp=100&formato=json&ano=2026",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.almg.gov.br', port=443): Max retries exceeded with url: /ws/proposicoes/pesquisa/"
+ },
+ {
+  "u": "https://dadosabertos.alepe.pe.gov.br/",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.alepe.pe.gov.br', port=443): Max retries exceeded with url: / (Caused by ConnectT"
+ },
+ {
+  "u": "https://dadosabertos.alepe.pe.gov.br/api/parlamentares",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.alepe.pe.gov.br', port=443): Max retries exceeded with url: /api/parlamentares (C"
+ },
+ {
+  "u": "https://dadosabertos.alepe.pe.gov.br/parlamentares",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.alepe.pe.gov.br', port=443): Max retries exceeded with url: /parlamentares (Cause"
+ },
+ {
+  "u": "https://dadosabertos.alepe.pe.gov.br/api/v1/parlamentares",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.alepe.pe.gov.br', port=443): Max retries exceeded with url: /api/v1/parlamentares"
+ },
+ {
+  "u": "https://dadosabertos.alepe.pe.gov.br/api/projetos",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.alepe.pe.gov.br', port=443): Max retries exceeded with url: /api/projetos (Caused"
+ },
+ {
+  "u": "https://dadosabertos.cl.df.gov.br/api/3/action/package_list",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.cl.df.gov.br', port=443): Max retries exceeded with url: /api/3/action/package_li"
+ },
+ {
+  "u": "https://dadosabertos.cl.df.gov.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.cl.df.gov.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "http://webservices.assembleia.pr.leg.br/api/public/parlamentar",
+  "st": 404,
+  "ct": "application/json;charset=UTF-8",
+  "n": 132,
+  "final": "http://webservices.assembleia.pr.leg.br/api/public/parlamentar",
+  "ini": "{\"timestamp\":\"2026-11-05T01:03:53.800+0000\",\"status\":404,\"error\":\"Not Found\",\"message\":\"Not Found\",\"path\":\"/api/public/parlamentar\"}"
+ },
+ {
+  "u": "https://www.alesc.sc.gov.br/dados-abertos",
+  "st": 404,
+  "ct": "text/html; charset=UTF-8",
+  "n": 360936,
+  "final": "https://www.alesc.sc.gov.br/dados-abertos",
+  "ini": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"theme-color\" content=\"#404040\">\n    <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"#404040\">\n\n    <meta name='robots' content='noindex, follow' />\n\n\t<!-- This site is optimized with the Yoast SEO plugin v27.2 - https://yoast."
+ },
+ {
+  "u": "https://dadosabertos.alesc.sc.gov.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.alesc.sc.gov.br', port=443): Max retries exceeded with url: / (Caused by NameReso"
+ },
+ {
+  "u": "https://www.al.rs.gov.br/dados-abertos",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='www.al.rs.gov.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by Connect"
+ },
+ {
+  "u": "https://ww4.al.rs.gov.br/dados-abertos",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='ww4.al.rs.gov.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by Connect"
+ },
+ {
+  "u": "https://www.alerj.rj.gov.br/DadosAbertos",
+  "st": 404,
+  "ct": "text/html; charset=utf-8",
+  "n": 4204,
+  "final": "https://www.alerj.rj.gov.br/DadosAbertos",
+  "ini": "<!DOCTYPE html>\r\n<html>\r\n    <head>\r\n        <title>The resource cannot be found.</title>\r\n        <meta name=\"viewport\" content=\"width=device-width\" />\r\n        <script type=\"text/javascript\" src=\"/ruxitagentjs_ICANQVfqru_10347260902154543.js\" data-dtconfig=\"rid=RID_-1075407917|rpid=-1641350257|domain=alerj.rj.gov.br|reportUrl=/rb_bf66253twh|app=ed1eaaa3451dbd4d|srtbv=4|owasp=1|featureHash=ICANQV"
+ },
+ {
+  "u": "https://dadosabertos.alerj.rj.gov.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.alerj.rj.gov.br', port=443): Max retries exceeded with url: / (Caused by NameReso"
+ },
+ {
+  "u": "https://www.al.ba.gov.br/dados-abertos",
+  "st": 404,
+  "ct": "application/json;charset=UTF-8",
+  "n": 117,
+  "final": "https://www.al.ba.gov.br/dados-abertos",
+  "ini": "{\"timestamp\":1793840637027,\"status\":404,\"error\":\"Not Found\",\"message\":\"No message available\",\"path\":\"/dados-abertos\"}"
+ },
+ {
+  "u": "https://www.al.ce.gov.br/index.php/dados-abertos",
+  "st": 404,
+  "ct": "application/json",
+  "n": 21,
+  "final": "https://www.al.ce.gov.br/index.php/dados-abertos",
+  "ini": "{\n    \"message\": \"\"\n}"
+ },
+ {
+  "u": "https://www.al.es.gov.br/Dados-Abertos",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='www.al.es.gov.br', port=443): Max retries exceeded with url: /Dados-Abertos (Caused by Connect"
+ },
+ {
+  "u": "https://portal.al.go.leg.br/api/proposicoes",
+  "st": 404,
+  "ct": "text/html; charset=utf-8",
+  "n": 161763,
+  "final": "https://portal.al.go.leg.br/api/proposicoes",
+  "ini": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>404</title>\n  <style>\n    @font-face{font-family:'Simbolo';src:url(data:font/ttf;base64,AAEAAAAQAQAABAAARkZUTWBO4y4AAAEMAAAAHEdERUYArAAEAAABKAAAACBPUy8yGgw4sgAAAUgAAABgY21hcKmuVnQAAAGoAAABomN2dCABlAIYAAADTAAAABBmcGdtD7QvpwAAA1wAAAJlZ2FzcAAAABAAAAXEAAAACGdseWboDACYAAAFzAAAVDBoZWFkA/S8+gAAWfwAAAA2aGhlYRH/DroAAFo0AAAAJGhtdHj"
+ },
+ {
+  "u": "https://transparencia.al.go.leg.br/",
+  "st": 200,
+  "ct": "text/html; charset=utf-8",
+  "n": 12919,
+  "final": "https://transparencia.al.go.leg.br/",
+  "ini": "<!DOCTYPE html>\n<!-- Versão atual do sistema: 5.25.15 -->\n<html ng-app=\"app.transparencia\" lang=\"pt-br\">\n  <head>\n    <meta charset=\"utf-8\">\n    <base href=\"/\">\n    <!-- UI-ROUTER-METATAGS -->\n    <title ng-bind=\"MetaTags.title\">Transparência Alego</title>\n    <meta name=\"description\" content=\"{{MetaTags.description}}\">\n    <meta name=\"keywords\" content=\"{{MetaTags.keywords}}\">\n    <meta ng-repeat"
+ },
+ {
+  "u": "https://sapl.al.ac.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 12687,
+  "final": "https://sapl.al.ac.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":187,\"total_pages\":187,\"page\":1},\"results\":[{\"id\":248,\"__str__\":\"ADAILTON CRUZ\",\"link_detail_backend\":\"/parlamentar/248\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:05:55.627605-03:00\""
+ },
+ {
+  "u": "https://sapl.al.ac.leg.br/api/materia/materialegislativa/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 1588,
+  "final": "https://sapl.al.ac.leg.br/api/materia/materialegislativa/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":19387,\"total_pages\":19387,\"page\":1},\"results\":[{\"id\":18729,\"__str__\":\"Indica\\u00e7\\u00e3o n\\u00ba 1 de 2026\",\"link_detail_backend\":\"/materia/18729\",\"metadata\":{},\"numero\":1,\"ano\":2026,\"numero_p"
+ },
+ {
+  "u": "https://dadosabertos.al.ac.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ac.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.ac.leg.br/dados-abertos",
+  "st": 200,
+  "ct": "text/html; charset=UTF-8",
+  "n": 748287,
+  "final": "https://www.al.ac.leg.br/dados-abertos/",
+  "ini": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n\t<meta charset=\"UTF-8\" />\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n\t<link rel=\"profile\" href=\"http://gmpg.org/xfn/11\" />\n\t<link rel=\"pingback\" href=\"https://www.al.ac.leg.br/xmlrpc.php\" />\n\t<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />\n\n<!-- Google Tag Manager f"
+ },
+ {
+  "u": "https://sapl.al.al.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 712,
+  "final": "https://sapl.al.al.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":132,\"total_pages\":132,\"page\":1},\"results\":[{\"id\":71,\"__str__\":\"ADALBERTO CAVALCANTE\",\"link_detail_backend\":\"/parlamentar/71\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:07:41.377607-0"
+ },
+ {
+  "u": "https://sapl.al.al.leg.br/api/materia/materialegislativa/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 1739,
+  "final": "https://sapl.al.al.leg.br/api/materia/materialegislativa/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":15634,\"total_pages\":15634,\"page\":1},\"results\":[{\"id\":15246,\"__str__\":\"INDICA\\u00c7\\u00c3O n\\u00ba 2057 de 2026\",\"link_detail_backend\":\"/materia/15246\",\"metadata\":{},\"numero\":2057,\"ano\":2026,\"nu"
+ },
+ {
+  "u": "https://dadosabertos.al.al.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.al.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.al.leg.br/dados-abertos",
+  "st": 404,
+  "ct": "text/html;charset=utf-8",
+  "n": 23280,
+  "final": "https://www.al.al.leg.br/dados-abertos",
+  "ini": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"pt-br\" xml:lang=\"pt-br\">\n\n<head>\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\n    \n        <base href=\"https://www.al.al.leg.br/\" /><!--[if lt IE 7]></base><![endif]-->\n    \n\n    \n        \n<meta content=\"A Casa dos Alagoanos\" name=\"description\" />\n\n  \n    <style type=\"text/css\" media=\"screen\">@import url"
+ },
+ {
+  "u": "https://sapl.al.am.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 4408,
+  "final": "https://sapl.al.am.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":67,\"total_pages\":67,\"page\":1},\"results\":[{\"id\":5,\"__str__\":\"Abdala Fraxe\",\"link_detail_backend\":\"/parlamentar/5\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T13:55:40.488819-03:00\",\"nome_"
+ },
+ {
+  "u": "https://sapl.al.am.leg.br/api/materia/materialegislativa/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 1325,
+  "final": "https://sapl.al.am.leg.br/api/materia/materialegislativa/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":79355,\"total_pages\":79355,\"page\":1},\"results\":[{\"id\":180303,\"__str__\":\"MENSAGEM DO GOVERNADOR n\\u00ba 1 de 2026\",\"link_detail_backend\":\"/materia/180303\",\"metadata\":{},\"numero\":1,\"ano\":2026,\"num"
+ },
+ {
+  "u": "https://dadosabertos.al.am.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.am.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.am.leg.br/dados-abertos",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='www.al.am.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by Connect"
+ },
+ {
+  "u": "https://sapl.al.ap.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ap.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.ap.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ap.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.ap.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ap.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.ap.leg.br/dados-abertos",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='www.al.ap.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by Connect"
+ },
+ {
+  "u": "https://sapl.al.ba.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ba.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.ba.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ba.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.ba.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ba.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.ba.leg.br/dados-abertos",
+  "st": 200,
+  "ct": "text/html;charset=UTF-8",
+  "n": 66560,
+  "final": "https://www.al.ba.gov.br:443/",
+  "ini": "<!DOCTYPE HTML>\r\n<html>\r\n<meta charset=\"utf-8\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-Z5JX068VJQ\"></script>\r\n<script>\r\n  window.dataLayer = window.dataLayer || [];\r\n  function gtag(){dataLayer.push(arguments);}\r\n  gtag('js', new Date());\r\n\r\n  gtag('config', 'G-Z5JX068VJQ');\r\n</script>\r\n<title>Assembleia Legislativa da Bahia</title>"
+ },
+ {
+  "u": "https://sapl.al.ce.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ce.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.ce.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ce.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.ce.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ce.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.ce.leg.br/dados-abertos",
+  "st": 200,
+  "ct": "text/html; charset=UTF-8",
+  "n": 203453,
+  "final": "https://www.al.ce.gov.br/",
+  "ini": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta\n        name=\"viewport\"\n        content=\"width=device-width, initial-scale=1.0\"\n    >\n    <meta\n        http-equiv=\"X-UA-Compatible\"\n        content=\"ie=edge\"\n    >\n<!-- DataTables CSS -->\n<link rel=\"stylesheet\" href=\"https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css\">\n<link rel=\"stylesheet\" href=\"https:"
+ },
+ {
+  "u": "https://sapl.al.df.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.df.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.df.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.df.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.df.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.df.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.df.leg.br/dados-abertos",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='www.al.df.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by NameRes"
+ },
+ {
+  "u": "https://sapl.al.es.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.es.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.es.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.es.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.es.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.es.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.es.leg.br/dados-abertos",
+  "erro": "ConnectTimeout: HTTPConnectionPool(host='www.al.es.gov.br', port=80): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<H"
+ },
+ {
+  "u": "https://sapl.al.go.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.go.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.go.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.go.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.go.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.go.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.go.leg.br/dados-abertos",
+  "st": 200,
+  "ct": "text/html; charset=utf-8",
+  "n": 134859,
+  "final": "https://portal.al.go.leg.br",
+  "ini": "<!DOCTYPE html>\n<!-- Versão atual do sistema: 5.25.15 -->\n<html ng-app=\"app.portal\" lang=\"pt-BR\">\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>Portal da Alego</title>\n    <meta name=\"description\" content=\"Assembleia Legislativa de Goiás\">\n    <!-- Facebook Open Graph data -->\n    <meta property=\"og:title\" content=\"Portal da Alego\"/>\n    <meta propert"
+ },
+ {
+  "u": "https://sapl.al.ma.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='sapl.al.ma.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.ma.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='sapl.al.ma.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.ma.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ma.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.ma.leg.br/dados-abertos",
+  "erro": "ConnectTimeout: HTTPSConnectionPool(host='www.al.ma.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by Connect"
+ },
+ {
+  "u": "https://sapl.al.mg.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.mg.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.mg.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.mg.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.mg.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.mg.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.mg.leg.br/dados-abertos",
+  "erro": "ConnectionError: HTTPConnectionPool(host='www.almg.gov.br', port=80): Max retries exceeded with url: / (Caused by NewConnectionError(\"HTT"
+ },
+ {
+  "u": "https://sapl.al.ms.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ms.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.ms.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ms.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.ms.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ms.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.ms.leg.br/dados-abertos",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='www.al.ms.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by NameRes"
+ },
+ {
+  "u": "https://sapl.al.mt.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 798,
+  "final": "https://sapl.al.mt.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.mt.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":25,\"total_pages\":25,\"page\":1},\"results\":[{\"id\":3,\"__str__\":\"Baiano Filho\",\"link_detail_backend\":\"/parlamentar/3\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:09:57.857315-03:00\",\"nome_"
+ },
+ {
+  "u": "https://sapl.al.mt.leg.br/api/materia/materialegislativa/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 1162,
+  "final": "https://sapl.al.mt.leg.br/api/materia/materialegislativa/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":null,\"previous\":null},\"previous_page\":null,\"next_page\":null,\"start_index\":1,\"end_index\":1,\"total_entries\":1,\"total_pages\":1,\"page\":1},\"results\":[{\"id\":2,\"__str__\":\"Projeto de Lei Ordin\\u00e1ria n\\u00ba 1 de 2015\",\"link_detail_backend\":\"/materia/2\",\"metadata\":{},\"numero\":1,\"ano\":2015,\"numero_protocolo\":33,\"data_apresentacao\":\"2015-01-01\",\"tipo_apresentacao\":\"E\",\"data_"
+ },
+ {
+  "u": "https://dadosabertos.al.mt.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.mt.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.mt.leg.br/dados-abertos",
+  "st": 200,
+  "ct": "text/html; charset=UTF-8",
+  "n": 97151,
+  "final": "https://www.al.mt.gov.br/",
+  "ini": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n    <head>\n        <meta charset=\"UTF-8\" />\n        <title>\n                                        Assembleia Legislativa do Estado de Mato Grosso\n                    </title>\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n        <meta name=\"description\" content=\"Assembleia Legislativa do Estado de Mato Grosso\" />\n        <met"
+ },
+ {
+  "u": "https://sapl.al.pa.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pa.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.pa.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pa.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.pa.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.pa.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.pa.leg.br/dados-abertos",
+  "st": 200,
+  "ct": "text/html; charset=utf-8",
+  "n": 165846,
+  "final": "https://www.alepa.pa.gov.br/",
+  "ini": "<!DOCTYPE html>\r\n\r\n<html lang=\"pt-br\">\r\n<head>\r\n    <meta charset=\"UTF-8\" />\r\n    \r\n        <title>Assembleia Legislativa do Estado do Pará</title>\r\n    <link rel=\"shortcut icon\" href=\"/Content/Images/shortcut-icon-alepa.png\">\r\n\r\n\r\n    <link rel=\"stylesheet\" href=\"/DXR.axd?r=0_4966,1_68,1_69,0_4969,1_74,1_210,0_4827,1_209,0_4830,0_4843,0_4846,1_84,1_73,0_4791,0_4794,0_4860,4_120,4_111,4_112,0_4863"
+ },
+ {
+  "u": "https://sapl.al.pb.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 631,
+  "final": "https://sapl.al.pb.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":168,\"total_pages\":168,\"page\":1},\"results\":[{\"id\":18,\"__str__\":\"Ademir Morais\",\"metadata\":{},\"nome_completo\":\"Jos\\u00e9 Ademir Pereira de Morais\",\"nome_parlamentar\":\"Ademir Morais\",\"sexo\":\"M\",\"nu"
+ },
+ {
+  "u": "https://sapl.al.pb.leg.br/api/materia/materialegislativa/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 1428,
+  "final": "https://sapl.al.pb.leg.br/api/materia/materialegislativa/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":151578,\"total_pages\":151578,\"page\":1},\"results\":[{\"id\":145082,\"__str__\":\"Aut\\u00f3grafo n\\u00ba 1947 de 2026\",\"metadata\":{},\"numero\":1947,\"ano\":2026,\"numero_protocolo\":null,\"data_apresentacao\":"
+ },
+ {
+  "u": "https://dadosabertos.al.pb.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.pb.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.pb.leg.br/dados-abertos",
+  "st": 404,
+  "ct": "text/html; charset=UTF-8",
+  "n": 148652,
+  "final": "https://www.al.pb.leg.br/dados-abertos",
+  "ini": "0<!doctype html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\"\n          content=\"width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n    <link rel=\"icon\" href=\"wp-content/themes/alpb/assets/images/favicon-alpb.svg\" sizes=\"32x32\" type=\"image/svg\">\n\n\n    <link href=\"h"
+ },
+ {
+  "u": "https://sapl.al.pe.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pe.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.pe.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pe.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.pe.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.pe.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.pe.leg.br/dados-abertos",
+  "erro": "ConnectTimeout: HTTPConnectionPool(host='www.alepe.pe.gov.br', port=80): Max retries exceeded with url: / (Caused by ConnectTimeoutError"
+ },
+ {
+  "u": "https://sapl.al.pi.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 2659,
+  "final": "https://sapl.al.pi.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":309,\"total_pages\":309,\"page\":1},\"results\":[{\"id\":111,\"__str__\":\"Abdon Portella \",\"link_detail_backend\":\"/parlamentar/111\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:12:00.976320-03:0"
+ },
+ {
+  "u": "https://sapl.al.pi.leg.br/api/materia/materialegislativa/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 1528,
+  "final": "https://sapl.al.pi.leg.br/api/materia/materialegislativa/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":21433,\"total_pages\":21433,\"page\":1},\"results\":[{\"id\":21330,\"__str__\":\"Indicativo de Projeto de Lei n\\u00ba 1 de 2026\",\"link_detail_backend\":\"/materia/21330\",\"metadata\":{},\"numero\":1,\"ano\":2026,"
+ },
+ {
+  "u": "https://dadosabertos.al.pi.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.pi.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.pi.leg.br/dados-abertos",
+  "st": 404,
+  "ct": "text/html;charset=utf-8",
+  "n": 32229,
+  "final": "https://www.al.pi.leg.br/dados-abertos",
+  "ini": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n\n<head>\n\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n\n    <meta name=\"generator\" content=\"Plone - http://plone.org\">\n\n    \n      <base href=\"https://www.al.pi.leg.br/\"><!--[if lt IE 7]></base><![endif]-->\n    \n\n    \n        \n\n\n  \n    <style type=\"text/css\" media=\"screen\">@import url(https://www.al.pi.leg.br/portal_css/Sunburst%20Theme"
+ },
+ {
+  "u": "https://sapl.al.pr.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pr.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.pr.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pr.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.pr.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.pr.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.pr.leg.br/dados-abertos",
+  "st": 404,
+  "ct": "text/html;charset=utf-8",
+  "n": 20286,
+  "final": "https://www.al.pr.leg.br/dados-abertos",
+  "ini": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n\n<head>\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n\n    \n        <base href=\"https://www.al.pr.leg.br/\"><!--[if lt IE 7]></base><![endif]-->\n    \n\n    \n        \n<meta content=\"PR\" name=\"description\">\n\n  \n    <style type=\"text/css\" media=\"screen\">@import url(https://www.al.pr.leg.br/portal_css/Sunburst%20Theme/resourceportalmodelo.the"
+ },
+ {
+  "u": "https://sapl.al.rj.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rj.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.rj.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rj.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.rj.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.rj.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.rj.leg.br/dados-abertos",
+  "st": 200,
+  "ct": "text/html; charset=utf-8",
+  "n": 97346,
+  "final": "http://www.alerj.rj.gov.br",
+  "ini": "\n\n<!DOCTYPE html>\n<html lang=\"pt-br\" prefix=\"og: https://ogp.me/ns#\">\n<head>\n    <!--[if IE]>\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\" /><meta http-equiv=\"Cache-Control\" content=\"no-cache, no-store, must-revalidate\" />\n        <![endif]-->\n    <meta charset=\"utf-8\" /><meta name=\"viewport\" content=\"initial-scale = 1.0,maximum-scale = 1.0\" />\n    <script type=\"text/javascript\" sr"
+ },
+ {
+  "u": "https://sapl.al.rn.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rn.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.rn.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rn.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.rn.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.rn.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.rn.leg.br/dados-abertos",
+  "st": 404,
+  "ct": "text/html",
+  "n": 1407,
+  "final": "https://www.al.rn.leg.br/dados-abertos",
+  "ini": "<html>\n  <head>\n    <title>Assembleia Legislativa do RN</title>\n\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">\n\n    <meta name=\"msapplication-TileColor\" content=\"#063455\">\n    <meta name=\"theme-color\" content=\"#063455\">\n\n    <link href=\"https://fonts.googleapis.com/css?f"
+ },
+ {
+  "u": "https://sapl.al.ro.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 720,
+  "final": "https://sapl.al.ro.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":221,\"total_pages\":221,\"page\":1},\"results\":[{\"id\":52,\"__str__\":\"ACELINO MARCON\",\"link_detail_backend\":\"/parlamentar/52\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:14:09.353016-03:00\","
+ },
+ {
+  "u": "https://sapl.al.ro.leg.br/api/materia/materialegislativa/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 1413,
+  "final": "https://sapl.al.ro.leg.br/api/materia/materialegislativa/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":57280,\"total_pages\":57280,\"page\":1},\"results\":[{\"id\":52546,\"__str__\":\"Indica\\u00e7\\u00e3o n\\u00ba 15315 de 2026\",\"link_detail_backend\":\"/materia/52546\",\"metadata\":{},\"numero\":15315,\"ano\":2026,\""
+ },
+ {
+  "u": "https://dadosabertos.al.ro.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ro.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.ro.leg.br/dados-abertos",
+  "st": 404,
+  "ct": "text/html",
+  "n": 179,
+  "final": "https://www.al.ro.leg.br/dados-abertos",
+  "ini": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Not Found</title>\n</head>\n<body>\n  <h1>Not Found</h1><p>The requested resource was not found on this server.</p>\n</body>\n</html>\n"
+ },
+ {
+  "u": "https://sapl.al.rr.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "st": 403,
+  "ct": "text/html; charset=iso-8859-1",
+  "n": 199,
+  "final": "https://sapl.al.rr.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "ini": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+ },
+ {
+  "u": "https://sapl.al.rr.leg.br/api/materia/materialegislativa/?page_size=1",
+  "st": 403,
+  "ct": "text/html; charset=iso-8859-1",
+  "n": 199,
+  "final": "https://sapl.al.rr.leg.br/api/materia/materialegislativa/?page_size=1",
+  "ini": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+ },
+ {
+  "u": "https://dadosabertos.al.rr.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.rr.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.rr.leg.br/dados-abertos",
+  "erro": "SSLError: HTTPSConnectionPool(host='www.al.rr.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by SSLErro"
+ },
+ {
+  "u": "https://sapl.al.rs.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rs.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.rs.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rs.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.rs.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.rs.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.rs.leg.br/dados-abertos",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='www.al.rs.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by NameRes"
+ },
+ {
+  "u": "https://sapl.al.sc.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.sc.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.sc.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.sc.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.sc.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.sc.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.sc.leg.br/dados-abertos",
+  "st": 200,
+  "ct": "text/html; charset=UTF-8",
+  "n": 458277,
+  "final": "https://www.alesc.sc.gov.br/",
+  "ini": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"theme-color\" content=\"#404040\">\n    <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"#404040\">\n\n    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />\n\n\t<!-- This site "
+ },
+ {
+  "u": "https://sapl.al.se.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.se.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.se.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.se.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.se.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.se.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.se.leg.br/dados-abertos",
+  "st": 404,
+  "ct": "text/html; charset=UTF-8",
+  "n": 161105,
+  "final": "https://al.se.leg.br/dados-abertos",
+  "ini": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta name=\"google-site-verification\" content=\"GNAFSdOF7B5kA4C_HO44ntlvYeROyiWPc5ISBsuO36U\" />\n    <!-- Google Analytics -->\n    <script>\n    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;\n    ga('create', 'UA-XXXXX-Y', 'auto');\n    ga('send', 'pageview');\n    </script>\n    <script async src='https://www.google-analyt"
+ },
+ {
+  "u": "https://sapl.al.sp.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.sp.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
+ },
+ {
+  "u": "https://sapl.al.sp.leg.br/api/materia/materialegislativa/?page_size=1",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.sp.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
+ },
+ {
+  "u": "https://dadosabertos.al.sp.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.sp.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.sp.leg.br/dados-abertos",
+  "st": 200,
+  "ct": "text/html",
+  "n": 82246,
+  "final": "https://www.al.sp.gov.br/",
+  "ini": "<!DOCTYPE html>\r\n<html lang=\"pt-br\" xmlns:og=\"http://ogp.me/ns#\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script type=\"text/javascript\" src=\"/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\" data-dtconfig=\"rid=RID_2418|rpid=-2109383220|domain=sp.gov.br|reportUrl=/rb_bf32302csu|app=da4214bfad2bf73e|owasp=1|featureHash=ICA7NVfgqrux|rdnt=1|uxrgce=1|cuc=810"
+ },
+ {
+  "u": "https://sapl.al.to.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 642,
+  "final": "https://sapl.al.to.leg.br/api/parlamentares/parlamentar/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.to.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":40,\"total_pages\":40,\"page\":1},\"results\":[{\"id\":2,\"__str__\":\"AM\\u00c1LIA SANTANA\",\"metadata\":{},\"nome_completo\":\"AM\\u00c1LIA MARIA SANTANA DA SILVA\",\"nome_parlamentar\":\"AM\\u00c1LIA SANTANA\",\"sexo"
+ },
+ {
+  "u": "https://sapl.al.to.leg.br/api/materia/materialegislativa/?page_size=1",
+  "st": 200,
+  "ct": "application/json",
+  "n": 1282,
+  "final": "https://sapl.al.to.leg.br/api/materia/materialegislativa/?page_size=1",
+  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.to.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":14550,\"total_pages\":14550,\"page\":1},\"results\":[{\"id\":13716,\"__str__\":\"Medida Provis\\u00f3ria n\\u00ba 1 de 2026\",\"metadata\":{},\"numero\":1,\"ano\":2026,\"numero_protocolo\":42,\"data_apresentacao\":\"20"
+ },
+ {
+  "u": "https://dadosabertos.al.to.leg.br/",
+  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.to.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
+ },
+ {
+  "u": "https://www.al.to.leg.br/dados-abertos",
+  "st": 404,
+  "ct": "text/html;charset=UTF-8",
+  "n": 7385,
+  "final": "https://www.al.to.leg.br/dados-abertos",
+  "ini": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n<head>\n\t<script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-21403211-1\"></script>\n\t<script>\n\t  window.dataLayer = window.dataLayer || [];\n\t  function gtag(){dataLayer.push(arguments);}\n\t  gtag('js', new Date());\n\t  gtag('config', 'UA-21403211-1');\n\t</script>\n\t<meta charset=\"utf-8\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1"
+ }
+]

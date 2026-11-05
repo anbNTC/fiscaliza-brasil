@@ -37,7 +37,7 @@ jobs:
         run: |
           git config user.name "Fiscaliza Brasil (robô)"; git config user.email "robo@fiscalizaja.com.br"
           git add site/data/camara_orient.json 2>/dev/null || true
-          git diff --cached --quiet || (git commit -m "Câmara: orientações e partido no dia $(date -u +%F)" && git pull --rebase origin main && git push)
+          git diff --cached --quiet || (git commit -m "Câmara: orientações e partido no dia $(date -u +%F)" && for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done)
 
       - name: Emendas parlamentares do Brasil todo
         id: emendas
@@ -49,7 +49,7 @@ jobs:
         if: always()
         run: |
           git add site/data/emendas 2>/dev/null || true
-          git diff --cached --quiet || (git commit -m "Emendas do Brasil $(date -u +%F)" && git pull --rebase origin main && git push)
+          git diff --cached --quiet || (git commit -m "Emendas do Brasil $(date -u +%F)" && for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done)
 
       - name: Assembleias estaduais (SAPL) · projetos e votos dos deputados estaduais
         id: assembleias
@@ -82,7 +82,7 @@ jobs:
         if: always()
         run: |
           git add site/data/est 2>/dev/null || true
-          git diff --cached --quiet || (git commit -m "Assembleias estaduais $(date -u +%F)" && git pull --rebase origin main && git push)
+          git diff --cached --quiet || (git commit -m "Assembleias estaduais $(date -u +%F)" && for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done)
 
       - name: Recalcula partidos, ranking, resumo da semana e médias da cota
         id: calc
@@ -111,7 +111,7 @@ jobs:
           git add -A site/data
           git diff --cached --quiet && echo "nada mudou" && exit 0
           git commit -m "Dados atualizados $(date -u +%Y-%m-%d)"
-          git pull --rebase origin main && git push
+          for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done
 
   publica:
     needs: coleta

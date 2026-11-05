@@ -337,6 +337,7 @@ function secEstProj(o) {
   return `<h2>Projetos na Assembleia</h2>
    <div class="kv">${c.slice(0, 6).map(([k, n]) => `<div><div class="l">${esc(TIPOS_EST[k] || k)}</div><div class="v">${mil(n)}</div><div class="s">desde 2023</div></div>`).join("") || '<div><div class="v">0</div><div class="s">nenhuma proposição registrada desde 2023</div></div>'}</div>
    ${e.props.length ? `<h3>Projetos apresentados (mais recentes)</h3><div class="lst">${e.props.map((p) => `<div class="it"><div class="hd"><span class="cd">${esc(p[0])} · ${p[2] ? new Date(p[2] + "T12:00").toLocaleDateString("pt-BR") : ""}</span>${p[3] ? '<span class="vt n0">Em tramitação</span>' : ""}</div><div>${esc(p[1])}</div></div>`).join("")}</div>` : ""}
+   ${I.obs ? `<div class="note">${esc(I.obs)}</div>` : ""}${e.parcial ? '<div class="note">Lista parcial: este deputado tem muitas proposições e mostramos as mais recentes.</div>' : ""}
    <p class="src">Fonte: <a href="${esc(e.sapl)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>. Inclui autoria e coautoria. Atualizado em ${new Date(I.gerado + "T12:00").toLocaleDateString("pt-BR")}.</p>`;
 }
 function secEstVot(o) {

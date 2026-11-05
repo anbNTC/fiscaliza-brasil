@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "tools/**", ".github/workflows/dados.yml"]
+    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "tools/**", ".github/workflows/dados.yml"]
 
 permissions:
   contents: write
@@ -18,7 +18,7 @@ concurrency: { group: dados, cancel-in-progress: false }
 jobs:
   coleta:
     runs-on: ubuntu-latest
-    timeout-minutes: 200
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -70,6 +70,13 @@ jobs:
         timeout-minutes: 45
         env: { MAX_MIN: "35" }
         run: python coleta/assembleia_sc.py 2>&1 | tail -5 | tee -a /tmp/assembleias.log
+
+      - name: ALBA (Bahia) · proposições por deputado
+        id: alba
+        continue-on-error: true
+        timeout-minutes: 35
+        env: { MAX_MIN: "25" }
+        run: python coleta/assembleia_ba.py 2>&1 | tail -5 | tee -a /tmp/assembleias.log
 
       - name: Salva o progresso (Assembleias)
         if: always()

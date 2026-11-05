@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="Sessões Plenárias / e-Legis / ALESC">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="Portuguese">
+    <meta name="revisit-after" content="3 days">
+    <meta name="author" content="Assembleia Legislativa de Santa Catarina">
+    <title>Sessões Plenárias / e-Legis / ALESC</title>
+    <meta name="csrfToken" content="5WAlyAdDEzjWy4FR9/uJwIRfmNmtter2lQCcLInhhGQul8zPLdarec6thXHQdsZ+3KTVxWILA9N8RGPLQ9rR6PSYgZf0Cp7l52apu5iC2sfzMPodvNKyBUyi+a1P5pNP9pW8FOdF/ky+lu2mBz43tw==">    <link href="/alesc/bootstrap_theme/favicon.ico?1792755833" type="image/x-icon" rel="icon">    <script src="/alesc/bootstrap_theme/js/bootstrap.bundle.min.js?1792755833"></script>    <script src="/alesc/bootstrap_theme/js/sweetalert2.js?1792755833"></script>    <script src="/alesc/bootstrap_theme/js/theme.js?1792755833"></script>    <script src="/alesc/bootstrap_theme/js/htmx.min.js?1792755833"></script>    <link rel="stylesheet" href="/alesc/bootstrap_theme/css/bootstrap.min.css?1792755833">    <link rel="stylesheet" href="/alesc/bootstrap_theme/css/fontawesome.min.css?1792755833">    <link rel="stylesheet" href="/alesc/bootstrap_theme/css/default.css?1792755833">        <link rel="stylesheet" href="/css/app.css?1792755556">    <script defer="true">
+                document.addEventListener("DOMContentLoaded", () => {
+                    const offcanvasEl = document.getElementById("offcanvas-comissao")
+                    const offcanvas =  new bootstrap.Offcanvas(offcanvasEl)
+                    const elements = document.querySelectorAll(".btn-comissao")
+                    Array.from(elements).map((element) => {
+                        element.addEventListener("click", (event) => {
+                            event.preventDefault()
+                            const button = event.currentTarget
+                            const options = {
+                                headers: {
+                                    "X-Requested-With": "XMLHttpRequest"
+                                }
+                            }
+                            fetch(button.href, options)
+                                .then(response => response.text())
+                                .then((text) => {
+                                    offcanvasEl.querySelector(".offcanvas-title").innerHTML = button.dataset.title
+                                    offcanvasEl.querySelector(".offcanvas-body").innerHTML = text
+                                    offcanvas.show()
+                                })
+                        })
+                    })
+                })
+            </script><script defer="true">
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const modalFullscreenEl = document.getElementById("modal-fullscreen-documento")
+                        const modalDocumento = new bootstrap.Modal(modalFullscreenEl)
+                        document.querySelectorAll("a.btn-view-documento").forEach((element) => {
+                            element.addEventListener("click", (event) => {
+                                event.preventDefault()
+                                const element = event.currentTarget
+                                const url = element.href
+                                const options = {
+                                    method: "GET",
+                                    headers: new Headers({
+                                        "X-Requested-With": "XMLHttpRequest"
+                                    })
+                                }
+                                fetch(url, options)
+                                    .then(async (response) => {
+                                        if (response.ok) {
+                                            const html = await response.text()
+                                            modalFullscreenEl.querySelector(".modal-title").innerHTML = element.title
+                                            modalFullscreenEl.querySelector(".modal-body").innerHTML = html
+                                            modalDocumento.show()
+                                        } else {
+                                            Swal.fire({
+                                                title: "Error",
+                                                text: "Erro ao carregar o documento.",
+                                                icon: "error",
+                                                confirmButtonText: "Fechar"
+                                            })
+                                        }
+                                    })
+                            })
+                        })
+                    })
+                </script><script defer="true">
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.querySelectorAll("a.btn-push").forEach((element) => {
+                        element.addEventListener("click", () => Swal.fire({
+                            title: "Atenção",
+                            text: "O acompanhamento de proposições (PUSH) encontra-se indisponível temporariamente devido à implantação do sistema de tramitação eletrônica.",
+                            icon: "warning",
+                            confirmButtonText: "Fechar"
+                        }))
+                    })
+                })
+            </script><script defer="true">
+                document.addEventListener("DOMContentLoaded", () => {
+                    const modalBodySelector = "#modal-reuniao-processo .modal-body";
+                    const loader = `<div class="d-flex justify-content-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div></div>`;
+                    document.body.addEventListener("htmx:beforeRequest", (event) => {
+                        if (!event.detail.elt.matches(".btn-extrato-votacao")) {
+                            return;
+                        }
+                        const body = document.querySelector(modalBodySelector);
+                        if (body) {
+                            body.innerHTML = loader;
+                        }
+                    });
+                    document.body.addEventListener("htmx:responseError", (event) => {
+                        if (!event.detail.elt.matches(".btn-extrato-votacao")) {
+                            return;
+                        }
+                        const body = document.querySelector(modalBodySelector);
+                        if (body) {
+                            body.innerHTML = `<div class="alert alert-danger m-3" role="alert">Erro ao carregar o extrato de votação.</div>`;
+                        }
+                    });
+                });
+            </script><script src="/js/htmx.min.js?1792755556"></script><script src="/js/htmx/ajax-header.js?1792755556"></script><script src="/js/dayjs.min.js?1792755556"></script>    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3XEDD98K8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-E3XEDD98K8');
+    </script>
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-white">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-start position-relative">
+                <div class="me-2">
+                    <img src="/alesc/bootstrap_theme/img/brasao.png?1792755833" style="max-height:150px; max-height:60px" alt="">                </div>
+                <div class="lh-1">
+                    <span class="fs-5">e-Legis</span><br>
+                    <small class="text-secondary">Processo Legislativo Eletrônico</small>
+                </div>
+                <a class="stretched-link" href="/"></a>
+            </div>
+
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-alesc sticky-top">
+                <div class="container">
+                    <div></div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="collapse navbar-collapse d-lg-flex justify-content-lg-center" id="navbarNav">
+                        <ul class="navbar-nav"><a href="/proposicoes/processo-legislativo" class="nav-link">Processo Legislativo</a><a href="/proposicoes/atividade-parlamentar" class="nav-link">Atividade Parlamentar</a><a href="/sessoes-plenarias" class="nav-link active">Sessões Plenárias</a><a href="/comissoes-permanentes" class="nav-link">Comissões Permanentes</a></ul>
+                    </div>
+                </div>
+            </nav>    <div class="container py-3">
+        <div class="row align-items-center d-none d-lg-flex">
+            <div class="col">
+                <nav aria-label="breadcrumb"><small><ol class="breadcrumb mb-3"><li class="breadcrumb-item"><a href="/">e-Legis</a></li><li class="breadcrumb-item"><span>Sessões Plenárias</span></li></ol></small></nav>            </div>
+        </div>
+                
+<h3 class="mb-3">Sessões Plenárias</h3>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card card-alesc mb-3">
+                <div class="card-body">
+                    <div class="list-group list-group-flush mb-3"><a href="/sessoes-plenarias" class="list-group-item list-group-item-action rounded-2 active" aria-current="page">Sessões Plenárias</a><a href="/sessoes-plenarias/atas" class="list-group-item list-group-item-action rounded-2">Atas</a><a href="/sessoes-plenarias/pronunciamentos" class="list-group-item list-group-item-action rounded-2">Pronunciamentos</a></div>
+                </div>
+            </div>    </div>
+    <div class="col-md-9">
+        
+
+<script>
+    function resetForm(form) {
+        form.querySelectorAll('input:not([type=submit]), select').forEach((el) => {
+            el.value = ''
+        })
+        form.submit()
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('search-form')
+        form.querySelectorAll('button[type=reset]').forEach((el) => {
+            el.addEventListener('click', (event) => {
+                resetForm(form)
+            })
+        })
+    })
+</script>
+
+<div class="row mb-3">
+    <div class="col-12">
+        <form method="get" accept-charset="utf-8" id="search-form" action="/sessoes-plenarias" novalidate autocomplete="off">        <div class="d-flex align-items-center">
+            <div class="flex-grow-1 d-flex me-1">
+                <div class="flex-shrink-1 me-1">
+                    <input type="text" name="numero" class="form-control" placeholder="Número" />                </div>
+                <div class="flex-shrink-1 me-1">
+                    <select name="tipoReuniao" class="form-select"><option value="">Todos os tipos</option><option value="1">Sessão Plenária Ordinária</option><option value="2">Sessão Plenária Extraordinária</option></select>                </div>
+                <div class="me-1">
+                    <button  class="btn btn-success" type="submit"><i class="fas fa-search"></i> <span class="d-none d-lg-inline">Pesquisar</span></button>                </div>
+                <div>
+                    <button  class="btn btn-light" type="reset"><i class="fas fa-times"></i> <span class="d-none d-lg-inline">Limpar</span></button>                </div>
+            </div>
+            </form>        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-end mb-2">
+    Exibindo 1 - 10 de 634</div>                    <div class="card card-alesc mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3">
+                            <div class="data-badge">
+                    <span class="data-badge-dia">05</span>
+                    <span class="data-badge-mes">nov</span>
+                </div>
+                        <div>
+                <h4 class="mb-1">
+                    105ª Sessão Ordinária                </h4>
+                <div class="d-flex align-items-center flex-wrap gap-2 text-secondary">
+                                            <span class="text-nowrap">
+                            <i class="far fa-clock"></i>
+                            05/11/2026 · 09:00                        </span>
+                                        <span class="badge rounded-pill bg-light text-secondary-emphasis"><i class="fas fa-circle fa-2xs text-primary"></i> Horário regimental</span>                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row flex-wrap gap-1 mt-3">
+            <a href="/sessoes-plenarias/KDxrK/expediente" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-list-ul"></i> Expediente</a>            <a href="/sessoes-plenarias/KDxrK/ordem-do-dia" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-calendar-days"></i> Ordem do Dia</a>            <a href="/sessoes-plenarias/KDxrK/comunicado" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-volume-high"></i> Comunicado</a>            <a href="/sessoes-plenarias/KDxrK/presenca" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-user-group"></i> Presença</a>            <a href="/sessoes-plenarias/KDxrK/ata" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-file-lines"></i> Ata</a>            <a href="/sessoes-plenarias/KDxrK/pronunciamentos" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-comment-dots"></i> Pronunciamentos</a>        </div>
+    </div>
+</div>                    <div class="card card-alesc mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3">
+                            <div class="data-badge">
+                    <span class="data-badge-dia">04</span>
+                    <span class="data-badge-mes">nov</span>
+                </div>
+                        <div>
+                <h4 class="mb-1">
+                    45ª Sessão Extraordinária                </h4>
+                <div class="d-flex align-items-center flex-wrap gap-2 text-secondary">
+                                            <span class="text-nowrap">
+                            <i class="far fa-clock"></i>
+                            04/11/2026 · 16:17                        </span>
+                                        <span class="badge rounded-pill bg-light text-secondary-emphasis"><i class="fas fa-circle fa-2xs text-success"></i> Realizada</span>                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row flex-wrap gap-1 mt-3">
+                        <a href="/sessoes-plenarias/K43gz/ordem-do-dia" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-calendar-days"></i> Ordem do Dia</a>                        <a href="/sessoes-plenarias/K43gz/presenca" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="fas fa-user-group"></i> Presença</a>            <a href="/sessoes-plenarias/K43gz/ata" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-file-lines"></i> Ata</a>            <a href="/sessoes-plenarias/K43gz/pronunciamentos" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-comment-dots"></i> Pronunciamentos</a>        </div>
+    </div>
+</div>                    <div class="card card-alesc mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3">
+                            <div class="data-badge">
+                    <span class="data-badge-dia">04</span>
+                    <span class="data-badge-mes">nov</span>
+                </div>
+                        <div>
+                <h4 class="mb-1">
+                    104ª Sessão Ordinária                </h4>
+                <div class="d-flex align-items-center flex-wrap gap-2 text-secondary">
+                                            <span class="text-nowrap">
+                            <i class="far fa-clock"></i>
+                            04/11/2026 · 14:00                        </span>
+                                        <span class="badge rounded-pill bg-light text-secondary-emphasis"><i class="fas fa-circle fa-2xs text-success"></i> Realizada</span>                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row flex-wrap gap-1 mt-3">
+            <a href="/sessoes-plenarias/z8rQ5/expediente" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-list-ul"></i> Expediente</a>            <a href="/sessoes-plenarias/z8rQ5/ordem-do-dia" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-calendar-days"></i> Ordem do Dia</a>            <a href="/sessoes-plenarias/z8rQ5/comunicado" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-volume-high"></i> Comunicado</a>            <a href="/sessoes-plenarias/z8rQ5/presenca" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-user-group"></i> Presença</a>            <a href="/sessoes-plenarias/z8rQ5/ata" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-file-lines"></i> Ata</a>            <a href="/sessoes-plenarias/z8rQ5/pronunciamentos" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-comment-dots"></i> Pronunciamentos</a>        </div>
+    </div>
+</div>                    <div class="card card-alesc mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3">
+                            <div class="data-badge">
+                    <span class="data-badge-dia">03</span>
+                    <span class="data-badge-mes">nov</span>
+                </div>
+                        <div>
+                <h4 class="mb-1">
+                    103ª Sessão Ordinária                </h4>
+                <div class="d-flex align-items-center flex-wrap gap-2 text-secondary">
+                                            <span class="text-nowrap">
+                            <i class="far fa-clock"></i>
+                            03/11/2026 · 14:00                        </span>
+                                        <span class="badge rounded-pill bg-light text-secondary-emphasis"><i class="fas fa-circle fa-2xs text-success"></i> Realizada</span>                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row flex-wrap gap-1 mt-3">
+            <a href="/sessoes-plenarias/Nxwm5/expediente" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-list-ul"></i> Expediente</a>            <a href="/sessoes-plenarias/Nxwm5/ordem-do-dia" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-calendar-days"></i> Ordem do Dia</a>            <a href="/sessoes-plenarias/Nxwm5/comunicado" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-volume-high"></i> Comunicado</a>            <a href="/sessoes-plenarias/Nxwm5/presenca" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-user-group"></i> Presença</a>            <a href="/sessoes-plenarias/Nxwm5/ata" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-file-lines"></i> Ata</a>            <a href="/sessoes-plenarias/Nxwm5/pronunciamentos" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-comment-dots"></i> Pronunciamentos</a>        </div>
+    </div>
+</div>                    <div class="card card-alesc mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3">
+                            <div class="data-badge">
+                    <span class="data-badge-dia">29</span>
+                    <span class="data-badge-mes">out</span>
+                </div>
+                        <div>
+                <h4 class="mb-1">
+                    102ª Sessão Ordinária                </h4>
+                <div class="d-flex align-items-center flex-wrap gap-2 text-secondary">
+                                            <span class="text-nowrap">
+                            <i class="far fa-clock"></i>
+                            29/10/2026 · 09:00                        </span>
+                                        <span class="badge rounded-pill bg-light text-secondary-emphasis"><i class="fas fa-circle fa-2xs text-success"></i> Realizada</span>                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row flex-wrap gap-1 mt-3">
+            <a href="/sessoes-plenarias/NQl35/expediente" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-list-ul"></i> Expediente</a>            <a href="/sessoes-plenarias/NQl35/ordem-do-dia" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-calendar-days"></i> Ordem do Dia</a>            <a href="/sessoes-plenarias/NQl35/comunicado" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-volume-high"></i> Comunicado</a>            <a href="/sessoes-plenarias/NQl35/presenca" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-user-group"></i> Presença</a>            <a href="/sessoes-plenarias/NQl35/ata" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-file-lines"></i> Ata</a>            <a href="/sessoes-plenarias/NQl35/pronunciamentos" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-comment-dots"></i> Pronunciamentos</a>        </div>
+    </div>
+</div>                    <div class="card card-alesc mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3">
+                            <div class="data-badge">
+                    <span class="data-badge-dia">28</span>
+                    <span class="data-badge-mes">out</span>
+                </div>
+                        <div>
+                <h4 class="mb-1">
+                    101ª Sessão Ordinária                </h4>
+                <div class="d-flex align-items-center flex-wrap gap-2 text-secondary">
+                                            <span class="text-nowrap">
+                            <i class="far fa-clock"></i>
+                            28/10/2026 · 14:00                        </span>
+                                        <span class="badge rounded-pill bg-light text-secondary-emphasis"><i class="fas fa-circle fa-2xs text-success"></i> Realizada</span>                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row flex-wrap gap-1 mt-3">
+            <a href="/sessoes-plenarias/zowbz/expediente" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-list-ul"></i> Expediente</a>            <a href="/sessoes-plenarias/zowbz/ordem-do-dia" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-calendar-days"></i> Ordem do Dia</a>            <a href="/sessoes-plenarias/zowbz/comunicado" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-volume-high"></i> Comunicado</a>            <a href="/sessoes-plenarias/zowbz/presenca" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-user-group"></i> Presença</a>            <a href="/sessoes-plenarias/zowbz/ata" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-file-lines"></i> Ata</a>            <a href="/sessoes-plenarias/zowbz/pronunciamentos" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-comment-dots"></i> Pronunciamentos</a>        </div>
+    </div>
+</div>                    <div class="card card-alesc mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3">
+                            <div class="data-badge">
+                    <span class="data-badge-dia">27</span>
+                    <span class="data-badge-mes">out</span>
+                </div>
+                        <div>
+                <h4 class="mb-1">
+                    44ª Sessão Extraordinária                </h4>
+                <div class="d-flex align-items-center flex-wrap gap-2 text-secondary">
+                                            <span class="text-nowrap">
+                            <i class="far fa-clock"></i>
+                            27/10/2026 · 17:00                        </span>
+                                        <span class="badge rounded-pill bg-light text-secondary-emphasis"><i class="fas fa-circle fa-2xs text-success"></i> Realizada</span>                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row flex-wrap gap-1 mt-3">
+                        <a href="/sessoes-plenarias/5qB4N/ordem-do-dia" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-calendar-days"></i> Ordem do Dia</a>                        <a href="/sessoes-plenarias/5qB4N/presenca" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="fas fa-user-group"></i> Presença</a>            <a href="/sessoes-plenarias/5qB4N/ata" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-file-lines"></i> Ata</a>            <a href="/sessoes-plenarias/5qB4N/pronunciamentos" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-comment-dots"></i> Pronunciamentos</a>        </div>
+    </div>
+</div>                    <div class="card card-alesc mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3">
+                            <div class="data-badge">
+                    <span class="data-badge-dia">27</span>
+                    <span class="data-badge-mes">out</span>
+                </div>
+                        <div>
+                <h4 class="mb-1">
+                    100ª Sessão Ordinária                </h4>
+                <div class="d-flex align-items-center flex-wrap gap-2 text-secondary">
+                                            <span class="text-nowrap">
+                            <i class="far fa-clock"></i>
+                            27/10/2026 · 14:00                        </span>
+                                        <span class="badge rounded-pill bg-light text-secondary-emphasis"><i class="fas fa-circle fa-2xs text-success"></i> Realizada</span>                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row flex-wrap gap-1 mt-3">
+            <a href="/sessoes-plenarias/5bnZ5/expediente" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-list-ul"></i> Expediente</a>            <a href="/sessoes-plenarias/5bnZ5/ordem-do-dia" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-calendar-days"></i> Ordem do Dia</a>            <a href="/sessoes-plenarias/5bnZ5/comunicado" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-volume-high"></i> Comunicado</a>            <a href="/sessoes-plenarias/5bnZ5/presenca" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-user-group"></i> Presença</a>            <a href="/sessoes-plenarias/5bnZ5/ata" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-file-lines"></i> Ata</a>            <a href="/sessoes-plenarias/5bnZ5/pronunciamentos" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-comment-dots"></i> Pronunciamentos</a>        </div>
+    </div>
+</div>                    <div class="card card-alesc mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3">
+                            <div class="data-badge">
+                    <span class="data-badge-dia">22</span>
+                    <span class="data-badge-mes">out</span>
+                </div>
+                        <div>
+                <h4 class="mb-1">
+                    99ª Sessão Ordinária                </h4>
+                <div class="d-flex align-items-center flex-wrap gap-2 text-secondary">
+                                            <span class="text-nowrap">
+                            <i class="far fa-clock"></i>
+                            22/10/2026 · 09:00                        </span>
+                                        <span class="badge rounded-pill bg-light text-secondary-emphasis"><i class="fas fa-circle fa-2xs text-success"></i> Realizada</span>                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row flex-wrap gap-1 mt-3">
+            <a href="/sessoes-plenarias/z3Eq5/expediente" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-list-ul"></i> Expediente</a>            <a href="/sessoes-plenarias/z3Eq5/ordem-do-dia" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-calendar-days"></i> Ordem do Dia</a>            <a href="/sessoes-plenarias/z3Eq5/comunicado" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-volume-high"></i> Comunicado</a>            <a href="/sessoes-plenarias/z3Eq5/presenca" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-user-group"></i> Presença</a>            <a href="/sessoes-plenarias/z3Eq5/ata" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-file-lines"></i> Ata</a>            <a href="/sessoes-plenarias/z3Eq5/pronunciamentos" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-comment-dots"></i> Pronunciamentos</a>        </div>
+    </div>
+</div>                    <div class="card card-alesc mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3">
+                            <div class="data-badge">
+                    <span class="data-badge-dia">21</span>
+                    <span class="data-badge-mes">out</span>
+                </div>
+                        <div>
+                <h4 class="mb-1">
+                    43ª Sessão Extraordinária                </h4>
+                <div class="d-flex align-items-center flex-wrap gap-2 text-secondary">
+                                            <span class="text-nowrap">
+                            <i class="far fa-clock"></i>
+                            21/10/2026 · 16:20                        </span>
+                                        <span class="badge rounded-pill bg-light text-secondary-emphasis"><i class="fas fa-circle fa-2xs text-success"></i> Realizada</span>                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row flex-wrap gap-1 mt-3">
+                        <a href="/sessoes-plenarias/zEMez/ordem-do-dia" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-calendar-days"></i> Ordem do Dia</a>                        <a href="/sessoes-plenarias/zEMez/presenca" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="fas fa-user-group"></i> Presença</a>            <a href="/sessoes-plenarias/zEMez/ata" class="btn btn-sm btn-outline-default text-nowrap disabled"><i class="far fa-file-lines"></i> Ata</a>            <a href="/sessoes-plenarias/zEMez/pronunciamentos" class="btn btn-sm btn-outline-default text-nowrap"><i class="far fa-comment-dots"></i> Pronunciamentos <span class="badge text-bg-light text-secondary">1</span></a>        </div>
+    </div>
+</div>                        <div class="d-flex justify-content-center">
+    <ul class="pagination">
+                <li class="page-item disabled"><a class="page-link" href="" onclick="return false;"><i class="fa-solid fa-angle-left"></i></a></li>        <li class="page-item active"><a class="page-link" href="">1</a></li><li class="page-item"><a class="page-link" href="/sessoes-plenarias?page=2">2</a></li><li class="page-item"><a class="page-link" href="/sessoes-plenarias?page=3">3</a></li><li class="page-item"><a class="page-link" href="/sessoes-plenarias?page=4">4</a></li><li class="page-item"><a class="page-link" href="/sessoes-plenarias?page=5">5</a></li><li class="page-item"><a class="page-link" href="/sessoes-plenarias?page=6">6</a></li>        <li class="page-item"><a class="page-link" rel="next" href="/sessoes-plenarias?page=2"><i class="fa-solid fa-angle-right"></i></a></li>        <li class="page-item"><a class="page-link" href="/sessoes-plenarias?page=64"><i class="fa-solid fa-angles-right"></i></a></li>    </ul>
+</div>    </div>
+</div>
+</div>    </div>
+</div>    </div>
+    <footer class="py-4 py-md-5 mt-5 bg-light">
+    <div class="container py-4 py-md-5 px-4 px-md-3">
+        <div class="row">
+    <div class="col-lg-4 mb-3">
+        <a class="d-inline-flex align-items-center mb-2 link-dark text-decoration-none" href="/" aria-label="Bootstrap">
+            <img src="/alesc/bootstrap_theme/img/brasao.png?1792755833" class="d-block me-2" style="width:40px" alt="">            <span class="fs-5">e-Legis</span>
+        </a>
+        <ul class="list-unstyled small text-muted">
+            <li>Assembleia Legislativa de Santa Catarina.</li>
+            <li>Palácio Barriga Verde - Rua Doutor Jorge Luz Fontes, 310</li>
+            <li>CEP: 88020-900 - Florianópolis - Santa Catarina</li>
+            <li>Fone: (48) 3221-2500</li>
+        </ul>
+    </div>
+    <div class="col-lg-3 mb-3">
+        <h5>Processo Legislativo</h5>
+        <ul class="list-unstyled">
+            <li class="mb-2">
+                <a href="/proposicoes/processo-legislativo">Processo Legislativo</a>            </li>
+            <li class="mb-2">
+                <a href="/proposicoes/atividade-parlamentar">Atividade Parlamentar</a>            </li>
+            <li class="mb-2">
+                <a href="/sessoes-plenarias">Sessões Plenárias</a>            </li>
+            <li class="mb-2">
+                <a href="/comissoes-permanentes">Comissões Permanentes</a>            </li>
+        </ul>
+    </div>
+    <div class="col-lg-5 mb-3">
+        <h5>Ajuda</h5>
+        <p>
+            <small class="fst-italic">
+                Dúvidas? Favor contatar nossa Central de Serviços no telefone (48) 3221-2511 ou ramal 2511.
+            </small>
+        </p>
+        <ul class="list-unstyled small text-muted fst-italic">
+            <li>
+                Versão 1.20.5 de
+                28/10/2026                (build 24842)
+            </li>
+        </ul>
+    </div>
+</div>    </div>
+</footer>    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-comissao" aria-labelledby="offcanvas-comissao-label">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvas-comissao-label"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+                </div>
+                <div class="offcanvas-body"></div>
+            </div> <div class="modal fade" id="modal-fullscreen-documento" tabindex="-1" aria-labelledby="modalFullScreenLabel" aria-hidden="true">
+                <div class="modal-dialog modal-fullscreen">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-truncate" id="modalFullScreenLabel"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="modal" id="modal-reuniao-processo">
+                    <div class="modal-dialog modal-xl
+                     modal-dialog-scrollable modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Extrato de votação</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body bg-light"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>    <div id="scroll-to-top">
+        <a href="#">
+            <i class="fas fa-chevron-up"></i>
+        </a>
+    </div>
+    <div id="modal" class="modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+    <div id="modal-lg" class="modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+    <div id="modal-xl" class="modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

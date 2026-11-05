@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="Atividade Parlamentar / Proposições / e-Legis / ALESC">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="Portuguese">
+    <meta name="revisit-after" content="3 days">
+    <meta name="author" content="Assembleia Legislativa de Santa Catarina">
+    <title>Atividade Parlamentar / Proposições / e-Legis / ALESC</title>
+    <meta name="csrfToken" content="TbgwAKdq35XKPIl3eJxto02N1KOu9FPfQ/m2RUpVlJMyCrtwIUBBO4q/TUrjVbcsSDtzH4ADYe7UnHYD4/MdRehvibF7bXqGLrTlwZvDY+4lydB0f2ai8lA/jhJDcHkNsod0L9Rmjx4qCUt85TZVig==">    <link href="/alesc/bootstrap_theme/favicon.ico?1792755833" type="image/x-icon" rel="icon">    <script src="/alesc/bootstrap_theme/js/bootstrap.bundle.min.js?1792755833"></script>    <script src="/alesc/bootstrap_theme/js/sweetalert2.js?1792755833"></script>    <script src="/alesc/bootstrap_theme/js/theme.js?1792755833"></script>    <script src="/alesc/bootstrap_theme/js/htmx.min.js?1792755833"></script>    <link rel="stylesheet" href="/alesc/bootstrap_theme/css/bootstrap.min.css?1792755833">    <link rel="stylesheet" href="/alesc/bootstrap_theme/css/fontawesome.min.css?1792755833">    <link rel="stylesheet" href="/alesc/bootstrap_theme/css/default.css?1792755833">        <link rel="stylesheet" href="/css/app.css?1792755556"><link rel="stylesheet" href="/alesc/bootstrap_theme/css/tom-select.bootstrap5.min.css?1792755833">    <script defer="true">
+                document.addEventListener("DOMContentLoaded", () => {
+                    const offcanvasEl = document.getElementById("offcanvas-comissao")
+                    const offcanvas =  new bootstrap.Offcanvas(offcanvasEl)
+                    const elements = document.querySelectorAll(".btn-comissao")
+                    Array.from(elements).map((element) => {
+                        element.addEventListener("click", (event) => {
+                            event.preventDefault()
+                            const button = event.currentTarget
+                            const options = {
+                                headers: {
+                                    "X-Requested-With": "XMLHttpRequest"
+                                }
+                            }
+                            fetch(button.href, options)
+                                .then(response => response.text())
+                                .then((text) => {
+                                    offcanvasEl.querySelector(".offcanvas-title").innerHTML = button.dataset.title
+                                    offcanvasEl.querySelector(".offcanvas-body").innerHTML = text
+                                    offcanvas.show()
+                                })
+                        })
+                    })
+                })
+            </script><script defer="true">
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const modalFullscreenEl = document.getElementById("modal-fullscreen-documento")
+                        const modalDocumento = new bootstrap.Modal(modalFullscreenEl)
+                        document.querySelectorAll("a.btn-view-documento").forEach((element) => {
+                            element.addEventListener("click", (event) => {
+                                event.preventDefault()
+                                const element = event.currentTarget
+                                const url = element.href
+                                const options = {
+                                    method: "GET",
+                                    headers: new Headers({
+                                        "X-Requested-With": "XMLHttpRequest"
+                                    })
+                                }
+                                fetch(url, options)
+                                    .then(async (response) => {
+                                        if (response.ok) {
+                                            const html = await response.text()
+                                            modalFullscreenEl.querySelector(".modal-title").innerHTML = element.title
+                                            modalFullscreenEl.querySelector(".modal-body").innerHTML = html
+                                            modalDocumento.show()
+                                        } else {
+                                            Swal.fire({
+                                                title: "Error",
+                                                text: "Erro ao carregar o documento.",
+                                                icon: "error",
+                                                confirmButtonText: "Fechar"
+                                            })
+                                        }
+                                    })
+                            })
+                        })
+                    })
+                </script><script defer="true">
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.querySelectorAll("a.btn-push").forEach((element) => {
+                        element.addEventListener("click", () => Swal.fire({
+                            title: "Atenção",
+                            text: "O acompanhamento de proposições (PUSH) encontra-se indisponível temporariamente devido à implantação do sistema de tramitação eletrônica.",
+                            icon: "warning",
+                            confirmButtonText: "Fechar"
+                        }))
+                    })
+                })
+            </script><script defer="true">
+                document.addEventListener("DOMContentLoaded", () => {
+                    const modalBodySelector = "#modal-reuniao-processo .modal-body";
+                    const loader = `<div class="d-flex justify-content-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div></div>`;
+                    document.body.addEventListener("htmx:beforeRequest", (event) => {
+                        if (!event.detail.elt.matches(".btn-extrato-votacao")) {
+                            return;
+                        }
+                        const body = document.querySelector(modalBodySelector);
+                        if (body) {
+                            body.innerHTML = loader;
+                        }
+                    });
+                    document.body.addEventListener("htmx:responseError", (event) => {
+                        if (!event.detail.elt.matches(".btn-extrato-votacao")) {
+                            return;
+                        }
+                        const body = document.querySelector(modalBodySelector);
+                        if (body) {
+                            body.innerHTML = `<div class="alert alert-danger m-3" role="alert">Erro ao carregar o extrato de votação.</div>`;
+                        }
+                    });
+                });
+            </script><script src="/js/htmx.min.js?1792755556"></script><script src="/js/htmx/ajax-header.js?1792755556"></script><script src="/js/dayjs.min.js?1792755556"></script><script src="/alesc/bootstrap_theme/js/tom-select.complete.min.js?1792755833"></script><script src="/alesc/bootstrap_theme/js/tom-select.defaults.js?1792755833"></script><script>
+                (() => {
+                    const init = () => {
+                        const el = document.getElementById("iniciativa")
+                        if (el && !el.tomselect) {
+                            new TomSelect(el, Object.assign({}, window.TomSelectDefaults, {"placeholder":"Todos"}))
+                        }
+                    }
+                    document.readyState === "loading" ? window.addEventListener("DOMContentLoaded", init) : init()
+                })()
+            </script><script>
+                (() => {
+                    const init = () => {
+                        const el = document.getElementById("ano")
+                        if (el && !el.tomselect) {
+                            new TomSelect(el, Object.assign({}, window.TomSelectDefaults, {"placeholder":"Selecione"}))
+                        }
+                    }
+                    document.readyState === "loading" ? window.addEventListener("DOMContentLoaded", init) : init()
+                })()
+            </script><script>
+                (() => {
+                    const init = () => {
+                        const el = document.getElementById("tipopropositura")
+                        if (el && !el.tomselect) {
+                            new TomSelect(el, Object.assign({}, window.TomSelectDefaults, {"placeholder":"Todos"}))
+                        }
+                    }
+                    document.readyState === "loading" ? window.addEventListener("DOMContentLoaded", init) : init()
+                })()
+            </script><script>
+                (() => {
+                    const init = () => {
+                        const el = document.getElementById("materialegislativa")
+                        if (el && !el.tomselect) {
+                            new TomSelect(el, Object.assign({}, window.TomSelectDefaults, {"placeholder":"Todas"}))
+                        }
+                    }
+                    document.readyState === "loading" ? window.addEventListener("DOMContentLoaded", init) : init()
+                })()
+            </script><script>
+                (() => {
+                    const init = () => {
+                        const el = document.getElementById("regimetramitacao")
+                        if (el && !el.tomselect) {
+                            new TomSelect(el, Object.assign({}, window.TomSelectDefaults, {"placeholder":"Todos"}))
+                        }
+                    }
+                    document.readyState === "loading" ? window.addEventListener("DOMContentLoaded", init) : init()
+                })()
+            </script>    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3XEDD98K8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-E3XEDD98K8');
+    </script>
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-white">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-start position-relative">
+                <div class="me-2">
+                    <img src="/alesc/bootstrap_theme/img/brasao.png?1792755833" style="max-height:150px; max-height:60px" alt="">                </div>
+                <div class="lh-1">
+                    <span class="fs-5">e-Legis</span><br>
+                    <small class="text-secondary">Processo Legislativo Eletrônico</small>
+                </div>
+                <a class="stretched-link" href="/"></a>
+            </div>
+
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-alesc sticky-top">
+                <div class="container">
+                    <div></div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="collapse navbar-collapse d-lg-flex justify-content-lg-center" id="navbarNav">
+                        <ul class="navbar-nav"><a href="/proposicoes/processo-legislativo" class="nav-link">Processo Legislativo</a><a href="/proposicoes/atividade-parlamentar" class="nav-link active">Atividade Parlamentar</a><a href="/sessoes-plenarias" class="nav-link">Sessões Plenárias</a><a href="/comissoes-permanentes" class="nav-link">Comissões Permanentes</a></ul>
+                    </div>
+                </div>
+            </nav>    <div class="container py-3">
+        <div class="row align-items-center d-none d-lg-flex">
+            <div class="col">
+                <nav aria-label="breadcrumb"><small><ol class="breadcrumb mb-3"><li class="breadcrumb-item"><a href="/">e-Legis</a></li><li class="breadcrumb-item"><span>Proposições</span></li><li class="breadcrumb-item"><span>Atividade Parlamentar</span></li></ol></small></nav>            </div>
+        </div>
+                
+<h3 class="mb-3">Atividade Parlamentar</h3>
+
+
+<script>
+    function resetForm(form) {
+        form.querySelectorAll('input:not([type=submit]):not([type=checkbox]), select').forEach((el) => {
+            if (el.tomselect) {
+                el.tomselect.clear(true)
+            } else {
+                el.value = ''
+            }
+        })
+        document.getElementById('arquivados').checked = true
+        form.submit()
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('search-form')
+
+        form.querySelectorAll('button[type=reset]').forEach(el => {
+            el.addEventListener('click', (event) => {
+                resetForm(form)
+            })
+        })
+
+        form.querySelectorAll('input[data-error-message]').forEach(el => {
+            el.addEventListener('blur', (event) => {
+                if (!el.checkValidity()) {
+                    Swal.fire({
+                        title: el.dataset.errorTitle,
+                        text: el.dataset.errorMessage,
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    })
+                }
+            })
+        })
+
+        document.getElementById('ano').addEventListener('change', (event) => {
+            const value = event.target.value
+            if (value === '') {
+                document.getElementById('inicio').value = ''
+                document.getElementById('fim').value = ''
+            } else {
+                const inicio = dayjs(`${value}-01-01`).format('YYYY-MM-DD')
+                const fim = dayjs(`${value}-12-31`).format('YYYY-MM-DD')
+                document.getElementById('inicio').value = inicio
+                document.getElementById('fim').value = fim
+            }
+        })
+    })
+</script>
+
+<style>
+    input:not(:valid) {
+        position: relative;
+        color: #cc0000;
+        background-color: #cc000005;
+        border: 1px solid #cc0000;
+    }
+</style>
+
+<div class="row mb-3">
+    <div class="col-12">
+        <form method="get" accept-charset="utf-8" id="search-form" action="/proposicoes/atividade-parlamentar" novalidate autocomplete="off">        <div class="d-flex align-items-center">
+            <div class="flex-grow-1 d-flex me-1">
+                <div class="flex-grow-1 me-1">
+                    <input type="text" name="search" class="form-control" placeholder="Pesquisar proposições" />                </div>
+                <div class="me-1">
+                    <button  class="btn btn-success" type="submit"><i class="fas fa-search"></i> <span class="d-none d-lg-inline">Pesquisar</span></button>                </div>
+                <div class="me-1">
+                    <div class="position-relative">
+                        <button  class="btn btn-light" type="button" data-bs-toggle="modal" data-bs-target="#advanced-search-modal"><i class="fas fa-search-plus"></i> <span class="d-none d-lg-inline">Busca avançada </span></button>                                            </div>
+                </div>
+                <div>
+                    <button  class="btn btn-light" type="reset" disabled="disabled"><i class="fas fa-times"></i> <span class="d-none d-lg-inline">Limpar</span></button>                </div>
+            </div>
+        </div>
+        <div class="modal modal-lg fade" id="advanced-search-modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Busca avançada</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            <i class="fas fa-box-archive me-2"></i>
+                            <strong>Pesquisar no processo físico</strong><br>
+                            Para consultar as proposições anteriores a 2023 informe o <strong>Nº da proposição</strong>
+                            no formato número/ano (ex.: <code>123/2022</code>), ou informe o
+                            período anterior a 2023.
+                            <hr class="my-2">
+                            <small>
+                                Os filtros de iniciativa, matéria legislativa e regime são aplicados por aproximação
+                                e alguns recursos não estão disponíveis para essas proposições.
+                            </small>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12 col-md-6 mb-1">
+                                <div class="form-group text "><label for="numeropropositura">Nº da proposição</label><input type="text" name="numeroPropositura" class="form-control" placeholder="Informe número/ano. Ex.: 123/2023" minlength="4" maxlength="9" pattern="\d{1,4}\/\d{4}" data-error-title="Nº da proposição" data-error-message="Informe no formato número/ano. Ex.: 123/2023." id="numeropropositura" /></div>                            </div>
+
+                            <div class="col-12 col-md-6 mb-1">
+                                <div class="form-group tomselect "><label for="iniciativa">Iniciativa</label><select name="iniciativa" class="form-select" id="iniciativa"><option value="">Todos</option><option value="ada-faraco-de-luca">Ada Faraco De Luca</option><option value="adelor-vieira">Adelor Vieira</option><option value="adherbal-deba-cabral">Adherbal Deba Cabral</option><option value="adilson-girardi">Deputado Adilson Girardi</option><option value="adir-cardoso-gentil">Adir Cardoso Gentil</option><option value="adrianinho">Deputado Adrianinho</option><option value="adriano-pereira">Adriano Pereira</option><option value="afonso-spaniol">Afonso Spaniol</option><option value="afranio-boppre">Afrânio Boppré</option><option value="aldo-schneider">Aldo Schneider</option><option value="alex-brasil">Deputado Alex Brasil</option><option value="altair-guidi">Altair Guidi</option><option value="altair-silva">Deputado Altair Silva</option><option value="ana-campagnolo">Deputada Ana Campagnolo</option><option value="ana-paula-lima">Ana Paula Lima</option><option value="andre-de-oliveira">Deputado André de Oliveira</option><option value="andre-luiz-dadam">André Luiz Dadam</option><option value="andronico-pereira-filho">Andrônico Pereira Filho</option><option value="angela-albino">Angela Albino</option><option value="anna-carolina">Deputada Anna Carolina</option><option value="antonio-aguiar">Antônio Aguiar</option><option value="antonio-carlos-vieira">Antônio Carlos Vieira</option><option value="antonio-ceron">Antônio Ceron</option><option value="antonio-luz-neto">Antonio Luz Neto</option><option value="arnaldo-moraes">Arnaldo Moraes</option><option value="bancada-da-grande-florianopolis">Bancada da Grande Florianópolis</option><option value="bancada-da-serrana">Bancada da Serrana</option><option value="bancada-de-lideres">Bancada de Líderes</option><option value="bancada-do-norte">Bancada do Norte</option><option value="bancada-do-oeste">Bancada do Oeste</option><option value="bancada-do-pl">Bancada do PL</option><option value="bancada-do-pp">Bancada do PP</option><option value="bancada-do-pt">Bancada do PT</option><option value="bancada-do-sul">Bancada do Sul</option><option value="bancada-do-vale-do-itajai">Bancada do Vale do Itajaí</option><option value="bancada-feminina">Bancada Feminina</option><option value="berlanda">Deputado Berlanda</option><option value="bruno-souza">Bruno Souza</option><option value="cairu-hack">Cairu Hack</option><option value="camilo-martins">Deputado Camilo Martins</option><option value="carlito-merss">Carlito Merss</option><option value="carlos-chiodini">Carlos Chiodini</option><option value="carlos-hoegen">Carlos Hoegen</option><option value="carlos-humberto">Deputado Carlos Humberto</option><option value="carlos-stupp">Carlos Stüpp</option><option value="carolline-sarda">Deputada Carolline Sardá</option><option value="celestino-secco">Celestino Secco</option><option value="celso-zuchi">Deputado Celso Zuchi</option><option value="cesar-souza">Cesar Souza</option><option value="cesar-souza-junior">Cesar Souza Júnior</option><option value="cesar-valduga">Cesar Valduga</option><option value="chiquinho-zenatti">Chiquinho Zenatti</option><option value="cirio-vandresen">Círio Vandresen</option><option value="ciro-roza">Ciro Roza</option><option value="cleiton-fossa">Deputado Cleiton Fossá</option><option value="cleiton-salvaro">Cleiton Salvaro</option><option value="clesio-salvaro">Clésio Salvaro</option><option value="comissao-de-assuntos-municipais">Comissão de Assuntos Municipais</option><option value="comissao-de-constituicao-e-justica">Comissão de Constituição e Justiça</option><option value="comissao-de-educacao-e-cultura">Comissão de Educação e Cultura</option><option value="comissao-de-financas-e-tributacao">Comissão de Finanças e Tributação</option><option value="comissao-de-seguranca-publica">Comissão de Segurança Pública</option><option value="comissao-dos-direitos-do-consumidor-e-do-contribuinte-e-de-legislacao-participativa">Comissão dos Direitos do Consumidor e do Contribuinte e de Legislação Participativa</option><option value="comissao-emancipacionista">Comissão Emancipacionista</option><option value="comissao-especial">Comissão Especial</option><option value="coronel-mocellin">Coronel Mocellin</option><option value="dado-cherem">Dado Cherem</option><option value="dagomar-carneiro">Dagomar Carneiro</option><option value="dalmo-claro">Dalmo Claro</option><option value="daniel-candido">Deputado Daniel Cândido</option><option value="daniel-tozzo">Daniel Tozzo</option><option value="darci-de-matos">Darci de Matos</option><option value="decio-da-fonseca-ribeiro">Décio da Fonseca Ribeiro</option><option value="decio-goes">Décio Góes</option><option value="defensoria-publica">Defensoria Pública</option><option value="deka-may">Deka May</option><option value="del-ulisses-gabriel">Del. Ulisses Gabriel</option><option value="derli-rodrigues">Derli Rodrigues</option><option value="dieter-janssen">Dieter Janssen</option><option value="dionei-walter-da-silva">Dionei Walter da Silva</option><option value="dirce-heiderscheidt">Deputada Dirce Heiderscheidt</option><option value="dirceu-dresch">Dirceu Dresch</option><option value="djalma-berger">Djalma Berger</option><option value="doia-guglielmi">Dóia Guglielmi</option><option value="edison-andrino">Edison Andrino</option><option value="edson-bez-de-oliveira">Edson Bez de Oliveira</option><option value="edson-dias">Edson Dias</option><option value="edson-dias-piriquito">Edson Dias (Piriquito)</option><option value="elizeu-mattos">Elizeu Mattos</option><option value="emerson-stein">Deputado Emerson Stein</option><option value="eni-jose-voltolini">Eni José Voltolini</option><option value="entidade">Entidade</option><option value="fabiano-da-luz">Deputado Fabiano da Luz</option><option value="fabio-flor">Fábio Flôr</option><option value="felipe-estevao">Felipe Estevão</option><option value="fernando-coruja">Fernando Coruja</option><option value="fernando-krelling">Deputado Fernando Krelling</option><option value="flavio-ragagnin">Flavio Ragagnin</option><option value="floriano">Floriano</option><option value="francisco-de-assis">Francisco de Assis</option><option value="francisco-kuster">Francisco Küster</option><option value="gabriel-ribeiro">Gabriel Ribeiro</option><option value="gean-loureiro">Gean Loureiro</option><option value="gelson-merisio">Gelson Merisio</option><option value="gelson-sorgato">Gelson Sorgato</option><option value="genesio-goulart">Genésio Goulart</option><option value="geraldo-werninghaus">Geraldo Werninghaus</option><option value="gerri-consoli">Deputado Gerri Consoli</option><option value="gervasio-jose-maciel">Gervásio José Maciel</option><option value="giancarlo-tomelin">Giancarlo Tomelin</option><option value="gilmar-knaesel">Gilmar Knaesel</option><option value="gilson-dos-santos">Gilson dos Santos</option><option value="governador-do-estado">Governador do Estado</option><option value="hans-fritsche">Hans Fritsche</option><option value="heitor-sche">Heitor Sché</option><option value="herneus-de-nadal">Herneus de Nadal</option><option value="ideli-salvatti">Ideli Salvatti</option><option value="idelvino-luiz-furlanetto">Idelvino Luiz Furlanetto</option><option value="iniciativa-popular">Iniciativa Popular</option><option value="ismael-dos-santos">Ismael dos Santos</option><option value="ivan-naatz">Deputado Ivan Naatz</option><option value="ivan-ranzolin">Ivan Ranzolin</option><option value="ivo-konell">Ivo Konell</option><option value="jailson-lima">Jailson Lima</option><option value="jaime-duarte">Jaime Duarte</option><option value="jaime-mantelli">Jaime Mantelli</option><option value="jaime-pasqualini">Jaime Pasqualini</option><option value="jair-miotto">Deputado Jair Miotto</option><option value="jair-silveira">Jair Silveira</option><option value="jaksom-natal-castelli">Jaksom Natal Castelli</option><option value="jana-guedes">Deputada Jana Guedes</option><option value="jandir-bellini">Jandir Bellini</option><option value="janice-krasniak">Deputada Janice Krasniak</option><option value="jean-kuhlmann">Jean Kuhlmann</option><option value="jean-leutprecht">Jean Leutprecht</option><option value="jeferson-cardozo">Deputado Jeferson Cardozo</option><option value="jerry-comper">Deputado Jerry Comper</option><option value="jesse-lopes">Deputado Jessé Lopes</option><option value="joao-amin">João Amin</option><option value="joao-henrique-blasi">João Henrique Blasi</option><option value="joao-itamar-da-silveira">João Itamar da Silveira</option><option value="joao-macagnan">João Macagnan</option><option value="joao-matos">João Matos</option><option value="joao-paulo-kleinubing">João Paulo Kleinübing</option><option value="joao-rodrigues">João Rodrigues</option><option value="joao-rosa">João Rosa</option><option value="joaquim-coelho-lemos">Joaquim Coelho Lemos</option><option value="joares-ponticelli">Joares Ponticelli</option><option value="jorge-teixeira">Jorge Teixeira</option><option value="jorginho-mello">Jorginho Mello</option><option value="jose-cardozo">José Cardozo</option><option value="jose-carlos-vieira">José Carlos Vieira</option><option value="jose-milton-scheffer">Deputado José Milton Scheffer</option><option value="jose-natal-pereira">José Natal Pereira</option><option value="jose-nei-a-ascari">José Nei A. Ascari</option><option value="jose-nei-ascari">José Nei Ascari</option><option value="jose-paulo-serafim">José Paulo Serafim</option><option value="julio-garcia">Deputado Julio Garcia</option><option value="julio-ronconi">Julio Ronconi</option><option value="julio-vanio-celso-teixeira">Júlio Vânio Celso Teixeira</option><option value="junior-cardoso">Deputado Junior Cardoso</option><option value="kennedy-nunes">Kennedy Nunes</option><option value="laercio-schuster">Laércio Schuster</option><option value="leodegar-da-cunha-tiscoski">Leodegar da Cunha Tiscoski</option><option value="leonel-pavan">Leonel Pavan</option><option value="licio-mauro-da-silveira">Lício Mauro da Silveira</option><option value="lucas-neves">Deputado Lucas Neves</option><option value="luciane-carminatti">Deputada Luciane Carminatti</option><option value="luiz-adelmo-budant">Luiz Adelmo Budant</option><option value="luiz-basso">Luíz Basso</option><option value="luiz-eduardo-cherem">Luiz Eduardo Cherem</option><option value="luiz-fernando-vampiro">Luiz Fernando Vampiro</option><option value="luiz-roberto-herbst">Luiz Roberto Herbst</option><option value="luiz-suzin-marini">Luiz Suzin Marini</option><option value="lunelli">Deputado Lunelli</option><option value="manoel-mota">Manoel Mota</option><option value="manoel-vitor-cavalcante">Manoel Vitor Cavalcante</option><option value="marcelo-albuquerque-mello-rego">Marcelo Albuquerque Mello Rego</option><option value="marcius-machado">Deputado Marcius Machado</option><option value="marcos-da-rosa">Deputado Marcos da Rosa</option><option value="marcos-vieira">Deputado Marcos Vieira</option><option value="mario-marcondes">Mario Marcondes</option><option value="mario-motta">Deputado Mário Motta</option><option value="marlene-fengler">Dep. Marlene Fengler</option><option value="marquito">Deputado Marquito</option><option value="massocco">Deputado Massocco</option><option value="matheus-cadorin">Deputado Matheus Cadorin</option><option value="mauricio-eskudlark">Deputado Maurício Eskudlark</option><option value="mauricio-peixer">Deputado Maurício Peixer</option><option value="mauro-de-nadal">Deputado Mauro De Nadal</option><option value="mauro-mariani">Mauro Mariani</option><option value="mesa">MESA</option><option value="miguel-ximenes-melo-filho">Miguel Ximenes Melo Filho</option><option value="milton-hobus">Milton Hobus</option><option value="milton-hobus-marcos-vieira">Milton Hobus, Marcos Vieira</option><option value="milton-mendes-de-oliveira">Milton Mendes de Oliveira</option><option value="milton-sander">Milton Sander</option><option value="ministerio-publico">Ministério Público</option><option value="moacir-sopelsa">Moacir Sopelsa</option><option value="napoleao-bernardes">Deputado Napoleão Bernardes</option><option value="narcizo-parisotto">Narcizo Parisotto</option><option value="natalino-lazare">Natalino Lázare</option><option value="nazareno-martins">Nazareno Martins</option><option value="nelson-goetten">Nelson Goetten</option><option value="neodi-saretta">Deputado Neodi Saretta</option><option value="nikolas-reis">Níkolas Reis</option><option value="nilson-goncalves">Nilson Gonçalves</option><option value="nilson-nandi">Nilson Nandi</option><option value="nilson-nelson-machado">Nilson Nelson Machado</option><option value="noemi-dos-santos-cruz">Noemí dos Santos Cruz</option><option value="norberto-stroisch-filho">Norberto Stroisch Filho</option><option value="odacir-zonta">Odacir Zonta</option><option value="olices-santini">Olices Santini</option><option value="onofre-santo-agostini">Onofre Santo Agostini</option><option value="oscar-gutz">Deputado Oscar Gutz</option><option value="osmar-vicentini">Osmar Vicentini</option><option value="ozair-coelho-de-souza">Ozair Coelho de Souza</option><option value="partido-liberal">Partido Liberal</option><option value="patricio-destro">Patrício Destro</option><option value="paulinha">Deputada Paulinha</option><option value="paulo-bornhausen">Paulo Bornhausen</option><option value="paulo-eccel">Paulo Eccel</option><option value="paulo-franca">Paulo França</option><option value="paulo-roberto-eccel">Paulo Roberto Eccel</option><option value="paulo-vidal">Paulo Vidal</option><option value="pedrao-silvestre">Deputado Pedrão Silvestre</option><option value="pedro-baldissera">Deputado Padre Pedro Baldissera</option><option value="pedro-bittencourt-neto">Pedro Bittencourt Neto</option><option value="pedro-uczai">Pedro Uczai</option><option value="pepe-collaco">Deputado Pepê Collaço</option><option value="plinio-de-castro">Plínio de Castro</option><option value="professor-grando">Professor Grando</option><option value="professora-odete-de-jesus">Professora Odete de Jesus</option><option value="renato-hinnig">Renato Hinnig</option><option value="renato-pike">Renato Pike</option><option value="reno-caramori">Reno Caramori</option><option value="ricardo-alba">Ricardo Alba</option><option value="ricardo-guidi">Ricardo Guidi</option><option value="roberto-salum">Roberto Salum</option><option value="rodrigo-fachini">Deputado Rodrigo Fachini</option><option value="rodrigo-minotto">Deputado Rodrigo Minotto</option><option value="rodrigo-preis">Deputado Rodrigo Preis</option><option value="rogerio-mendonca">Rogério Mendonça</option><option value="romildo-titon">Romildo Titon</option><option value="ronaldo-benedet">Ronaldo Benedet</option><option value="rudinei-floriano">Rudinei Floriano</option><option value="sandro-silva">Sandro Silva</option><option value="sandro-tarzan">Sandro Tarzan</option><option value="sargento-amauri-soares">Sargento Amauri Soares</option><option value="sargento-lima">Deputado Sargento Lima</option><option value="serafim-venzon">Serafim Venzon</option><option value="sergio-godinho">Sérgio Godinho</option><option value="sergio-guimaraes">Deputado Sérgio Guimarães</option><option value="sergio-motta">Deputado Sérgio Motta</option><option value="sidney-carlos-pacheco">Sidney Carlos Pacheco</option><option value="silvio-dreveck">Silvio Dreveck</option><option value="silvio-zancanaro">Deputado Silvio Zancanaro</option><option value="simone-schramm">Simone Schramm</option><option value="soratto">Deputado Soratto</option><option value="tati-teixeira">Tati Teixeira</option><option value="taxista-voltolini">Taxista Voltolini</option><option value="thiago-morastoni">Deputado Thiago Morastoni</option><option value="tiago-frigo">Tiago Frigo</option><option value="tiago-zilli">Deputado Tiago Zilli</option><option value="tribunal-de-contas-do-estado">Tribunal de Contas do Estado</option><option value="tribunal-de-justica-do-estado">Tribunal de Justiça do Estado</option><option value="udo-wagner">Udo Wagner</option><option value="unirio-nestor-dalpiaz">Unírio Nestor Dalpiaz</option><option value="valdir-cobalchini">Valdir Cobalchini</option><option value="valmir-comin">Valmir Comin</option><option value="valter-gallina">Valter Gallina</option><option value="vanderlei-olivio-rosso">Vanderlei Olívio Rosso</option><option value="vanessa-da-rosa">Deputada Prof. Vanessa da Rosa</option><option value="vanio-de-oliveira">Vânio de Oliveira</option><option value="vanio-dos-santos">Vânio dos Santos</option><option value="vicente-caropreso">Deputado Dr. Vicente Caropreso</option><option value="vilson-joao-santin">Vilson João Santin</option><option value="volnei-morastoni">Volnei Morastoni</option><option value="volnei-weber">Deputado Volnei Weber</option><option value="wilson-rogerio-wan-dall">Wilson Rogério Wan-Dall</option><option value="wilson-vieira">Wilson Vieira</option><option value="ze-caramori">Deputado Zé Caramori</option></select></div>                            </div>
+
+                            <div class="col-12 col-md-4 mb-1">
+                                <div class="form-group tomselect "><label for="ano">Ano</label><select name="ano" class="form-select" id="ano"><option value="">Selecione</option><option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option><option value="2004">2004</option><option value="2003">2003</option><option value="2002">2002</option><option value="2001">2001</option><option value="2000">2000</option><option value="1999">1999</option><option value="1998">1998</option><option value="1997">1997</option><option value="1996">1996</option><option value="1995">1995</option></select></div>                            </div>
+
+                            <div class="col-6 col-md-4 mb-1">
+                                <div class="form-group date "><label for="inicio">Data de abertura</label><input type="date" name="inicio" class="form-control" id="inicio" value="" /></div>                            </div>
+
+                            <div class="col-6 col-md-4 mb-1">
+                                <div class="form-group date "><label for="fim">Até</label><input type="date" name="fim" class="form-control" id="fim" value="" /></div>                            </div>
+
+                            <div class="col-12 my-3">
+                                <div class="form-group checkbox "><div class="form-check"><input type="hidden" name="arquivados" class="form-control" value="0" /><label for="arquivados" class="form-check-label"><input type="checkbox" name="arquivados" value="1" class="form-check-input"  checked="checked" id="arquivados" > <span class="form-check-sign">Pesquisar em projetos arquivados</span></label></div></div>                            </div>
+
+                            <div class="col-12 col-md-4 mb-1">
+                                <div class="form-group tomselect "><label for="tipopropositura">Tipo de proposição</label><select name="tipoPropositura" class="form-select" id="tipopropositura"><option value="">Todos</option><option value="17">Abaixo Assinado</option><option value="18">Anteprojeto de Lei</option><option value="19">Consulta</option><option value="11">Indicação</option><option value="15">Medida Provisória</option><option value="20">Mensagem</option><option value="10">Mensagem de Veto</option><option value="14">Moção</option><option value="5">Ofício</option><option value="33">Ofício Legislativo</option><option value="24">Pedido de Informação</option><option value="36">Pedido de Sustação de Processo</option><option value="22">Projeto de Conversão em Lei de Medida Provisória</option><option value="6">Projeto de Decreto Legislativo</option><option value="1">Projeto de Lei</option><option value="2">Projeto de Lei Complementar</option><option value="8">Projeto de Resolução</option><option value="7">Proposta de Emenda Constitucional</option><option value="25">Proposta de Sustação de Ato</option><option value="27">Recurso</option><option value="28">Representação</option><option value="9">Requerimento</option><option value="34">Requerimento de Comissões</option><option value="35">Requerimento de Plenário</option><option value="29">Requerimento Frente / Fórum / CPI / Comissão Mista</option><option value="31">Sugestão Legislativa</option></select></div>                            </div>
+
+                            <div class="col-12 col-md-4 mb-1">
+                                <div class="form-group tomselect "><label for="materialegislativa">Matéria legislativa</label><select name="materiaLegislativa" class="form-select" id="materialegislativa"><option value="">Todas</option><option value="7">Administração pública</option><option value="19">Afastamento de parlamentar</option><option value="2">Agropecuária</option><option value="18">Audiência Pública</option><option value="13">Cidade e transporte</option><option value="12">Ciência, tecnologia e comunicações</option><option value="21">Congratulações</option><option value="11">Consumidor</option><option value="16">Declaração de Utilidade Pública</option><option value="15">Direitos da Pessoa com Deficiência</option><option value="10">Direitos humanos</option><option value="9">Economia</option><option value="4">Educação, cultura e esportes</option><option value="23">Esportes e Lazer</option><option value="17">Finanças e Tributação</option><option value="20">Manifestação de pesar</option><option value="3">Medalha</option><option value="8">Meio ambiente e energia</option><option value="14">Política e Representação Partidária</option><option value="22">Proteção e Defesa Animal</option><option value="1">Saúde</option><option value="5">Segurança</option><option value="6">Trabalho, previdência e assistência</option></select></div>                            </div>
+                            <div class="col-12 col-md-4 mb-1">
+                                <div class="form-group tomselect "><label for="regimetramitacao">Regime de tramitação</label><select name="regimeTramitacao" class="form-select" id="regimetramitacao"><option value="">Todos</option><option value="5">Especial</option><option value="6">Não aplicável</option><option value="3">Ordinário</option><option value="4">Prioridade</option><option value="1">Secreto</option><option value="2">Urgência</option></select></div>                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success"><i class="fas fa-search"></i> Pesquisar</button>
+                            <button type="reset" class="btn btn-light"><i class="fas fa-times"></i> Limpar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const alert = document.getElementById('alert-atividade-parlamentar')
+        const expire = window.localStorage.getItem('alert-atividade-parlamentar')
+        const now = new Date().getTime()
+        if (expire === null || expire < now) {
+            alert.classList.remove('d-none')
+            alert.classList.add('show')
+        }
+        alert.addEventListener('closed.bs.alert', (event) => {
+            const expire = new Date()
+            expire.setMinutes(expire.getMinutes() + 30)
+            window.localStorage.setItem('alert-atividade-parlamentar', expire.getTime())
+        })
+    })
+</script>
+
+<div class="alert alert-info alert-dismissible fade d-none" id="alert-atividade-parlamentar">
+    Esta consulta é restrita a proposições de <strong>atividade parlamentar</strong>. Para consultar proposições
+    do processo legislativo (projetos de lei, PEC etc.), <a href="/proposicoes/processo-legislativo">clique aqui</a>.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-end mb-2">
+    Exibindo 1 - 10 de 98.052</div>            
+<div class="card card-alesc mb-3">
+    <div class="card-body">
+        <h4 class="card-title">
+            <a href="/proposicoes/NyvGJ">RQS/3485/2026</a>        </h4>
+        <p class="mb-1 fst-italic" style="-webkit-line-clamp: 3;">Cumprimentando o Prefeito e o Presidente da Câmara de Vereadores do Município de Pinhalzinho pela passagem do aniversário de emancipação político-administrativa.</p>
+        <div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold no-wrap">Entrada</div>
+                <div class="col-lg-10">04/11/2026</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Autoria</div>
+                <div class="col-lg-10"><ul class="m-0 list-unstyled"><li>Deputado Napoleão Bernardes</li></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Setor atual</div>
+                <div class="col-lg-10">Diretoria Legislativa</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Situação atual</div>
+                <div class="col-lg-10">Aguardando assinatura de setor designado</div>
+            </div>
+        </div>
+        <div class="mt-3 text-end">
+            <a href="/proposicoes/NyvGJ/documentos" class="btn btn-sm btn-outline-danger text-nowrap"><i class="fas fa-file-pdf"></i> Projeto Original</a>            <a href="javascript:;" class="btn btn-sm btn-outline-default btn-push text-nowrap"><i class="fas fa-bookmark"></i> Push</a>            <a href="/proposicoes/NyvGJ" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-plus-circle"></i> Ver</a>        </div>
+    </div>
+</div>    
+<div class="card card-alesc mb-3">
+    <div class="card-body">
+        <h4 class="card-title">
+            <a href="/proposicoes/5aBw0">RQS/3484/2026</a>        </h4>
+        <p class="mb-1 fst-italic" style="-webkit-line-clamp: 3;">Cumprimentando o Prefeito e o Presidente da Câmara de Vereadores do Município de Palma Sola pela passagem do aniversário de emancipação político-administrativa.</p>
+        <div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold no-wrap">Entrada</div>
+                <div class="col-lg-10">04/11/2026</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Autoria</div>
+                <div class="col-lg-10"><ul class="m-0 list-unstyled"><li>Deputado Napoleão Bernardes</li></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Setor atual</div>
+                <div class="col-lg-10">Diretoria Legislativa</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Situação atual</div>
+                <div class="col-lg-10">Aguardando assinatura de setor designado</div>
+            </div>
+        </div>
+        <div class="mt-3 text-end">
+            <a href="/proposicoes/5aBw0/documentos" class="btn btn-sm btn-outline-danger text-nowrap"><i class="fas fa-file-pdf"></i> Projeto Original</a>            <a href="javascript:;" class="btn btn-sm btn-outline-default btn-push text-nowrap"><i class="fas fa-bookmark"></i> Push</a>            <a href="/proposicoes/5aBw0" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-plus-circle"></i> Ver</a>        </div>
+    </div>
+</div>    
+<div class="card card-alesc mb-3">
+    <div class="card-body">
+        <h4 class="card-title">
+            <a href="/proposicoes/zlrVy">RQS/3483/2026</a>        </h4>
+        <p class="mb-1 fst-italic" style="-webkit-line-clamp: 3;">Cumprimentando a Prefeita e o Presidente da Câmara de Vereadores do Município de Paulo Lopes pela passagem do aniversário de emancipação político-administrativa.</p>
+        <div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold no-wrap">Entrada</div>
+                <div class="col-lg-10">04/11/2026</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Autoria</div>
+                <div class="col-lg-10"><ul class="m-0 list-unstyled"><li>Deputado Napoleão Bernardes</li></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Setor atual</div>
+                <div class="col-lg-10">Diretoria Legislativa</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Situação atual</div>
+                <div class="col-lg-10">Aguardando assinatura de setor designado</div>
+            </div>
+        </div>
+        <div class="mt-3 text-end">
+            <a href="/proposicoes/zlrVy/documentos" class="btn btn-sm btn-outline-danger text-nowrap"><i class="fas fa-file-pdf"></i> Projeto Original</a>            <a href="javascript:;" class="btn btn-sm btn-outline-default btn-push text-nowrap"><i class="fas fa-bookmark"></i> Push</a>            <a href="/proposicoes/zlrVy" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-plus-circle"></i> Ver</a>        </div>
+    </div>
+</div>    
+<div class="card card-alesc mb-3">
+    <div class="card-body">
+        <h4 class="card-title">
+            <a href="/proposicoes/5kAZW">RQS/3482/2026</a>        </h4>
+        <p class="mb-1 fst-italic" style="-webkit-line-clamp: 3;">Cumprimentando o Prefeito e o Presidente da Câmara de Vereadores do Município de Arroio Trinta pela passagem do aniversário de emancipação político-administrativa.</p>
+        <div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold no-wrap">Entrada</div>
+                <div class="col-lg-10">04/11/2026</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Autoria</div>
+                <div class="col-lg-10"><ul class="m-0 list-unstyled"><li>Deputado Napoleão Bernardes</li></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Setor atual</div>
+                <div class="col-lg-10">Diretoria Legislativa</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Situação atual</div>
+                <div class="col-lg-10">Aguardando assinatura de setor designado</div>
+            </div>
+        </div>
+        <div class="mt-3 text-end">
+            <a href="/proposicoes/5kAZW/documentos" class="btn btn-sm btn-outline-danger text-nowrap"><i class="fas fa-file-pdf"></i> Projeto Original</a>            <a href="javascript:;" class="btn btn-sm btn-outline-default btn-push text-nowrap"><i class="fas fa-bookmark"></i> Push</a>            <a href="/proposicoes/5kAZW" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-plus-circle"></i> Ver</a>        </div>
+    </div>
+</div>    
+<div class="card card-alesc mb-3">
+    <div class="card-body">
+        <h4 class="card-title">
+            <a href="/proposicoes/Kg3ww">RQS/3481/2026</a>        </h4>
+        <p class="mb-1 fst-italic" style="-webkit-line-clamp: 3;">Cumprimentando o Prefeito e o Presidente da Câmara de Vereadores do Município de Presidente Nereu pela passagem do aniversário de emancipação político-administrativa.</p>
+        <div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold no-wrap">Entrada</div>
+                <div class="col-lg-10">04/11/2026</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Autoria</div>
+                <div class="col-lg-10"><ul class="m-0 list-unstyled"><li>Deputado Napoleão Bernardes</li></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Setor atual</div>
+                <div class="col-lg-10">Diretoria Legislativa</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Situação atual</div>
+                <div class="col-lg-10">Aguardando assinatura de setor designado</div>
+            </div>
+        </div>
+        <div class="mt-3 text-end">
+            <a href="/proposicoes/Kg3ww/documentos" class="btn btn-sm btn-outline-danger text-nowrap"><i class="fas fa-file-pdf"></i> Projeto Original</a>            <a href="javascript:;" class="btn btn-sm btn-outline-default btn-push text-nowrap"><i class="fas fa-bookmark"></i> Push</a>            <a href="/proposicoes/Kg3ww" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-plus-circle"></i> Ver</a>        </div>
+    </div>
+</div>    
+<div class="card card-alesc mb-3">
+    <div class="card-body">
+        <h4 class="card-title">
+            <a href="/proposicoes/zWD0M">IND/0685/2026</a>        </h4>
+        <p class="mb-1 fst-italic" style="-webkit-line-clamp: 3;">Dirigida ao Governador do Estado, sugerindo a adoção de medidas administrativas necessárias para incluir Concórdia no programa VOA+SC.</p>
+        <div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold no-wrap">Entrada</div>
+                <div class="col-lg-10">04/11/2026</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Autoria</div>
+                <div class="col-lg-10"><ul class="m-0 list-unstyled"><li>Deputado Neodi Saretta</li></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Setor atual</div>
+                <div class="col-lg-10">Diretoria Legislativa</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Situação atual</div>
+                <div class="col-lg-10">Aguardando Comunicação da Indicação na Ordem do Dia</div>
+            </div>
+        </div>
+        <div class="mt-3 text-end">
+            <a href="/proposicoes/zWD0M/documentos" class="btn btn-sm btn-outline-danger text-nowrap"><i class="fas fa-file-pdf"></i> Projeto Original</a>            <a href="javascript:;" class="btn btn-sm btn-outline-default btn-push text-nowrap"><i class="fas fa-bookmark"></i> Push</a>            <a href="/proposicoes/zWD0M" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-plus-circle"></i> Ver</a>        </div>
+    </div>
+</div>    
+<div class="card card-alesc mb-3">
+    <div class="card-body">
+        <h4 class="card-title">
+            <a href="/proposicoes/5Z9W6">IND/0684/2026</a>        </h4>
+        <p class="mb-1 fst-italic" style="-webkit-line-clamp: 3;">Dirigida ao Governador do Estado, sugerindo o aumento do número de médicos-veterinários na Cidasc, por meio da convocação dos profissionais aprovados no Concurso Público.</p>
+        <div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold no-wrap">Entrada</div>
+                <div class="col-lg-10">04/11/2026</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Autoria</div>
+                <div class="col-lg-10"><ul class="m-0 list-unstyled"><li>Deputado Neodi Saretta</li></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Setor atual</div>
+                <div class="col-lg-10">Diretoria Legislativa</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Situação atual</div>
+                <div class="col-lg-10">Aguardando Comunicação da Indicação na Ordem do Dia</div>
+            </div>
+        </div>
+        <div class="mt-3 text-end">
+            <a href="/proposicoes/5Z9W6/documentos" class="btn btn-sm btn-outline-danger text-nowrap"><i class="fas fa-file-pdf"></i> Projeto Original</a>            <a href="javascript:;" class="btn btn-sm btn-outline-default btn-push text-nowrap"><i class="fas fa-bookmark"></i> Push</a>            <a href="/proposicoes/5Z9W6" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-plus-circle"></i> Ver</a>        </div>
+    </div>
+</div>    
+<div class="card card-alesc mb-3">
+    <div class="card-body">
+        <h4 class="card-title">
+            <a href="/proposicoes/N0rwn">IND/0683/2026</a>        </h4>
+        <p class="mb-1 fst-italic" style="-webkit-line-clamp: 3;">Dirigida ao Governador do Estado, sugerindo a alteração da alínea &quot;e&quot; do inciso I do art. 4º do Decreto nº 1.265, de 31 de outubro de 2025, para estender aos integrantes do Corpo Temporário de Inativos da Segurança Pública (CTISP) a ressalva hoje restrita à Secretaria Executiva da Casa Militar, com atribuição do custeio ao órgão ou entidade beneficiária da prestação do serviço. </p>
+        <div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold no-wrap">Entrada</div>
+                <div class="col-lg-10">04/11/2026</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Autoria</div>
+                <div class="col-lg-10"><ul class="m-0 list-unstyled"><li>Deputado Jessé Lopes</li></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Setor atual</div>
+                <div class="col-lg-10">Diretoria Legislativa</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Situação atual</div>
+                <div class="col-lg-10">Aguardando Comunicação da Indicação na Ordem do Dia</div>
+            </div>
+        </div>
+        <div class="mt-3 text-end">
+            <a href="/proposicoes/N0rwn/documentos" class="btn btn-sm btn-outline-danger text-nowrap"><i class="fas fa-file-pdf"></i> Projeto Original</a>            <a href="javascript:;" class="btn btn-sm btn-outline-default btn-push text-nowrap"><i class="fas fa-bookmark"></i> Push</a>            <a href="/proposicoes/N0rwn" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-plus-circle"></i> Ver</a>        </div>
+    </div>
+</div>    
+<div class="card card-alesc mb-3">
+    <div class="card-body">
+        <h4 class="card-title">
+            <a href="/proposicoes/K4rWL">RQS/3480/2026</a>        </h4>
+        <p class="mb-1 fst-italic" style="-webkit-line-clamp: 3;">Cumprimentando o Prefeito e o Presidente da Câmara de Vereadores do Município de Itaiópolis pela passagem do aniversário de emancipação político-administrativa.</p>
+        <div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold no-wrap">Entrada</div>
+                <div class="col-lg-10">04/11/2026</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Autoria</div>
+                <div class="col-lg-10"><ul class="m-0 list-unstyled"><li>Deputado Fabiano da Luz</li></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Setor atual</div>
+                <div class="col-lg-10">Diretoria Legislativa</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Situação atual</div>
+                <div class="col-lg-10">Aguardando assinatura de setor designado</div>
+            </div>
+        </div>
+        <div class="mt-3 text-end">
+            <a href="/proposicoes/K4rWL/documentos" class="btn btn-sm btn-outline-danger text-nowrap"><i class="fas fa-file-pdf"></i> Projeto Original</a>            <a href="javascript:;" class="btn btn-sm btn-outline-default btn-push text-nowrap"><i class="fas fa-bookmark"></i> Push</a>            <a href="/proposicoes/K4rWL" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-plus-circle"></i> Ver</a>        </div>
+    </div>
+</div>    
+<div class="card card-alesc mb-3">
+    <div class="card-body">
+        <h4 class="card-title">
+            <a href="/proposicoes/K9rlR">RQS/3479/2026</a>        </h4>
+        <p class="mb-1 fst-italic" style="-webkit-line-clamp: 3;">Cumprimentando o Prefeito e o Presidente da Câmara de Vereadores do Município de Pescaria Brava pela passagem do aniversário de emancipação político-administrativa.</p>
+        <div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold no-wrap">Entrada</div>
+                <div class="col-lg-10">04/11/2026</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Autoria</div>
+                <div class="col-lg-10"><ul class="m-0 list-unstyled"><li>Deputado Fabiano da Luz</li></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Setor atual</div>
+                <div class="col-lg-10">Diretoria Legislativa</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 text-lg-end fw-bold">Situação atual</div>
+                <div class="col-lg-10">Aguardando assinatura de setor designado</div>
+            </div>
+        </div>
+        <div class="mt-3 text-end">
+            <a href="/proposicoes/K9rlR/documentos" class="btn btn-sm btn-outline-danger text-nowrap"><i class="fas fa-file-pdf"></i> Projeto Original</a>            <a href="javascript:;" class="btn btn-sm btn-outline-default btn-push text-nowrap"><i class="fas fa-bookmark"></i> Push</a>            <a href="/proposicoes/K9rlR" class="btn btn-sm btn-outline-default text-nowrap"><i class="fas fa-plus-circle"></i> Ver</a>        </div>
+    </div>
+</div>        <div class="d-flex justify-content-center">
+    <ul class="pagination">
+                <li class="page-item disabled"><a class="page-link" href="" onclick="return false;"><i class="fa-solid fa-angle-left"></i></a></li>        <li class="page-item active"><a class="page-link" href="">1</a></li><li class="page-item"><a class="page-link" href="/proposicoes/atividade-parlamentar?page=2">2</a></li><li class="page-item"><a class="page-link" href="/proposicoes/atividade-parlamentar?page=3">3</a></li><li class="page-item"><a class="page-link" href="/proposicoes/atividade-parlamentar?page=4">4</a></li><li class="page-item"><a class="page-link" href="/proposicoes/atividade-parlamentar?page=5">5</a></li><li class="page-item"><a class="page-link" href="/proposicoes/atividade-parlamentar?page=6">6</a></li>        <li class="page-item"><a class="page-link" rel="next" href="/proposicoes/atividade-parlamentar?page=2"><i class="fa-solid fa-angle-right"></i></a></li>        <li class="page-item"><a class="page-link" href="/proposicoes/atividade-parlamentar?page=9806"><i class="fa-solid fa-angles-right"></i></a></li>    </ul>
+</div>    </div>
+</div>    </div>
+    <footer class="py-4 py-md-5 mt-5 bg-light">
+    <div class="container py-4 py-md-5 px-4 px-md-3">
+        <div class="row">
+    <div class="col-lg-4 mb-3">
+        <a class="d-inline-flex align-items-center mb-2 link-dark text-decoration-none" href="/" aria-label="Bootstrap">
+            <img src="/alesc/bootstrap_theme/img/brasao.png?1792755833" class="d-block me-2" style="width:40px" alt="">            <span class="fs-5">e-Legis</span>
+        </a>
+        <ul class="list-unstyled small text-muted">
+            <li>Assembleia Legislativa de Santa Catarina.</li>
+            <li>Palácio Barriga Verde - Rua Doutor Jorge Luz Fontes, 310</li>
+            <li>CEP: 88020-900 - Florianópolis - Santa Catarina</li>
+            <li>Fone: (48) 3221-2500</li>
+        </ul>
+    </div>
+    <div class="col-lg-3 mb-3">
+        <h5>Processo Legislativo</h5>
+        <ul class="list-unstyled">
+            <li class="mb-2">
+                <a href="/proposicoes/processo-legislativo">Processo Legislativo</a>            </li>
+            <li class="mb-2">
+                <a href="/proposicoes/atividade-parlamentar">Atividade Parlamentar</a>            </li>
+            <li class="mb-2">
+                <a href="/sessoes-plenarias">Sessões Plenárias</a>            </li>
+            <li class="mb-2">
+                <a href="/comissoes-permanentes">Comissões Permanentes</a>            </li>
+        </ul>
+    </div>
+    <div class="col-lg-5 mb-3">
+        <h5>Ajuda</h5>
+        <p>
+            <small class="fst-italic">
+                Dúvidas? Favor contatar nossa Central de Serviços no telefone (48) 3221-2511 ou ramal 2511.
+            </small>
+        </p>
+        <ul class="list-unstyled small text-muted fst-italic">
+            <li>
+                Versão 1.20.5 de
+                28/10/2026                (build 24842)
+            </li>
+        </ul>
+    </div>
+</div>    </div>
+</footer>    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-comissao" aria-labelledby="offcanvas-comissao-label">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvas-comissao-label"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+                </div>
+                <div class="offcanvas-body"></div>
+            </div> <div class="modal fade" id="modal-fullscreen-documento" tabindex="-1" aria-labelledby="modalFullScreenLabel" aria-hidden="true">
+                <div class="modal-dialog modal-fullscreen">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-truncate" id="modalFullScreenLabel"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="modal" id="modal-reuniao-processo">
+                    <div class="modal-dialog modal-xl
+                     modal-dialog-scrollable modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Extrato de votação</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body bg-light"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>    <div id="scroll-to-top">
+        <a href="#">
+            <i class="fas fa-chevron-up"></i>
+        </a>
+    </div>
+    <div id="modal" class="modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+    <div id="modal-lg" class="modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+    <div id="modal-xl" class="modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

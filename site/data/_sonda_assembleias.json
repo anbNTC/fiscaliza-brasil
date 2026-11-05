@@ -1,702 +1,555 @@
-[
- {
-  "u": "https://al.sp.gov.br/api/deputado",
-  "st": 404,
-  "ct": "text/html",
-  "n": 28935,
-  "final": "https://al.sp.gov.br/api/deputado",
-  "ini": "<!DOCTYPE html>\r\n<html lang=\"pt-br\" xmlns:og=\"http://ogp.me/ns#\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script type=\"text/javascript\" src=\"/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\" data-dtconfig=\"rid=RID_-102617345|rpid=-1132211577|domain=sp.gov.br|reportUrl=/rb_bf32302csu|app=da4214bfad2bf73e|owasp=1|featureHash=ICA7NVfgqrux|rdnt=1|uxrgce=1|c"
- },
- {
-  "u": "https://al.sp.gov.br/api/propositura",
-  "st": 404,
-  "ct": "text/html",
-  "n": 28932,
-  "final": "https://al.sp.gov.br/api/propositura",
-  "ini": "<!DOCTYPE html>\r\n<html lang=\"pt-br\" xmlns:og=\"http://ogp.me/ns#\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script type=\"text/javascript\" src=\"/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\" data-dtconfig=\"rid=RID_44515795|rpid=-515859111|domain=sp.gov.br|reportUrl=/rb_bf32302csu|app=da4214bfad2bf73e|owasp=1|featureHash=ICA7NVfgqrux|rdnt=1|uxrgce=1|cuc="
- },
- {
-  "u": "https://dadosabertos.almg.gov.br/ws/deputados/em_exercicio?formato=json",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.almg.gov.br', port=443): Max retries exceeded with url: /ws/deputados/em_exercici"
- },
- {
-  "u": "https://dadosabertos.almg.gov.br/ws/proposicoes/pesquisa/direcionada?tp=100&formato=json&ano=2026",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.almg.gov.br', port=443): Max retries exceeded with url: /ws/proposicoes/pesquisa/"
- },
- {
-  "u": "https://dadosabertos.alepe.pe.gov.br/",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.alepe.pe.gov.br', port=443): Max retries exceeded with url: / (Caused by ConnectT"
- },
- {
-  "u": "https://dadosabertos.alepe.pe.gov.br/api/parlamentares",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.alepe.pe.gov.br', port=443): Max retries exceeded with url: /api/parlamentares (C"
- },
- {
-  "u": "https://dadosabertos.alepe.pe.gov.br/parlamentares",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.alepe.pe.gov.br', port=443): Max retries exceeded with url: /parlamentares (Cause"
- },
- {
-  "u": "https://dadosabertos.alepe.pe.gov.br/api/v1/parlamentares",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.alepe.pe.gov.br', port=443): Max retries exceeded with url: /api/v1/parlamentares"
- },
- {
-  "u": "https://dadosabertos.alepe.pe.gov.br/api/projetos",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='dadosabertos.alepe.pe.gov.br', port=443): Max retries exceeded with url: /api/projetos (Caused"
- },
- {
-  "u": "https://dadosabertos.cl.df.gov.br/api/3/action/package_list",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.cl.df.gov.br', port=443): Max retries exceeded with url: /api/3/action/package_li"
- },
- {
-  "u": "https://dadosabertos.cl.df.gov.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.cl.df.gov.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "http://webservices.assembleia.pr.leg.br/api/public/parlamentar",
-  "st": 404,
-  "ct": "application/json;charset=UTF-8",
-  "n": 132,
-  "final": "http://webservices.assembleia.pr.leg.br/api/public/parlamentar",
-  "ini": "{\"timestamp\":\"2026-11-05T01:03:53.800+0000\",\"status\":404,\"error\":\"Not Found\",\"message\":\"Not Found\",\"path\":\"/api/public/parlamentar\"}"
- },
- {
-  "u": "https://www.alesc.sc.gov.br/dados-abertos",
-  "st": 404,
-  "ct": "text/html; charset=UTF-8",
-  "n": 360936,
-  "final": "https://www.alesc.sc.gov.br/dados-abertos",
-  "ini": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"theme-color\" content=\"#404040\">\n    <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"#404040\">\n\n    <meta name='robots' content='noindex, follow' />\n\n\t<!-- This site is optimized with the Yoast SEO plugin v27.2 - https://yoast."
- },
- {
-  "u": "https://dadosabertos.alesc.sc.gov.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.alesc.sc.gov.br', port=443): Max retries exceeded with url: / (Caused by NameReso"
- },
- {
-  "u": "https://www.al.rs.gov.br/dados-abertos",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='www.al.rs.gov.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by Connect"
- },
- {
-  "u": "https://ww4.al.rs.gov.br/dados-abertos",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='ww4.al.rs.gov.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by Connect"
- },
- {
-  "u": "https://www.alerj.rj.gov.br/DadosAbertos",
-  "st": 404,
-  "ct": "text/html; charset=utf-8",
-  "n": 4204,
-  "final": "https://www.alerj.rj.gov.br/DadosAbertos",
-  "ini": "<!DOCTYPE html>\r\n<html>\r\n    <head>\r\n        <title>The resource cannot be found.</title>\r\n        <meta name=\"viewport\" content=\"width=device-width\" />\r\n        <script type=\"text/javascript\" src=\"/ruxitagentjs_ICANQVfqru_10347260902154543.js\" data-dtconfig=\"rid=RID_-1075407917|rpid=-1641350257|domain=alerj.rj.gov.br|reportUrl=/rb_bf66253twh|app=ed1eaaa3451dbd4d|srtbv=4|owasp=1|featureHash=ICANQV"
- },
- {
-  "u": "https://dadosabertos.alerj.rj.gov.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.alerj.rj.gov.br', port=443): Max retries exceeded with url: / (Caused by NameReso"
- },
- {
-  "u": "https://www.al.ba.gov.br/dados-abertos",
-  "st": 404,
-  "ct": "application/json;charset=UTF-8",
-  "n": 117,
-  "final": "https://www.al.ba.gov.br/dados-abertos",
-  "ini": "{\"timestamp\":1793840637027,\"status\":404,\"error\":\"Not Found\",\"message\":\"No message available\",\"path\":\"/dados-abertos\"}"
- },
- {
-  "u": "https://www.al.ce.gov.br/index.php/dados-abertos",
-  "st": 404,
-  "ct": "application/json",
-  "n": 21,
-  "final": "https://www.al.ce.gov.br/index.php/dados-abertos",
-  "ini": "{\n    \"message\": \"\"\n}"
- },
- {
-  "u": "https://www.al.es.gov.br/Dados-Abertos",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='www.al.es.gov.br', port=443): Max retries exceeded with url: /Dados-Abertos (Caused by Connect"
- },
- {
-  "u": "https://portal.al.go.leg.br/api/proposicoes",
-  "st": 404,
-  "ct": "text/html; charset=utf-8",
-  "n": 161763,
-  "final": "https://portal.al.go.leg.br/api/proposicoes",
-  "ini": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>404</title>\n  <style>\n    @font-face{font-family:'Simbolo';src:url(data:font/ttf;base64,AAEAAAAQAQAABAAARkZUTWBO4y4AAAEMAAAAHEdERUYArAAEAAABKAAAACBPUy8yGgw4sgAAAUgAAABgY21hcKmuVnQAAAGoAAABomN2dCABlAIYAAADTAAAABBmcGdtD7QvpwAAA1wAAAJlZ2FzcAAAABAAAAXEAAAACGdseWboDACYAAAFzAAAVDBoZWFkA/S8+gAAWfwAAAA2aGhlYRH/DroAAFo0AAAAJGhtdHj"
- },
- {
-  "u": "https://transparencia.al.go.leg.br/",
-  "st": 200,
-  "ct": "text/html; charset=utf-8",
-  "n": 12919,
-  "final": "https://transparencia.al.go.leg.br/",
-  "ini": "<!DOCTYPE html>\n<!-- Versão atual do sistema: 5.25.15 -->\n<html ng-app=\"app.transparencia\" lang=\"pt-br\">\n  <head>\n    <meta charset=\"utf-8\">\n    <base href=\"/\">\n    <!-- UI-ROUTER-METATAGS -->\n    <title ng-bind=\"MetaTags.title\">Transparência Alego</title>\n    <meta name=\"description\" content=\"{{MetaTags.description}}\">\n    <meta name=\"keywords\" content=\"{{MetaTags.keywords}}\">\n    <meta ng-repeat"
- },
- {
-  "u": "https://sapl.al.ac.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 12687,
-  "final": "https://sapl.al.ac.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":187,\"total_pages\":187,\"page\":1},\"results\":[{\"id\":248,\"__str__\":\"ADAILTON CRUZ\",\"link_detail_backend\":\"/parlamentar/248\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:05:55.627605-03:00\""
- },
- {
-  "u": "https://sapl.al.ac.leg.br/api/materia/materialegislativa/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 1588,
-  "final": "https://sapl.al.ac.leg.br/api/materia/materialegislativa/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":19387,\"total_pages\":19387,\"page\":1},\"results\":[{\"id\":18729,\"__str__\":\"Indica\\u00e7\\u00e3o n\\u00ba 1 de 2026\",\"link_detail_backend\":\"/materia/18729\",\"metadata\":{},\"numero\":1,\"ano\":2026,\"numero_p"
- },
- {
-  "u": "https://dadosabertos.al.ac.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ac.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.ac.leg.br/dados-abertos",
-  "st": 200,
-  "ct": "text/html; charset=UTF-8",
-  "n": 748287,
-  "final": "https://www.al.ac.leg.br/dados-abertos/",
-  "ini": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n\t<meta charset=\"UTF-8\" />\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n\t<link rel=\"profile\" href=\"http://gmpg.org/xfn/11\" />\n\t<link rel=\"pingback\" href=\"https://www.al.ac.leg.br/xmlrpc.php\" />\n\t<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />\n\n<!-- Google Tag Manager f"
- },
- {
-  "u": "https://sapl.al.al.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 712,
-  "final": "https://sapl.al.al.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":132,\"total_pages\":132,\"page\":1},\"results\":[{\"id\":71,\"__str__\":\"ADALBERTO CAVALCANTE\",\"link_detail_backend\":\"/parlamentar/71\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:07:41.377607-0"
- },
- {
-  "u": "https://sapl.al.al.leg.br/api/materia/materialegislativa/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 1739,
-  "final": "https://sapl.al.al.leg.br/api/materia/materialegislativa/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":15634,\"total_pages\":15634,\"page\":1},\"results\":[{\"id\":15246,\"__str__\":\"INDICA\\u00c7\\u00c3O n\\u00ba 2057 de 2026\",\"link_detail_backend\":\"/materia/15246\",\"metadata\":{},\"numero\":2057,\"ano\":2026,\"nu"
- },
- {
-  "u": "https://dadosabertos.al.al.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.al.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.al.leg.br/dados-abertos",
-  "st": 404,
-  "ct": "text/html;charset=utf-8",
-  "n": 23280,
-  "final": "https://www.al.al.leg.br/dados-abertos",
-  "ini": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"pt-br\" xml:lang=\"pt-br\">\n\n<head>\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\n    \n        <base href=\"https://www.al.al.leg.br/\" /><!--[if lt IE 7]></base><![endif]-->\n    \n\n    \n        \n<meta content=\"A Casa dos Alagoanos\" name=\"description\" />\n\n  \n    <style type=\"text/css\" media=\"screen\">@import url"
- },
- {
-  "u": "https://sapl.al.am.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 4408,
-  "final": "https://sapl.al.am.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":67,\"total_pages\":67,\"page\":1},\"results\":[{\"id\":5,\"__str__\":\"Abdala Fraxe\",\"link_detail_backend\":\"/parlamentar/5\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T13:55:40.488819-03:00\",\"nome_"
- },
- {
-  "u": "https://sapl.al.am.leg.br/api/materia/materialegislativa/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 1325,
-  "final": "https://sapl.al.am.leg.br/api/materia/materialegislativa/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":79355,\"total_pages\":79355,\"page\":1},\"results\":[{\"id\":180303,\"__str__\":\"MENSAGEM DO GOVERNADOR n\\u00ba 1 de 2026\",\"link_detail_backend\":\"/materia/180303\",\"metadata\":{},\"numero\":1,\"ano\":2026,\"num"
- },
- {
-  "u": "https://dadosabertos.al.am.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.am.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.am.leg.br/dados-abertos",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='www.al.am.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by Connect"
- },
- {
-  "u": "https://sapl.al.ap.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ap.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.ap.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ap.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.ap.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ap.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.ap.leg.br/dados-abertos",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='www.al.ap.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by Connect"
- },
- {
-  "u": "https://sapl.al.ba.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ba.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.ba.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ba.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.ba.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ba.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.ba.leg.br/dados-abertos",
-  "st": 200,
-  "ct": "text/html;charset=UTF-8",
-  "n": 66560,
-  "final": "https://www.al.ba.gov.br:443/",
-  "ini": "<!DOCTYPE HTML>\r\n<html>\r\n<meta charset=\"utf-8\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-Z5JX068VJQ\"></script>\r\n<script>\r\n  window.dataLayer = window.dataLayer || [];\r\n  function gtag(){dataLayer.push(arguments);}\r\n  gtag('js', new Date());\r\n\r\n  gtag('config', 'G-Z5JX068VJQ');\r\n</script>\r\n<title>Assembleia Legislativa da Bahia</title>"
- },
- {
-  "u": "https://sapl.al.ce.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ce.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.ce.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ce.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.ce.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ce.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.ce.leg.br/dados-abertos",
-  "st": 200,
-  "ct": "text/html; charset=UTF-8",
-  "n": 203453,
-  "final": "https://www.al.ce.gov.br/",
-  "ini": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta\n        name=\"viewport\"\n        content=\"width=device-width, initial-scale=1.0\"\n    >\n    <meta\n        http-equiv=\"X-UA-Compatible\"\n        content=\"ie=edge\"\n    >\n<!-- DataTables CSS -->\n<link rel=\"stylesheet\" href=\"https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css\">\n<link rel=\"stylesheet\" href=\"https:"
- },
- {
-  "u": "https://sapl.al.df.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.df.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.df.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.df.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.df.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.df.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.df.leg.br/dados-abertos",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='www.al.df.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by NameRes"
- },
- {
-  "u": "https://sapl.al.es.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.es.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.es.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.es.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.es.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.es.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.es.leg.br/dados-abertos",
-  "erro": "ConnectTimeout: HTTPConnectionPool(host='www.al.es.gov.br', port=80): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<H"
- },
- {
-  "u": "https://sapl.al.go.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.go.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.go.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.go.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.go.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.go.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.go.leg.br/dados-abertos",
-  "st": 200,
-  "ct": "text/html; charset=utf-8",
-  "n": 134859,
-  "final": "https://portal.al.go.leg.br",
-  "ini": "<!DOCTYPE html>\n<!-- Versão atual do sistema: 5.25.15 -->\n<html ng-app=\"app.portal\" lang=\"pt-BR\">\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>Portal da Alego</title>\n    <meta name=\"description\" content=\"Assembleia Legislativa de Goiás\">\n    <!-- Facebook Open Graph data -->\n    <meta property=\"og:title\" content=\"Portal da Alego\"/>\n    <meta propert"
- },
- {
-  "u": "https://sapl.al.ma.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='sapl.al.ma.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.ma.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='sapl.al.ma.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.ma.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ma.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.ma.leg.br/dados-abertos",
-  "erro": "ConnectTimeout: HTTPSConnectionPool(host='www.al.ma.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by Connect"
- },
- {
-  "u": "https://sapl.al.mg.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.mg.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.mg.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.mg.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.mg.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.mg.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.mg.leg.br/dados-abertos",
-  "erro": "ConnectionError: HTTPConnectionPool(host='www.almg.gov.br', port=80): Max retries exceeded with url: / (Caused by NewConnectionError(\"HTT"
- },
- {
-  "u": "https://sapl.al.ms.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ms.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.ms.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.ms.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.ms.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ms.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.ms.leg.br/dados-abertos",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='www.al.ms.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by NameRes"
- },
- {
-  "u": "https://sapl.al.mt.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 798,
-  "final": "https://sapl.al.mt.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.mt.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":25,\"total_pages\":25,\"page\":1},\"results\":[{\"id\":3,\"__str__\":\"Baiano Filho\",\"link_detail_backend\":\"/parlamentar/3\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:09:57.857315-03:00\",\"nome_"
- },
- {
-  "u": "https://sapl.al.mt.leg.br/api/materia/materialegislativa/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 1162,
-  "final": "https://sapl.al.mt.leg.br/api/materia/materialegislativa/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":null,\"previous\":null},\"previous_page\":null,\"next_page\":null,\"start_index\":1,\"end_index\":1,\"total_entries\":1,\"total_pages\":1,\"page\":1},\"results\":[{\"id\":2,\"__str__\":\"Projeto de Lei Ordin\\u00e1ria n\\u00ba 1 de 2015\",\"link_detail_backend\":\"/materia/2\",\"metadata\":{},\"numero\":1,\"ano\":2015,\"numero_protocolo\":33,\"data_apresentacao\":\"2015-01-01\",\"tipo_apresentacao\":\"E\",\"data_"
- },
- {
-  "u": "https://dadosabertos.al.mt.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.mt.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.mt.leg.br/dados-abertos",
-  "st": 200,
-  "ct": "text/html; charset=UTF-8",
-  "n": 97151,
-  "final": "https://www.al.mt.gov.br/",
-  "ini": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n    <head>\n        <meta charset=\"UTF-8\" />\n        <title>\n                                        Assembleia Legislativa do Estado de Mato Grosso\n                    </title>\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n        <meta name=\"description\" content=\"Assembleia Legislativa do Estado de Mato Grosso\" />\n        <met"
- },
- {
-  "u": "https://sapl.al.pa.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pa.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.pa.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pa.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.pa.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.pa.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.pa.leg.br/dados-abertos",
-  "st": 200,
-  "ct": "text/html; charset=utf-8",
-  "n": 165846,
-  "final": "https://www.alepa.pa.gov.br/",
-  "ini": "<!DOCTYPE html>\r\n\r\n<html lang=\"pt-br\">\r\n<head>\r\n    <meta charset=\"UTF-8\" />\r\n    \r\n        <title>Assembleia Legislativa do Estado do Pará</title>\r\n    <link rel=\"shortcut icon\" href=\"/Content/Images/shortcut-icon-alepa.png\">\r\n\r\n\r\n    <link rel=\"stylesheet\" href=\"/DXR.axd?r=0_4966,1_68,1_69,0_4969,1_74,1_210,0_4827,1_209,0_4830,0_4843,0_4846,1_84,1_73,0_4791,0_4794,0_4860,4_120,4_111,4_112,0_4863"
- },
- {
-  "u": "https://sapl.al.pb.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 631,
-  "final": "https://sapl.al.pb.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":168,\"total_pages\":168,\"page\":1},\"results\":[{\"id\":18,\"__str__\":\"Ademir Morais\",\"metadata\":{},\"nome_completo\":\"Jos\\u00e9 Ademir Pereira de Morais\",\"nome_parlamentar\":\"Ademir Morais\",\"sexo\":\"M\",\"nu"
- },
- {
-  "u": "https://sapl.al.pb.leg.br/api/materia/materialegislativa/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 1428,
-  "final": "https://sapl.al.pb.leg.br/api/materia/materialegislativa/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":151578,\"total_pages\":151578,\"page\":1},\"results\":[{\"id\":145082,\"__str__\":\"Aut\\u00f3grafo n\\u00ba 1947 de 2026\",\"metadata\":{},\"numero\":1947,\"ano\":2026,\"numero_protocolo\":null,\"data_apresentacao\":"
- },
- {
-  "u": "https://dadosabertos.al.pb.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.pb.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.pb.leg.br/dados-abertos",
-  "st": 404,
-  "ct": "text/html; charset=UTF-8",
-  "n": 148652,
-  "final": "https://www.al.pb.leg.br/dados-abertos",
-  "ini": "0<!doctype html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\"\n          content=\"width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n    <link rel=\"icon\" href=\"wp-content/themes/alpb/assets/images/favicon-alpb.svg\" sizes=\"32x32\" type=\"image/svg\">\n\n\n    <link href=\"h"
- },
- {
-  "u": "https://sapl.al.pe.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pe.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.pe.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pe.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.pe.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.pe.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.pe.leg.br/dados-abertos",
-  "erro": "ConnectTimeout: HTTPConnectionPool(host='www.alepe.pe.gov.br', port=80): Max retries exceeded with url: / (Caused by ConnectTimeoutError"
- },
- {
-  "u": "https://sapl.al.pi.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 2659,
-  "final": "https://sapl.al.pi.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":309,\"total_pages\":309,\"page\":1},\"results\":[{\"id\":111,\"__str__\":\"Abdon Portella \",\"link_detail_backend\":\"/parlamentar/111\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:12:00.976320-03:0"
- },
- {
-  "u": "https://sapl.al.pi.leg.br/api/materia/materialegislativa/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 1528,
-  "final": "https://sapl.al.pi.leg.br/api/materia/materialegislativa/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":21433,\"total_pages\":21433,\"page\":1},\"results\":[{\"id\":21330,\"__str__\":\"Indicativo de Projeto de Lei n\\u00ba 1 de 2026\",\"link_detail_backend\":\"/materia/21330\",\"metadata\":{},\"numero\":1,\"ano\":2026,"
- },
- {
-  "u": "https://dadosabertos.al.pi.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.pi.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.pi.leg.br/dados-abertos",
-  "st": 404,
-  "ct": "text/html;charset=utf-8",
-  "n": 32229,
-  "final": "https://www.al.pi.leg.br/dados-abertos",
-  "ini": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n\n<head>\n\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n\n    <meta name=\"generator\" content=\"Plone - http://plone.org\">\n\n    \n      <base href=\"https://www.al.pi.leg.br/\"><!--[if lt IE 7]></base><![endif]-->\n    \n\n    \n        \n\n\n  \n    <style type=\"text/css\" media=\"screen\">@import url(https://www.al.pi.leg.br/portal_css/Sunburst%20Theme"
- },
- {
-  "u": "https://sapl.al.pr.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pr.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.pr.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.pr.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.pr.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.pr.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.pr.leg.br/dados-abertos",
-  "st": 404,
-  "ct": "text/html;charset=utf-8",
-  "n": 20286,
-  "final": "https://www.al.pr.leg.br/dados-abertos",
-  "ini": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n\n<head>\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n\n    \n        <base href=\"https://www.al.pr.leg.br/\"><!--[if lt IE 7]></base><![endif]-->\n    \n\n    \n        \n<meta content=\"PR\" name=\"description\">\n\n  \n    <style type=\"text/css\" media=\"screen\">@import url(https://www.al.pr.leg.br/portal_css/Sunburst%20Theme/resourceportalmodelo.the"
- },
- {
-  "u": "https://sapl.al.rj.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rj.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.rj.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rj.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.rj.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.rj.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.rj.leg.br/dados-abertos",
-  "st": 200,
-  "ct": "text/html; charset=utf-8",
-  "n": 97346,
-  "final": "http://www.alerj.rj.gov.br",
-  "ini": "\n\n<!DOCTYPE html>\n<html lang=\"pt-br\" prefix=\"og: https://ogp.me/ns#\">\n<head>\n    <!--[if IE]>\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\" /><meta http-equiv=\"Cache-Control\" content=\"no-cache, no-store, must-revalidate\" />\n        <![endif]-->\n    <meta charset=\"utf-8\" /><meta name=\"viewport\" content=\"initial-scale = 1.0,maximum-scale = 1.0\" />\n    <script type=\"text/javascript\" sr"
- },
- {
-  "u": "https://sapl.al.rn.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rn.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.rn.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rn.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.rn.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.rn.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.rn.leg.br/dados-abertos",
-  "st": 404,
-  "ct": "text/html",
-  "n": 1407,
-  "final": "https://www.al.rn.leg.br/dados-abertos",
-  "ini": "<html>\n  <head>\n    <title>Assembleia Legislativa do RN</title>\n\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">\n\n    <meta name=\"msapplication-TileColor\" content=\"#063455\">\n    <meta name=\"theme-color\" content=\"#063455\">\n\n    <link href=\"https://fonts.googleapis.com/css?f"
- },
- {
-  "u": "https://sapl.al.ro.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 720,
-  "final": "https://sapl.al.ro.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":221,\"total_pages\":221,\"page\":1},\"results\":[{\"id\":52,\"__str__\":\"ACELINO MARCON\",\"link_detail_backend\":\"/parlamentar/52\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:14:09.353016-03:00\","
- },
- {
-  "u": "https://sapl.al.ro.leg.br/api/materia/materialegislativa/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 1413,
-  "final": "https://sapl.al.ro.leg.br/api/materia/materialegislativa/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":57280,\"total_pages\":57280,\"page\":1},\"results\":[{\"id\":52546,\"__str__\":\"Indica\\u00e7\\u00e3o n\\u00ba 15315 de 2026\",\"link_detail_backend\":\"/materia/52546\",\"metadata\":{},\"numero\":15315,\"ano\":2026,\""
- },
- {
-  "u": "https://dadosabertos.al.ro.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.ro.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.ro.leg.br/dados-abertos",
-  "st": 404,
-  "ct": "text/html",
-  "n": 179,
-  "final": "https://www.al.ro.leg.br/dados-abertos",
-  "ini": "\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <title>Not Found</title>\n</head>\n<body>\n  <h1>Not Found</h1><p>The requested resource was not found on this server.</p>\n</body>\n</html>\n"
- },
- {
-  "u": "https://sapl.al.rr.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "st": 403,
-  "ct": "text/html; charset=iso-8859-1",
-  "n": 199,
-  "final": "https://sapl.al.rr.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "ini": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
- },
- {
-  "u": "https://sapl.al.rr.leg.br/api/materia/materialegislativa/?page_size=1",
-  "st": 403,
-  "ct": "text/html; charset=iso-8859-1",
-  "n": 199,
-  "final": "https://sapl.al.rr.leg.br/api/materia/materialegislativa/?page_size=1",
-  "ini": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
- },
- {
-  "u": "https://dadosabertos.al.rr.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.rr.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.rr.leg.br/dados-abertos",
-  "erro": "SSLError: HTTPSConnectionPool(host='www.al.rr.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by SSLErro"
- },
- {
-  "u": "https://sapl.al.rs.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rs.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.rs.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.rs.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.rs.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.rs.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.rs.leg.br/dados-abertos",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='www.al.rs.leg.br', port=443): Max retries exceeded with url: /dados-abertos (Caused by NameRes"
- },
- {
-  "u": "https://sapl.al.sc.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.sc.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.sc.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.sc.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.sc.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.sc.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.sc.leg.br/dados-abertos",
-  "st": 200,
-  "ct": "text/html; charset=UTF-8",
-  "n": 458277,
-  "final": "https://www.alesc.sc.gov.br/",
-  "ini": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"theme-color\" content=\"#404040\">\n    <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"#404040\">\n\n    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />\n\n\t<!-- This site "
- },
- {
-  "u": "https://sapl.al.se.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.se.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.se.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.se.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.se.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.se.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.se.leg.br/dados-abertos",
-  "st": 404,
-  "ct": "text/html; charset=UTF-8",
-  "n": 161105,
-  "final": "https://al.se.leg.br/dados-abertos",
-  "ini": "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta name=\"google-site-verification\" content=\"GNAFSdOF7B5kA4C_HO44ntlvYeROyiWPc5ISBsuO36U\" />\n    <!-- Google Analytics -->\n    <script>\n    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;\n    ga('create', 'UA-XXXXX-Y', 'auto');\n    ga('send', 'pageview');\n    </script>\n    <script async src='https://www.google-analyt"
- },
- {
-  "u": "https://sapl.al.sp.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.sp.leg.br', port=443): Max retries exceeded with url: /api/parlamentares/parlamentar/?"
- },
- {
-  "u": "https://sapl.al.sp.leg.br/api/materia/materialegislativa/?page_size=1",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='sapl.al.sp.leg.br', port=443): Max retries exceeded with url: /api/materia/materialegislativa/"
- },
- {
-  "u": "https://dadosabertos.al.sp.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.sp.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.sp.leg.br/dados-abertos",
-  "st": 200,
-  "ct": "text/html",
-  "n": 82246,
-  "final": "https://www.al.sp.gov.br/",
-  "ini": "<!DOCTYPE html>\r\n<html lang=\"pt-br\" xmlns:og=\"http://ogp.me/ns#\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script type=\"text/javascript\" src=\"/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\" data-dtconfig=\"rid=RID_2418|rpid=-2109383220|domain=sp.gov.br|reportUrl=/rb_bf32302csu|app=da4214bfad2bf73e|owasp=1|featureHash=ICA7NVfgqrux|rdnt=1|uxrgce=1|cuc=810"
- },
- {
-  "u": "https://sapl.al.to.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 642,
-  "final": "https://sapl.al.to.leg.br/api/parlamentares/parlamentar/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.to.leg.br/api/parlamentares/parlamentar/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":40,\"total_pages\":40,\"page\":1},\"results\":[{\"id\":2,\"__str__\":\"AM\\u00c1LIA SANTANA\",\"metadata\":{},\"nome_completo\":\"AM\\u00c1LIA MARIA SANTANA DA SILVA\",\"nome_parlamentar\":\"AM\\u00c1LIA SANTANA\",\"sexo"
- },
- {
-  "u": "https://sapl.al.to.leg.br/api/materia/materialegislativa/?page_size=1",
-  "st": 200,
-  "ct": "application/json",
-  "n": 1282,
-  "final": "https://sapl.al.to.leg.br/api/materia/materialegislativa/?page_size=1",
-  "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.to.leg.br/api/materia/materialegislativa/?page=2&page_size=1\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":1,\"total_entries\":14550,\"total_pages\":14550,\"page\":1},\"results\":[{\"id\":13716,\"__str__\":\"Medida Provis\\u00f3ria n\\u00ba 1 de 2026\",\"metadata\":{},\"numero\":1,\"ano\":2026,\"numero_protocolo\":42,\"data_apresentacao\":\"20"
- },
- {
-  "u": "https://dadosabertos.al.to.leg.br/",
-  "erro": "ConnectionError: HTTPSConnectionPool(host='dadosabertos.al.to.leg.br', port=443): Max retries exceeded with url: / (Caused by NameResolut"
- },
- {
-  "u": "https://www.al.to.leg.br/dados-abertos",
-  "st": 404,
-  "ct": "text/html;charset=UTF-8",
-  "n": 7385,
-  "final": "https://www.al.to.leg.br/dados-abertos",
-  "ini": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n<head>\n\t<script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-21403211-1\"></script>\n\t<script>\n\t  window.dataLayer = window.dataLayer || [];\n\t  function gtag(){dataLayer.push(arguments);}\n\t  gtag('js', new Date());\n\t  gtag('config', 'UA-21403211-1');\n\t</script>\n\t<meta charset=\"utf-8\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1"
- }
-]
+{
+ "paginas": [
+  {
+   "uf": "SP",
+   "u": "https://www.al.sp.leg.br/dados-abertos",
+   "links": [
+    "https://www.al.sp.gov.br/alesp/protecao-dados-pessoais/",
+    "https://www.al.sp.gov.br/dados-abertos/"
+   ]
+  },
+  {
+   "uf": "BA",
+   "u": "https://www.al.ba.leg.br/dados-abertos",
+   "links": [
+    "https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,600i,700,700i,800,800i",
+    "https://www.youtube.com/channel/UCSv_XzKsyDzIsOOHRpme_Ow"
+   ]
+  },
+  {
+   "uf": "CE",
+   "u": "https://www.al.ce.leg.br/dados-abertos",
+   "links": [
+    "https://fonts.googleapis.com",
+    "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap",
+    "https://intranet.al.ce.gov.br/siabi-web-php/Telas/w_busca_rapida.php",
+    "https://www.al.ce.gov.br/download-file/417375",
+    "https://www.al.ce.gov.br/paginas/lei-geral-de-protecao-de-dados-pessoais-lgpd"
+   ]
+  },
+  {
+   "uf": "GO",
+   "u": "https://www.al.go.leg.br/dados-abertos",
+   "links": []
+  },
+  {
+   "uf": "PA",
+   "u": "https://www.al.pa.leg.br/dados-abertos",
+   "links": [
+    "https://fonts.googleapis.com",
+    "https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@200;500;700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+   ]
+  },
+  {
+   "uf": "RJ",
+   "u": "https://www.al.rj.leg.br/dados-abertos",
+   "links": []
+  },
+  {
+   "uf": "SC",
+   "u": "https://www.al.sc.leg.br/dados-abertos",
+   "links": [
+    "https://api.whatsapp.com/send?1=pt_BR&phone=5548999601127",
+    "https://fonts.googleapis.com",
+    "https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap",
+    "https://www.alesc.sc.gov.br/radio/noticia/alesc-aprova-reconhecimento-de-bc-como-capital-do-beach-tennis/"
+   ]
+  },
+  {
+   "uf": "MT",
+   "u": "https://www.al.mt.leg.br/dados-abertos",
+   "links": [
+    "https://api.al.mt.gov.br/"
+   ]
+  },
+  {
+   "uf": "AC",
+   "u": "https://www.al.ac.leg.br/dados-abertos",
+   "links": [
+    "http://www.lexml.gov.br",
+    "https://www.al.ac.leg.br/xmlrpc.php",
+    "https://www.al.ac.leg.br/xmlrpc.php?rsd",
+    "https://www.lexml.gov.br/"
+   ]
+  }
+ ],
+ "testes": [
+  {
+   "u": "https://sapl.al.ac.leg.br/api/",
+   "st": 200,
+   "ct": "application/json",
+   "n": 10685,
+   "ini": "{\"audiencia/tipoaudienciapublica\":\"http://sapl.al.ac.leg.br/api/audiencia/tipoaudienciapublica/\",\"audiencia/audienciapublica\":\"http://sapl.al.ac.leg.br/api/audiencia/audienciapublica/\",\"audiencia/anexoaudienciapublica\":\"http://sapl.al.ac.leg.br/api/audiencia/anexoaudienciapublica/\",\"contenttypes/contenttype\":\"http://sapl.al.ac.leg.br/api/contenttypes/contenttype/\",\"base/casalegislativa\":\"http://sapl.al.ac.leg.br/api/base/casalegislativa/\",\"base/appconfig\":\"http://sapl.al.ac.leg.br/api/base/appconfig/\",\"base/tipoautor\":\"http://sapl.al.ac.leg.br/api/base/tipoautor/\",\"base/autor\":\"http://sapl.al.ac.leg.br/api/base/autor/\",\"base/operadorautor\":\"http://sapl.al.ac.leg.br/api/base/operadorautor/\",\"base/auditlog\":\"http://sapl.al.ac.leg.br/api/base/auditlog/\",\"base/metadata\":\"http://sapl.al.ac.leg.br/api/base/metadata/\",\"comissoes/tipocomissao\":\"http://sapl.al.ac.leg.br/api/comissoes/tipocomissao/\",\"comissoes/comissao\":\"http://sapl.al.ac.leg.br/api/comissoes/comissao/\",\"comissoes/periodo\":\"http://sapl.al.ac.leg.br/api/comissoes/periodo/\",\"comissoes/cargocomissao\":\"http://sapl.al.ac.leg.br/api/comissoes/cargocomissao/\",\"comissoes/composicao\":\"http://sapl.al.ac.leg.br/api/comissoes/composicao/\",\"comissoes/participacao\":\"http://sapl.al.ac.leg.br/api/comissoes/participacao/\",\"comissoes/reuniao\":\"http://sapl.al.ac.leg.br/api/comissoes/reuniao/\",\"comissoes/documentoacessorio\":\"http://sapl.al.ac.leg.br/api/materia/documentoacessorio/\",\"compilacao/perfilestruturaltextoarticulado\":\"http://sapl.al.ac.leg.br/api/compilacao/perfilestruturaltextoarticulado/\",\"compilacao/tipotextoarticulado\":\"http://sapl.al.ac.leg.br/api/compilacao/tipotextoarticulado/\",\"compilacao/textoarticulado\":\"http://sapl.al.ac.leg.br/api/compilacao/textoarticulado/\",\"compilacao/tiponota\":\"http://sapl.al.ac.leg.br/api/compilacao/tiponota/\",\"compilacao/tipovide\":\"http://sapl.al.ac.leg.br/api/compilacao/tipovide/\",\"compilacao/tipodispositivo\":\"http://sapl.al.ac.leg.br/api/compilacao/tipodispositivo/\",\"compilacao/tipodispositivorelationship\":\"http://sapl.al.ac.leg.br/api/compilacao/tipodispositivorelationship/\",\"compilacao/tipopublicacao\":\"http://sapl.al.ac.leg.br/api/compilacao/tipopublicacao/\",\"compilacao/veiculopublicacao\":\"http://sapl.al.ac.leg.br/api/compilacao/veiculopublicacao/\",\"compilacao/publicacao\":\"http://sapl.al.ac.leg.br/api/compilacao/publicacao/\",\"compilacao/dispositivo\":\"http://sapl.al.ac.leg.br/api/compilacao/dispositivo/\",\"compilacao/vide\":\"http://sapl.al.ac.leg.br/api/compilacao/vide/\",\"compilacao/nota\":\"http://sapl.al.ac.leg.br/api/compilacao/nota/\",\"materia/tipoproposicao\":\"http://sapl.al.ac.leg.br/api/materia/tipoproposicao/\",\"materia/tipomaterialegislativa\":\"http://sapl.al.ac.leg.br/api/materia/tipomaterialegislativa/\",\"materia/regimetramitacao\":\"http://sapl.al.ac.leg.br/api/materia/regimetramitacao/\",\"materia/origem\":\"http://sapl.al.ac.leg.br/api/materia/origem/\",\"materia/materialegislativa\":\"http://sapl.al.ac.leg.br/api/materia/materialegislativa/\",\"materia/autoria\":\"http:/"
+  },
+  {
+   "u": "https://sapl.al.ac.leg.br/api/parlamentares/parlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 13157,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/parlamentares/parlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":187,\"total_pages\":94,\"page\":1},\"results\":[{\"id\":248,\"__str__\":\"ADAILTON CRUZ\",\"link_detail_backend\":\"/parlamentar/248\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:05:55.627605-03:00\",\"nome_completo\":\"Jos\\u00e9 Adailton Cruz Pereira\",\"nome_parlamentar\":\"ADAILTON CRUZ\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"3213-4078 / 3213-4079\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"\",\"email\":\"dep.adailton.cruz@al.ac.leg.br\",\"locais_atuacao\":\"\",\"ativo\":true,\"biografia\":\"<p class=\\\"MsoBodyTextIndent\\\" style=\\\"text-align: justify;\\\"><span style=\\\"font-size: 12.0pt; line-height: 115%; font-family: 'Times New Roman',serif; mso-bidi-font-family: Arial;\\\">&nbsp; &nbsp; &nbsp; </span>Nascido em 25 de mar&ccedil;o de 1976, no seringal esperan&ccedil;a, munic&iacute;pio de Tarauac&aacute;/AC, filho dos seringueiros, L&uacute;cio Marciano Pereira e Maria de Nazar&eacute; Cruz Pereira, casado com Luslene Vasques de Oliveira e pai do Diego Vasques Cruz.</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Em 1984, aos oito anos de idade, doente, foi levado por um amigo de seus pais, para Rio Branco/AC em busca de tratamento, sendo acolhido por sua tia e ap&oacute;s recupera&ccedil;&atilde;o plena, n&atilde;o mais retornou ao seringal, iniciou sua alfabetiza&ccedil;&atilde;o j&aacute; em meados de 1985, aos nove anos de idade.</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Em julho de 1999 concluiu sua gradua&ccedil;&atilde;o na Universidade Federal do Acre &ndash; UFAC, bacharel em Enfermagem, tendo como principais objetivos de vida ajudar sua fam&iacute;lia, seus pais e irm&atilde;os.</p>\\r\\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ainda em 1999, iniciou sua vida profissional como Enfermeiro no munic&iacute;pio de Feij&oacute;/AC, onde coordenou o Programa de Agentes Comunit&aacute;rio de Sa&uacute;de, Programa de Sa&uacute;de da Fam&iacute;lia, Programa de Forma&ccedil;&atilde;o profissional na &aacute;rea de Enfermagem e em raz&atilde;o da notoriedade, compromisso e resultados que impactaram muito na sa&uacute;de p&uacute;blica local, foi convidado para exercer o cargo de Secret&aacute;rio Municipal de Sa&uacute;de de Feij&oacute;/AC, conseguindo expandir os programas de Sa&uacute;de da Fam&iacute;lia, Sa&uacute;de Bucal, Vigil&acirc;ncia Nutricional, Imuniza&ccedil;&atilde;o, Controle de doen&ccedil;as end&ecirc;micas em 100% da zona urbano, duplicando o n&uacute;mero de unidades b&aacute;sicas de sa&uacute;de, profissionais, implantando o Plano de Carreiras, realizando concurso p&uacute;blico efetivo para todo o quadro da sa&uacute;de e habilitando o munic&iacute;pio na GEST&Atilde;O PLENA DA ATEN&Ccedil;&Atilde;O B&Aacute;SICA, sendo considerado um dos melhores gestores em sa&uacute;de na hist&oacute;ria do munic&iacute;pio.</p>\\r\\n<p>&n"
+  },
+  {
+   "u": "https://sapl.al.ac.leg.br/api/materia/materialegislativa/?page_size=2&ano=2025",
+   "st": 200,
+   "ct": "application/json",
+   "n": 3088,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/materia/materialegislativa/?ano=2025&page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":1969,\"total_pages\":985,\"page\":1},\"results\":[{\"id\":16730,\"__str__\":\"Indica\\u00e7\\u00e3o n\\u00ba 1 de 2025\",\"link_detail_backend\":\"/materia/16730\",\"metadata\":{},\"numero\":1,\"ano\":2025,\"numero_protocolo\":null,\"data_apresentacao\":\"2025-02-05\",\"tipo_apresentacao\":\"E\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":true,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"A Deputada que a esta subscreve em conson\\u00e2ncia com o Art. 169 da Resolu\\u00e7\\u00e3o 86/90 -Regimento Interno da ALEAC solicita a Mesa Diretora encaminhar expediente ao Excelent\\u00edssimo Senhor Governador Gladson Cameli, para que atrav\\u00e9s da Secretaria de Estado de Sa\\u00fade do Acre -SESACRE, no sentido de estar resolvendo a situa\\u00e7\\u00e3o da instala\\u00e7\\u00e3o do aparelho de Raio X na Unidade Mista de Sa\\u00fade do munic\\u00edpio de Acrel\\u00e2ndia.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.ac.leg.br/media/sapl/public/materialegislativa/2025/16730/ind-n-01-maria_antonia.pdf\",\"data_ultima_atualizacao\":\"2025-02-05T15:00:19.268755-03:00\",\"ip\":\"201.73.245.18\",\"ultima_edicao\":\"2025-02-05T14:58:26.366520-03:00\",\"tipo\":8,\"regime_tramitacao\":1,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":95,\"anexadas\":[],\"autores\":[60]},{\"id\":16731,\"__str__\":\"Indica\\u00e7\\u00e3o n\\u00ba 2 de 2025\",\"link_detail_backend\":\"/materia/16731\",\"metadata\":{},\"numero\":2,\"ano\":2025,\"numero_protocolo\":null,\"data_apresentacao\":\"2025-02-05\",\"tipo_apresentacao\":\"E\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":true,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"A Deputada que a esta subscreve em conson\\u00e2ncia com o Art. 169 da Resolu\\u00e7\\u00e3o 86/90 - Regimento Interno da ALEAC solicita a Mesa Diretora encaminhar expediente ao Excelent\\u00edssimo Senhor Governador Gladson Cameli, para que atrav\\u00e9s da Secretaria de Estado de Sa\\u00fade do Acre -SESACRE, viabilize a aquisi\\u00e7\\u00e3o equipamentos como Laringosc\\u00f3pio infantil, ox\\u00edmetro port\\u00e1til infantil, monitor multiparametro neonatal, ber\\u00e7o de alojamento conjunto Hospitalar, para sala de parto no na Unidade Mista de Sa\\u00fade do munic\\u00edpio de Acrel\\u00e2ndia.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.ac.leg.br/media/sapl/public/materialegislativa/2025/16731/ind-n-02-maria_antonia.pdf\",\"data_ultima_atualizacao\":\"2025-02-05T15:05:04.933486-03:00\",\"ip\":\"201.73.245.18\",\"ultima_edicao\":\"2025-02-05T15:00:25.286660-03:00\",\"tipo\":8,\"regime_tramitacao\":1,\"tipo_or"
+  },
+  {
+   "u": "https://sapl.al.ac.leg.br/api/materia/autoria/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 637,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/materia/autoria/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":18801,\"total_pages\":9401,\"page\":1},\"results\":[{\"id\":13054,\"__str__\":\"Autoria: ADAILTON CRUZ - Indica\\u00e7\\u00e3o n\\u00ba 144 de 2023\",\"link_detail_backend\":\"/materia/autoria/13054\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":146,\"materia\":13914},{\"id\":13045,\"__str__\":\"Autoria: ADAILTON CRUZ - Requerimento n\\u00ba 55 de 2023\",\"link_detail_backend\":\"/materia/autoria/13045\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":146,\"materia\":13905}]}"
+  },
+  {
+   "u": "https://sapl.al.ac.leg.br/api/sessao/votoparlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1139,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/sessao/votoparlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":709,\"total_pages\":355,\"page\":1},\"results\":[{\"id\":16,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 1 - Veto n\\u00ba 1 de 2025 em 10\\u00aa Ordin\\u00e1ria da 3\\u00aa Sess\\u00e3o Legislativa da 16\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado - Parlamentar: ADAILTON CRUZ\",\"link_detail_backend\":\"\",\"metadata\":{},\"voto\":\"Sim\",\"ip\":\"201.73.245.18\",\"data_hora\":\"2025-06-26T12:42:52.399759-03:00\",\"votacao\":107,\"parlamentar\":248,\"user\":110,\"ordem\":1679,\"expediente\":null},{\"id\":17,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 1 - Veto n\\u00ba 1 de 2025 em 10\\u00aa Ordin\\u00e1ria da 3\\u00aa Sess\\u00e3o Legislativa da 16\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado - Parlamentar: AFONSO FERNANDES\",\"link_detail_backend\":\"\",\"metadata\":{},\"voto\":\"N\\u00e3o Votou\",\"ip\":\"201.73.245.18\",\"data_hora\":\"2025-06-26T12:42:52.420007-03:00\",\"votacao\":107,\"parlamentar\":249,\"user\":110,\"ordem\":1679,\"expediente\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.ac.leg.br/api/sessao/registrovotacao/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1205,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/sessao/registrovotacao/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":572,\"total_pages\":286,\"page\":1},\"results\":[{\"id\":12,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 1 - Requerimento n\\u00ba 62 de 2025 em 33\\u00aa Ordin\\u00e1ria da 3\\u00aa Sess\\u00e3o Legislativa da 16\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado\",\"link_detail_backend\":\"\",\"metadata\":{},\"numero_votos_sim\":17,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"201.73.245.18\",\"data_hora\":\"2025-06-11T13:31:18.130980-03:00\",\"tipo_resultado_votacao\":3,\"materia\":17398,\"ordem\":1615,\"expediente\":null,\"user\":110},{\"id\":13,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 2 - Requerimento n\\u00ba 65 de 2025 em 33\\u00aa Ordin\\u00e1ria da 3\\u00aa Sess\\u00e3o Legislativa da 16\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado\",\"link_detail_backend\":\"\",\"metadata\":{},\"numero_votos_sim\":17,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"201.73.245.18\",\"data_hora\":\"2025-06-11T13:31:18.145750-03:00\",\"tipo_resultado_votacao\":3,\"materia\":17401,\"ordem\":1616,\"expediente\":null,\"user\":110}]}"
+  },
+  {
+   "u": "https://sapl.al.ac.leg.br/api/parlamentares/mandato/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1034,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/parlamentares/mandato/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":335,\"total_pages\":168,\"page\":1},\"results\":[{\"id\":426,\"__str__\":\"ADAILTON CRUZ 16\\u00aa (2023 - 2027) (Atual)\",\"link_detail_backend\":\"/parlamentar/mandato/426\",\"metadata\":{},\"tipo_causa_fim_mandato\":null,\"data_inicio_mandato\":\"2023-02-01\",\"data_fim_mandato\":\"2027-01-31\",\"votos_recebidos\":null,\"data_expedicao_diploma\":\"2022-12-15\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":248,\"tipo_afastamento\":null,\"legislatura\":17,\"coligacao\":null},{\"id\":74,\"__str__\":\"Adalberto Arag\\u00e3o 5\\u00aa (1979 - 1983) \",\"link_detail_backend\":\"/parlamentar/mandato/74\",\"metadata\":{},\"tipo_causa_fim_mandato\":null,\"data_inicio_mandato\":\"1979-02-01\",\"data_fim_mandato\":\"1983-01-31\",\"votos_recebidos\":null,\"data_expedicao_diploma\":\"2015-01-01\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":79,\"tipo_afastamento\":null,\"legislatura\":5,\"coligacao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.ac.leg.br/api/parlamentares/legislatura/?page_size=3",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1090,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ac.leg.br/api/parlamentares/legislatura/?page=2&page_size=3\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":3,\"total_entries\":16,\"total_pages\":6,\"page\":1},\"results\":[{\"id\":17,\"__str__\":\"16\\u00aa (2023 - 2027) (Atual)\",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/17\",\"metadata\":{},\"numero\":16,\"data_inicio\":\"2023-02-01\",\"data_fim\":\"2027-01-31\",\"data_eleicao\":\"2023-01-31\",\"observacao\":\"<p>Por quest&otilde;es de sistema, a data da Elei&ccedil;&atilde;o deve ser menor que a data de in&iacute;cio, entretanto a mesma ocorreu em 01/02/2023</p>\"},{\"id\":16,\"__str__\":\"15\\u00aa (2019 - 2023) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/16\",\"metadata\":{},\"numero\":15,\"data_inicio\":\"2019-02-01\",\"data_fim\":\"2023-01-31\",\"data_eleicao\":\"2018-10-07\",\"observacao\":\"\"},{\"id\":14,\"__str__\":\"14\\u00aa (2015 - 2018) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/14\",\"metadata\":{},\"numero\":14,\"data_inicio\":\"2015-01-01\",\"data_fim\":\"2018-12-31\",\"data_eleicao\":\"2014-10-05\",\"observacao\":\"\"}]}"
+  },
+  {
+   "u": "https://sapl.al.al.leg.br/api/",
+   "st": 200,
+   "ct": "application/json",
+   "n": 10685,
+   "ini": "{\"audiencia/tipoaudienciapublica\":\"http://sapl.al.al.leg.br/api/audiencia/tipoaudienciapublica/\",\"audiencia/audienciapublica\":\"http://sapl.al.al.leg.br/api/audiencia/audienciapublica/\",\"audiencia/anexoaudienciapublica\":\"http://sapl.al.al.leg.br/api/audiencia/anexoaudienciapublica/\",\"contenttypes/contenttype\":\"http://sapl.al.al.leg.br/api/contenttypes/contenttype/\",\"base/casalegislativa\":\"http://sapl.al.al.leg.br/api/base/casalegislativa/\",\"base/appconfig\":\"http://sapl.al.al.leg.br/api/base/appconfig/\",\"base/tipoautor\":\"http://sapl.al.al.leg.br/api/base/tipoautor/\",\"base/autor\":\"http://sapl.al.al.leg.br/api/base/autor/\",\"base/operadorautor\":\"http://sapl.al.al.leg.br/api/base/operadorautor/\",\"base/auditlog\":\"http://sapl.al.al.leg.br/api/base/auditlog/\",\"base/metadata\":\"http://sapl.al.al.leg.br/api/base/metadata/\",\"comissoes/tipocomissao\":\"http://sapl.al.al.leg.br/api/comissoes/tipocomissao/\",\"comissoes/comissao\":\"http://sapl.al.al.leg.br/api/comissoes/comissao/\",\"comissoes/periodo\":\"http://sapl.al.al.leg.br/api/comissoes/periodo/\",\"comissoes/cargocomissao\":\"http://sapl.al.al.leg.br/api/comissoes/cargocomissao/\",\"comissoes/composicao\":\"http://sapl.al.al.leg.br/api/comissoes/composicao/\",\"comissoes/participacao\":\"http://sapl.al.al.leg.br/api/comissoes/participacao/\",\"comissoes/reuniao\":\"http://sapl.al.al.leg.br/api/comissoes/reuniao/\",\"comissoes/documentoacessorio\":\"http://sapl.al.al.leg.br/api/materia/documentoacessorio/\",\"compilacao/perfilestruturaltextoarticulado\":\"http://sapl.al.al.leg.br/api/compilacao/perfilestruturaltextoarticulado/\",\"compilacao/tipotextoarticulado\":\"http://sapl.al.al.leg.br/api/compilacao/tipotextoarticulado/\",\"compilacao/textoarticulado\":\"http://sapl.al.al.leg.br/api/compilacao/textoarticulado/\",\"compilacao/tiponota\":\"http://sapl.al.al.leg.br/api/compilacao/tiponota/\",\"compilacao/tipovide\":\"http://sapl.al.al.leg.br/api/compilacao/tipovide/\",\"compilacao/tipodispositivo\":\"http://sapl.al.al.leg.br/api/compilacao/tipodispositivo/\",\"compilacao/tipodispositivorelationship\":\"http://sapl.al.al.leg.br/api/compilacao/tipodispositivorelationship/\",\"compilacao/tipopublicacao\":\"http://sapl.al.al.leg.br/api/compilacao/tipopublicacao/\",\"compilacao/veiculopublicacao\":\"http://sapl.al.al.leg.br/api/compilacao/veiculopublicacao/\",\"compilacao/publicacao\":\"http://sapl.al.al.leg.br/api/compilacao/publicacao/\",\"compilacao/dispositivo\":\"http://sapl.al.al.leg.br/api/compilacao/dispositivo/\",\"compilacao/vide\":\"http://sapl.al.al.leg.br/api/compilacao/vide/\",\"compilacao/nota\":\"http://sapl.al.al.leg.br/api/compilacao/nota/\",\"materia/tipoproposicao\":\"http://sapl.al.al.leg.br/api/materia/tipoproposicao/\",\"materia/tipomaterialegislativa\":\"http://sapl.al.al.leg.br/api/materia/tipomaterialegislativa/\",\"materia/regimetramitacao\":\"http://sapl.al.al.leg.br/api/materia/regimetramitacao/\",\"materia/origem\":\"http://sapl.al.al.leg.br/api/materia/origem/\",\"materia/materialegislativa\":\"http://sapl.al.al.leg.br/api/materia/materialegislativa/\",\"materia/autoria\":\"http:/"
+  },
+  {
+   "u": "https://sapl.al.al.leg.br/api/parlamentares/parlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1195,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/parlamentares/parlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":132,\"total_pages\":66,\"page\":1},\"results\":[{\"id\":71,\"__str__\":\"ADALBERTO CAVALCANTE\",\"link_detail_backend\":\"/parlamentar/71\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:07:41.377607-03:00\",\"nome_completo\":\"ADALBERTO CAVALCANTE\",\"nome_parlamentar\":\"ADALBERTO CAVALCANTE\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"\",\"email\":\"\",\"locais_atuacao\":\"\",\"ativo\":false,\"biografia\":\"\",\"fotografia\":null,\"cropping\":\"\",\"nivel_instrucao\":null},{\"id\":105,\"__str__\":\"AFR\\u00c2NIO VERGETTI\",\"link_detail_backend\":\"/parlamentar/105\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:07:41.377607-03:00\",\"nome_completo\":\"JOSE AFR\\u00c2NIO VERGETTI DE SIQUEIRA\",\"nome_parlamentar\":\"AFR\\u00c2NIO VERGETTI\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"\",\"email\":\"\",\"locais_atuacao\":\"\",\"ativo\":false,\"biografia\":\"\",\"fotografia\":null,\"cropping\":\"\",\"nivel_instrucao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.al.leg.br/api/materia/materialegislativa/?page_size=2&ano=2025",
+   "st": 200,
+   "ct": "application/json",
+   "n": 2659,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/materia/materialegislativa/?ano=2025&page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":1590,\"total_pages\":795,\"page\":1},\"results\":[{\"id\":13645,\"__str__\":\"INDICA\\u00c7\\u00c3O n\\u00ba 1746 de 2025\",\"link_detail_backend\":\"/materia/13645\",\"metadata\":{},\"numero\":1746,\"ano\":2025,\"numero_protocolo\":20,\"data_apresentacao\":\"2025-01-09\",\"tipo_apresentacao\":\"\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":true,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"APELO AO EXMO. SR. GOVERNADOR DO ESTADO  DE ALAGOAS, PAULO DANTAS, E A SECRET\\u00c1RIA DE ESTADO DO PLANEJAMENTO , GEST\\u00c3O E PATRIM\\u00d4NIO, SRA. PAULA DANTAS, PARA QUE EMPREENDAM ESFOR\\u00c7OS EM CONVOCAR OS APROVADOS NO CONCURSO DA POL\\u00cdCIA CIENT\\u00cdFICA DE ALAGOAS, ANTE E URGENTE NECESSIDADE  DE RECOMPOR O QUADRO DE SERVIDORES  DO \\u00d3RG\\u00c3O.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.al.leg.br/media/sapl/public/materialegislativa/2025/13645/protocolo_2087.pdf\",\"data_ultima_atualizacao\":\"2026-05-27T17:23:13.166119-03:00\",\"ip\":\"186.235.158.21\",\"ultima_edicao\":\"2025-01-09T10:20:47.725482-03:00\",\"tipo\":8,\"regime_tramitacao\":1,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":132,\"anexadas\":[],\"autores\":[70]},{\"id\":13649,\"__str__\":\"INDICA\\u00c7\\u00c3O n\\u00ba 1747 de 2025\",\"link_detail_backend\":\"/materia/13649\",\"metadata\":{},\"numero\":1747,\"ano\":2025,\"numero_protocolo\":31,\"data_apresentacao\":\"2025-01-13\",\"tipo_apresentacao\":\"\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":true,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"APELO AO EXMO. SR. GOVERNADOR DO ESTADO DE ALAGOAS E \\u00c1 SEGURAN\\u00c7A P\\u00daBLICA DE ALAGOAS - SSPAL PARA QUE EMPREEDAM ESFOR\\u00c7OS NO COMBATE E REDU\\u00c7\\u00c3O DA VIOL\\u00caNCIA NA REGI\\u00c3O DO ENTORNO DO PARQUE GON\\u00c7ALVES LEDO, NO BAIRRO FAROL, EM MACEI\\u00d3.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.al.leg.br/media/sapl/public/materialegislativa/2025/13649/protocolo_2090.pdf\",\"data_ultima_atualizacao\":\"2025-01-13T16:53:45.612942-03:00\",\"ip\":\"186.235.158.21\",\"ultima_edicao\":\"2025-01-13T16:53:28.612884-03:00\",\"tipo\":8,\"regime_tramitacao\":1,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":183,\"anexadas\":[],\"autores\":[118]}]}"
+  },
+  {
+   "u": "https://sapl.al.al.leg.br/api/materia/autoria/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 841,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/materia/autoria/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":15570,\"total_pages\":7785,\"page\":1},\"results\":[{\"id\":8612,\"__str__\":\"Autoria: 02 CCJR - 02\\u00aa Comiss\\u00e3o de Constitui\\u00e7\\u00e3o, Justi\\u00e7a e Reda\\u00e7\\u00e3o - 07 membros - PROJETO DE RESOLU\\u00c7\\u00c3O n\\u00ba 116 de 2022\",\"link_detail_backend\":\"/materia/autoria/8612\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":28,\"materia\":8940},{\"id\":7121,\"__str__\":\"Autoria: 02 CCJR - 02\\u00aa Comiss\\u00e3o de Constitui\\u00e7\\u00e3o, Justi\\u00e7a e Reda\\u00e7\\u00e3o - 07 membros - PROJETO DE DECRETO LEGISLATIVO n\\u00ba 9 de 2021\",\"link_detail_backend\":\"/materia/autoria/7121\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":28,\"materia\":7449}]}"
+  },
+  {
+   "u": "https://sapl.al.al.leg.br/api/sessao/votoparlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1157,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/sessao/votoparlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":2003,\"total_pages\":1002,\"page\":1},\"results\":[{\"id\":1,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 4 - INDICA\\u00c7\\u00c3O n\\u00ba 49 de 2015 em 34\\u00aa Extraordin\\u00e1ria da 1\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado - Parlamentar: DEPUTADO BRUNO TOLEDO\",\"link_detail_backend\":\"\",\"metadata\":{},\"voto\":\"Sim\",\"ip\":\"\",\"data_hora\":\"2018-10-19T13:15:10.582990-03:00\",\"votacao\":13,\"parlamentar\":2,\"user\":null,\"ordem\":null,\"expediente\":null},{\"id\":2,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 4 - INDICA\\u00c7\\u00c3O n\\u00ba 49 de 2015 em 34\\u00aa Extraordin\\u00e1ria da 1\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado - Parlamentar: CARIMB\\u00c3O J\\u00daNIOR\",\"link_detail_backend\":\"\",\"metadata\":{},\"voto\":\"Sim\",\"ip\":\"\",\"data_hora\":\"2018-10-19T13:15:10.583126-03:00\",\"votacao\":13,\"parlamentar\":3,\"user\":null,\"ordem\":null,\"expediente\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.al.leg.br/api/sessao/registrovotacao/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1207,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/sessao/registrovotacao/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":217,\"total_pages\":109,\"page\":1},\"results\":[{\"id\":2,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 2 - PROJETO DE LEI ORDIN\\u00c1RIA n\\u00ba 716 de 2014 em 30\\u00aa Ordin\\u00e1ria da 1\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado\",\"link_detail_backend\":\"\",\"metadata\":{},\"numero_votos_sim\":19,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"\",\"data_hora\":\"2019-05-15T15:52:00.943829-03:00\",\"tipo_resultado_votacao\":1,\"materia\":439,\"ordem\":107,\"expediente\":null,\"user\":null},{\"id\":3,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 3 - PROJETO DE LEI ORDIN\\u00c1RIA n\\u00ba 51 de 2015 em 30\\u00aa Ordin\\u00e1ria da 1\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado\",\"link_detail_backend\":\"\",\"metadata\":{},\"numero_votos_sim\":19,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"\",\"data_hora\":\"2019-05-15T15:52:00.943829-03:00\",\"tipo_resultado_votacao\":1,\"materia\":75,\"ordem\":108,\"expediente\":null,\"user\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.al.leg.br/api/parlamentares/mandato/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1024,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/parlamentares/mandato/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":227,\"total_pages\":114,\"page\":1},\"results\":[{\"id\":181,\"__str__\":\"AFR\\u00c2NIO VERGETTI 10\\u00aa (1983 - 1987) \",\"link_detail_backend\":\"/parlamentar/mandato/181\",\"metadata\":{},\"tipo_causa_fim_mandato\":null,\"data_inicio_mandato\":\"1983-02-01\",\"data_fim_mandato\":\"1986-01-31\",\"votos_recebidos\":null,\"data_expedicao_diploma\":null,\"titular\":true,\"observacao\":\"\",\"parlamentar\":105,\"tipo_afastamento\":null,\"legislatura\":25,\"coligacao\":null},{\"id\":168,\"__str__\":\"AFR\\u00c2NIO VERGETTI 11\\u00aa (1987 - 1991) \",\"link_detail_backend\":\"/parlamentar/mandato/168\",\"metadata\":{},\"tipo_causa_fim_mandato\":null,\"data_inicio_mandato\":\"1987-02-01\",\"data_fim_mandato\":\"1990-01-31\",\"votos_recebidos\":null,\"data_expedicao_diploma\":null,\"titular\":true,\"observacao\":\"\",\"parlamentar\":105,\"tipo_afastamento\":null,\"legislatura\":24,\"coligacao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.al.leg.br/api/parlamentares/legislatura/?page_size=3",
+   "st": 200,
+   "ct": "application/json",
+   "n": 935,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.al.leg.br/api/parlamentares/legislatura/?page=2&page_size=3\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":3,\"total_entries\":20,\"total_pages\":7,\"page\":1},\"results\":[{\"id\":35,\"__str__\":\"20\\u00aa (2023 - 2027) (Atual)\",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/35\",\"metadata\":{},\"numero\":20,\"data_inicio\":\"2023-02-01\",\"data_fim\":\"2027-01-31\",\"data_eleicao\":\"2022-10-02\",\"observacao\":\"\"},{\"id\":19,\"__str__\":\"19\\u00aa (2019 - 2023) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/19\",\"metadata\":{},\"numero\":19,\"data_inicio\":\"2019-02-01\",\"data_fim\":\"2023-01-31\",\"data_eleicao\":\"2018-10-07\",\"observacao\":\"\"},{\"id\":18,\"__str__\":\"18\\u00aa (2015 - 2019) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/18\",\"metadata\":{},\"numero\":18,\"data_inicio\":\"2015-02-01\",\"data_fim\":\"2019-01-31\",\"data_eleicao\":\"2014-10-03\",\"observacao\":\"\"}]}"
+  },
+  {
+   "u": "https://sapl.al.am.leg.br/api/",
+   "st": 200,
+   "ct": "application/json",
+   "n": 10685,
+   "ini": "{\"audiencia/tipoaudienciapublica\":\"http://sapl.al.am.leg.br/api/audiencia/tipoaudienciapublica/\",\"audiencia/audienciapublica\":\"http://sapl.al.am.leg.br/api/audiencia/audienciapublica/\",\"audiencia/anexoaudienciapublica\":\"http://sapl.al.am.leg.br/api/audiencia/anexoaudienciapublica/\",\"contenttypes/contenttype\":\"http://sapl.al.am.leg.br/api/contenttypes/contenttype/\",\"base/casalegislativa\":\"http://sapl.al.am.leg.br/api/base/casalegislativa/\",\"base/appconfig\":\"http://sapl.al.am.leg.br/api/base/appconfig/\",\"base/tipoautor\":\"http://sapl.al.am.leg.br/api/base/tipoautor/\",\"base/autor\":\"http://sapl.al.am.leg.br/api/base/autor/\",\"base/operadorautor\":\"http://sapl.al.am.leg.br/api/base/operadorautor/\",\"base/auditlog\":\"http://sapl.al.am.leg.br/api/base/auditlog/\",\"base/metadata\":\"http://sapl.al.am.leg.br/api/base/metadata/\",\"comissoes/tipocomissao\":\"http://sapl.al.am.leg.br/api/comissoes/tipocomissao/\",\"comissoes/comissao\":\"http://sapl.al.am.leg.br/api/comissoes/comissao/\",\"comissoes/periodo\":\"http://sapl.al.am.leg.br/api/comissoes/periodo/\",\"comissoes/cargocomissao\":\"http://sapl.al.am.leg.br/api/comissoes/cargocomissao/\",\"comissoes/composicao\":\"http://sapl.al.am.leg.br/api/comissoes/composicao/\",\"comissoes/participacao\":\"http://sapl.al.am.leg.br/api/comissoes/participacao/\",\"comissoes/reuniao\":\"http://sapl.al.am.leg.br/api/comissoes/reuniao/\",\"comissoes/documentoacessorio\":\"http://sapl.al.am.leg.br/api/materia/documentoacessorio/\",\"compilacao/perfilestruturaltextoarticulado\":\"http://sapl.al.am.leg.br/api/compilacao/perfilestruturaltextoarticulado/\",\"compilacao/tipotextoarticulado\":\"http://sapl.al.am.leg.br/api/compilacao/tipotextoarticulado/\",\"compilacao/textoarticulado\":\"http://sapl.al.am.leg.br/api/compilacao/textoarticulado/\",\"compilacao/tiponota\":\"http://sapl.al.am.leg.br/api/compilacao/tiponota/\",\"compilacao/tipovide\":\"http://sapl.al.am.leg.br/api/compilacao/tipovide/\",\"compilacao/tipodispositivo\":\"http://sapl.al.am.leg.br/api/compilacao/tipodispositivo/\",\"compilacao/tipodispositivorelationship\":\"http://sapl.al.am.leg.br/api/compilacao/tipodispositivorelationship/\",\"compilacao/tipopublicacao\":\"http://sapl.al.am.leg.br/api/compilacao/tipopublicacao/\",\"compilacao/veiculopublicacao\":\"http://sapl.al.am.leg.br/api/compilacao/veiculopublicacao/\",\"compilacao/publicacao\":\"http://sapl.al.am.leg.br/api/compilacao/publicacao/\",\"compilacao/dispositivo\":\"http://sapl.al.am.leg.br/api/compilacao/dispositivo/\",\"compilacao/vide\":\"http://sapl.al.am.leg.br/api/compilacao/vide/\",\"compilacao/nota\":\"http://sapl.al.am.leg.br/api/compilacao/nota/\",\"materia/tipoproposicao\":\"http://sapl.al.am.leg.br/api/materia/tipoproposicao/\",\"materia/tipomaterialegislativa\":\"http://sapl.al.am.leg.br/api/materia/tipomaterialegislativa/\",\"materia/regimetramitacao\":\"http://sapl.al.am.leg.br/api/materia/regimetramitacao/\",\"materia/origem\":\"http://sapl.al.am.leg.br/api/materia/origem/\",\"materia/materialegislativa\":\"http://sapl.al.am.leg.br/api/materia/materialegislativa/\",\"materia/autoria\":\"http:/"
+  },
+  {
+   "u": "https://sapl.al.am.leg.br/api/parlamentares/parlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 10205,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/parlamentares/parlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":67,\"total_pages\":34,\"page\":1},\"results\":[{\"id\":5,\"__str__\":\"Abdala Fraxe\",\"link_detail_backend\":\"/parlamentar/5\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T13:55:40.488819-03:00\",\"nome_completo\":\"ABDALA HABIB FRAXE JUNIOR\",\"nome_parlamentar\":\"Abdala Fraxe\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"\",\"email\":\"deputado.abdalafraxe@aleam.gov.br\",\"locais_atuacao\":\"\",\"ativo\":true,\"biografia\":\"<p>O deputado estadual Abdala Habib Fraxe J&uacute;nior nasceu em Boa Vista (RR), no dia 19 de setembro de 1969. Veio para Manaus aos 16 anos para dar continuidade aos estudos.</p>\\r\\n<p>&Eacute; casado com Sh&aacute;dia Hauache Fraxe e tem tr&ecirc;s filhas: N&aacute;hida Hauache Fraxe, D&acirc;nia Hauache Fraxe e Nayla Hauche Fraxe.</p>\\r\\n<p>Formado em Economia pela Universidade Federal do Amazonas (Ufam) e p&oacute;s-graduado em Marketing pela Funda&ccedil;&atilde;o Centro de An&aacute;lise de Pesquisa e Inova&ccedil;&atilde;o Tecnol&oacute;gica (Fucapi), no per&iacute;odo entre 1995 e 1998, Fraxe foi o primeiro diretor-executivo do &Oacute;rg&atilde;o Gestor de M&atilde;o de Obra do Porto de Manaus (OGMO), institui&ccedil;&atilde;o criada por determina&ccedil;&atilde;o da lei 8.630/93 que previa a moderniza&ccedil;&atilde;o dos portos.</p>\\r\\n<p>Na &eacute;poca em que foi gestor, mais de 500 funcion&aacute;rios avulsos do porto, que n&atilde;o possu&iacute;am carteira assinada, mas trabalhavam h&aacute; muitos anos prestando servi&ccedil;os, alguns at&eacute; com idade superior a 70 anos, foram aposentados e indenizados pela administra&ccedil;&atilde;o do porto, por meio de uma mobiliza&ccedil;&atilde;o feita pela OGMO no sentido de modernizar as opera&ccedil;&otilde;es no local.</p>\\r\\n<p>Na mesma &eacute;poca, Abdala Fraxe foi membro do Conselho de Autoridade Portu&aacute;ria. E, de 1998 a 2003, o atual deputado foi diretor do Sindicato de Revendedores de Combust&iacute;vel do Amazonas.</p>\\r\\n<p>Em meados de 2000, Fraxe come&ccedil;ou a militar partidariamente. Ele concorreu em dois pleitos para vereador e tr&ecirc;s vezes para deputado estadual, sendo eleito para o seu primeiro mandato na terceira tentativa, nas elei&ccedil;&otilde;es de 2010, com 17.500 votos.</p>\\r\\n<p>Na Assembleia Legislativa do Estado do Amazonas (Aleam), j&aacute; no seu primeiro mandato, o deputado ocupou o cargo de 2&ordm;. secret&aacute;rio da Mesa Diretora, para o bi&ecirc;nio 2011/2012. Em 2012, assumiu a presid&ecirc;ncia da Comiss&atilde;o de Direitos Humanos e Cidadania (CDHC). De abril a dezembro de 2014, teve a importante miss&atilde;o de comandar a Comiss&atilde;o Parlamentar de Inqu&eacute;rito (CPI) da Pedofilia.</p>\\r\\n<p>Foi reeleito no pleito de 2014, com 23.626 votos. Em 2015, foi eleito sec"
+  },
+  {
+   "u": "https://sapl.al.am.leg.br/api/materia/materialegislativa/?page_size=2&ano=2025",
+   "st": 200,
+   "ct": "application/json",
+   "n": 2477,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/materia/materialegislativa/?ano=2025&page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":6253,\"total_pages\":3127,\"page\":1},\"results\":[{\"id\":173767,\"__str__\":\"MENSAGEM DO GOVERNADOR n\\u00ba 1 de 2025\",\"link_detail_backend\":\"/materia/173767\",\"metadata\":{},\"numero\":1,\"ano\":2025,\"numero_protocolo\":null,\"data_apresentacao\":\"2025-02-04\",\"tipo_apresentacao\":\"\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":false,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"Submete \\u00e0 aprova\\u00e7\\u00e3o da ALEAM a indica\\u00e7\\u00e3o dos nomes que especifica para composi\\u00e7\\u00e3o do Conselho de Recursos Fiscais da Secretaria de Estado da Fazenda.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.am.leg.br/media/sapl/public/materialegislativa/2025/173767/mg_01_25_mensagem.pdf\",\"data_ultima_atualizacao\":\"2025-02-05T10:53:44.491883-03:00\",\"ip\":\"177.92.163.130\",\"ultima_edicao\":\"2025-02-05T10:53:44.081975-03:00\",\"tipo\":14,\"regime_tramitacao\":1,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":363,\"anexadas\":[173784],\"autores\":[]},{\"id\":173884,\"__str__\":\"MENSAGEM DO GOVERNADOR n\\u00ba 2 de 2025\",\"link_detail_backend\":\"/materia/173884\",\"metadata\":{},\"numero\":2,\"ano\":2025,\"numero_protocolo\":null,\"data_apresentacao\":\"2025-02-04\",\"tipo_apresentacao\":\"\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":false,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"Encaminha VETO PARCIAL, incidente sobre o artigo 4.\\u00ba, caput, incisos e al\\u00edneas do Projeto de Lei n. 402/2024, oriundo do Poder Executivo, que \\u201cINSTITUI o Conselho Estadual do Desporto e Lazer \\u2013 CEDEL, e d\\u00e1 outras provid\\u00eancias\\u201d.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.am.leg.br/media/sapl/public/materialegislativa/2025/173884/mg_02_25.pdf\",\"data_ultima_atualizacao\":\"2025-02-05T10:53:14.407352-03:00\",\"ip\":\"177.92.163.130\",\"ultima_edicao\":\"2025-02-05T10:38:30.118684-03:00\",\"tipo\":14,\"regime_tramitacao\":4,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":363,\"anexadas\":[174019],\"autores\":[]}]}"
+  },
+  {
+   "u": "https://sapl.al.am.leg.br/api/materia/autoria/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 646,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/materia/autoria/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":79675,\"total_pages\":39838,\"page\":1},\"results\":[{\"id\":45152,\"__str__\":\"Autoria: Abdala Fraxe - Requerimento n\\u00ba 2390 de 2021\",\"link_detail_backend\":\"/materia/autoria/45152\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":6,\"materia\":149813},{\"id\":45126,\"__str__\":\"Autoria: Abdala Fraxe - Projeto de Lei Ordin\\u00e1ria n\\u00ba 284 de 2021\",\"link_detail_backend\":\"/materia/autoria/45126\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":6,\"materia\":149784}]}"
+  },
+  {
+   "u": "https://sapl.al.am.leg.br/api/sessao/votoparlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1153,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/sessao/votoparlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":134030,\"total_pages\":67015,\"page\":1},\"results\":[{\"id\":1,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 1 - Projeto de Lei Ordin\\u00e1ria n\\u00ba 3 de 2016 em 3\\u00aa Ordin\\u00e1ria da 2\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado - Parlamentar: Alessandra Camp\\u00ealo\",\"link_detail_backend\":\"\",\"metadata\":{},\"voto\":\"Sim\",\"ip\":\"\",\"data_hora\":\"2018-10-01T10:00:12.656395-03:00\",\"votacao\":1,\"parlamentar\":9,\"user\":null,\"ordem\":null,\"expediente\":null},{\"id\":2,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 1 - Projeto de Lei Ordin\\u00e1ria n\\u00ba 3 de 2016 em 3\\u00aa Ordin\\u00e1ria da 2\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado - Parlamentar: Abdala Fraxe\",\"link_detail_backend\":\"\",\"metadata\":{},\"voto\":\"Sim\",\"ip\":\"\",\"data_hora\":\"2018-10-01T10:00:12.656461-03:00\",\"votacao\":1,\"parlamentar\":5,\"user\":null,\"ordem\":null,\"expediente\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.am.leg.br/api/sessao/registrovotacao/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1240,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/sessao/registrovotacao/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":6682,\"total_pages\":3341,\"page\":1},\"results\":[{\"id\":1,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 1 - Projeto de Lei Ordin\\u00e1ria n\\u00ba 3 de 2016 em 3\\u00aa Ordin\\u00e1ria da 2\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado\",\"link_detail_backend\":\"\",\"metadata\":{},\"numero_votos_sim\":22,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"\",\"data_hora\":\"2019-05-15T16:41:31.409229-03:00\",\"tipo_resultado_votacao\":1,\"materia\":35123,\"ordem\":11,\"expediente\":null,\"user\":null},{\"id\":26,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 1 - Projeto de Lei Ordin\\u00e1ria n\\u00ba 26 de 2015 em 20\\u00aa Ordin\\u00e1ria da 2\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Retirado de Pauta\",\"link_detail_backend\":\"\",\"metadata\":{},\"numero_votos_sim\":0,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"Aus\\u00eancia do Autor\",\"ip\":\"\",\"data_hora\":\"2019-05-15T16:41:31.409229-03:00\",\"tipo_resultado_votacao\":3,\"materia\":35344,\"ordem\":45,\"expediente\":null,\"user\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.am.leg.br/api/parlamentares/mandato/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1005,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/parlamentares/mandato/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":104,\"total_pages\":52,\"page\":1},\"results\":[{\"id\":33,\"__str__\":\"Abdala Fraxe 17\\u00aa (2011 - 2015) \",\"link_detail_backend\":\"/parlamentar/mandato/33\",\"metadata\":{},\"tipo_causa_fim_mandato\":0,\"data_inicio_mandato\":\"2011-02-01\",\"data_fim_mandato\":\"2015-01-31\",\"votos_recebidos\":null,\"data_expedicao_diploma\":\"2011-01-26\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":5,\"tipo_afastamento\":null,\"legislatura\":17,\"coligacao\":null},{\"id\":5,\"__str__\":\"Abdala Fraxe 18\\u00aa (2015 - 2019) \",\"link_detail_backend\":\"/parlamentar/mandato/5\",\"metadata\":{},\"tipo_causa_fim_mandato\":0,\"data_inicio_mandato\":\"2015-02-01\",\"data_fim_mandato\":\"2019-01-31\",\"votos_recebidos\":null,\"data_expedicao_diploma\":\"2015-01-01\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":5,\"tipo_afastamento\":null,\"legislatura\":18,\"coligacao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.am.leg.br/api/parlamentares/legislatura/?page_size=3",
+   "st": 200,
+   "ct": "application/json",
+   "n": 934,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.am.leg.br/api/parlamentares/legislatura/?page=2&page_size=3\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":3,\"total_entries\":7,\"total_pages\":3,\"page\":1},\"results\":[{\"id\":20,\"__str__\":\"20\\u00aa (2023 - 2027) (Atual)\",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/20\",\"metadata\":{},\"numero\":20,\"data_inicio\":\"2023-02-01\",\"data_fim\":\"2027-01-31\",\"data_eleicao\":\"2022-10-02\",\"observacao\":\"\"},{\"id\":19,\"__str__\":\"19\\u00aa (2019 - 2022) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/19\",\"metadata\":{},\"numero\":19,\"data_inicio\":\"2019-02-01\",\"data_fim\":\"2022-12-31\",\"data_eleicao\":\"2018-10-28\",\"observacao\":\"\"},{\"id\":18,\"__str__\":\"18\\u00aa (2015 - 2019) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/18\",\"metadata\":{},\"numero\":18,\"data_inicio\":\"2015-02-01\",\"data_fim\":\"2019-01-31\",\"data_eleicao\":\"2014-11-15\",\"observacao\":\"\"}]}"
+  },
+  {
+   "u": "https://sapl.al.mt.leg.br/api/",
+   "st": 200,
+   "ct": "application/json",
+   "n": 10685,
+   "ini": "{\"audiencia/tipoaudienciapublica\":\"http://sapl.al.mt.leg.br/api/audiencia/tipoaudienciapublica/\",\"audiencia/audienciapublica\":\"http://sapl.al.mt.leg.br/api/audiencia/audienciapublica/\",\"audiencia/anexoaudienciapublica\":\"http://sapl.al.mt.leg.br/api/audiencia/anexoaudienciapublica/\",\"contenttypes/contenttype\":\"http://sapl.al.mt.leg.br/api/contenttypes/contenttype/\",\"base/casalegislativa\":\"http://sapl.al.mt.leg.br/api/base/casalegislativa/\",\"base/appconfig\":\"http://sapl.al.mt.leg.br/api/base/appconfig/\",\"base/tipoautor\":\"http://sapl.al.mt.leg.br/api/base/tipoautor/\",\"base/autor\":\"http://sapl.al.mt.leg.br/api/base/autor/\",\"base/operadorautor\":\"http://sapl.al.mt.leg.br/api/base/operadorautor/\",\"base/auditlog\":\"http://sapl.al.mt.leg.br/api/base/auditlog/\",\"base/metadata\":\"http://sapl.al.mt.leg.br/api/base/metadata/\",\"comissoes/tipocomissao\":\"http://sapl.al.mt.leg.br/api/comissoes/tipocomissao/\",\"comissoes/comissao\":\"http://sapl.al.mt.leg.br/api/comissoes/comissao/\",\"comissoes/periodo\":\"http://sapl.al.mt.leg.br/api/comissoes/periodo/\",\"comissoes/cargocomissao\":\"http://sapl.al.mt.leg.br/api/comissoes/cargocomissao/\",\"comissoes/composicao\":\"http://sapl.al.mt.leg.br/api/comissoes/composicao/\",\"comissoes/participacao\":\"http://sapl.al.mt.leg.br/api/comissoes/participacao/\",\"comissoes/reuniao\":\"http://sapl.al.mt.leg.br/api/comissoes/reuniao/\",\"comissoes/documentoacessorio\":\"http://sapl.al.mt.leg.br/api/materia/documentoacessorio/\",\"compilacao/perfilestruturaltextoarticulado\":\"http://sapl.al.mt.leg.br/api/compilacao/perfilestruturaltextoarticulado/\",\"compilacao/tipotextoarticulado\":\"http://sapl.al.mt.leg.br/api/compilacao/tipotextoarticulado/\",\"compilacao/textoarticulado\":\"http://sapl.al.mt.leg.br/api/compilacao/textoarticulado/\",\"compilacao/tiponota\":\"http://sapl.al.mt.leg.br/api/compilacao/tiponota/\",\"compilacao/tipovide\":\"http://sapl.al.mt.leg.br/api/compilacao/tipovide/\",\"compilacao/tipodispositivo\":\"http://sapl.al.mt.leg.br/api/compilacao/tipodispositivo/\",\"compilacao/tipodispositivorelationship\":\"http://sapl.al.mt.leg.br/api/compilacao/tipodispositivorelationship/\",\"compilacao/tipopublicacao\":\"http://sapl.al.mt.leg.br/api/compilacao/tipopublicacao/\",\"compilacao/veiculopublicacao\":\"http://sapl.al.mt.leg.br/api/compilacao/veiculopublicacao/\",\"compilacao/publicacao\":\"http://sapl.al.mt.leg.br/api/compilacao/publicacao/\",\"compilacao/dispositivo\":\"http://sapl.al.mt.leg.br/api/compilacao/dispositivo/\",\"compilacao/vide\":\"http://sapl.al.mt.leg.br/api/compilacao/vide/\",\"compilacao/nota\":\"http://sapl.al.mt.leg.br/api/compilacao/nota/\",\"materia/tipoproposicao\":\"http://sapl.al.mt.leg.br/api/materia/tipoproposicao/\",\"materia/tipomaterialegislativa\":\"http://sapl.al.mt.leg.br/api/materia/tipomaterialegislativa/\",\"materia/regimetramitacao\":\"http://sapl.al.mt.leg.br/api/materia/regimetramitacao/\",\"materia/origem\":\"http://sapl.al.mt.leg.br/api/materia/origem/\",\"materia/materialegislativa\":\"http://sapl.al.mt.leg.br/api/materia/materialegislativa/\",\"materia/autoria\":\"http:/"
+  },
+  {
+   "u": "https://sapl.al.mt.leg.br/api/parlamentares/parlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1354,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.mt.leg.br/api/parlamentares/parlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":25,\"total_pages\":13,\"page\":1},\"results\":[{\"id\":3,\"__str__\":\"Baiano Filho\",\"link_detail_backend\":\"/parlamentar/3\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:09:57.857315-03:00\",\"nome_completo\":\"Jos\\u00e9 Joaquim de Souza Filho\",\"nome_parlamentar\":\"Baiano Filho\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"\",\"email\":\"\",\"locais_atuacao\":\"\",\"ativo\":true,\"biografia\":\"<br/>\",\"fotografia\":\"http://sapl.al.mt.leg.br/media/sapl/public/parlamentar/3/3_foto_parlamentar.jpeg\",\"cropping\":\"0,22,130,151\",\"nivel_instrucao\":null},{\"id\":9,\"__str__\":\"Dep. Cel. Taborelli\",\"link_detail_backend\":\"/parlamentar/9\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:09:57.857315-03:00\",\"nome_completo\":\"Pery Taborelli da Silva Filho\",\"nome_parlamentar\":\"Dep. Cel. Taborelli\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"\",\"email\":\"\",\"locais_atuacao\":\"\",\"ativo\":true,\"biografia\":\"\",\"fotografia\":\"http://sapl.al.mt.leg.br/media/sapl/public/parlamentar/9/9_foto_parlamentar.jpeg\",\"cropping\":\"0,22,130,151\",\"nivel_instrucao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.mt.leg.br/api/materia/materialegislativa/?page_size=2&ano=2025",
+   "st": 200,
+   "ct": "application/json",
+   "n": 178,
+   "ini": "{\"pagination\":{\"links\":{\"next\":null,\"previous\":null},\"previous_page\":null,\"next_page\":null,\"start_index\":0,\"end_index\":0,\"total_entries\":0,\"total_pages\":1,\"page\":1},\"results\":[]}"
+  },
+  {
+   "u": "https://sapl.al.mt.leg.br/api/materia/autoria/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 372,
+   "ini": "{\"pagination\":{\"links\":{\"next\":null,\"previous\":null},\"previous_page\":null,\"next_page\":null,\"start_index\":1,\"end_index\":1,\"total_entries\":1,\"total_pages\":1,\"page\":1},\"results\":[{\"id\":1,\"__str__\":\"Autoria: Janaina Riva - Projeto de Lei Ordin\\u00e1ria n\\u00ba 1 de 2015\",\"link_detail_backend\":\"/materia/autoria/1\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":10,\"materia\":2}]}"
+  },
+  {
+   "u": "https://sapl.al.mt.leg.br/api/sessao/votoparlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 178,
+   "ini": "{\"pagination\":{\"links\":{\"next\":null,\"previous\":null},\"previous_page\":null,\"next_page\":null,\"start_index\":0,\"end_index\":0,\"total_entries\":0,\"total_pages\":1,\"page\":1},\"results\":[]}"
+  },
+  {
+   "u": "https://sapl.al.mt.leg.br/api/sessao/registrovotacao/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 178,
+   "ini": "{\"pagination\":{\"links\":{\"next\":null,\"previous\":null},\"previous_page\":null,\"next_page\":null,\"start_index\":0,\"end_index\":0,\"total_entries\":0,\"total_pages\":1,\"page\":1},\"results\":[]}"
+  },
+  {
+   "u": "https://sapl.al.mt.leg.br/api/parlamentares/mandato/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1003,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.mt.leg.br/api/parlamentares/mandato/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":24,\"total_pages\":12,\"page\":1},\"results\":[{\"id\":3,\"__str__\":\"Baiano Filho 18\\u00aa (2015 - 2018) \",\"link_detail_backend\":\"/parlamentar/mandato/3\",\"metadata\":{},\"tipo_causa_fim_mandato\":0,\"data_inicio_mandato\":\"2015-01-01\",\"data_fim_mandato\":\"2018-12-31\",\"votos_recebidos\":0,\"data_expedicao_diploma\":\"2015-01-01\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":3,\"tipo_afastamento\":null,\"legislatura\":18,\"coligacao\":null},{\"id\":9,\"__str__\":\"Dep. Cel. Taborelli 18\\u00aa (2015 - 2018) \",\"link_detail_backend\":\"/parlamentar/mandato/9\",\"metadata\":{},\"tipo_causa_fim_mandato\":0,\"data_inicio_mandato\":\"2015-01-01\",\"data_fim_mandato\":\"2018-12-31\",\"votos_recebidos\":0,\"data_expedicao_diploma\":\"2015-01-01\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":9,\"tipo_afastamento\":null,\"legislatura\":18,\"coligacao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.mt.leg.br/api/parlamentares/legislatura/?page_size=3",
+   "st": 200,
+   "ct": "application/json",
+   "n": 404,
+   "ini": "{\"pagination\":{\"links\":{\"next\":null,\"previous\":null},\"previous_page\":null,\"next_page\":null,\"start_index\":1,\"end_index\":1,\"total_entries\":1,\"total_pages\":1,\"page\":1},\"results\":[{\"id\":18,\"__str__\":\"18\\u00aa (2015 - 2018) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/18\",\"metadata\":{},\"numero\":18,\"data_inicio\":\"2015-01-01\",\"data_fim\":\"2018-12-31\",\"data_eleicao\":\"2014-10-05\",\"observacao\":\"\"}]}"
+  },
+  {
+   "u": "https://sapl.al.pb.leg.br/api/",
+   "st": 200,
+   "ct": "application/json",
+   "n": 10745,
+   "ini": "{\"audiencia/tipoaudienciapublica\":\"http://sapl.al.pb.leg.br/api/audiencia/tipoaudienciapublica/\",\"audiencia/audienciapublica\":\"http://sapl.al.pb.leg.br/api/audiencia/audienciapublica/\",\"audiencia/anexoaudienciapublica\":\"http://sapl.al.pb.leg.br/api/audiencia/anexoaudienciapublica/\",\"contenttypes/contenttype\":\"http://sapl.al.pb.leg.br/api/contenttypes/contenttype/\",\"base/casalegislativa\":\"http://sapl.al.pb.leg.br/api/base/casalegislativa/\",\"base/appconfig\":\"http://sapl.al.pb.leg.br/api/base/appconfig/\",\"base/tipoautor\":\"http://sapl.al.pb.leg.br/api/base/tipoautor/\",\"base/autor\":\"http://sapl.al.pb.leg.br/api/base/autor/\",\"base/operadorautor\":\"http://sapl.al.pb.leg.br/api/base/operadorautor/\",\"base/seloods\":\"http://sapl.al.pb.leg.br/api/base/seloods/\",\"base/auditlog\":\"http://sapl.al.pb.leg.br/api/base/auditlog/\",\"base/metadata\":\"http://sapl.al.pb.leg.br/api/base/metadata/\",\"comissoes/tipocomissao\":\"http://sapl.al.pb.leg.br/api/comissoes/tipocomissao/\",\"comissoes/comissao\":\"http://sapl.al.pb.leg.br/api/comissoes/comissao/\",\"comissoes/periodo\":\"http://sapl.al.pb.leg.br/api/comissoes/periodo/\",\"comissoes/cargocomissao\":\"http://sapl.al.pb.leg.br/api/comissoes/cargocomissao/\",\"comissoes/composicao\":\"http://sapl.al.pb.leg.br/api/comissoes/composicao/\",\"comissoes/participacao\":\"http://sapl.al.pb.leg.br/api/comissoes/participacao/\",\"comissoes/reuniao\":\"http://sapl.al.pb.leg.br/api/comissoes/reuniao/\",\"comissoes/documentoacessorio\":\"http://sapl.al.pb.leg.br/api/materia/documentoacessorio/\",\"compilacao/perfilestruturaltextoarticulado\":\"http://sapl.al.pb.leg.br/api/compilacao/perfilestruturaltextoarticulado/\",\"compilacao/tipotextoarticulado\":\"http://sapl.al.pb.leg.br/api/compilacao/tipotextoarticulado/\",\"compilacao/textoarticulado\":\"http://sapl.al.pb.leg.br/api/compilacao/textoarticulado/\",\"compilacao/tiponota\":\"http://sapl.al.pb.leg.br/api/compilacao/tiponota/\",\"compilacao/tipovide\":\"http://sapl.al.pb.leg.br/api/compilacao/tipovide/\",\"compilacao/tipodispositivo\":\"http://sapl.al.pb.leg.br/api/compilacao/tipodispositivo/\",\"compilacao/tipodispositivorelationship\":\"http://sapl.al.pb.leg.br/api/compilacao/tipodispositivorelationship/\",\"compilacao/tipopublicacao\":\"http://sapl.al.pb.leg.br/api/compilacao/tipopublicacao/\",\"compilacao/veiculopublicacao\":\"http://sapl.al.pb.leg.br/api/compilacao/veiculopublicacao/\",\"compilacao/publicacao\":\"http://sapl.al.pb.leg.br/api/compilacao/publicacao/\",\"compilacao/dispositivo\":\"http://sapl.al.pb.leg.br/api/compilacao/dispositivo/\",\"compilacao/vide\":\"http://sapl.al.pb.leg.br/api/compilacao/vide/\",\"compilacao/nota\":\"http://sapl.al.pb.leg.br/api/compilacao/nota/\",\"materia/tipoproposicao\":\"http://sapl.al.pb.leg.br/api/materia/tipoproposicao/\",\"materia/tipomaterialegislativa\":\"http://sapl.al.pb.leg.br/api/materia/tipomaterialegislativa/\",\"materia/regimetramitacao\":\"http://sapl.al.pb.leg.br/api/materia/regimetramitacao/\",\"materia/origem\":\"http://sapl.al.pb.leg.br/api/materia/origem/\",\"materia/materialegislativa\":\"http://sapl.al.pb.leg.b"
+  },
+  {
+   "u": "https://sapl.al.pb.leg.br/api/parlamentares/parlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 2782,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/parlamentares/parlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":168,\"total_pages\":84,\"page\":1},\"results\":[{\"id\":18,\"__str__\":\"Ademir Morais\",\"metadata\":{},\"nome_completo\":\"Jos\\u00e9 Ademir Pereira de Morais\",\"nome_parlamentar\":\"Ademir Morais\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"(83) 2144507\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"M\\u00e9dico\",\"email\":\"\",\"locais_atuacao\":\"\",\"ativo\":true,\"biografia\":\"0\",\"fotografia\":null,\"cropping\":\"\",\"nivel_instrucao\":7},{\"id\":89,\"__str__\":\"Adriano Galdino\",\"metadata\":{},\"nome_completo\":\"Adriano C\\u00e9zar Galdino de Ara\\u00fajo\",\"nome_parlamentar\":\"Adriano Galdino\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"3214-4638\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"Engenheiro Civil e Advogado\",\"email\":\"presidencia@al.pb.leg.br\",\"locais_atuacao\":\"\",\"ativo\":true,\"biografia\":\"<p><span style=\\\"color: #444444; font-family: Arial, Verdana, Helvetica, sans-serif;\\\"><span style=\\\"font-size: 12px;\\\">Nascido em Campina Grande, Adriano Galdino &eacute; graduado em Engenharia Civil e Direito. Foi vereador por dois mandatos e prefeito por outros tr&ecirc;s do munic&iacute;pio de Pocinhos. Em 2010, assumiu o mandato de Deputado Estadual pela primeira vez. Filiado ao Partido Republicanos, Adriano Galdino est&aacute; atualmente no quarto mandato na Assembleia Legislativa da Para&iacute;ba.&nbsp;</span></span></p>\\r\\n<p><span style=\\\"font-size: 12px; color: #444444; font-family: Arial, Verdana, Helvetica, sans-serif;\\\">Foi eleito presidente da Casa de Epit&aacute;cio Pessoa no bi&ecirc;nio 2015-2017, e na 19&ordf; Legislatura, nos bi&ecirc;nios 2019-2021 e 2021-2023. Foi reeleito, desta vez por unanimidade entre seus pares, para presidir a Assembleia Legislativa da Para&iacute;ba na 20&ordf; Legislatura, nos bi&ecirc;nios 2023-2025 e 2025-2027.&nbsp;</span></p>\\r\\n<p><span style=\\\"color: #444444; font-family: Arial, Verdana, Helvetica, sans-serif;\\\"><span style=\\\"font-size: 12px;\\\">Na gest&atilde;o p&uacute;blica, Adriano Galdino tamb&eacute;m ocupou os cargos de Secret&aacute;rio de Interioriza&ccedil;&atilde;o da Para&iacute;ba e chefe da Casa Civil do Estado, al&eacute;m de Governador interino. Ele &eacute; casado, pai de tr&ecirc;s filhas e av&ocirc;.</span></span></p>\\r\\n<div style=\\\"color: #444444; font-family: Arial, Verdana, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal;\\\">&nbsp;</div>\",\"fotografia\":\"http://sapl.al.pb.leg.br/media/sapl/public/parlamentar/89/89_foto_parlamentar_Jq2avFH.jpg\",\"cropping\":\"0,3,206,209\",\"nivel_instrucao\":7}]}"
+  },
+  {
+   "u": "https://sapl.al.pb.leg.br/api/materia/materialegislativa/?page_size=2&ano=2025",
+   "st": 200,
+   "ct": "application/json",
+   "n": 2263,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/materia/materialegislativa/?ano=2025&page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":15402,\"total_pages\":7701,\"page\":1},\"results\":[{\"id\":130047,\"__str__\":\"Aut\\u00f3grafo n\\u00ba 1103 de 2025\",\"metadata\":{},\"numero\":1103,\"ano\":2025,\"numero_protocolo\":null,\"data_apresentacao\":\"2025-02-12\",\"tipo_apresentacao\":\"\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":true,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"Institui o Programa \\u201cLivros que \\r\\nEmpoderam\\u201d no Estado da Para\\u00edba e \\r\\nd\\u00e1 outras provid\\u00eancias\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.pb.leg.br/media/sapl/public/materialegislativa/2025/130047/autografo_ao_pl_2836.pdf\",\"data_ultima_atualizacao\":\"2025-03-11T15:36:24.169088-03:00\",\"ip\":\"10.83.19.254\",\"ultima_edicao\":\"2025-02-12T14:28:03.776914-03:00\",\"tipo\":21,\"regime_tramitacao\":2,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":144,\"anexadas\":[124753],\"autores\":[],\"selos_ods\":[]},{\"id\":130046,\"__str__\":\"Aut\\u00f3grafo n\\u00ba 1107 de 2025\",\"metadata\":{},\"numero\":1107,\"ano\":2025,\"numero_protocolo\":null,\"data_apresentacao\":\"2025-02-12\",\"tipo_apresentacao\":\"\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":true,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"Estima a Receita e fixa a Despesa do Estado \\r\\npara o Exerc\\u00edcio Financeiro de 2025 e d\\u00e1 \\r\\noutras provid\\u00eancias.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.pb.leg.br/media/sapl/public/materialegislativa/2025/130046/autografo_ao_pl_2946-2024_-_loa_2025_-_assinado.pdf\",\"data_ultima_atualizacao\":\"2025-08-13T15:47:20.274383-03:00\",\"ip\":\"10.83.19.254\",\"ultima_edicao\":\"2025-02-12T14:03:25.886736-03:00\",\"tipo\":21,\"regime_tramitacao\":2,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":144,\"anexadas\":[125314],\"autores\":[],\"selos_ods\":[]}]}"
+  },
+  {
+   "u": "https://sapl.al.pb.leg.br/api/materia/autoria/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 553,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/materia/autoria/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":142834,\"total_pages\":71417,\"page\":1},\"results\":[{\"id\":35273,\"__str__\":\"Autoria: Ademir Morais - Projeto de Lei Ordin\\u00e1ria n\\u00ba 770 de 2005\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":28,\"materia\":7965},{\"id\":35274,\"__str__\":\"Autoria: Ademir Morais - Requerimento n\\u00ba 6896 de 2005\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":28,\"materia\":8788}]}"
+  },
+  {
+   "u": "https://sapl.al.pb.leg.br/api/sessao/votoparlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1159,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/sessao/votoparlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":17148,\"total_pages\":8574,\"page\":1},\"results\":[{\"id\":1,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 2 - TESTE REQUIMENTO n\\u00ba 2 de 2018 em 1\\u00aa Teste Painel da 4\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Mat\\u00e9ria n\\u00e3o votada - Mat\\u00e9ria: TESTE REQUIMENTO n\\u00ba 2 de 2018 - Parlamentar: Renato Gadelha\",\"metadata\":{},\"voto\":\"Absten\\u00e7\\u00e3o\",\"ip\":\"\",\"data_hora\":null,\"votacao\":1104,\"parlamentar\":137,\"user\":81,\"ordem\":3011,\"expediente\":null},{\"id\":2,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 2 - TESTE REQUIMENTO n\\u00ba 2 de 2018 em 1\\u00aa Teste Painel da 4\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Mat\\u00e9ria n\\u00e3o votada - Mat\\u00e9ria: TESTE REQUIMENTO n\\u00ba 2 de 2018 - Parlamentar: Tovar\",\"metadata\":{},\"voto\":\"Sim\",\"ip\":\"\",\"data_hora\":null,\"votacao\":1104,\"parlamentar\":140,\"user\":30,\"ordem\":3011,\"expediente\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.pb.leg.br/api/sessao/registrovotacao/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1207,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/sessao/registrovotacao/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":56539,\"total_pages\":28270,\"page\":1},\"results\":[{\"id\":437,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 1 - Veto n\\u00ba 209 de 2017 em 8\\u00aa Sess\\u00e3o Ordin\\u00e1ria  da 4\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Mat\\u00e9ria n\\u00e3o votada - Mat\\u00e9ria: Veto n\\u00ba 209 de 2017\",\"metadata\":{},\"numero_votos_sim\":0,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"\",\"data_hora\":null,\"tipo_resultado_votacao\":1,\"materia\":56845,\"ordem\":1307,\"expediente\":null,\"user\":null},{\"id\":438,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 2 - Veto n\\u00ba 210 de 2017 em 8\\u00aa Sess\\u00e3o Ordin\\u00e1ria  da 4\\u00aa Sess\\u00e3o Legislativa da 18\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Mat\\u00e9ria n\\u00e3o votada - Mat\\u00e9ria: Veto n\\u00ba 210 de 2017\",\"metadata\":{},\"numero_votos_sim\":0,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"\",\"data_hora\":null,\"tipo_resultado_votacao\":1,\"materia\":56846,\"ordem\":1309,\"expediente\":null,\"user\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.pb.leg.br/api/parlamentares/mandato/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 910,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/parlamentares/mandato/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":325,\"total_pages\":163,\"page\":1},\"results\":[{\"id\":16,\"__str__\":\"Ademir Morais 14\\u00aa (1999 - 2003) \",\"metadata\":{},\"tipo_causa_fim_mandato\":null,\"data_inicio_mandato\":\"1999-02-01\",\"data_fim_mandato\":\"2003-01-31\",\"votos_recebidos\":null,\"data_expedicao_diploma\":null,\"titular\":true,\"observacao\":\"\",\"parlamentar\":18,\"tipo_afastamento\":null,\"legislatura\":14,\"coligacao\":null},{\"id\":133,\"__str__\":\"Adriano Galdino 17\\u00aa (2011 - 2015) \",\"metadata\":{},\"tipo_causa_fim_mandato\":null,\"data_inicio_mandato\":\"2011-02-01\",\"data_fim_mandato\":\"2015-01-31\",\"votos_recebidos\":29098,\"data_expedicao_diploma\":null,\"titular\":true,\"observacao\":\"\",\"parlamentar\":89,\"tipo_afastamento\":null,\"legislatura\":17,\"coligacao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.pb.leg.br/api/parlamentares/legislatura/?page_size=3",
+   "st": 200,
+   "ct": "application/json",
+   "n": 755,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pb.leg.br/api/parlamentares/legislatura/?page=2&page_size=3\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":3,\"total_entries\":20,\"total_pages\":7,\"page\":1},\"results\":[{\"id\":20,\"__str__\":\"20\\u00aa (2023 - 2027) (Atual)\",\"metadata\":{},\"numero\":20,\"data_inicio\":\"2023-02-01\",\"data_fim\":\"2027-01-31\",\"data_eleicao\":\"2022-10-02\",\"observacao\":\"\"},{\"id\":19,\"__str__\":\"19\\u00aa (2019 - 2023) \",\"metadata\":{},\"numero\":19,\"data_inicio\":\"2019-02-01\",\"data_fim\":\"2023-02-01\",\"data_eleicao\":\"2018-10-08\",\"observacao\":\"\"},{\"id\":18,\"__str__\":\"18\\u00aa (2015 - 2019) \",\"metadata\":{},\"numero\":18,\"data_inicio\":\"2015-02-01\",\"data_fim\":\"2019-02-01\",\"data_eleicao\":\"2014-10-08\",\"observacao\":\"\"}]}"
+  },
+  {
+   "u": "https://sapl.al.pi.leg.br/api/",
+   "st": 200,
+   "ct": "application/json",
+   "n": 10685,
+   "ini": "{\"audiencia/tipoaudienciapublica\":\"http://sapl.al.pi.leg.br/api/audiencia/tipoaudienciapublica/\",\"audiencia/audienciapublica\":\"http://sapl.al.pi.leg.br/api/audiencia/audienciapublica/\",\"audiencia/anexoaudienciapublica\":\"http://sapl.al.pi.leg.br/api/audiencia/anexoaudienciapublica/\",\"contenttypes/contenttype\":\"http://sapl.al.pi.leg.br/api/contenttypes/contenttype/\",\"base/casalegislativa\":\"http://sapl.al.pi.leg.br/api/base/casalegislativa/\",\"base/appconfig\":\"http://sapl.al.pi.leg.br/api/base/appconfig/\",\"base/tipoautor\":\"http://sapl.al.pi.leg.br/api/base/tipoautor/\",\"base/autor\":\"http://sapl.al.pi.leg.br/api/base/autor/\",\"base/operadorautor\":\"http://sapl.al.pi.leg.br/api/base/operadorautor/\",\"base/auditlog\":\"http://sapl.al.pi.leg.br/api/base/auditlog/\",\"base/metadata\":\"http://sapl.al.pi.leg.br/api/base/metadata/\",\"comissoes/tipocomissao\":\"http://sapl.al.pi.leg.br/api/comissoes/tipocomissao/\",\"comissoes/comissao\":\"http://sapl.al.pi.leg.br/api/comissoes/comissao/\",\"comissoes/periodo\":\"http://sapl.al.pi.leg.br/api/comissoes/periodo/\",\"comissoes/cargocomissao\":\"http://sapl.al.pi.leg.br/api/comissoes/cargocomissao/\",\"comissoes/composicao\":\"http://sapl.al.pi.leg.br/api/comissoes/composicao/\",\"comissoes/participacao\":\"http://sapl.al.pi.leg.br/api/comissoes/participacao/\",\"comissoes/reuniao\":\"http://sapl.al.pi.leg.br/api/comissoes/reuniao/\",\"comissoes/documentoacessorio\":\"http://sapl.al.pi.leg.br/api/materia/documentoacessorio/\",\"compilacao/perfilestruturaltextoarticulado\":\"http://sapl.al.pi.leg.br/api/compilacao/perfilestruturaltextoarticulado/\",\"compilacao/tipotextoarticulado\":\"http://sapl.al.pi.leg.br/api/compilacao/tipotextoarticulado/\",\"compilacao/textoarticulado\":\"http://sapl.al.pi.leg.br/api/compilacao/textoarticulado/\",\"compilacao/tiponota\":\"http://sapl.al.pi.leg.br/api/compilacao/tiponota/\",\"compilacao/tipovide\":\"http://sapl.al.pi.leg.br/api/compilacao/tipovide/\",\"compilacao/tipodispositivo\":\"http://sapl.al.pi.leg.br/api/compilacao/tipodispositivo/\",\"compilacao/tipodispositivorelationship\":\"http://sapl.al.pi.leg.br/api/compilacao/tipodispositivorelationship/\",\"compilacao/tipopublicacao\":\"http://sapl.al.pi.leg.br/api/compilacao/tipopublicacao/\",\"compilacao/veiculopublicacao\":\"http://sapl.al.pi.leg.br/api/compilacao/veiculopublicacao/\",\"compilacao/publicacao\":\"http://sapl.al.pi.leg.br/api/compilacao/publicacao/\",\"compilacao/dispositivo\":\"http://sapl.al.pi.leg.br/api/compilacao/dispositivo/\",\"compilacao/vide\":\"http://sapl.al.pi.leg.br/api/compilacao/vide/\",\"compilacao/nota\":\"http://sapl.al.pi.leg.br/api/compilacao/nota/\",\"materia/tipoproposicao\":\"http://sapl.al.pi.leg.br/api/materia/tipoproposicao/\",\"materia/tipomaterialegislativa\":\"http://sapl.al.pi.leg.br/api/materia/tipomaterialegislativa/\",\"materia/regimetramitacao\":\"http://sapl.al.pi.leg.br/api/materia/regimetramitacao/\",\"materia/origem\":\"http://sapl.al.pi.leg.br/api/materia/origem/\",\"materia/materialegislativa\":\"http://sapl.al.pi.leg.br/api/materia/materialegislativa/\",\"materia/autoria\":\"http:/"
+  },
+  {
+   "u": "https://sapl.al.pi.leg.br/api/parlamentares/parlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 11606,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/parlamentares/parlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":309,\"total_pages\":155,\"page\":1},\"results\":[{\"id\":111,\"__str__\":\"Abdon Portella \",\"link_detail_backend\":\"/parlamentar/111\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:12:00.976320-03:00\",\"nome_completo\":\"Abdon Portella Nunes\",\"nome_parlamentar\":\"Abdon Portella \",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"\",\"email\":\"\",\"locais_atuacao\":\"\",\"ativo\":false,\"biografia\":\"<div style=\\\"text-align: justify;\\\">Filho de Jo\\u00e3o Pereira Nunes e de Ant\\u00f4nia Joaquina Portella Nunes, nasceu em Valen\\u00e7a do Piau\\u00ed a 15 de novembro de 1888. Em sua terra natal aprendeu a ler, escrever e contar. N\\u00e3o concluiu o curso Prim\\u00e1rio, foi, em 1905, professor Prim\\u00e1rio na fazenda &#8220;Lagoa&#8221;, na data Olho D&#8217;agua; a partir de 1906 at\\u00e9 1910, Comerci\\u00e1rio e Agente Fiscal, em Aroazes; em 1911 estabeleceu-se com uma quitanda, em Valen\\u00e7a do Piau\\u00ed; e, em 1915 tornou-se comerciante de tecidos e miudezas.</div><div style=\\\"text-align: justify;\\\">Ingressando na Pol\\u00edtica, elegeu-se Conselheiro Municipal em 1917; no mesmo ano, foi tamb\\u00e9m, Adjunto de Promotor P\\u00fablico.</div><div style=\\\"text-align: justify;\\\">Em 1935 era Chefe Pol\\u00edtico e, elegeu-se Vereador, galgando no ano seguinte a Presid\\u00eancia da C\\u00e2mara Municipal; exerceu ainda, a Chefia do Executivo.</div><div style=\\\"text-align: justify;\\\">Mas com o advento do Estado Novo, em 1937, abandonou a pol\\u00edtica. Tornou-se grande propriet\\u00e1rio rural.</div><div style=\\\"text-align: justify;\\\">Redemocratizado o Pa\\u00eds, foi eleito novamente, Vereador, em 1950. Na qualidade de Presidente da C\\u00e2mara e na falta do Prefeito e Vice-prefeito eleitos, exerceu a Chefia do Executivo Municipal no per\\u00edodo de janeiro de 1951 a junho de 1952.</div><div style=\\\"text-align: justify;\\\">Em 1954 foi eleito Prefeito Municipal de Valen\\u00e7a do Piau\\u00ed. Realizou diversas obras. Destacando-se: o Primeiro Plano de Urbaniza\\u00e7\\u00e3o, constru\\u00e7\\u00e3o da primeira pra\\u00e7a, do primeiro cal\\u00e7amento na cidade, de mercados, estradas e aguadas, al\\u00e9m de ampliar e melhorar o ensino prim\\u00e1rio rural.</div><div style=\\\"text-align: justify;\\\">Foi eleito Deputado Estadual em 1958.</div><div style=\\\"text-align: justify;\\\">Faleceu em Valen\\u00e7a do Piau\\u00ed a, 16 de maio de 1976.</div>\",\"fotografia\":null,\"cropping\":\"\",\"nivel_instrucao\":2},{\"id\":250,\"__str__\":\"Abel Araujo\",\"link_detail_backend\":\"/parlamentar/250\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:12:00.976320-03:00\",\"nome_completo\":\"Abel Barros Araujo\",\"nome_parlamentar\":\"Abel Araujo\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"Medico\",\"email\":"
+  },
+  {
+   "u": "https://sapl.al.pi.leg.br/api/materia/materialegislativa/?page_size=2&ano=2025",
+   "st": 200,
+   "ct": "application/json",
+   "n": 2399,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/materia/materialegislativa/?ano=2025&page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":1244,\"total_pages\":622,\"page\":1},\"results\":[{\"id\":20176,\"__str__\":\"Indicativo de Projeto de Lei n\\u00ba 1 de 2025\",\"link_detail_backend\":\"/materia/20176\",\"metadata\":{},\"numero\":1,\"ano\":2025,\"numero_protocolo\":null,\"data_apresentacao\":\"2025-03-11\",\"tipo_apresentacao\":\"E\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":true,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"Estabelece medidas para garantir o acesso seguro e eficaz a produtos de prote\\u00e7\\u00e3o pessoal para mulheres no estado do Piau\\u00ed.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.pi.leg.br/media/sapl/public/materialegislativa/2025/20176/indicativo_n_01.pdf\",\"data_ultima_atualizacao\":\"2025-04-22T11:33:13.787075-03:00\",\"ip\":\"186.250.116.120\",\"ultima_edicao\":\"2025-03-11T09:50:48.910336-03:00\",\"tipo\":8,\"regime_tramitacao\":6,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":169,\"anexadas\":[],\"autores\":[57]},{\"id\":20179,\"__str__\":\"Indicativo de Projeto de Lei n\\u00ba 2 de 2025\",\"link_detail_backend\":\"/materia/20179\",\"metadata\":{},\"numero\":2,\"ano\":2025,\"numero_protocolo\":null,\"data_apresentacao\":\"2025-03-12\",\"tipo_apresentacao\":\"E\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":true,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"Autoriza o Poder Executivo Estadual a proceder doa\\u00e7\\u00e3o de im\\u00f3vel pertencente ao patrim\\u00f4nio p\\u00fablico estadual para a Unidade Escolar Monsenhor Uchoa, localizada no munic\\u00edpio de Domingos Mour\\u00e3o - PI.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.pi.leg.br/media/sapl/public/materialegislativa/2025/20179/indicativo_02.pdf\",\"data_ultima_atualizacao\":\"2025-04-30T11:05:33.331607-03:00\",\"ip\":\"186.250.116.120\",\"ultima_edicao\":\"2025-03-12T09:30:49.470699-03:00\",\"tipo\":8,\"regime_tramitacao\":6,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":169,\"anexadas\":[],\"autores\":[169]}]}"
+  },
+  {
+   "u": "https://sapl.al.pi.leg.br/api/materia/autoria/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 634,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/materia/autoria/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":21979,\"total_pages\":10990,\"page\":1},\"results\":[{\"id\":4091,\"__str__\":\"Autoria: ? - Projeto de Lei Ordin\\u00e1ria n\\u00ba 31 de 2010\",\"link_detail_backend\":\"/materia/autoria/4091\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":147,\"materia\":4214},{\"id\":4090,\"__str__\":\"Autoria: ? - Projeto de Lei Ordin\\u00e1ria n\\u00ba 35 de 2010\",\"link_detail_backend\":\"/materia/autoria/4090\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":147,\"materia\":4213}]}"
+  },
+  {
+   "u": "https://sapl.al.pi.leg.br/api/sessao/votoparlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1257,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/sessao/votoparlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":3394,\"total_pages\":1697,\"page\":1},\"results\":[{\"id\":1,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 1 - Projeto de Lei Complementar do Governo n\\u00ba 1 de 2022 em 23\\u00aa Sess\\u00e3o Ordin\\u00e1ria da 4\\u00aa Sess\\u00e3o Legislativa da 19\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado por unanimidade - Parlamentar: Bel\\u00ea Medeiros\",\"link_detail_backend\":\"\",\"metadata\":{},\"voto\":\"Sim\",\"ip\":\"186.250.116.114\",\"data_hora\":\"2022-04-04T10:14:39.062165-03:00\",\"votacao\":211,\"parlamentar\":9,\"user\":158,\"ordem\":2786,\"expediente\":null},{\"id\":2,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 1 - Projeto de Lei Complementar do Governo n\\u00ba 1 de 2022 em 23\\u00aa Sess\\u00e3o Ordin\\u00e1ria da 4\\u00aa Sess\\u00e3o Legislativa da 19\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovado por unanimidade - Parlamentar: Carlos Augusto\",\"link_detail_backend\":\"\",\"metadata\":{},\"voto\":\"Sim\",\"ip\":\"186.250.116.114\",\"data_hora\":\"2022-04-04T10:14:39.085686-03:00\",\"votacao\":211,\"parlamentar\":310,\"user\":158,\"ordem\":2786,\"expediente\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.pi.leg.br/api/sessao/registrovotacao/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1265,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/sessao/registrovotacao/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":4559,\"total_pages\":2280,\"page\":1},\"results\":[{\"id\":3,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 1 - Indicativo de Projeto de Lei n\\u00ba 62 de 2021 em 84\\u00aa Sess\\u00e3o Ordin\\u00e1ria da 3\\u00aa Sess\\u00e3o Legislativa da 19\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovada\",\"link_detail_backend\":\"\",\"metadata\":{},\"numero_votos_sim\":30,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"186.250.116.114\",\"data_hora\":\"2021-11-10T09:47:25.450725-03:00\",\"tipo_resultado_votacao\":1,\"materia\":16908,\"ordem\":2606,\"expediente\":null,\"user\":143},{\"id\":4,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 2 - Indicativo de Projeto de Lei n\\u00ba 63 de 2021 em 84\\u00aa Sess\\u00e3o Ordin\\u00e1ria da 3\\u00aa Sess\\u00e3o Legislativa da 19\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovada\",\"link_detail_backend\":\"\",\"metadata\":{},\"numero_votos_sim\":30,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"186.250.116.114\",\"data_hora\":\"2021-11-10T09:48:04.731504-03:00\",\"tipo_resultado_votacao\":1,\"materia\":16909,\"ordem\":2607,\"expediente\":null,\"user\":143}]}"
+  },
+  {
+   "u": "https://sapl.al.pi.leg.br/api/parlamentares/mandato/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1014,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/parlamentares/mandato/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":684,\"total_pages\":342,\"page\":1},\"results\":[{\"id\":140,\"__str__\":\"Abdon Portella  4\\u00aa (1959 - 1962) \",\"link_detail_backend\":\"/parlamentar/mandato/140\",\"metadata\":{},\"tipo_causa_fim_mandato\":0,\"data_inicio_mandato\":\"1959-01-01\",\"data_fim_mandato\":\"1962-12-31\",\"votos_recebidos\":3535,\"data_expedicao_diploma\":\"1958-11-30\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":111,\"tipo_afastamento\":null,\"legislatura\":4,\"coligacao\":57},{\"id\":237,\"__str__\":\"Abdon Portella  6\\u00aa (1967 - 1970) \",\"link_detail_backend\":\"/parlamentar/mandato/237\",\"metadata\":{},\"tipo_causa_fim_mandato\":0,\"data_inicio_mandato\":\"1967-01-01\",\"data_fim_mandato\":\"1970-12-31\",\"votos_recebidos\":2546,\"data_expedicao_diploma\":\"1966-11-30\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":111,\"tipo_afastamento\":null,\"legislatura\":6,\"coligacao\":54}]}"
+  },
+  {
+   "u": "https://sapl.al.pi.leg.br/api/parlamentares/legislatura/?page_size=3",
+   "st": 200,
+   "ct": "application/json",
+   "n": 935,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.pi.leg.br/api/parlamentares/legislatura/?page=2&page_size=3\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":3,\"total_entries\":20,\"total_pages\":7,\"page\":1},\"results\":[{\"id\":20,\"__str__\":\"20\\u00aa (2023 - 2026) (Atual)\",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/20\",\"metadata\":{},\"numero\":20,\"data_inicio\":\"2023-02-01\",\"data_fim\":\"2026-12-31\",\"data_eleicao\":\"2022-10-02\",\"observacao\":\"\"},{\"id\":19,\"__str__\":\"19\\u00aa (2019 - 2022) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/19\",\"metadata\":{},\"numero\":19,\"data_inicio\":\"2019-02-04\",\"data_fim\":\"2022-12-31\",\"data_eleicao\":\"2019-02-01\",\"observacao\":\"\"},{\"id\":18,\"__str__\":\"18\\u00aa (2015 - 2018) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/18\",\"metadata\":{},\"numero\":18,\"data_inicio\":\"2015-01-01\",\"data_fim\":\"2018-12-31\",\"data_eleicao\":\"2014-10-05\",\"observacao\":\"\"}]}"
+  },
+  {
+   "u": "https://sapl.al.ro.leg.br/api/",
+   "st": 200,
+   "ct": "application/json",
+   "n": 10685,
+   "ini": "{\"audiencia/tipoaudienciapublica\":\"http://sapl.al.ro.leg.br/api/audiencia/tipoaudienciapublica/\",\"audiencia/audienciapublica\":\"http://sapl.al.ro.leg.br/api/audiencia/audienciapublica/\",\"audiencia/anexoaudienciapublica\":\"http://sapl.al.ro.leg.br/api/audiencia/anexoaudienciapublica/\",\"contenttypes/contenttype\":\"http://sapl.al.ro.leg.br/api/contenttypes/contenttype/\",\"base/casalegislativa\":\"http://sapl.al.ro.leg.br/api/base/casalegislativa/\",\"base/appconfig\":\"http://sapl.al.ro.leg.br/api/base/appconfig/\",\"base/tipoautor\":\"http://sapl.al.ro.leg.br/api/base/tipoautor/\",\"base/autor\":\"http://sapl.al.ro.leg.br/api/base/autor/\",\"base/operadorautor\":\"http://sapl.al.ro.leg.br/api/base/operadorautor/\",\"base/auditlog\":\"http://sapl.al.ro.leg.br/api/base/auditlog/\",\"base/metadata\":\"http://sapl.al.ro.leg.br/api/base/metadata/\",\"comissoes/tipocomissao\":\"http://sapl.al.ro.leg.br/api/comissoes/tipocomissao/\",\"comissoes/comissao\":\"http://sapl.al.ro.leg.br/api/comissoes/comissao/\",\"comissoes/periodo\":\"http://sapl.al.ro.leg.br/api/comissoes/periodo/\",\"comissoes/cargocomissao\":\"http://sapl.al.ro.leg.br/api/comissoes/cargocomissao/\",\"comissoes/composicao\":\"http://sapl.al.ro.leg.br/api/comissoes/composicao/\",\"comissoes/participacao\":\"http://sapl.al.ro.leg.br/api/comissoes/participacao/\",\"comissoes/reuniao\":\"http://sapl.al.ro.leg.br/api/comissoes/reuniao/\",\"comissoes/documentoacessorio\":\"http://sapl.al.ro.leg.br/api/materia/documentoacessorio/\",\"compilacao/perfilestruturaltextoarticulado\":\"http://sapl.al.ro.leg.br/api/compilacao/perfilestruturaltextoarticulado/\",\"compilacao/tipotextoarticulado\":\"http://sapl.al.ro.leg.br/api/compilacao/tipotextoarticulado/\",\"compilacao/textoarticulado\":\"http://sapl.al.ro.leg.br/api/compilacao/textoarticulado/\",\"compilacao/tiponota\":\"http://sapl.al.ro.leg.br/api/compilacao/tiponota/\",\"compilacao/tipovide\":\"http://sapl.al.ro.leg.br/api/compilacao/tipovide/\",\"compilacao/tipodispositivo\":\"http://sapl.al.ro.leg.br/api/compilacao/tipodispositivo/\",\"compilacao/tipodispositivorelationship\":\"http://sapl.al.ro.leg.br/api/compilacao/tipodispositivorelationship/\",\"compilacao/tipopublicacao\":\"http://sapl.al.ro.leg.br/api/compilacao/tipopublicacao/\",\"compilacao/veiculopublicacao\":\"http://sapl.al.ro.leg.br/api/compilacao/veiculopublicacao/\",\"compilacao/publicacao\":\"http://sapl.al.ro.leg.br/api/compilacao/publicacao/\",\"compilacao/dispositivo\":\"http://sapl.al.ro.leg.br/api/compilacao/dispositivo/\",\"compilacao/vide\":\"http://sapl.al.ro.leg.br/api/compilacao/vide/\",\"compilacao/nota\":\"http://sapl.al.ro.leg.br/api/compilacao/nota/\",\"materia/tipoproposicao\":\"http://sapl.al.ro.leg.br/api/materia/tipoproposicao/\",\"materia/tipomaterialegislativa\":\"http://sapl.al.ro.leg.br/api/materia/tipomaterialegislativa/\",\"materia/regimetramitacao\":\"http://sapl.al.ro.leg.br/api/materia/regimetramitacao/\",\"materia/origem\":\"http://sapl.al.ro.leg.br/api/materia/origem/\",\"materia/materialegislativa\":\"http://sapl.al.ro.leg.br/api/materia/materialegislativa/\",\"materia/autoria\":\"http:/"
+  },
+  {
+   "u": "https://sapl.al.ro.leg.br/api/parlamentares/parlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1175,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/parlamentares/parlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":221,\"total_pages\":111,\"page\":1},\"results\":[{\"id\":52,\"__str__\":\"ACELINO MARCON\",\"link_detail_backend\":\"/parlamentar/52\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:14:09.353016-03:00\",\"nome_completo\":\"ACELINO LUIZ MARCON\",\"nome_parlamentar\":\"ACELINO MARCON\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"EMPRES\\u00c1RIO\",\"email\":\"\",\"locais_atuacao\":\"CACOAL\",\"ativo\":false,\"biografia\":\"\",\"fotografia\":null,\"cropping\":\"\",\"nivel_instrucao\":null},{\"id\":278,\"__str__\":\"ADAILTON FURIA\",\"link_detail_backend\":\"/parlamentar/278\",\"metadata\":{},\"data_ultima_atualizacao\":\"2026-10-14T15:14:09.353016-03:00\",\"nome_completo\":\"ADAILTON FURIA DA SILVA\",\"nome_parlamentar\":\"ADAILTON FURIA\",\"sexo\":\"M\",\"numero_gab_parlamentar\":\"\",\"telefone\":\"\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"\",\"email\":\"\",\"locais_atuacao\":\"\",\"ativo\":false,\"biografia\":\"\",\"fotografia\":null,\"cropping\":\"\",\"nivel_instrucao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.ro.leg.br/api/materia/materialegislativa/?page_size=2&ano=2025",
+   "st": 200,
+   "ct": "application/json",
+   "n": 2723,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/materia/materialegislativa/?ano=2025&page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":7496,\"total_pages\":3748,\"page\":1},\"results\":[{\"id\":44571,\"__str__\":\"Indica\\u00e7\\u00e3o n\\u00ba 1085 de 2025\",\"link_detail_backend\":\"/materia/44571\",\"metadata\":{},\"numero\":1085,\"ano\":2025,\"numero_protocolo\":null,\"data_apresentacao\":\"2025-01-21\",\"tipo_apresentacao\":\"E\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":false,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"Indica ao  Poder Executivo, extenso ao Departamento de Estradas de Rodagens, Infraestrutura e Servi\\u00e7os P\\u00fablicos-DER, a necessidade urgente de 2 Tubos \\u00c1rmico de 3X12 metros, para a manuten\\u00e7\\u00e3o da ponte sobre o Rio Santo Andr\\u00e9 na linha 105,    no    Distrito    de    Novo    Plano Munic\\u00edpio de Chupinguaia/RO.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.ro.leg.br/media/sapl/public/materialegislativa/2025/44571/ind_10854-25.pdf\",\"data_ultima_atualizacao\":\"2025-02-18T15:29:01.756486-03:00\",\"ip\":\"45.225.19.122\",\"ultima_edicao\":\"2025-02-18T15:28:35.459703-03:00\",\"tipo\":22,\"regime_tramitacao\":1,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":225,\"anexadas\":[],\"autores\":[149]},{\"id\":44540,\"__str__\":\"Indica\\u00e7\\u00e3o n\\u00ba 10825 de 2025\",\"link_detail_backend\":\"/materia/44540\",\"metadata\":{},\"numero\":10825,\"ano\":2025,\"numero_protocolo\":null,\"data_apresentacao\":\"2025-01-06\",\"tipo_apresentacao\":\"E\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":false,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"INDICA ao Exmo. GOVERNADOR DO ESTADO DEROND\\u00d4NIA MARCOS ROCHA, com c\\u00f3pia aoDEPARTAMENTO ESTADUAL DE ESTRADA ERODAGEM \\u2013 DER, a necessidade de realizar, com a m\\u00e1ximaurg\\u00eancia, uma opera\\u00e7\\u00e3o tapa-buraco na RodoviaEstadual RO-471, no trecho que conecta o trevo domunic\\u00edpio de Cacoal ao munic\\u00edpio de MinistroAndreazza.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.ro.leg.br/media/sapl/public/materialegislativa/2025/44540/ind_10825-24.pdf\",\"data_ultima_atualizacao\":\"2025-02-18T12:01:50.168625-03:00\",\"ip\":\"45.225.19.122\",\"ultima_edicao\":\"2025-02-18T12:01:16.665329-03:00\",\"tipo\":22,\"regime_tramitacao\":1,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":225,\"anexadas\":[],\"autores\":[163]}]}"
+  },
+  {
+   "u": "https://sapl.al.ro.leg.br/api/materia/autoria/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 666,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/materia/autoria/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":57220,\"total_pages\":28610,\"page\":1},\"results\":[{\"id\":16507,\"__str__\":\"Autoria: ADAILTON F\\u00daRIA - Indica\\u00e7\\u00e3o n\\u00ba 77 de 2019\",\"link_detail_backend\":\"/materia/autoria/16507\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":126,\"materia\":16761},{\"id\":16357,\"__str__\":\"Autoria: ADAILTON F\\u00daRIA - Projeto de Resolu\\u00e7\\u00e3o n\\u00ba 2 de 2019\",\"link_detail_backend\":\"/materia/autoria/16357\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":126,\"materia\":16606}]}"
+  },
+  {
+   "u": "https://sapl.al.ro.leg.br/api/sessao/votoparlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1179,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/sessao/votoparlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":44396,\"total_pages\":22198,\"page\":1},\"results\":[{\"id\":1,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 5 - Projeto de Lei Complementar n\\u00ba 112 de 2013 em 8\\u00aa Sess\\u00e3o Ordin\\u00e1ria da 3\\u00aa Sess\\u00e3o Legislativa da 8\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovada - Parlamentar: ADELINO FOLLADOR\",\"link_detail_backend\":\"\",\"metadata\":{},\"voto\":\"Sim\",\"ip\":\"\",\"data_hora\":\"2018-10-15T14:54:30.266248-03:00\",\"votacao\":13,\"parlamentar\":215,\"user\":null,\"ordem\":null,\"expediente\":null},{\"id\":2,\"__str__\":\"Vota\\u00e7\\u00e3o: Ordem: Ordem do Dia/Expediente: 5 - Projeto de Lei Complementar n\\u00ba 112 de 2013 em 8\\u00aa Sess\\u00e3o Ordin\\u00e1ria da 3\\u00aa Sess\\u00e3o Legislativa da 8\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovada - Parlamentar: ADRIANO BOIADEIRO \",\"link_detail_backend\":\"\",\"metadata\":{},\"voto\":\"Sim\",\"ip\":\"\",\"data_hora\":\"2018-10-15T14:54:30.266323-03:00\",\"votacao\":13,\"parlamentar\":230,\"user\":null,\"ordem\":null,\"expediente\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.ro.leg.br/api/sessao/registrovotacao/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1258,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/sessao/registrovotacao/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":15930,\"total_pages\":7965,\"page\":1},\"results\":[{\"id\":1,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 3 - Projeto de Lei Ordin\\u00e1ria n\\u00ba 373 de 2012 em 15\\u00aa Sess\\u00e3o Ordin\\u00e1ria da 2\\u00aa Sess\\u00e3o Legislativa da 8\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovada por un\\u00e2nimidade\",\"link_detail_backend\":\"\",\"metadata\":{},\"numero_votos_sim\":19,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"\",\"data_hora\":\"2019-05-09T11:37:57.676874-03:00\",\"tipo_resultado_votacao\":3,\"materia\":3422,\"ordem\":1598,\"expediente\":null,\"user\":null},{\"id\":2,\"__str__\":\"Ordem: Ordem do Dia/Expediente: 1 - Projeto de Resolu\\u00e7\\u00e3o n\\u00ba 71 de 2013 em 8\\u00aa Sess\\u00e3o Ordin\\u00e1ria da 3\\u00aa Sess\\u00e3o Legislativa da 8\\u00aa Legislatura - Vota\\u00e7\\u00e3o: Aprovada\",\"link_detail_backend\":\"\",\"metadata\":{},\"numero_votos_sim\":16,\"numero_votos_nao\":0,\"numero_abstencoes\":0,\"observacao\":\"\",\"ip\":\"\",\"data_hora\":\"2019-05-09T11:37:57.676874-03:00\",\"tipo_resultado_votacao\":1,\"materia\":4695,\"ordem\":2133,\"expediente\":null,\"user\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.ro.leg.br/api/parlamentares/mandato/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1238,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/parlamentares/mandato/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":345,\"total_pages\":173,\"page\":1},\"results\":[{\"id\":54,\"__str__\":\"ACELINO MARCON 2\\u00aa (1987 - 1991) \",\"link_detail_backend\":\"/parlamentar/mandato/54\",\"metadata\":{},\"tipo_causa_fim_mandato\":null,\"data_inicio_mandato\":\"1987-02-01\",\"data_fim_mandato\":\"1990-12-31\",\"votos_recebidos\":null,\"data_expedicao_diploma\":\"1986-11-15\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":52,\"tipo_afastamento\":null,\"legislatura\":2,\"coligacao\":null},{\"id\":421,\"__str__\":\"ADAILTON F\\u00daRIA 10\\u00aa (2019 - 2023) \",\"link_detail_backend\":\"/parlamentar/mandato/421\",\"metadata\":{},\"tipo_causa_fim_mandato\":null,\"data_inicio_mandato\":\"2019-02-01\",\"data_fim_mandato\":\"2020-12-30\",\"votos_recebidos\":null,\"data_expedicao_diploma\":\"2018-12-18\",\"titular\":false,\"observacao\":\"Declarou ren\\u00fancia do cargo de Deputado Estadual em 15/12/2020, em car\\u00e1ter irrevog\\u00e1vel, em virtude da elei\\u00e7\\u00e3o para o cargo de Prefeito do Munic\\u00edpio de Cacoal, a contar de 30/12/2020.\",\"parlamentar\":253,\"tipo_afastamento\":null,\"legislatura\":10,\"coligacao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.ro.leg.br/api/parlamentares/legislatura/?page_size=3",
+   "st": 200,
+   "ct": "application/json",
+   "n": 931,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.ro.leg.br/api/parlamentares/legislatura/?page=2&page_size=3\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":3,\"total_entries\":11,\"total_pages\":4,\"page\":1},\"results\":[{\"id\":11,\"__str__\":\"11\\u00aa (2023 - 2027) (Atual)\",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/11\",\"metadata\":{},\"numero\":11,\"data_inicio\":\"2023-02-01\",\"data_fim\":\"2027-01-31\",\"data_eleicao\":\"2022-10-02\",\"observacao\":\"\"},{\"id\":10,\"__str__\":\"10\\u00aa (2019 - 2023) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/10\",\"metadata\":{},\"numero\":10,\"data_inicio\":\"2019-02-01\",\"data_fim\":\"2023-01-31\",\"data_eleicao\":\"2017-09-07\",\"observacao\":\"\"},{\"id\":9,\"__str__\":\"9\\u00aa (2015 - 2019) \",\"link_detail_backend\":\"/sistema/parlamentar/legislatura/9\",\"metadata\":{},\"numero\":9,\"data_inicio\":\"2015-02-01\",\"data_fim\":\"2019-01-31\",\"data_eleicao\":\"2014-10-05\",\"observacao\":\"\"}]}"
+  },
+  {
+   "u": "https://sapl.al.to.leg.br/api/",
+   "st": 200,
+   "ct": "application/json",
+   "n": 10685,
+   "ini": "{\"audiencia/tipoaudienciapublica\":\"http://sapl.al.to.leg.br/api/audiencia/tipoaudienciapublica/\",\"audiencia/audienciapublica\":\"http://sapl.al.to.leg.br/api/audiencia/audienciapublica/\",\"audiencia/anexoaudienciapublica\":\"http://sapl.al.to.leg.br/api/audiencia/anexoaudienciapublica/\",\"contenttypes/contenttype\":\"http://sapl.al.to.leg.br/api/contenttypes/contenttype/\",\"base/casalegislativa\":\"http://sapl.al.to.leg.br/api/base/casalegislativa/\",\"base/appconfig\":\"http://sapl.al.to.leg.br/api/base/appconfig/\",\"base/tipoautor\":\"http://sapl.al.to.leg.br/api/base/tipoautor/\",\"base/autor\":\"http://sapl.al.to.leg.br/api/base/autor/\",\"base/operadorautor\":\"http://sapl.al.to.leg.br/api/base/operadorautor/\",\"base/auditlog\":\"http://sapl.al.to.leg.br/api/base/auditlog/\",\"base/metadata\":\"http://sapl.al.to.leg.br/api/base/metadata/\",\"comissoes/tipocomissao\":\"http://sapl.al.to.leg.br/api/comissoes/tipocomissao/\",\"comissoes/comissao\":\"http://sapl.al.to.leg.br/api/comissoes/comissao/\",\"comissoes/periodo\":\"http://sapl.al.to.leg.br/api/comissoes/periodo/\",\"comissoes/cargocomissao\":\"http://sapl.al.to.leg.br/api/comissoes/cargocomissao/\",\"comissoes/composicao\":\"http://sapl.al.to.leg.br/api/comissoes/composicao/\",\"comissoes/participacao\":\"http://sapl.al.to.leg.br/api/comissoes/participacao/\",\"comissoes/reuniao\":\"http://sapl.al.to.leg.br/api/comissoes/reuniao/\",\"comissoes/documentoacessorio\":\"http://sapl.al.to.leg.br/api/materia/documentoacessorio/\",\"compilacao/perfilestruturaltextoarticulado\":\"http://sapl.al.to.leg.br/api/compilacao/perfilestruturaltextoarticulado/\",\"compilacao/tipotextoarticulado\":\"http://sapl.al.to.leg.br/api/compilacao/tipotextoarticulado/\",\"compilacao/textoarticulado\":\"http://sapl.al.to.leg.br/api/compilacao/textoarticulado/\",\"compilacao/tiponota\":\"http://sapl.al.to.leg.br/api/compilacao/tiponota/\",\"compilacao/tipovide\":\"http://sapl.al.to.leg.br/api/compilacao/tipovide/\",\"compilacao/tipodispositivo\":\"http://sapl.al.to.leg.br/api/compilacao/tipodispositivo/\",\"compilacao/tipodispositivorelationship\":\"http://sapl.al.to.leg.br/api/compilacao/tipodispositivorelationship/\",\"compilacao/tipopublicacao\":\"http://sapl.al.to.leg.br/api/compilacao/tipopublicacao/\",\"compilacao/veiculopublicacao\":\"http://sapl.al.to.leg.br/api/compilacao/veiculopublicacao/\",\"compilacao/publicacao\":\"http://sapl.al.to.leg.br/api/compilacao/publicacao/\",\"compilacao/dispositivo\":\"http://sapl.al.to.leg.br/api/compilacao/dispositivo/\",\"compilacao/vide\":\"http://sapl.al.to.leg.br/api/compilacao/vide/\",\"compilacao/nota\":\"http://sapl.al.to.leg.br/api/compilacao/nota/\",\"materia/tipoproposicao\":\"http://sapl.al.to.leg.br/api/materia/tipoproposicao/\",\"materia/tipomaterialegislativa\":\"http://sapl.al.to.leg.br/api/materia/tipomaterialegislativa/\",\"materia/regimetramitacao\":\"http://sapl.al.to.leg.br/api/materia/regimetramitacao/\",\"materia/origem\":\"http://sapl.al.to.leg.br/api/materia/origem/\",\"materia/materialegislativa\":\"http://sapl.al.to.leg.br/api/materia/materialegislativa/\",\"materia/autoria\":\"http:/"
+  },
+  {
+   "u": "https://sapl.al.to.leg.br/api/parlamentares/parlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 1777,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.to.leg.br/api/parlamentares/parlamentar/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":40,\"total_pages\":20,\"page\":1},\"results\":[{\"id\":2,\"__str__\":\"AM\\u00c1LIA SANTANA\",\"metadata\":{},\"nome_completo\":\"AM\\u00c1LIA MARIA SANTANA DA SILVA\",\"nome_parlamentar\":\"AM\\u00c1LIA SANTANA\",\"sexo\":\"F\",\"data_nascimento\":null,\"numero_gab_parlamentar\":\"\",\"telefone\":\"\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"\",\"email\":\"\",\"locais_atuacao\":\"\",\"ativo\":true,\"biografia\":\"\",\"fotografia\":null,\"cropping\":\"\",\"nivel_instrucao\":null},{\"id\":3,\"__str__\":\"AM\\u00c9LIO CAYRES\",\"metadata\":{},\"nome_completo\":\"AM\\u00c9LIO CAYRES DE ALMEIDA\",\"nome_parlamentar\":\"AM\\u00c9LIO CAYRES\",\"sexo\":\"M\",\"data_nascimento\":null,\"numero_gab_parlamentar\":\"\",\"telefone\":\"(63) 3212-5020\",\"telefone_celular\":\"\",\"endereco_web\":\"\",\"profissao\":\"\",\"email\":\"presidenciaameliocayres@gmail.com\",\"locais_atuacao\":\"\",\"ativo\":true,\"biografia\":\"<p style=\\\"text-align: justify;\\\">Am&eacute;lio Cayres de Almeida nasceu em &Eacute;rico Cardoso (BA), em setembro de 1961. &Eacute; casado h&aacute; 31 anos com Genec&iacute; Perp&eacute;tua dos Santos Almeida e pai de tr&ecirc;s filhos: Matheus, Fiamma e Raul. Chegou ao Tocantins em 1976 e exerceu a atividade agropecuarista. Em 1996, foi eleito prefeito de Esperantina (TO), sendo reeleito em 2000. Foi eleito deputado estadual em 2006 e reeleito para mais quatro mandatos consecutivos: 2010, 2014, 2018 e 2022, sendo um dos deputados estaduais mais votados, com 22.921 votos nas elei&ccedil;&otilde;es de 2022.</p>\",\"fotografia\":\"http://sapl.al.to.leg.br/media/sapl/public/parlamentar/3/foto_amelio.jpg\",\"cropping\":\"0,26,400,426\",\"nivel_instrucao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.to.leg.br/api/materia/materialegislativa/?page_size=2&ano=2025",
+   "st": 200,
+   "ct": "application/json",
+   "n": 2444,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.to.leg.br/api/materia/materialegislativa/?ano=2025&page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":2410,\"total_pages\":1205,\"page\":1},\"results\":[{\"id\":13491,\"__str__\":\"Decreto de Calamidade P\\u00fablica n\\u00ba 1 de 2025\",\"metadata\":{},\"numero\":1,\"ano\":2025,\"numero_protocolo\":2259,\"data_apresentacao\":\"2025-11-12\",\"tipo_apresentacao\":\"E\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":false,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"Declara Estado de Calamidade P\\u00fablica no munic\\u00edpio de Filad\\u00e9lfia-TO, em raz\\u00e3o do aumento significativo do fluxo de ve\\u00edculos pesados no per\\u00edmetro urbano decorrente do redirecionamento do tr\\u00e1fego interestadual para o munic\\u00edpio, e d\\u00e1 outras provid\\u00eancias.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.to.leg.br/media/sapl/public/materialegislativa/2025/13491/dec_30.pdf\",\"data_ultima_atualizacao\":\"2025-12-23T09:58:07.471702-03:00\",\"ip\":\"10.98.20.230\",\"ultima_edicao\":\"2025-11-28T09:38:44.047641-03:00\",\"tipo\":25,\"regime_tramitacao\":1,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":86,\"anexadas\":[],\"autores\":[225]},{\"id\":11342,\"__str__\":\"Medida Provis\\u00f3ria n\\u00ba 1 de 2025\",\"metadata\":{},\"numero\":1,\"ano\":2025,\"numero_protocolo\":104,\"data_apresentacao\":\"2025-02-05\",\"tipo_apresentacao\":\"E\",\"data_publicacao\":null,\"numero_origem_externa\":\"\",\"ano_origem_externa\":null,\"data_origem_externa\":null,\"apelido\":\"\",\"dias_prazo\":null,\"data_fim_prazo\":null,\"em_tramitacao\":false,\"polemica\":false,\"objeto\":\"\",\"complementar\":false,\"ementa\":\"Altera a Lei n\\u00ba 3.421, de 8 de mar\\u00e7o de 2019, que disp\\u00f5e sobre a organiza\\u00e7\\u00e3o da Administra\\u00e7\\u00e3o Direta e Indireta do Poder Executivo Estadual, e adota outras provid\\u00eancias.\",\"indexacao\":\"\",\"observacao\":\"\",\"resultado\":\"\",\"texto_original\":\"http://sapl.al.to.leg.br/media/sapl/public/materialegislativa/2025/11342/mp_001.pdf\",\"data_ultima_atualizacao\":\"2025-03-27T11:14:58.143253-03:00\",\"ip\":\"10.98.20.195\",\"ultima_edicao\":\"2025-02-05T15:09:32.080734-03:00\",\"tipo\":14,\"regime_tramitacao\":1,\"tipo_origem_externa\":null,\"local_origem_externa\":null,\"user\":86,\"anexadas\":[],\"autores\":[184]}]}"
+  },
+  {
+   "u": "https://sapl.al.to.leg.br/api/materia/autoria/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 707,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.to.leg.br/api/materia/autoria/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":14557,\"total_pages\":7279,\"page\":1},\"results\":[{\"id\":5593,\"__str__\":\"Autoria: 01 - CCJ - Comiss\\u00e3o de Constitui\\u00e7\\u00e3o Justi\\u00e7a e Reda\\u00e7\\u00e3o - Projeto de Decreto Legislativo n\\u00ba 139 de 2022\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":43,\"materia\":5578},{\"id\":5594,\"__str__\":\"Autoria: 01 - CCJ - Comiss\\u00e3o de Constitui\\u00e7\\u00e3o Justi\\u00e7a e Reda\\u00e7\\u00e3o - Projeto de Decreto Legislativo n\\u00ba 140 de 2022\",\"metadata\":{},\"primeiro_autor\":true,\"autor\":43,\"materia\":5579}]}"
+  },
+  {
+   "u": "https://sapl.al.to.leg.br/api/sessao/votoparlamentar/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 178,
+   "ini": "{\"pagination\":{\"links\":{\"next\":null,\"previous\":null},\"previous_page\":null,\"next_page\":null,\"start_index\":0,\"end_index\":0,\"total_entries\":0,\"total_pages\":1,\"page\":1},\"results\":[]}"
+  },
+  {
+   "u": "https://sapl.al.to.leg.br/api/sessao/registrovotacao/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 178,
+   "ini": "{\"pagination\":{\"links\":{\"next\":null,\"previous\":null},\"previous_page\":null,\"next_page\":null,\"start_index\":0,\"end_index\":0,\"total_entries\":0,\"total_pages\":1,\"page\":1},\"results\":[]}"
+  },
+  {
+   "u": "https://sapl.al.to.leg.br/api/parlamentares/mandato/?page_size=2",
+   "st": 200,
+   "ct": "application/json",
+   "n": 925,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.to.leg.br/api/parlamentares/mandato/?page=2&page_size=2\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":2,\"total_entries\":57,\"total_pages\":29,\"page\":1},\"results\":[{\"id\":2,\"__str__\":\"AM\\u00c1LIA SANTANA 9\\u00aa (2019 - 2023) \",\"metadata\":{},\"tipo_causa_fim_mandato\":null,\"data_inicio_mandato\":\"2019-02-01\",\"data_fim_mandato\":\"2023-01-31\",\"votos_recebidos\":null,\"data_expedicao_diploma\":\"2018-12-17\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":2,\"tipo_afastamento\":null,\"legislatura\":10,\"coligacao\":null},{\"id\":3,\"__str__\":\"AM\\u00c9LIO CAYRES 9\\u00aa (2019 - 2023) \",\"metadata\":{},\"tipo_causa_fim_mandato\":null,\"data_inicio_mandato\":\"2019-02-01\",\"data_fim_mandato\":\"2023-01-31\",\"votos_recebidos\":null,\"data_expedicao_diploma\":\"2018-12-17\",\"titular\":true,\"observacao\":\"\",\"parlamentar\":3,\"tipo_afastamento\":null,\"legislatura\":10,\"coligacao\":null}]}"
+  },
+  {
+   "u": "https://sapl.al.to.leg.br/api/parlamentares/legislatura/?page_size=3",
+   "st": 200,
+   "ct": "application/json",
+   "n": 750,
+   "ini": "{\"pagination\":{\"links\":{\"next\":\"http://sapl.al.to.leg.br/api/parlamentares/legislatura/?page=2&page_size=3\",\"previous\":null},\"previous_page\":null,\"next_page\":2,\"start_index\":1,\"end_index\":3,\"total_entries\":10,\"total_pages\":4,\"page\":1},\"results\":[{\"id\":11,\"__str__\":\"10\\u00aa (2023 - 2027) (Atual)\",\"metadata\":{},\"numero\":10,\"data_inicio\":\"2023-02-01\",\"data_fim\":\"2027-01-31\",\"data_eleicao\":\"2022-10-02\",\"observacao\":\"\"},{\"id\":10,\"__str__\":\"9\\u00aa (2019 - 2023) \",\"metadata\":{},\"numero\":9,\"data_inicio\":\"2019-02-01\",\"data_fim\":\"2023-01-31\",\"data_eleicao\":\"2018-10-07\",\"observacao\":\"\"},{\"id\":9,\"__str__\":\"8\\u00aa (2015 - 2019) \",\"metadata\":{},\"numero\":8,\"data_inicio\":\"2015-02-01\",\"data_fim\":\"2019-01-31\",\"data_eleicao\":\"2014-10-05\",\"observacao\":\"\"}]}"
+  },
+  {
+   "u": "https://www.al.sp.leg.br/repositorioDados/deputados/deputados.xml",
+   "st": 200,
+   "ct": "text/html",
+   "n": 82245,
+   "ini": "<!DOCTYPE html>\r\n<html lang=\"pt-br\" xmlns:og=\"http://ogp.me/ns#\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script type=\"text/javascript\" src=\"/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\" data-dtconfig=\"rid=RID_2418|rpid=-454713825|domain=sp.gov.br|reportUrl=/rb_bf32302csu|app=da4214bfad2bf73e|owasp=1|featureHash=ICA7NVfgqrux|rdnt=1|uxrgce=1|cuc=810ommp0|mel=100000|expw=1|dpvc=1|lastModification=1768847594389|postfix=810ommp0|tp=500,50,0|srbbv=2|agentUri=/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\"></script><script async src=\"https://www.googletagmanager.com/gtag/js?id=G-953E2KQDS3\"></script>\r\n<script>\r\nwindow.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-953E2KQDS3'); </script>\r\n<meta charset=\"ISO-8859-1\">\r\n<!-- Início do aviso de consentimento de cookies OneTrust para al.sp.gov.br -->\r\n<script type=\"text/javascript\" src=\"https://cdn.cookielaw.org/consent/d81776c2-ce60-4a3d-ac67-68daf059afc0/OtAutoBlock.js\" ></script>\r\n<script src=\"https://cdn.cookielaw.org/scripttemplates/otSDKStub.js\" type=\"text/javascript\" charset=\"UTF-8\" data-domain-script=\"d81776c2-ce60-4a3d-ac67-68daf059afc0\" ></script>\r\n<script type=\"text/javascript\">\r\nfunction OptanonWrapper() { } </script>\r\n<!-- Final do aviso de consentimento de cookies OneTrust para al.sp.gov.br -->\r\n<!-- url.container -->\r\n<!-- <base href=\"/\"> -->\r\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\r\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n<meta http-equiv=\"Content-Language\" content=\"pt-br\" />\r\n<meta http-equiv=\"Cache-Control\" content=\"no-cache, no-store\" />\r\n<meta http-equiv=\"Pragma\" content=\"no-cache, no-store\" />\r\n<meta http-equiv=\"expires\" content=\"Mon, 06 Jan 1990 00:00:01 GMT\" />\r\n<meta name=\"keywords\" content=\"alesp, projetos, proposi&ccedil;&otilde;es, processo, projeto de lei, estado, comiss&otilde;es, parlamento, legislativo, assembleia, deputado, parlamentar, legisla&ccedil;&atilde;o, lei, decreto, gest&atilde;o, estadual, atos, artigo, Estado de S&atilde;o Paulo\" />\r\n<meta name=\"description\" content=\"A Assembleia Legislativa do Estado de S. Paulo constitui o Poder Legislativo paulista, com o atributo de legislar, fiscalizar, controlar e investigar.\" />\r\n<meta property=\"fb:app_id\" content=\"201815157200265\" />\r\n<meta property=\"og:title\" content=\"Alesp\" />\r\n<meta property=\"og:url\" content=\"https://www.al.sp.gov.br/\" />\r\n<meta property=\"og:description\" content=\"\" />\r\n<meta property=\"og:image\" content=\"https://www3.al.sp.gov.br/_assets/imagens/logo-midias-2021.jpg\" />\r\n<meta property=\"og:image:width\" content=\"360\" />\r\n<meta property=\"og:image:height\" content=\"240\" />\r\n<meta property=\"og:type\" content=\"website\" />\r\n<link rel=\"manifest\" href=\"/_assets/manifest.webmanifest\">\r\n<!--Favicon shortcut link-->\r\n<link rel=\"shortcut icon\" href=\"/_assets/favicon.ico\" />\r\n<link rel=\"icon\" type=\"image/png\" href=\"https://www3.al.sp.g"
+  },
+  {
+   "u": "https://www.al.sp.leg.br/repositorioDados/processo_legislativo/proposituras.zip",
+   "st": 200,
+   "ct": "text/html",
+   "n": 82244,
+   "ini": "<!DOCTYPE html>\r\n<html lang=\"pt-br\" xmlns:og=\"http://ogp.me/ns#\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script type=\"text/javascript\" src=\"/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\" data-dtconfig=\"rid=RID_2418|rpid=573411013|domain=sp.gov.br|reportUrl=/rb_bf32302csu|app=da4214bfad2bf73e|owasp=1|featureHash=ICA7NVfgqrux|rdnt=1|uxrgce=1|cuc=810ommp0|mel=100000|expw=1|dpvc=1|lastModification=1768847594389|postfix=810ommp0|tp=500,50,0|srbbv=2|agentUri=/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\"></script><script async src=\"https://www.googletagmanager.com/gtag/js?id=G-953E2KQDS3\"></script>\r\n<script>\r\nwindow.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-953E2KQDS3'); </script>\r\n<meta charset=\"ISO-8859-1\">\r\n<!-- Início do aviso de consentimento de cookies OneTrust para al.sp.gov.br -->\r\n<script type=\"text/javascript\" src=\"https://cdn.cookielaw.org/consent/d81776c2-ce60-4a3d-ac67-68daf059afc0/OtAutoBlock.js\" ></script>\r\n<script src=\"https://cdn.cookielaw.org/scripttemplates/otSDKStub.js\" type=\"text/javascript\" charset=\"UTF-8\" data-domain-script=\"d81776c2-ce60-4a3d-ac67-68daf059afc0\" ></script>\r\n<script type=\"text/javascript\">\r\nfunction OptanonWrapper() { } </script>\r\n<!-- Final do aviso de consentimento de cookies OneTrust para al.sp.gov.br -->\r\n<!-- url.container -->\r\n<!-- <base href=\"/\"> -->\r\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\r\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n<meta http-equiv=\"Content-Language\" content=\"pt-br\" />\r\n<meta http-equiv=\"Cache-Control\" content=\"no-cache, no-store\" />\r\n<meta http-equiv=\"Pragma\" content=\"no-cache, no-store\" />\r\n<meta http-equiv=\"expires\" content=\"Mon, 06 Jan 1990 00:00:01 GMT\" />\r\n<meta name=\"keywords\" content=\"alesp, projetos, proposi&ccedil;&otilde;es, processo, projeto de lei, estado, comiss&otilde;es, parlamento, legislativo, assembleia, deputado, parlamentar, legisla&ccedil;&atilde;o, lei, decreto, gest&atilde;o, estadual, atos, artigo, Estado de S&atilde;o Paulo\" />\r\n<meta name=\"description\" content=\"A Assembleia Legislativa do Estado de S. Paulo constitui o Poder Legislativo paulista, com o atributo de legislar, fiscalizar, controlar e investigar.\" />\r\n<meta property=\"fb:app_id\" content=\"201815157200265\" />\r\n<meta property=\"og:title\" content=\"Alesp\" />\r\n<meta property=\"og:url\" content=\"https://www.al.sp.gov.br/\" />\r\n<meta property=\"og:description\" content=\"\" />\r\n<meta property=\"og:image\" content=\"https://www3.al.sp.gov.br/_assets/imagens/logo-midias-2021.jpg\" />\r\n<meta property=\"og:image:width\" content=\"360\" />\r\n<meta property=\"og:image:height\" content=\"240\" />\r\n<meta property=\"og:type\" content=\"website\" />\r\n<link rel=\"manifest\" href=\"/_assets/manifest.webmanifest\">\r\n<!--Favicon shortcut link-->\r\n<link rel=\"shortcut icon\" href=\"/_assets/favicon.ico\" />\r\n<link rel=\"icon\" type=\"image/png\" href=\"https://www3.al.sp.go"
+  },
+  {
+   "u": "https://www.al.sp.leg.br/api/deputado",
+   "st": 200,
+   "ct": "text/html",
+   "n": 82245,
+   "ini": "<!DOCTYPE html>\r\n<html lang=\"pt-br\" xmlns:og=\"http://ogp.me/ns#\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script type=\"text/javascript\" src=\"/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\" data-dtconfig=\"rid=RID_2418|rpid=1425949597|domain=sp.gov.br|reportUrl=/rb_bf32302csu|app=da4214bfad2bf73e|owasp=1|featureHash=ICA7NVfgqrux|rdnt=1|uxrgce=1|cuc=810ommp0|mel=100000|expw=1|dpvc=1|lastModification=1768847594389|postfix=810ommp0|tp=500,50,0|srbbv=2|agentUri=/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\"></script><script async src=\"https://www.googletagmanager.com/gtag/js?id=G-953E2KQDS3\"></script>\r\n<script>\r\nwindow.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-953E2KQDS3'); </script>\r\n<meta charset=\"ISO-8859-1\">\r\n<!-- Início do aviso de consentimento de cookies OneTrust para al.sp.gov.br -->\r\n<script type=\"text/javascript\" src=\"https://cdn.cookielaw.org/consent/d81776c2-ce60-4a3d-ac67-68daf059afc0/OtAutoBlock.js\" ></script>\r\n<script src=\"https://cdn.cookielaw.org/scripttemplates/otSDKStub.js\" type=\"text/javascript\" charset=\"UTF-8\" data-domain-script=\"d81776c2-ce60-4a3d-ac67-68daf059afc0\" ></script>\r\n<script type=\"text/javascript\">\r\nfunction OptanonWrapper() { } </script>\r\n<!-- Final do aviso de consentimento de cookies OneTrust para al.sp.gov.br -->\r\n<!-- url.container -->\r\n<!-- <base href=\"/\"> -->\r\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\r\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n<meta http-equiv=\"Content-Language\" content=\"pt-br\" />\r\n<meta http-equiv=\"Cache-Control\" content=\"no-cache, no-store\" />\r\n<meta http-equiv=\"Pragma\" content=\"no-cache, no-store\" />\r\n<meta http-equiv=\"expires\" content=\"Mon, 06 Jan 1990 00:00:01 GMT\" />\r\n<meta name=\"keywords\" content=\"alesp, projetos, proposi&ccedil;&otilde;es, processo, projeto de lei, estado, comiss&otilde;es, parlamento, legislativo, assembleia, deputado, parlamentar, legisla&ccedil;&atilde;o, lei, decreto, gest&atilde;o, estadual, atos, artigo, Estado de S&atilde;o Paulo\" />\r\n<meta name=\"description\" content=\"A Assembleia Legislativa do Estado de S. Paulo constitui o Poder Legislativo paulista, com o atributo de legislar, fiscalizar, controlar e investigar.\" />\r\n<meta property=\"fb:app_id\" content=\"201815157200265\" />\r\n<meta property=\"og:title\" content=\"Alesp\" />\r\n<meta property=\"og:url\" content=\"https://www.al.sp.gov.br/\" />\r\n<meta property=\"og:description\" content=\"\" />\r\n<meta property=\"og:image\" content=\"https://www3.al.sp.gov.br/_assets/imagens/logo-midias-2021.jpg\" />\r\n<meta property=\"og:image:width\" content=\"360\" />\r\n<meta property=\"og:image:height\" content=\"240\" />\r\n<meta property=\"og:type\" content=\"website\" />\r\n<link rel=\"manifest\" href=\"/_assets/manifest.webmanifest\">\r\n<!--Favicon shortcut link-->\r\n<link rel=\"shortcut icon\" href=\"/_assets/favicon.ico\" />\r\n<link rel=\"icon\" type=\"image/png\" href=\"https://www3.al.sp.g"
+  },
+  {
+   "u": "https://www.al.sp.leg.br/repositorioDados/processo_legislativo/documento_autor.zip",
+   "st": 200,
+   "ct": "text/html",
+   "n": 82246,
+   "ini": "<!DOCTYPE html>\r\n<html lang=\"pt-br\" xmlns:og=\"http://ogp.me/ns#\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\r\n<head>\r\n<!-- Google tag (gtag.js) -->\r\n<script type=\"text/javascript\" src=\"/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\" data-dtconfig=\"rid=RID_2418|rpid=-1284521336|domain=sp.gov.br|reportUrl=/rb_bf32302csu|app=da4214bfad2bf73e|owasp=1|featureHash=ICA7NVfgqrux|rdnt=1|uxrgce=1|cuc=810ommp0|mel=100000|expw=1|dpvc=1|lastModification=1768847594389|postfix=810ommp0|tp=500,50,0|srbbv=2|agentUri=/ruxitagentjs_ICA7NVfgqrux_10329260115094557.js\"></script><script async src=\"https://www.googletagmanager.com/gtag/js?id=G-953E2KQDS3\"></script>\r\n<script>\r\nwindow.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-953E2KQDS3'); </script>\r\n<meta charset=\"ISO-8859-1\">\r\n<!-- Início do aviso de consentimento de cookies OneTrust para al.sp.gov.br -->\r\n<script type=\"text/javascript\" src=\"https://cdn.cookielaw.org/consent/d81776c2-ce60-4a3d-ac67-68daf059afc0/OtAutoBlock.js\" ></script>\r\n<script src=\"https://cdn.cookielaw.org/scripttemplates/otSDKStub.js\" type=\"text/javascript\" charset=\"UTF-8\" data-domain-script=\"d81776c2-ce60-4a3d-ac67-68daf059afc0\" ></script>\r\n<script type=\"text/javascript\">\r\nfunction OptanonWrapper() { } </script>\r\n<!-- Final do aviso de consentimento de cookies OneTrust para al.sp.gov.br -->\r\n<!-- url.container -->\r\n<!-- <base href=\"/\"> -->\r\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\r\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n<meta http-equiv=\"Content-Language\" content=\"pt-br\" />\r\n<meta http-equiv=\"Cache-Control\" content=\"no-cache, no-store\" />\r\n<meta http-equiv=\"Pragma\" content=\"no-cache, no-store\" />\r\n<meta http-equiv=\"expires\" content=\"Mon, 06 Jan 1990 00:00:01 GMT\" />\r\n<meta name=\"keywords\" content=\"alesp, projetos, proposi&ccedil;&otilde;es, processo, projeto de lei, estado, comiss&otilde;es, parlamento, legislativo, assembleia, deputado, parlamentar, legisla&ccedil;&atilde;o, lei, decreto, gest&atilde;o, estadual, atos, artigo, Estado de S&atilde;o Paulo\" />\r\n<meta name=\"description\" content=\"A Assembleia Legislativa do Estado de S. Paulo constitui o Poder Legislativo paulista, com o atributo de legislar, fiscalizar, controlar e investigar.\" />\r\n<meta property=\"fb:app_id\" content=\"201815157200265\" />\r\n<meta property=\"og:title\" content=\"Alesp\" />\r\n<meta property=\"og:url\" content=\"https://www.al.sp.gov.br/\" />\r\n<meta property=\"og:description\" content=\"\" />\r\n<meta property=\"og:image\" content=\"https://www3.al.sp.gov.br/_assets/imagens/logo-midias-2021.jpg\" />\r\n<meta property=\"og:image:width\" content=\"360\" />\r\n<meta property=\"og:image:height\" content=\"240\" />\r\n<meta property=\"og:type\" content=\"website\" />\r\n<link rel=\"manifest\" href=\"/_assets/manifest.webmanifest\">\r\n<!--Favicon shortcut link-->\r\n<link rel=\"shortcut icon\" href=\"/_assets/favicon.ico\" />\r\n<link rel=\"icon\" type=\"image/png\" href=\"https://www3.al.sp."
+  }
+ ]
+}

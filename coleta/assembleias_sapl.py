@@ -13,6 +13,12 @@ DESDE = "2023-02-01"; ANOS = range(2023, datetime.date.today().year + 1)
 LIM_MIN = float(os.environ.get("MAX_MIN", "35"))
 H = {"user-agent": "Mozilla/5.0 (FiscalizaBrasil/1.0; +https://fiscalizaja.com.br)", "accept": "application/json"}
 norm = lambda s: re.sub(r"[^A-Z ]", "", unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().upper()).strip()
+PREF = r"^(DEPUTAD[OA]|DEP|DR|DRA|DOUTOR[A]?|PROF|PROFESSOR[A]?|PASTOR[A]?|DELEGAD[OA]|SARGENTO|SGT|CORONEL|CEL|CAPITAO|MAJOR|IRMAO|IRMA|ENFERMEIR[OA])\s+"
+STOP = {"DA", "DE", "DO", "DAS", "DOS", "E"}
+def limpa(s):
+    s = norm(s)
+    for _ in range(2): s = re.sub(PREF, "", s)
+    return " ".join(w for w in s.split() if w not in STOP and len(w) > 1)
 VOTO = {"Sim": "S", "Não": "N", "Nao": "N", "Abstenção": "A", "Abstencao": "A", "Obstrução": "O"}
 PROJ = {"PLO", "PL", "PLC", "PEC", "PDL", "PRE", "PR", "PLE", "PLOA"}
 
@@ -93,12 +99,21 @@ def coleta(uf):
     U = json.load(open(D / "uf" / f"{uf}.json")); de = U.get("de22", [])
     idx = {}
     for i, x in enumerate(de):
-        idx.setdefault(norm(x[1]), i); idx.setdefault(norm(x[0]), i)
+        idx.setdefault(norm(x[1]), i); idx.setdefault(norm(x[0]), i); idx.setdefault(limpa(x[0]), i)
+    toks = [(i, set(limpa(x[0]).split()) | set(limpa(x[1]).split())) for i, x in enumerate(de)]
+    def acha(p):
+        for n in (p.get("nome_completo"), p.get("nome_parlamentar")):
+            for f in (norm, limpa):
+                if f(n) in idx: return idx[f(n)]
+        t = set(limpa(p.get("nome_completo")).split()) | set(limpa(p.get("nome_parlamentar")).split())
+        best = sorted(((len(t & q) / max(1, min(len(t), len(q))), len(t & q), i) for i, q in toks), reverse=True)
+        if best and best[0][1] >= 2 and best[0][0] >= 0.6 and (len(best) < 2 or best[1][:2] < best[0][:2]): return best[0][2]
+        return None
     def desc(mid):
         m = mats.get(mid) or {}; return f"{tipos.get(m.get('tipo'), '')} {m.get('numero', '')}/{m.get('ano', '')}".strip(), re.sub(r"\s+", " ", m.get("ementa") or "")[:200]
     dep = {}; sem = []
     for pid, p in parl.items():
-        k = idx.get(norm(p.get("nome_completo"))); k = k if k is not None else idx.get(norm(p.get("nome_parlamentar")))
+        k = acha(p)
         ms = sorted(set(autoria.get(pid, [])), key=lambda i: (mats[i].get("data_apresentacao") or ""), reverse=True)
         cont = Counter(tipos.get(mats[i].get("tipo"), "?") for i in ms)
         props = [[*desc(i), mats[i].get("data_apresentacao") or "", 1 if mats[i].get("em_tramitacao") else 0] for i in ms if tipos.get(mats[i].get("tipo")) in PROJ][:80]

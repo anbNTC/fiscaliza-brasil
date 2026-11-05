@@ -11,7 +11,7 @@ from assembleias_sapl import limpa
 D = Path(__file__).resolve().parents[1] / "site" / "data"; OUT = D / "est"; OUT.mkdir(exist_ok=True)
 B = "https://www.al.ba.gov.br/atividade-legislativa-nova/proposicoes"
 H = {"user-agent": "Mozilla/5.0 (FiscalizaBrasil/1.0; +https://fiscalizaja.com.br)"}
-FIM = time.time() + 60 * float(os.environ.get("MAX_MIN", "25"))
+FIM = time.time() + 60 * float(os.environ.get("MAX_MIN", "35"))
 PROJ = {"PL", "PLC", "PEC", "PDL", "PRS"}
 
 def get(S, **p):
@@ -30,13 +30,13 @@ def linhas(t):
     return out
 
 def coleta_dep(did):
-    S = requests.Session(); S.headers.update(H); itens = []
-    for pg in range(0, 30):
+    S = requests.Session(); S.headers.update(H); itens = []; vistos = set()
+    for pg in range(0, 150):
         if time.time() > FIM: break
-        ls = linhas(get(S, deputado=did, dataInicio="2023-02-01", dataFim=datetime.date.today().isoformat(), page=pg, size=200)); time.sleep(0.5)
-        if not ls: break
-        itens += ls
-        if len(ls) < 200: break
+        ls = linhas(get(S, deputado=did, dataInicio="2023-02-01", dataFim=datetime.date.today().isoformat(), page=pg, size=100)); time.sleep(0.4)
+        novos = [x for x in ls if x[:3] not in vistos]
+        if not novos: break
+        vistos.update(x[:3] for x in novos); itens += novos
     return did, itens
 
 def main():

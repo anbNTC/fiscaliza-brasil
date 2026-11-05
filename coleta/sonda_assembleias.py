@@ -1,36 +1,25 @@
-"""Sonda 4: arquivos da ALESP; procura APIs escondidas nos sites de GO, SC, CE, BA, RJ (lê o HTML e os scripts)."""
-import json, re, concurrent.futures as cf
+"""Sonda 5: estrutura das páginas de proposições da ALESC (SC) e da ALBA (BA), robots.txt e APIs usadas pelas páginas novas."""
+import json, re
 from pathlib import Path
 from urllib.parse import urljoin
 import requests
-H = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124 Safari/537.36", "accept": "*/*"}
-def head(u):
+H = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124 Safari/537.36"}
+U = ["https://portalelegis.alesc.sc.gov.br/robots.txt", "https://portalelegis.alesc.sc.gov.br/proposicoes/processo-legislativo",
+     "https://portalelegis.alesc.sc.gov.br/proposicoes/atividade-parlamentar", "https://portalelegis.alesc.sc.gov.br/proposicoes/5GR8Z",
+     "https://www.al.ba.gov.br/robots.txt", "https://www.al.ba.gov.br/atividade-legislativa/proposicoes-por-ano",
+     "https://www.al.ba.gov.br/atividade-legislativa/proposicao/PL.-24.054-2021", "https://www.al.ba.gov.br/atividade-legislativa-nova/proposicoes",
+     "https://www.al.ba.gov.br/deputados/legislatura-atual"]
+R = []
+for u in U:
     try:
-        r = requests.get(u, headers=H, timeout=40, stream=True); n = r.headers.get("content-length"); b = next(r.iter_content(600), b"")
-        return {"u": u, "st": r.status_code, "ct": r.headers.get("content-type"), "len": n, "final": r.url, "ini": b[:600].decode("latin-1")}
-    except Exception as e: return {"u": u, "erro": type(e).__name__ + str(e)[:80]}
-SP = ["https://www.al.sp.gov.br/repositorioDados/processo_legislativo/documento_autor.zip", "https://www.al.sp.gov.br/repositorioDados/processo_legislativo/proposituras.zip",
-      "https://www.al.sp.gov.br/repositorioDados/deputados/deputados.xml", "https://www.al.sp.gov.br/repositorioDados/deputados/deputados.zip",
-      "https://www.al.sp.gov.br/repositorioDados/processo_legislativo/documento_andamento_atual.zip", "https://www.al.sp.gov.br/dados-abertos/recurso/61"]
-SITES = {"GO": ["https://transparencia.al.go.leg.br/", "https://portal.al.go.leg.br/", "https://www.al.go.leg.br/"],
-         "SC": ["https://portalelegis.alesc.sc.gov.br/", "https://www.alesc.sc.gov.br/"],
-         "CE": ["https://www.al.ce.leg.br/", "https://www.al.ce.gov.br/"], "BA": ["https://www.al.ba.gov.br/", "https://www.al.ba.gov.br/atividade-legislativa/proposicoes"],
-         "RJ": ["https://www.alerj.rj.gov.br/", "https://www3.alerj.rj.gov.br/lotus_notes/default.asp", "http://alerjln1.alerj.rj.gov.br/scpro2327.nsf"],
-         "MS": ["https://www.al.ms.gov.br/"], "RN": ["https://www.al.rn.leg.br/"], "SE": ["https://al.se.leg.br/"], "DF": ["https://www.cl.df.gov.br/"]}
-def scan(item):
-    uf, us = item; out = []
-    for u in us:
-        try:
-            r = requests.get(u, headers=H, timeout=30); txt = r.text
-            js = [urljoin(r.url, s) for s in re.findall(r'<script[^>]+src="([^"]+)"', txt)][:12]
-            apis = set(re.findall(r'https?://[a-zA-Z0-9.\-]+(?:/[a-zA-Z0-9_\-./]*)?(?:api|ws|webservice|odata|dados)[a-zA-Z0-9_\-./]*', txt, re.I))
-            for j in js:
-                try: apis |= set(re.findall(r'["\'](https?://[^"\']*(?:api|ws/|webservice|odata)[^"\']*)["\']', requests.get(j, headers=H, timeout=20).text, re.I))
-                except Exception: pass
-            links = [h for h in set(re.findall(r'href="([^"#]+)"', txt)) if re.search(r"propos|projeto|materia|dados|api|leis|deputad", h, re.I)][:60]
-            out.append({"u": u, "st": r.status_code, "final": r.url, "apis": sorted(apis)[:60], "links": sorted(links)})
-        except Exception as e: out.append({"u": u, "erro": type(e).__name__})
-    return uf, out
-with cf.ThreadPoolExecutor(12) as ex:
-    R = {"sp": list(ex.map(head, SP)), "sites": dict(ex.map(scan, SITES.items()))}
+        r = requests.get(u, headers=H, timeout=40); t = r.text
+        body = re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>", "", t)
+        js = [urljoin(r.url, s) for s in re.findall(r'<script[^>]+src="([^"]+)"', t)]
+        api = set(re.findall(r'["\'`](/?(?:api|ws|rest|graphql)[^"\'`\s]{2,120})["\'`]', t))
+        for j in js[:10]:
+            try: api |= set(re.findall(r'["\'`](/?(?:api|ws|rest)/[^"\'`\s]{2,120}|https?://[^"\'`\s]*(?:api|/ws/)[^"\'`\s]{0,120})["\'`]', requests.get(j, headers=H, timeout=20).text))
+            except Exception: pass
+        R.append({"u": u, "st": r.status_code, "final": r.url, "ct": r.headers.get("content-type"), "api": sorted(api)[:80], "js": js[:15],
+                  "forms": re.findall(r"<form[\s\S]{0,1500}?</form>", t)[:2], "html": body[:14000]})
+    except Exception as e: R.append({"u": u, "erro": str(e)[:200]})
 json.dump(R, open(Path(__file__).resolve().parents[1] / "site" / "data" / "_sonda_assembleias.json", "w"), ensure_ascii=False, indent=1)

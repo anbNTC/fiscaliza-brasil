@@ -33,6 +33,7 @@ jobs:
         run: |
           echo "URL: $SAIDA"
           for u in "https://www.cloudflare.com/cdn-cgi/trace" \
+                   "https://www.cloudflare.com/cdn-cgi/trace?x=2" \
                    "https://dadosabertos.almg.gov.br/ws/deputados/em_exercicio?formato=json" \
                    "https://www.al.rs.gov.br/" "https://www.al.es.gov.br/" "https://sapl.al.ma.leg.br/api/parlamentares/parlamentar/?page_size=1" \
                    "https://www.al.ap.gov.br/" "https://sapl.al.ap.leg.br/api/parlamentares/parlamentar/?page_size=1"; do

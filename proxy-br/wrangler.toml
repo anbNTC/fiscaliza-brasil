@@ -3,6 +3,9 @@ main = "worker.js"
 compatibility_date = "2026-06-01"
 workers_dev = true
 
+[placement]
+region = "aws:sa-east-1"
+
 [[durable_objects.bindings]]
 name = "SAIDA"
 class_name = "Saida"

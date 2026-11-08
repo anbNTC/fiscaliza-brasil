@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "tools/**", ".github/workflows/dados.yml"]
+    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "coleta/emendas_estaduais.py", "tools/**", ".github/workflows/dados.yml"]
 
 permissions:
   contents: write
@@ -102,10 +102,16 @@ jobs:
         timeout-minutes: 45
         run: python coleta/assembleia_rs.py 2>&1 | tail -4 | tee -a /tmp/assembleias.log
 
+      - name: Emendas de deputados estaduais (PE, MG, GO)
+        id: emest
+        continue-on-error: true
+        timeout-minutes: 25
+        run: python coleta/emendas_estaduais.py 2>&1 | tail -6 | tee -a /tmp/assembleias.log
+
       - name: Salva o progresso (Assembleias)
         if: always()
         run: |
-          git add site/data/est 2>/dev/null || true
+          git add site/data/est site/data/emendas_est 2>/dev/null || true
           git diff --cached --quiet || (git commit -m "Assembleias estaduais $(date -u +%F)" && for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done)
 
       - name: Recalcula partidos, ranking, resumo da semana e médias da cota

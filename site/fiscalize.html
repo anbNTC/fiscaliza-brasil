@@ -343,6 +343,21 @@ async function emendasCidade(uf,nome){
    <div class="tl">${K.map(x=>`<div><span>${esc(x[2])} <small class="muted">${KT[x[0]]||""}</small>${x[5].length?`<br><small class="muted">Para: ${x[5].map(f=>esc(title(f[0]))).join(", ")}</small>`:""}</span><b>${brl(x[4])}</b>${bar(x[4],K[0][4])}</div>`).join("")}</div>`:""}
    <p class="src">Valores pagos a favorecidos com endereço na cidade (prefeitura, fundos, hospitais, entidades), de 2023 a 2026. Entram deputados federais e senadores de qualquer estado (inclusive quem saiu do cargo) e as emendas de bancada, de comissão e do relator-geral. Fonte: ${esc(EMPR.fonte)}.</p>`;
   M.append(sec);
+  emendasEstCidade(uf,nome);
+}
+/* emendas de deputados estaduais para a cidade (PE, MG e GO publicam com o nome do autor) */
+async function emendasEstCidade(uf,nome){
+  const EE=await getJSON("data/emendas_est/"+uf+".json").catch(()=>null);if(!EE)return;
+  const L=EE.cid[String(nome).normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z ]/g,"").trim()]||[];
+  const tot=L.reduce((a,x)=>a+x[1],0),mx=L.length?L[0][1]:1;
+  const lk=d=>d[1]===null||d[1]===undefined?null:typeof d[1]==="number"?`#/p/e/${uf}/22/${d[1]}`:`#/p/x/${uf}/${d[1]}`;
+  const sec=document.createElement("section");sec.className="card glass";
+  sec.innerHTML=`<h2>Emendas de deputados estaduais</h2>
+   ${L.length?`<p style="margin:0"><b style="font-family:var(--f-display);font-size:1.6rem">${brl(tot)}</b> <span class="muted">empenhados por ${L.length} deputado${L.length>1?"s":""} estadua${L.length>1?"is":"l"} desde ${EE.desde}</span></p>
+   <div class="tl">${L.map(([ch,v])=>{const d=EE.dep[ch];const h=lk(d);return `<div><span>${h?`<a href="${h}">${esc(d[0])}</a>`:`<b>${esc(d[0])}</b> <small class="muted">não está entre os eleitos de 2022</small>`}</span><b>${brl(v)}</b>${bar(v,mx)}</div>`}).join("")}</div>`
+   :`<p class="muted" style="margin:0">Nenhuma emenda de deputado estadual registrada para esta cidade desde ${EE.desde}.</p>`}
+   <p class="src">Valor empenhado (reservado no orçamento do estado para pagar). Fonte: <a href="${esc(EE.url)}" target="_blank" rel="noopener">${esc(EE.fonte)}</a>.</p>`;
+  M.append(sec);
 }
 async function me(){
   setNav("me");const c=store.get("cidade");

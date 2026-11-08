@@ -259,6 +259,10 @@ async function cracha(parts) {
     o.vc = (await loadV(uf))[P[10]] || null;
     if ((t === "g" && parts[2] === "0") || (t === "m" && parts[3] === "p")) o.plano = planoURL(uf, ano, t === "m" ? parts[2] : uf, P[10]);
   }
+  if ((t === "e" && parts[2] === "22") || t === "x") {
+    const EE = await getJSON("data/emendas_est/" + o.uf + ".json").catch(() => null);
+    if (EE) { const key = t === "x" ? parts[2] : +parts[3]; const it = Object.values(EE.dep).find((v) => v[1] === key); if (it) { o.emEst = it; o.emEstInfo = EE; } }
+  }
   const pp = P ? pTSE(P) : null; if (pp) o.civil = o.civil || pp.civil;
   // concordância: eleita / reeleita para mulheres
   const fem = (pp && pp.g === "F") || /^(Deputada|Senadora|Governadora|Vice-governadora|Prefeita|Vice-prefeita|Vereadora)/.test(o.cargo || "");
@@ -274,6 +278,7 @@ async function cracha(parts) {
   const tabs = [["resumo", "Resumo"]];
   if (casa) tabs.push(["custo", "Custo do mandato"], ["votos", "Votações"], ["proj", "Projetos"], ["disc", "Discursos"]);
   if (o.est) { tabs.push(["eproj", "Projetos"]); if (o.estInfo.temVotos) tabs.push(["evot", "Votações"]); }
+  if (o.emEst) tabs.push(["eem", "Emendas"]);
   if (o.vc) tabs.push(["camp", "Votos e campanha"]);
   tabs.push(["pat", "Patrimônio"]);
   tabs.push(["card", "Card p/ Stories"]);
@@ -298,6 +303,7 @@ async function cracha(parts) {
     else if (k === "camp") tb.innerHTML = `<h2>Votos e campanha · ${o.ano}</h2>${secCamp(o.vc, t)}`;
     else if (k === "eproj") tb.innerHTML = secEstProj(o);
     else if (k === "evot") tb.innerHTML = secEstVot(o);
+    else if (k === "eem") tb.innerHTML = secEmEst(o);
     else if (k === "pat") tb.innerHTML = `<h2>Patrimônio declarado</h2>${secPat(o.patList)}`;
     else if (k === "card") { tb.innerHTML = `<h2>Card para Stories</h2><div id="stc"><p class="muted">Montando a imagem…</p></div>`; await cardStories($("#stc"), Object.assign({}, o, { cargo: String(o.cargo || "").split(" · ")[0] }), await statsCard(o, X, casa), await notaCard(o, X, casa)); }
   };
@@ -338,6 +344,15 @@ function planoURL(uf, ano, ue, sq) { if (!sq || !ELEI[ano]) return ""; return `h
 
 /* deputados estaduais: dados das Assembleias que publicam no SAPL */
 const TIPOS_EST = { PLO: "Projetos de lei", PL: "Projetos de lei", PLC: "Projetos de lei complementar", PEC: "Propostas de emenda à Constituição", PDL: "Projetos de decreto legislativo", PRE: "Projetos de resolução", PR: "Projetos de resolução", IND: "Indicações", REQ: "Requerimentos", MOC: "Moções", PINF: "Pedidos de informação" };
+/* emendas do deputado estadual ao orçamento do estado (onde o governo publica com o nome do autor) */
+function secEmEst(o) {
+  const [, , emp, pago, cs] = o.emEst, I = o.emEstInfo; const mx = cs.length ? cs[0][1] : 1;
+  return `<h2>Emendas ao orçamento do estado</h2>
+   ${kvHTML([["Empenhado", brl(emp), "reservado no orçamento desde " + I.desde], ["Pago", brl(pago), emp ? Math.round((100 * pago) / emp) + "% do empenhado" : ""]])}
+   <h3>Para onde foi</h3><div class="tl">${cs.map(([c, v]) => `<div><span>${esc(title(c))}</span><b>${brl(v)}</b>${bar(v, mx)}</div>`).join("")}</div>
+   <p class="small muted" style="margin:0">A cidade é a informada pelo governo do estado para cada emenda. Quando o dinheiro vai para um órgão estadual, pode aparecer a capital ou "sem município".</p>
+   <p class="src">Fonte: <a href="${esc(I.url)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>. Atualizado em ${new Date(I.gerado + "T12:00").toLocaleDateString("pt-BR")}.</p>`;
+}
 function secEstProj(o) {
   const e = o.est, I = o.estInfo; const c = Object.entries(e.cont || {}).sort((a, b) => b[1] - a[1]);
   return `<h2>Projetos na Assembleia</h2>

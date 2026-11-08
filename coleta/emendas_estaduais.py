@@ -2,9 +2,9 @@
 Hoje: Pernambuco (dados.pe.gov.br), Minas Gerais (dados.mg.gov.br) e Goiás (dadosabertos.go.gov.br), de 2023 em diante.
 Os três portais são CKAN: lemos a lista de arquivos do conjunto e baixamos os que trazem autor, município e valores.
 Saída: site/data/emendas_est/{UF}.json
-  {"fonte", "url", "gerado", "metrica", "dep": {"chave": [nome, k_de22|None, total, pago, [[cidade, valor] x10]]},
+  {"fonte", "url", "gerado", "metrica", "dep": {"chave": [nome, k_de22 (int) | chave "x..." da Assembleia | None, total, pago, [[cidade, valor] x10]]},
    "cid": {CIDADE_NORMALIZADA: [[chave, valor] ...]}}"""
-import csv, io, json, re, sys, datetime, zipfile
+import csv, difflib, io, json, re, sys, datetime, zipfile
 from collections import defaultdict
 from pathlib import Path
 import requests
@@ -89,8 +89,22 @@ def liga(nomes, de):
             tt = set(limpa(n).split())
             best = sorted(((len(tt & q) / max(1, min(len(tt), len(q))), len(tt & q), j) for j, q in toks), reverse=True)
             if tt and best and (len(best) < 2 or best[1][:2] < best[0][:2]) and best[0][0] >= 0.99 and best[0][1] >= min(2, len(tt)): k = best[0][2]
+        if k is None:
+            # nome de urna inteiro dentro do nome do autor ("ZELI" em "Zeli Fritshe"), sem ambiguidade
+            tt = set(limpa(n).split()); cs = [j for j, x in enumerate(de) if limpa(x[0]) and set(limpa(x[0]).split()) <= tt]
+            if len(cs) == 1: k = cs[0]
+        if k is None:
+            r = sorted(((difflib.SequenceMatcher(None, limpa(n), limpa(x[0])).ratio(), j) for j, x in enumerate(de)), reverse=True)
+            if r and r[0][0] >= 0.86 and (len(r) < 2 or r[1][0] < r[0][0] - 0.05): k = r[0][1]
         out[n] = k
     return out
+
+def liga_est(nomes, uf):
+    """quem não está entre os eleitos de 2022: procura na lista da Assembleia (suplentes que assumiram, chaves "x...")."""
+    try: E = json.load(open(D / "est" / f"{uf}.json"))["dep"]
+    except Exception: return {}
+    idx = {limpa(v["nome"]): k for k, v in E.items() if k[0] == "x"}
+    return {n: idx[limpa(n)] for n in nomes if limpa(n) in idx}
 
 def um(uf):
     fn, fonte, url = ESTADOS[uf]
@@ -103,6 +117,7 @@ def um(uf):
         tot[ch][0] += emp; tot[ch][1] += pago; cid[ch][m or "SEM MUNICIPIO"] += emp or pago; n += 1
     de = json.load(open(D / "uf" / f"{uf}.json")).get("de22", [])
     L = liga([nome[c] for c in tot], de)
+    L.update({n: k for n, k in liga_est([n for n, k in L.items() if k is None], uf).items()})
     dep = {}
     for ch, (e, p) in tot.items():
         nm = nome[ch]; nm = " ".join(w.capitalize() if len(w) > 2 else w.lower() for w in nm.split()) if nm.isupper() else nm

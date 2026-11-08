@@ -4,7 +4,7 @@ e, onde a Câmara registra, o voto nominal de cada vereador.
 2) Coleta as que têm matérias ou votos desde 2025.
 Sem captcha nem bloqueio: só a API pública do SAPL.
 Saída: site/data/cam/{código TSE da cidade}.json (mesmo formato de est/{UF}.json; chave = índice do vereador na lista do TSE
-       ou "x"+id para quem não está entre os eleitos de 2024) e site/data/cam/index.json {ue: [uf, nome, url, temVotos, n_vereadores]}"""
+       ou "x"+id para quem não está entre os eleitos de 2024) e site/data/cam/index.json {ue: [uf, nome, url, temVotos, n_vereadores, data da coleta]}"""
 import json, os, re, sys, time, datetime, unicodedata, concurrent.futures as cf
 from pathlib import Path
 import requests
@@ -14,7 +14,7 @@ from assembleias_sapl import SAPL, coleta_sapl, H
 D = Path(__file__).resolve().parents[1] / "site" / "data"; OUT = D / "cam"; OUT.mkdir(exist_ok=True)
 DESDE = "2025-01-01"; ANOS = range(2025, datetime.date.today().year + 1)
 PADROES = ["https://sapl.{s}.{u}.leg.br", "https://sapl.camara{s}.{u}.gov.br", "https://sapl.cm{s}.{u}.gov.br", "https://sapl.{s}.{u}.gov.br", "https://sapl.camara{s}.{u}.leg.br"]
-MIN_CIDADE = float(os.environ.get("MIN_CIDADE", "14")); MAX_TOTAL = float(os.environ.get("MAX_TOTAL", "45")) * 60
+MIN_CIDADE = float(os.environ.get("MIN_CIDADE", "14")); MAX_TOTAL = float(os.environ.get("MAX_TOTAL", "40")) * 60
 slug = lambda s: re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower())
 
 def sonda(a):
@@ -42,6 +42,8 @@ def main():
     idx = {}
     try: idx = json.load(open(OUT / "index.json"))
     except Exception: pass
+    # quem nunca foi coletado vai primeiro; depois, as coletadas há mais tempo (o tempo não dá para todas num dia)
+    ativas.sort(key=lambda x: (x["ue"] in idx, (idx.get(x["ue"]) or [""] * 6)[5:6] or [""], -x["mat"]))
     def um(x):
         if time.time() - t0 > MAX_TOTAL: return x, {"erro": "sem tempo"}
         A = SAPL(base=x["base"], lim_min=MIN_CIDADE)
@@ -51,7 +53,7 @@ def main():
                "legislatura": r["leg"].get("__str__"), "temVotos": bool(r["vp"]), "casa": "Câmara Municipal", "dep": r["dep"]}
         if not r["dep"]: return x, {"erro": "sem vereadores na legislatura atual"}
         json.dump(out, open(OUT / f"{x['ue']}.json", "w"), ensure_ascii=False, separators=(",", ":"))
-        idx[x["ue"]] = [x["uf"], x["nome"], x["base"], bool(r["vp"]), len(r["dep"])]
+        idx[x["ue"]] = [x["uf"], x["nome"], x["base"], bool(r["vp"]), len(r["dep"]), datetime.date.today().isoformat()]
         return x, {"vereadores": len(r["parl"]), "ligados": len(r["parl"]) - len(r["sem"]), "materias": len(r["mats"]), "votos": len(r["vp"])}
     with cf.ThreadPoolExecutor(8) as ex: R = list(ex.map(um, ativas))
     json.dump(idx, open(OUT / "index.json", "w"), ensure_ascii=False, separators=(",", ":"))

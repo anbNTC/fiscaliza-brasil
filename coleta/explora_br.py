@@ -24,6 +24,9 @@ for u in ALVOS:
         for m in re.finditer(r"https?://[^\s\"'<>]+|/[A-Za-z0-9_\-/.]*(api|json|ashx|asmx|svc|Proposic|propos|Handler|WebService)[A-Za-z0-9_\-/.?=&]*", t2, re.I):
             print("  ", m.group(0)[:200])
         print(t2[:3000]); continue
+    print("bytes:", len(r.content))
+    if "xml" in (r.headers.get("content-type") or "") or t.lstrip()[:1] == "<" and "<html" not in t[:500].lower():
+        print(t[:3000]); continue
     if "json" in (r.headers.get("content-type") or "") or t[:1] in "[{":
         print(t[:2500]); continue
     links = sorted(set(re.findall(r'href="([^"#]+)"', t)))

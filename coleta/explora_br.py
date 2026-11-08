@@ -1,0 +1,15 @@
+"""Exploração (temporária): lista links e respostas das fontes de PE, RS e ES pela saída do Brasil."""
+import re, sys, json
+sys.path.insert(0, __import__("os").path.dirname(__file__))
+from saida_br import get
+ALVOS = sys.argv[1:] or ["https://dadosabertos.alepe.pe.gov.br/", "https://ww4.al.rs.gov.br/", "https://www3.al.es.gov.br/", "https://www.al.es.gov.br/"]
+for u in ALVOS:
+    r = get(u, tentativas=1)
+    print("=" * 8, u, r.status_code if r is not None else None, r.headers.get("content-type") if r is not None else "")
+    if r is None: continue
+    t = r.text
+    if "json" in (r.headers.get("content-type") or "") or t[:1] in "[{":
+        print(t[:2500]); continue
+    links = sorted(set(re.findall(r'href="([^"#]+)"', t)))
+    print("title:", (re.search(r"<title>([\s\S]*?)</title>", t) or [None, ""])[1].strip()[:120])
+    print("\n".join(l for l in links if re.search(r"dado|api|propos|deput|parlament|projet|vota|materia|lei|swagger|json|csv", l, re.I))[:4000])

@@ -5,6 +5,7 @@ on:
     inputs:
       alvos: { description: "URLs separadas por espaço", required: false, default: "" }
       script: { description: "coletor a testar (sem gravar)", required: false, default: "" }
+      padroes: { description: "variável PADROES para a sonda de câmaras", required: false, default: "" }
 jobs:
   x:
     runs-on: ubuntu-latest
@@ -15,7 +16,8 @@ jobs:
         with: { python-version: "3.12" }
       - run: pip install requests==2.32.3
       - name: Explora
-        env: { T: "${{ secrets.CLOUDFLARE_API_TOKEN }}", ALVOS: "${{ inputs.alvos }}", SCRIPT: "${{ inputs.script }}" }
+        env: { T: "${{ secrets.CLOUDFLARE_API_TOKEN }}", ALVOS: "${{ inputs.alvos }}", SCRIPT: "${{ inputs.script }}", PADROES_IN: "${{ inputs.padroes }}" }
         run: |
+          [ -n "$PADROES_IN" ] && export PADROES="$PADROES_IN"
           export CHAVE_BR=$(printf '%s' "$T-fiscaliza-br" | sha256sum | cut -c1-48)
           if [ -n "$SCRIPT" ]; then echo "========"; python "coleta/$SCRIPT" 2>&1 | tail -250; else python coleta/explora_br.py $ALVOS; fi

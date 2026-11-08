@@ -6,8 +6,14 @@ import requests
 D = Path(__file__).resolve().parents[1] / "site" / "data"
 H = {"user-agent": "Mozilla/5.0 (FiscalizaBrasil/1.0; +https://fiscalizaja.com.br)", "accept": "application/json"}
 slug = lambda s: re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower())
+import os
+PADROES = os.environ.get("PADROES", "https://sapl.{s}.{u}.leg.br").split()
 def testa(a):
-    uf, ue, nome, nver = a; b = f"https://sapl.{slug(nome)}.{uf.lower()}.leg.br/api"
+    for pd in PADROES:
+        x = testa1(a, pd.format(s=slug(a[2]), u=a[0].lower()) + "/api")
+        if x: return x
+def testa1(a, b):
+    uf, ue, nome, nver = a
     try:
         r = requests.get(f"{b}/materia/materialegislativa/", params={"ano": 2025, "page_size": 1}, headers=H, timeout=12)
         if r.status_code != 200 or "json" not in r.headers.get("content-type", ""): return None

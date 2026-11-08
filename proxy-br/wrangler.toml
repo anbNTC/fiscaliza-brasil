@@ -4,6 +4,7 @@ compatibility_date = "2026-06-01"
 workers_dev = true
 
 [placement]
+mode = "targeted"
 region = "aws:sa-east-1"
 
 [[durable_objects.bindings]]

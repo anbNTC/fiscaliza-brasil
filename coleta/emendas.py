@@ -88,8 +88,13 @@ def main():
         if not v or len(uf) != 2 or not m: continue
         if not a:
             c = coletiva(r[iA])
-            if not c: semAutor[r[iA].strip()] += v; continue
-            a = (c[0], c[1], c[2], ""); colet[(c[0], c[1])][0] += v; colet[(c[0], c[1])][1][(uf, m)] += v; colet[(c[0], c[1])][2] = c[2]
+            if not c:
+                semAutor[r[iA].strip()] += v
+                if norm(r[iA]) in ("", "SEM INFORMACAO"): continue
+                c = ("X", "", " ".join(w.capitalize() if len(w) > 2 else w.lower() for w in r[iA].strip().split()))
+            a = (c[0], c[1], c[2], "")
+            if c[0] == "X": k = (uf, m, a); tot[k] += v; fav[k][r[iF].strip()] += v; n += 1; continue
+            colet[(c[0], c[1])][0] += v; colet[(c[0], c[1])][1][(uf, m)] += v; colet[(c[0], c[1])][2] = c[2]
         if a[0] not in "CS": k = (uf, m, a); tot[k] += v; fav[k][r[iF].strip()] += v; n += 1; continue
         k = (uf, m, a); tot[k] += v; fav[k][r[iF].strip()] += v; porAutor[a[0] + ":" + a[1]] += v; n += 1
     cid = defaultdict(lambda: defaultdict(list))

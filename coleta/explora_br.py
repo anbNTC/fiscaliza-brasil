@@ -3,11 +3,16 @@ import re, sys, json
 sys.path.insert(0, __import__("os").path.dirname(__file__))
 from saida_br import get
 ALVOS = sys.argv[1:] or ["https://dadosabertos.alepe.pe.gov.br/", "https://ww4.al.rs.gov.br/", "https://www3.al.es.gov.br/", "https://www.al.es.gov.br/"]
+import requests
+def direto(u, tentativas=1):
+    try: return requests.get(u, timeout=60, headers={"user-agent": "Mozilla/5.0 FiscalizaBrasil/1.0"})
+    except Exception as e: print("erro", e); return None
 for u in ALVOS:
+    dir_ = u.startswith("D:"); u = u[2:] if dir_ else u
     raw = u.startswith("RAW:"); u = u[4:] if raw else u
     pad = None
     if u.startswith("GREP:"): pad, u = u[5:].rsplit("@@", 1)
-    r = get(u, tentativas=1)
+    r = (direto if dir_ else get)(u, tentativas=1)
     print("=" * 8, u, r.status_code if r is not None else None, r.headers.get("content-type") if r is not None else "")
     if r is None: continue
     t = r.text

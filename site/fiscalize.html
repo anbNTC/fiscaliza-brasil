@@ -331,17 +331,17 @@ async function emendasCidade(uf,nome){
   if(!EMPR&&uf==="PR")EMPR=EMUF[uf]=await getJSON("data/emendas_pr.json").catch(()=>null);
   if(!EMPR)return;
   const ALL=EMPR.cid[String(nome).normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z ]/g,"").trim()]||[];
-  const L=ALL.filter(x=>x[0]==="C"||x[0]==="S"),K=ALL.filter(x=>x[0]!=="C"&&x[0]!=="S");
+  const L=ALL.filter(x=>x[0]==="C"||x[0]==="S"||x[0]==="X"),K=ALL.filter(x=>x[0]!=="C"&&x[0]!=="S"&&x[0]!=="X");
   const KT={B:"emenda de bancada: deputados e senadores do estado decidem juntos",K:"emenda de comissão do Congresso",R:"emenda do relator-geral do Orçamento"};
   const tot=L.reduce((a,x)=>a+x[4],0);const mx=L.length?L[0][4]:1;
   const sec=document.createElement("section");sec.className="card glass";
   sec.innerHTML=`<h2>Emendas para ${esc(title(nome))}</h2>
    ${L.length?`<p style="margin:0"><b style="font-family:var(--f-display);font-size:1.6rem">${brl(tot)}</b> <span class="muted">pagos por ${L.length} deputado${L.length>1?"s":""} federa${L.length>1?"is":"l"} e senador${L.length>1?"es":""} desde 2023</span></p>
-   <div class="tl">${L.map(x=>`<div><span><a href="#/p/${x[0]==="C"?"c":"s"}/${x[1]}">${esc(x[2])}</a> <small class="muted">${esc(x[3])} · ${x[0]==="C"?"deputado(a) federal":"senador(a)"}</small>${x[5].length?`<br><small class="muted">Para: ${x[5].map(f=>esc(title(f[0]))).join(", ")}</small>`:""}</span><b>${brl(x[4])}</b>${bar(x[4],mx)}</div>`).join("")}</div>`
+   <div class="tl">${L.map(x=>`<div><span>${x[0]==="X"?`<b>${esc(x[2])}</b> <small class="muted">parlamentar fora do exercício hoje (licenciado, saiu do cargo ou é ex-deputado)</small>`:`<a href="#/p/${x[0]==="C"?"c":"s"}/${x[1]}">${esc(x[2])}</a> <small class="muted">${esc(x[3])} · ${x[0]==="C"?"deputado(a) federal":"senador(a)"}</small>`}${x[5].length?`<br><small class="muted">Para: ${x[5].map(f=>esc(title(f[0]))).join(", ")}</small>`:""}</span><b>${brl(x[4])}</b>${bar(x[4],mx)}</div>`).join("")}</div>`
    :`<p class="muted" style="margin:0">Nenhuma emenda paga por deputados federais e senadores em exercício para esta cidade desde 2023.</p>`}
    ${K.length?`<h3>Emendas coletivas (de bancada e de comissão)</h3><p class="muted small" style="margin:0"><b>${brl(K.reduce((a,x)=>a+x[4],0))}</b> pagos desde 2023. Não dá para saber, pelos dados abertos, qual parlamentar indicou cada uma.</p>
    <div class="tl">${K.map(x=>`<div><span>${esc(x[2])} <small class="muted">${KT[x[0]]||""}</small>${x[5].length?`<br><small class="muted">Para: ${x[5].map(f=>esc(title(f[0]))).join(", ")}</small>`:""}</span><b>${brl(x[4])}</b>${bar(x[4],K[0][4])}</div>`).join("")}</div>`:""}
-   <p class="src">Valores pagos a favorecidos com endereço na cidade (prefeitura, fundos, hospitais, entidades), de 2023 a 2026. Entram deputados federais e senadores em exercício, de qualquer estado, e as emendas de bancada, de comissão e do relator-geral. Fonte: ${esc(EMPR.fonte)}.</p>`;
+   <p class="src">Valores pagos a favorecidos com endereço na cidade (prefeitura, fundos, hospitais, entidades), de 2023 a 2026. Entram deputados federais e senadores de qualquer estado (inclusive quem saiu do cargo) e as emendas de bancada, de comissão e do relator-geral. Fonte: ${esc(EMPR.fonte)}.</p>`;
   M.append(sec);
 }
 async function me(){

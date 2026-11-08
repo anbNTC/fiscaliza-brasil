@@ -299,9 +299,20 @@ async function cidade(uf,ue){
      ${uf==="PR"&&ue==="75353"?`<a class="btn o" href="parana.html?q=">Projetos e pedidos dos vereadores de Curitiba</a>`:""}
      <p class="src">Votos e projetos dos vereadores dependem do que cada Câmara publica; a maioria não publica em formato aberto. Fonte: ${FONTE_TSE}</p></section></div>
    <section class="card glass"><h2>Vereadores <span class="muted small">(${vs.length})</span></h2><div class="people">${vs.map((p,i)=>pcard(`#/p/m/${uf}/${ue}/${i}`,title(p[0]),partido(p),ftse(p,2024,ue))).join("")}</div>
-     <p class="src">Titulares eleitos em 2024. Suplentes que assumiram depois não aparecem. Fonte: ${FONTE_TSE}</p></section>`;
+     <p class="src">Titulares eleitos em 2024. Suplentes que assumiram só aparecem onde a Câmara publica dados abertos (SAPL). Fonte: ${FONTE_TSE}</p></section>`;
   $("#sm").onclick=()=>{store.set("cidade",{uf,ue,nome});cidade(uf,ue)};
-  emendasCidade(uf,nome);
+  camCidade(uf,ue).then(()=>emendasCidade(uf,nome));
+}
+/* Câmaras com SAPL público: projetos e votos de cada vereador, e suplentes que assumiram */
+async function camCidade(uf,ue){
+  const C=await getJSON("data/cam/"+ue+".json").catch(()=>null);if(!C)return;
+  const xs=Object.entries(C.dep).filter(([k])=>k[0]==="x").sort((a,b)=>a[1].nome.localeCompare(b[1].nome));
+  const nm=n=>title(String(n).replace(/^(VEREADOR[A]?|VER\.)\s+/i,""));
+  const sec=document.createElement("section");sec.className="card glass";
+  sec.innerHTML=`<h2>Câmara Municipal</h2><p class="muted" style="margin:0">Esta Câmara publica os dados no SAPL: abra a ficha de cada vereador para ver os projetos que apresentou desde 2025${C.temVotos?" e como votou em cada votação nominal":""}.</p>
+   ${xs.length?`<h3>Suplentes que assumiram <span class="muted small">(${xs.length})</span></h3><div class="people">${xs.map(([k,e])=>pcard(`#/p/w/${uf}/${ue}/${k}`,nm(e.nome),esc(e.partido||""),e.foto||"",'<span class="chip warn">Suplente</span>')).join("")}</div><p class="small muted" style="margin:0">Vereadores com mandato nesta legislatura que não estão entre os eleitos de 2024 no TSE. A lista inclui quem já deixou a cadeira.</p>`:""}
+   <p class="src">Fonte: <a href="${esc(C.url)}" target="_blank" rel="noopener">${esc(C.fonte)}</a>. Atualizado em ${new Date(C.gerado+"T12:00").toLocaleDateString("pt-BR")}.</p>`;
+  M.append(sec);
 }
 /* deputados estaduais que exerceram mandato sem estar entre os eleitos de 2022 (suplentes que assumiram), pela lista da Assembleia */
 async function supl(uf){

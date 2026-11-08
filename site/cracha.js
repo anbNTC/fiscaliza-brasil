@@ -233,6 +233,13 @@ async function cracha(parts) {
     chips.push('<span class="chip ok">Em exercício</span>'); if (s[9]) chips.push('<span class="chip new">Reeleito em 2026</span>');
     X = (await loadS(s[4]))[String(s[0])] || null; o.patList = X && X.pat;
     o.mand = s[7] === 2022 ? "Mandato 2023–2031" : "Mandato até 31/01/2027"; src = FONTE_SEN + " · " + FONTE_TSE; o.link = "https://www25.senado.leg.br/web/senadores/senador/-/perfil/" + s[0]; o.linkN = "Página no Senado";
+  } else if (t === "w") {
+    // vereador que exerceu mandato sem estar entre os eleitos de 2024 (em geral, suplente que assumiu), pela lista do SAPL da Câmara
+    const uf = parts[1], ue = parts[2]; const C = await getJSON("data/cam/" + ue + ".json").catch(() => null); const e = C && C.dep[parts[3]]; if (!e) return notFound();
+    const cid = (C.fonte.match(/Câmara Municipal de (.+?) \(/) || [])[1] || "";
+    o = { nome: title(String(e.nome).replace(/^(VEREADOR[A]?|VER\.)\s+/i, "")), cargo: cargo("ver", "") + " · " + cid, part: e.partido || "—", uf, foto: e.foto || "", est: e, estInfo: C, civil: e.civil ? title(e.civil) : "" };
+    o.mand = "Exerceu mandato na legislatura 2025–2028 sem constar entre os eleitos de 2024 (em geral, suplente que assumiu)"; voltar = `#/cidade/${uf}/${ue}`; src = C.fonte;
+    chips.push('<span class="chip warn">Suplente que assumiu</span>');
   } else if (t === "x") {
     // deputado estadual que exerceu mandato sem estar entre os eleitos de 2022 no TSE (em geral, suplente que assumiu)
     const uf = parts[1]; const E = await getJSON("data/est/" + uf + ".json").catch(() => null); const e = E && E.dep[parts[2]]; if (!e) return notFound();
@@ -252,7 +259,8 @@ async function cracha(parts) {
       if (t === "e" && parts[2] === "22") { const E = await getJSON("data/est/" + uf + ".json").catch(() => null); if (E && E.dep[parts[3]]) { o.est = E.dep[parts[3]]; o.estInfo = E; } } }
     else if (t === "m") { const m = D.mun[parts[2]]; if (!m) return notFound(); P = parts[3] === "p" ? m[1] : parts[3] === "v" ? m[2] : m[3][+parts[3]]; if (!P) return notFound(); const pp = pTSE(P);
       o = { nome: pp.nome, cargo: cargo(parts[3] === "p" ? "pref" : parts[3] === "v" ? "vp" : "ver", pp.g) + " · " + title(m[0]), part: pp.part, uf }; o.mand = "Eleito em 2024 · mandato 2025–2028"; voltar = `#/cidade/${uf}/${parts[2]}`;
-      rich = parts[3] !== "p" && parts[3] !== "v" && uf === "PR" && parts[2] === "75353"; }
+      rich = parts[3] !== "p" && parts[3] !== "v" && uf === "PR" && parts[2] === "75353";
+      if (parts[3] !== "p" && parts[3] !== "v") { const C = await getJSON("data/cam/" + parts[2] + ".json").catch(() => null); if (C && C.dep[parts[3]]) { o.est = C.dep[parts[3]]; o.estInfo = C; } } }
     o.patList = (await loadPat(uf))[keyTSE(P[1], P[5])] || null;
     const ano = t === "m" ? 2024 : (parts[2] === "26" || parts[3] === "26") ? 2026 : 2022;
     o.foto = (o.est && o.est.foto) || ftse(P, ano, t === "m" ? parts[2] : uf); o.ano = ano;
@@ -325,8 +333,8 @@ async function statsCard(o, X, casa) {
     const au = (X.au && X.au.c) || {}; st.push([["PL", "PLP", "PEC", "PDL", "PRS"].reduce((s, t) => s + (au[t] || 0), 0), "Projetos apresentados"]);
     if (X.cota) st.push([brlc(Object.values(X.cota.a).reduce((s, t) => s + Object.values(t).reduce((x, y) => x + y, 0), 0)), "Cota parlamentar gasta"]);
   }
-  if (o.est) { const pc = ["PLO", "PL", "PLC", "PEC", "PDL", "PRE"].reduce((x, k) => x + ((o.est.cont || {})[k] || 0), 0); st.push([mil(pc), "Projetos na Assembleia desde 2023"]);
-    const tv = Object.values(o.est.votos || {}).reduce((x, y) => x + y, 0); if (tv) st.push([mil(tv), "Votos registrados na Assembleia"]); }
+  if (o.est) { const cs = o.estInfo && o.estInfo.casa ? "na Câmara" : "na Assembleia"; const pc = ["PLO", "PL", "PLC", "PEC", "PDL", "PRE", "PLL", "PLCM"].reduce((x, k) => x + ((o.est.cont || {})[k] || 0), 0); st.push([mil(pc), "Projetos " + cs + " desde " + (o.estInfo && o.estInfo.casa ? "2025" : "2023")]);
+    const tv = Object.values(o.est.votos || {}).reduce((x, y) => x + y, 0); if (tv) st.push([mil(tv), "Votos registrados " + cs]); }
   if (st.length < 4 && o.vc && o.vc.v) st.push([mil(o.vc.v[0]), "Votos em " + o.ano]);
   if (st.length < 4 && o.vc && o.vc.c) st.push([brlc(o.vc.c[0]), "Arrecadou na campanha"]);
   const p = o.patList && o.patList.length ? o.patList[o.patList.length - 1] : null;
@@ -355,17 +363,18 @@ function secEmEst(o) {
 }
 function secEstProj(o) {
   const e = o.est, I = o.estInfo; const c = Object.entries(e.cont || {}).sort((a, b) => b[1] - a[1]);
-  return `<h2>Projetos na Assembleia</h2>
-   <div class="kv">${c.slice(0, 6).map(([k, n]) => `<div><div class="l">${esc(TIPOS_EST[k] || k)}</div><div class="v">${mil(n)}</div><div class="s">desde 2023</div></div>`).join("") || '<div><div class="v">0</div><div class="s">nenhuma proposição registrada desde 2023</div></div>'}</div>
+  const casaN = I.casa ? "na " + I.casa : "na Assembleia", ano0 = I.casa ? "2025" : "2023";
+  return `<h2>Projetos ${casaN}</h2>
+   <div class="kv">${c.slice(0, 6).map(([k, n]) => `<div><div class="l">${esc(TIPOS_EST[k] || k)}</div><div class="v">${mil(n)}</div><div class="s">desde ${ano0}</div></div>`).join("") || `<div><div class="v">0</div><div class="s">nenhuma proposição registrada desde ${ano0}</div></div>`}</div>
    ${e.props.length ? `<h3>Projetos apresentados (mais recentes)</h3><div class="lst">${e.props.map((p) => `<div class="it"><div class="hd"><span class="cd">${esc(p[0])} · ${p[2] ? new Date(p[2] + "T12:00").toLocaleDateString("pt-BR") : ""}</span>${p[3] ? '<span class="vt n0">Em tramitação</span>' : ""}</div><div>${esc(p[1])}</div></div>`).join("")}</div>` : ""}
    ${e.pres && Object.keys(e.pres).length ? `<h3>Presença nas sessões do plenário</h3><div class="kv">${Object.entries(e.pres).sort((a, b) => b[0] - a[0]).map(([a, f]) => { const tot = Object.values(f).reduce((x, y) => x + y, 0), pr = f["Presente"] || 0; return `<div><div class="l">${esc(a)}</div><div class="v">${tot ? Math.round((pr / tot) * 100) : 0}%</div><div class="s">${mil(pr)} de ${mil(tot)} registros</div></div>`; }).join("")}</div>` : ""}
-   ${I.obs ? `<div class="note">${esc(I.obs)}</div>` : ""}${e.parcial ? '<div class="note">Lista parcial: este deputado tem muitas proposições e mostramos as mais recentes.</div>' : ""}
+   ${I.obs ? `<div class="note">${esc(I.obs)}</div>` : ""}${e.parcial ? '<div class="note">Lista parcial: ${I.casa ? "este vereador" : "este deputado"} tem muitas proposições e mostramos as mais recentes.</div>' : ""}
    <p class="src">Fonte: <a href="${esc(e.sapl)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>. Inclui autoria e coautoria. Atualizado em ${new Date(I.gerado + "T12:00").toLocaleDateString("pt-BR")}.</p>`;
 }
 function secEstVot(o) {
   const e = o.est, I = o.estInfo; const v = e.votos || {}; const t = Object.values(v).reduce((a, b) => a + b, 0);
-  return `<h2>Como votou na Assembleia</h2>
+  return `<h2>Como votou ${I.casa ? "na " + I.casa : "na Assembleia"}</h2>
    <div class="chips">${[["S", "Sim"], ["N", "Não"], ["A", "Abstenção"], ["O", "Obstrução"]].filter(([k]) => v[k]).map(([k, n]) => `<span class="chip">${n} ${mil(v[k])}</span>`).join("")}<span class="chip">Total ${mil(t)}</span></div>
    ${e.vlist.length ? `<div class="lst">${e.vlist.map((x) => `<div class="it"><div class="hd"><span class="cd">${esc(x[0] || "Votação")} · ${x[3] ? new Date(x[3] + "T12:00").toLocaleDateString("pt-BR") : ""}</span><span class="vt ${x[2] === "S" ? "ok" : x[2] === "N" ? "no" : "n0"}">${x[2] === "S" ? "Sim" : x[2] === "N" ? "Não" : x[2] === "A" ? "Abstenção" : esc(x[2])}</span></div><div>${esc(x[1])}</div>${x[4] != null ? `<div class="small muted">Sim ${x[4]} × Não ${x[5]}</div>` : ""}</div>`).join("")}</div>` : '<p class="muted">Nenhum voto nominal registrado desde 2023.</p>'}
-   <p class="src">Votos nominais registrados pela Assembleia no SAPL. Fonte: <a href="${esc(e.sapl)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>.</p>`;
+   <p class="src">Votos nominais registrados ${I.casa ? "pela " + I.casa : "pela Assembleia"} no SAPL. Fonte: <a href="${esc(e.sapl)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>.</p>`;
 }

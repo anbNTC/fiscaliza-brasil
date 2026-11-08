@@ -1,0 +1,12 @@
+name = "fiscaliza-br"
+main = "worker.js"
+compatibility_date = "2026-06-01"
+workers_dev = true
+
+[[durable_objects.bindings]]
+name = "SAIDA"
+class_name = "Saida"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Saida"]

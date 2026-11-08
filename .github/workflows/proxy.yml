@@ -1,0 +1,41 @@
+# Publica o Worker "fiscaliza-br" (saída pelo Brasil para Assembleias que só respondem a acessos do país) e testa.
+# A chave do Worker é derivada do segredo CLOUDFLARE_API_TOKEN, então não precisa de segredo novo.
+name: Saida BR
+
+on:
+  push:
+    branches: [main]
+    paths: ["proxy-br/**", ".github/workflows/proxy.yml"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Chave
+        env: { T: "${{ secrets.CLOUDFLARE_API_TOKEN }}" }
+        run: |
+          K=$(printf '%s' "$T-fiscaliza-br" | sha256sum | cut -c1-48); echo "::add-mask::$K"; echo "CHAVE=$K" >> "$GITHUB_ENV"
+      - name: Publica
+        id: pub
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: proxy-br
+          command: deploy
+          secrets: |
+            CHAVE
+      - name: Testa
+        env: { SAIDA: "${{ steps.pub.outputs.deployment-url }}" }
+        run: |
+          echo "URL: $SAIDA"
+          for u in "https://www.cloudflare.com/cdn-cgi/trace" \
+                   "https://dadosabertos.almg.gov.br/ws/deputados/em_exercicio?formato=json" \
+                   "https://www.al.rs.gov.br/" "https://www.al.es.gov.br/" "https://sapl.al.ma.leg.br/api/parlamentares/parlamentar/?page_size=1" \
+                   "https://www.al.ap.gov.br/" "https://sapl.al.ap.leg.br/api/parlamentares/parlamentar/?page_size=1"; do
+            echo "== $u"; curl -s -m 100 -G -H "x-chave: $CHAVE" --data-urlencode "u=$u" -w '\n[HTTP %{http_code} %{time_total}s]\n' "$SAIDA/" | head -c 400; echo
+          done
+          echo "== domínio"; curl -sI -m 20 https://fiscalizaja.com.br | head -3; curl -sI -m 20 https://www.fiscalizaja.com.br | head -3

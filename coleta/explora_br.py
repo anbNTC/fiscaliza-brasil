@@ -6,7 +6,7 @@ ALVOS = sys.argv[1:] or ["https://dadosabertos.alepe.pe.gov.br/", "https://ww4.a
 for u in ALVOS:
     raw = u.startswith("RAW:"); u = u[4:] if raw else u
     pad = None
-    if u.startswith("GREP:"): pad, u = u[5:].split("|", 1)
+    if u.startswith("GREP:"): pad, u = u[5:].rsplit("@@", 1)
     r = get(u, tentativas=1)
     print("=" * 8, u, r.status_code if r is not None else None, r.headers.get("content-type") if r is not None else "")
     if r is None: continue

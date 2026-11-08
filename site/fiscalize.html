@@ -265,7 +265,8 @@ async function estado(uf){
        <section class="card glass"><h2>Deputados federais <span class="muted small">(${deps.length})</span></h2><div class="people">${deps.map(d=>pcard("#/p/c/"+d[0],d[1],esc(d[2]),d[4],d[8]?'<span class="chip new">Reeleito em 2026</span>':"")).join("")}</div><p class="src">Em exercício hoje. Fonte: ${FONTE_CAM}</p></section>
        <section class="card glass"><h2>Deputados ${uf==="DF"?"distritais":"estaduais"} <span class="muted small">(${D.de22.length})</span></h2>
          <div class="people">${D.de22.map((p,i)=>pcard(`#/p/e/${uf}/22/${i}`,title(p[0]),partido(p),ftse(p,2022,uf),D.de26.some(q=>q[1]===p[1])?'<span class="chip new">Reeleito em 2026</span>':"")).join("")}</div>
-         <p class="src">Eleitos em 2022 (mandato até jan/2027). Suplentes que assumiram depois não aparecem aqui. Fonte: ${FONTE_TSE}</p></section>`;
+         <p class="src">Eleitos em 2022 (mandato até jan/2027). Fonte: ${FONTE_TSE}</p></section><div id="supl"></div><div id="banc"></div>`;
+      supl(uf);banc(uf);
     }else{
       est.innerHTML=`<div class="note">Eleitos em outubro de 2026. Ainda não tomaram posse.</div>
        <div class="row2"><section class="card glass"><h2>Governo do estado</h2>
@@ -302,20 +303,45 @@ async function cidade(uf,ue){
   $("#sm").onclick=()=>{store.set("cidade",{uf,ue,nome});cidade(uf,ue)};
   emendasCidade(uf,nome);
 }
+/* deputados estaduais que exerceram mandato sem estar entre os eleitos de 2022 (suplentes que assumiram), pela lista da Assembleia */
+async function supl(uf){
+  const E=await getJSON("data/est/"+uf+".json").catch(()=>null);const el=$("#supl");if(!E||!el)return;
+  const xs=Object.entries(E.dep).filter(([k])=>k[0]==="x").sort((a,b)=>a[1].nome.localeCompare(b[1].nome));
+  if(!xs.length)return;
+  const nm=n=>title(String(n).replace(/^(DEPUTAD[OA]|DEP\.)\s+/i,""));
+  el.innerHTML=`<section class="card glass"><h2>Suplentes que assumiram <span class="muted small">(${xs.length})</span></h2>
+    <div class="people">${xs.map(([k,e])=>pcard(`#/p/x/${uf}/${k}`,nm(e.nome),esc(e.partido||""),e.foto||"",'<span class="chip warn">Suplente</span>')).join("")}</div>
+    <p class="src">Deputados que apresentaram proposições nesta legislatura (desde 2023) e não estão entre os eleitos de 2022 no TSE: em geral, suplentes que assumiram no lugar de um titular. A lista inclui quem já deixou a cadeira. Fonte: ${esc(E.fonte)}.</p></section>`;
+}
+/* emendas de bancada: deputados federais e senadores do estado indicam juntos */
+let COLET=null;
+async function banc(uf){
+  COLET=COLET||await getJSON("data/emendas/coletivas.json").catch(()=>null);const el=$("#banc");if(!COLET||!el)return;
+  const b=COLET.lista.find(x=>x[0]==="B"&&x[1]===uf);if(!b)return;
+  const mx=b[4].length?b[4][0][2]:1;
+  el.innerHTML=`<section class="card glass"><h2>Emendas da bancada federal</h2>
+    <p style="margin:0"><b style="font-family:var(--f-display);font-size:1.6rem">${brl(b[3])}</b> <span class="muted">pagos desde 2023 em emendas que os deputados federais e senadores do estado indicam juntos</span></p>
+    <h3>Cidades que mais receberam</h3><div class="tl">${b[4].map(([u,m,v])=>`<div><span>${esc(title(m))}${u!==uf?` <small class="muted">${esc(u)}</small>`:""}</span><b>${brl(v)}</b>${bar(v,mx)}</div>`).join("")}</div>
+    <p class="src">A cidade é a do cadastro de quem recebeu: repasses ao governo do estado aparecem na capital. Os dados abertos não dizem qual parlamentar indicou cada emenda de bancada. Fonte: ${esc(COLET.fonte)}.</p></section>`;
+}
 /* emendas que deputados federais e senadores do Paraná mandaram para a cidade */
 const EMUF={};
 async function emendasCidade(uf,nome){
   let EMPR=EMUF[uf]||(EMUF[uf]=await getJSON("data/emendas/"+uf+".json").catch(()=>null));
   if(!EMPR&&uf==="PR")EMPR=EMUF[uf]=await getJSON("data/emendas_pr.json").catch(()=>null);
   if(!EMPR)return;
-  const L=EMPR.cid[String(nome).normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z ]/g,"").trim()]||[];
+  const ALL=EMPR.cid[String(nome).normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z ]/g,"").trim()]||[];
+  const L=ALL.filter(x=>x[0]==="C"||x[0]==="S"),K=ALL.filter(x=>x[0]!=="C"&&x[0]!=="S");
+  const KT={B:"emenda de bancada: deputados e senadores do estado decidem juntos",K:"emenda de comissão do Congresso",R:"emenda do relator-geral do Orçamento"};
   const tot=L.reduce((a,x)=>a+x[4],0);const mx=L.length?L[0][4]:1;
   const sec=document.createElement("section");sec.className="card glass";
   sec.innerHTML=`<h2>Emendas para ${esc(title(nome))}</h2>
    ${L.length?`<p style="margin:0"><b style="font-family:var(--f-display);font-size:1.6rem">${brl(tot)}</b> <span class="muted">pagos por ${L.length} deputado${L.length>1?"s":""} federa${L.length>1?"is":"l"} e senador${L.length>1?"es":""} desde 2023</span></p>
    <div class="tl">${L.map(x=>`<div><span><a href="#/p/${x[0]==="C"?"c":"s"}/${x[1]}">${esc(x[2])}</a> <small class="muted">${esc(x[3])} · ${x[0]==="C"?"deputado(a) federal":"senador(a)"}</small>${x[5].length?`<br><small class="muted">Para: ${x[5].map(f=>esc(title(f[0]))).join(", ")}</small>`:""}</span><b>${brl(x[4])}</b>${bar(x[4],mx)}</div>`).join("")}</div>`
    :`<p class="muted" style="margin:0">Nenhuma emenda paga por deputados federais e senadores em exercício para esta cidade desde 2023.</p>`}
-   <p class="src">Valores pagos a favorecidos com endereço na cidade (prefeitura, fundos, hospitais, entidades), de 2023 a 2026. Entram deputados federais e senadores em exercício, de qualquer estado. Fonte: ${esc(EMPR.fonte)}.</p>`;
+   ${K.length?`<h3>Emendas coletivas (de bancada e de comissão)</h3><p class="muted small" style="margin:0"><b>${brl(K.reduce((a,x)=>a+x[4],0))}</b> pagos desde 2023. Não dá para saber, pelos dados abertos, qual parlamentar indicou cada uma.</p>
+   <div class="tl">${K.map(x=>`<div><span>${esc(x[2])} <small class="muted">${KT[x[0]]||""}</small>${x[5].length?`<br><small class="muted">Para: ${x[5].map(f=>esc(title(f[0]))).join(", ")}</small>`:""}</span><b>${brl(x[4])}</b>${bar(x[4],K[0][4])}</div>`).join("")}</div>`:""}
+   <p class="src">Valores pagos a favorecidos com endereço na cidade (prefeitura, fundos, hospitais, entidades), de 2023 a 2026. Entram deputados federais e senadores em exercício, de qualquer estado, e as emendas de bancada, de comissão e do relator-geral. Fonte: ${esc(EMPR.fonte)}.</p>`;
   M.append(sec);
 }
 async function me(){

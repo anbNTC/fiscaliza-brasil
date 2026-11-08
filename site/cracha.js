@@ -233,6 +233,12 @@ async function cracha(parts) {
     chips.push('<span class="chip ok">Em exercício</span>'); if (s[9]) chips.push('<span class="chip new">Reeleito em 2026</span>');
     X = (await loadS(s[4]))[String(s[0])] || null; o.patList = X && X.pat;
     o.mand = s[7] === 2022 ? "Mandato 2023–2031" : "Mandato até 31/01/2027"; src = FONTE_SEN + " · " + FONTE_TSE; o.link = "https://www25.senado.leg.br/web/senadores/senador/-/perfil/" + s[0]; o.linkN = "Página no Senado";
+  } else if (t === "x") {
+    // deputado estadual que exerceu mandato sem estar entre os eleitos de 2022 no TSE (em geral, suplente que assumiu)
+    const uf = parts[1]; const E = await getJSON("data/est/" + uf + ".json").catch(() => null); const e = E && E.dep[parts[2]]; if (!e) return notFound();
+    o = { nome: title(String(e.nome).replace(/^(DEPUTAD[OA]|DEP\.)\s+/i, "")), cargo: cargo(uf === "DF" ? "dd" : "de", "") + " · " + uf, part: e.partido || "—", uf, foto: e.foto || "", est: e, estInfo: E, civil: e.civil ? title(e.civil) : "" };
+    o.mand = "Exerceu mandato na legislatura 2023–2027 sem constar entre os eleitos de 2022 (em geral, suplente que assumiu)"; voltar = "#/uf/" + uf; src = E.fonte;
+    chips.push('<span class="chip warn">Suplente que assumiu</span>');
   } else {
     const uf = parts[1]; const D = await loadUF(uf); voltar = "#/uf/" + uf; src = FONTE_TSE;
     if (t === "g") { P = (parts[3] === "26" ? BR.ufs[uf].gov26 : BR.ufs[uf].gov)[+parts[2]]; if (!P) return notFound(); const pp = pTSE(P);

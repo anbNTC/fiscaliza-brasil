@@ -18,4 +18,4 @@ jobs:
         env: { T: "${{ secrets.CLOUDFLARE_API_TOKEN }}", ALVOS: "${{ inputs.alvos }}", SCRIPT: "${{ inputs.script }}" }
         run: |
           export CHAVE_BR=$(printf '%s' "$T-fiscaliza-br" | sha256sum | cut -c1-48)
-          if [ -n "$SCRIPT" ]; then echo "========"; python "coleta/$SCRIPT" 2>&1 | tail -40; else python coleta/explora_br.py $ALVOS; fi
+          if [ -n "$SCRIPT" ]; then echo "========"; python "coleta/$SCRIPT" 2>&1 | tail -250; else python coleta/explora_br.py $ALVOS; fi

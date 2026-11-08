@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "coleta/emendas_estaduais.py", "tools/**", ".github/workflows/dados.yml"]
+    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "coleta/emendas_estaduais.py", "coleta/camaras_sapl.py", "tools/**", ".github/workflows/dados.yml"]
 
 permissions:
   contents: write
@@ -18,7 +18,7 @@ concurrency: { group: dados, cancel-in-progress: false }
 jobs:
   coleta:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -108,10 +108,16 @@ jobs:
         timeout-minutes: 25
         run: python coleta/emendas_estaduais.py 2>&1 | tail -6 | tee -a /tmp/assembleias.log
 
+      - name: Câmaras Municipais com SAPL · vereadores, projetos e votos
+        id: camaras
+        continue-on-error: true
+        timeout-minutes: 55
+        run: python coleta/camaras_sapl.py 2>&1 | tail -45 | tee -a /tmp/assembleias.log
+
       - name: Salva o progresso (Assembleias)
         if: always()
         run: |
-          git add site/data/est site/data/emendas_est 2>/dev/null || true
+          git add site/data/est site/data/emendas_est site/data/cam 2>/dev/null || true
           git diff --cached --quiet || (git commit -m "Assembleias estaduais $(date -u +%F)" && for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done)
 
       - name: Recalcula partidos, ranking, resumo da semana e médias da cota

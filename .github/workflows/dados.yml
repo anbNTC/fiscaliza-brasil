@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "tools/**", ".github/workflows/dados.yml"]
+    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "tools/**", ".github/workflows/dados.yml"]
 
 permissions:
   contents: write
@@ -77,6 +77,30 @@ jobs:
         timeout-minutes: 45
         env: { MAX_MIN: "35" }
         run: python coleta/assembleia_ba.py 2>&1 | tail -5 | tee -a /tmp/assembleias.log
+
+      # PE, ES e RS só respondem a acessos do Brasil: a coleta passa pelo Worker "fiscaliza-br" (São Paulo).
+      - name: Chave da saída BR
+        env: { T: "${{ secrets.CLOUDFLARE_API_TOKEN }}" }
+        run: |
+          K=$(printf '%s' "$T-fiscaliza-br" | sha256sum | cut -c1-48); echo "::add-mask::$K"; echo "CHAVE_BR=$K" >> "$GITHUB_ENV"
+
+      - name: Alepe (Pernambuco) · deputados e proposições
+        id: alepe
+        continue-on-error: true
+        timeout-minutes: 20
+        run: python coleta/assembleia_pe.py 2>&1 | tail -6 | tee -a /tmp/assembleias.log
+
+      - name: Ales (Espírito Santo) · deputados, proposições e presença
+        id: ales
+        continue-on-error: true
+        timeout-minutes: 30
+        run: python coleta/assembleia_es.py 2>&1 | tail -4 | tee -a /tmp/assembleias.log
+
+      - name: ALRS (Rio Grande do Sul) · proposições por deputado
+        id: alrs
+        continue-on-error: true
+        timeout-minutes: 45
+        run: python coleta/assembleia_rs.py 2>&1 | tail -4 | tee -a /tmp/assembleias.log
 
       - name: Salva o progresso (Assembleias)
         if: always()

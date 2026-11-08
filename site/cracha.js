@@ -331,12 +331,13 @@ const REGIAO = { AC: "NORTE", AM: "NORTE", AP: "NORTE", PA: "NORTE", RO: "NORTE"
 function planoURL(uf, ano, ue, sq) { if (!sq || !ELEI[ano]) return ""; return `https://divulgacandcontas.tse.jus.br/divulga/#/candidato/${REGIAO[uf] || "BR"}/${uf}/${ELEI[ano]}/${sq}/${ano}/${ue}`; }
 
 /* deputados estaduais: dados das Assembleias que publicam no SAPL */
-const TIPOS_EST = { PLO: "Projetos de lei", PL: "Projetos de lei", PLC: "Projetos de lei complementar", PEC: "Propostas de emenda à Constituição", PDL: "Projetos de decreto legislativo", PRE: "Projetos de resolução", IND: "Indicações", REQ: "Requerimentos", MOC: "Moções", PINF: "Pedidos de informação" };
+const TIPOS_EST = { PLO: "Projetos de lei", PL: "Projetos de lei", PLC: "Projetos de lei complementar", PEC: "Propostas de emenda à Constituição", PDL: "Projetos de decreto legislativo", PRE: "Projetos de resolução", PR: "Projetos de resolução", IND: "Indicações", REQ: "Requerimentos", MOC: "Moções", PINF: "Pedidos de informação" };
 function secEstProj(o) {
   const e = o.est, I = o.estInfo; const c = Object.entries(e.cont || {}).sort((a, b) => b[1] - a[1]);
   return `<h2>Projetos na Assembleia</h2>
    <div class="kv">${c.slice(0, 6).map(([k, n]) => `<div><div class="l">${esc(TIPOS_EST[k] || k)}</div><div class="v">${mil(n)}</div><div class="s">desde 2023</div></div>`).join("") || '<div><div class="v">0</div><div class="s">nenhuma proposição registrada desde 2023</div></div>'}</div>
    ${e.props.length ? `<h3>Projetos apresentados (mais recentes)</h3><div class="lst">${e.props.map((p) => `<div class="it"><div class="hd"><span class="cd">${esc(p[0])} · ${p[2] ? new Date(p[2] + "T12:00").toLocaleDateString("pt-BR") : ""}</span>${p[3] ? '<span class="vt n0">Em tramitação</span>' : ""}</div><div>${esc(p[1])}</div></div>`).join("")}</div>` : ""}
+   ${e.pres && Object.keys(e.pres).length ? `<h3>Presença nas sessões do plenário</h3><div class="kv">${Object.entries(e.pres).sort((a, b) => b[0] - a[0]).map(([a, f]) => { const tot = Object.values(f).reduce((x, y) => x + y, 0), pr = f["Presente"] || 0; return `<div><div class="l">${esc(a)}</div><div class="v">${tot ? Math.round((pr / tot) * 100) : 0}%</div><div class="s">${mil(pr)} de ${mil(tot)} registros</div></div>`; }).join("")}</div>` : ""}
    ${I.obs ? `<div class="note">${esc(I.obs)}</div>` : ""}${e.parcial ? '<div class="note">Lista parcial: este deputado tem muitas proposições e mostramos as mais recentes.</div>' : ""}
    <p class="src">Fonte: <a href="${esc(e.sapl)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>. Inclui autoria e coautoria. Atualizado em ${new Date(I.gerado + "T12:00").toLocaleDateString("pt-BR")}.</p>`;
 }

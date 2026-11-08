@@ -52,16 +52,27 @@ def main():
             best = sorted(((len(tt & q) / max(1, min(len(tt), len(q))), len(tt & q), j) for j, q in toks), reverse=True)
             if best and (len(best) < 2 or best[1][:2] < best[0][:2]) and best[0][0] >= 0.99 and best[0][1] >= min(2, len(tt)): k = best[0][2]
         if k is not None and k not in alvo.values(): alvo[o] = k
+    # eleitos que não aparecem na lista de proponentes (saíram do mandato): pesquisa pelo nome de urna
+    for k, x in enumerate(de):
+        if k not in alvo.values(): alvo[" ".join(w.capitalize() if len(w) > 2 else w.lower() for w in x[0].split())] = k
+    # partido e foto atuais, do cadastro de deputados em exercício
+    atuais = {}
+    try:
+        for x in get(f"{B}:5000/listarDestaqueDeputados").json().get("lista", []):
+            atuais[limpa(x.get("nomeDeputado") or "")] = (x.get("siglaPartido") or "", (x.get("fotoGrandeDeputado") or "").replace("_G.jpg", "_S.jpg"))
+    except Exception as e: print("sem cadastro de deputados:", e)
     print(len(ops), "proponentes;", len(alvo), "de", len(de), "eleitos encontrados", flush=True)
     with cf.ThreadPoolExecutor(3) as ex: R = dict(ex.map(coleta_dep, alvo))
     dep = {}
     for nome, k in alvo.items():
+        if not R[nome]: continue
+        pa, fo = atuais.get(limpa(nome)) or atuais.get(limpa(de[k][0])) or ("", "")
         its = sorted(R[nome], key=lambda x: data_iso(x.get("dthProtocolo")), reverse=True)
         cont = Counter((x.get("siglaTipoProposicao") or "?").strip() for x in its)
         props = [[f"{x['siglaTipoProposicao'].strip()} {x.get('nroProposicao')}/{x.get('anoProposicao')}", re.sub(r"\s+", " ", x.get("ementa") or "").strip()[:200],
                   data_iso(x.get("dthProtocolo")), 0 if re.search(r"arquiv|rejeit|retirad|sancion|promulg|vetad|prejudic", x.get("descricao") or "", re.I) else 1]
                  for x in its if (x.get("siglaTipoProposicao") or "").strip() in PROJ][:80]
-        dep[str(k)] = {"nome": nome, "civil": "", "partido": "", "foto": "", "cont": dict(cont), "props": props, "votos": {}, "vlist": [],
+        dep[str(k)] = {"nome": nome, "civil": "", "partido": pa or de[k][2], "foto": fo, "cont": dict(cont), "props": props, "votos": {}, "vlist": [],
                        "sapl": f"{B}/legislativo/pesquisa?nomeProponente={nome.replace(' ', '+')}"}
     out = {"fonte": "Assembleia Legislativa do Rio Grande do Sul (ALRS) · pesquisa de proposições", "url": f"{B}/legislativo", "gerado": datetime.date.today().isoformat(),
            "legislatura": "56ª legislatura (2023–2027)", "temVotos": False, "dep": dep}

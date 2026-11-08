@@ -162,7 +162,7 @@ async function tendencias(request, ctx) {
 }
 
 /* ---------- fotos: busca nos sites oficiais uma vez e guarda no cache do Cloudflare ---------- */
-const FOTO_HOSTS = /^(divulgacandcontas\.tse\.jus\.br|www\.camara\.leg\.br|camara\.leg\.br|www\.senado\.leg\.br|senado\.leg\.br|legis\.senado\.leg\.br|portal\.stf\.jus\.br|www\.stf\.jus\.br)$/;
+const FOTO_HOSTS = /^(divulgacandcontas\.tse\.jus\.br|www\.camara\.leg\.br|camara\.leg\.br|www\.senado\.leg\.br|senado\.leg\.br|legis\.senado\.leg\.br|portal\.stf\.jus\.br|www\.stf\.jus\.br|ww2\.al\.rs\.gov\.br|www3\.al\.es\.gov\.br)$/;
 async function foto(request, ctx) {
   const u = new URL(request.url).searchParams.get("u") || "";
   let alvo; try { alvo = new URL(u); } catch (e) { return new Response("url inválida", { status: 400 }); }

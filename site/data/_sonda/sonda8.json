@@ -1,0 +1,75 @@
+{
+ "local": "MSP",
+ "pais": "US",
+ "R": [
+  {
+   "u": "https://dadosabertos.almg.gov.br/ws/deputados/em_exercicio?formato=json",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12000
+  },
+  {
+   "u": "https://dadosabertos.almg.gov.br/ws/proposicoes/pesquisa/direcionada?tp=10&formato=json&ano=2026",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12000
+  },
+  {
+   "u": "https://dadosabertos.alepe.pe.gov.br/",
+   "st": 200,
+   "ms": 1936,
+   "tipo": "text/html; charset=UTF-8",
+   "ini": "<!DOCTYPE html>\r\n<html lang=\"pt\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Po"
+  },
+  {
+   "u": "https://www.alepe.pe.gov.br/",
+   "st": 200,
+   "ms": 5577,
+   "tipo": "text/html; charset=UTF-8",
+   "ini": "\r\n\r\n<!DOCTYPE html>\r\n<html xmlns:fb=\"https://ogp.me/ns/fb#\" lang=\"pt-br\">\r\n\r\n  <head>\r\n\r\n        <title>Alepe - Assembleia Legislativa do Estado de Pernambuco</"
+  },
+  {
+   "u": "https://www.al.rs.gov.br/",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12000
+  },
+  {
+   "u": "https://ww4.al.rs.gov.br/",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12000
+  },
+  {
+   "u": "https://www.al.es.gov.br/",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12000
+  },
+  {
+   "u": "https://www3.al.es.gov.br/",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12000
+  },
+  {
+   "u": "https://www.al.ma.leg.br/",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12000
+  },
+  {
+   "u": "https://sapl.al.ma.leg.br/api/parlamentares/parlamentar/?page_size=1",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12000
+  },
+  {
+   "u": "https://www.al.ap.gov.br/",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12000
+  },
+  {
+   "u": "https://sapl.al.ap.leg.br/api/parlamentares/parlamentar/?page_size=1",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12000
+  },
+  {
+   "u": "https://www.cl.df.gov.br/",
+   "erro": "TimeoutError: The operation was aborted due to timeout",
+   "ms": 12001
+  }
+ ]
+}

@@ -23,8 +23,9 @@ VOTO = {"Sim": "S", "Não": "N", "Nao": "N", "Abstenção": "A", "Abstencao": "A
 PROJ = {"PLO", "PL", "PLC", "PEC", "PDL", "PRE", "PR", "PLE", "PLOA"}
 
 class SAPL:
-    def __init__(s, uf):
-        s.b = f"https://sapl.al.{uf.lower()}.leg.br/api"; s.S = requests.Session(); s.S.headers.update(H); s.fim = time.time() + LIM_MIN * 60
+    def __init__(s, uf=None, base=None, lim_min=None):
+        s.raiz = base or f"https://sapl.al.{uf.lower()}.leg.br"; s.b = s.raiz + "/api"
+        s.S = requests.Session(); s.S.headers.update(H); s.fim = time.time() + (lim_min or LIM_MIN) * 60
     def get(s, path, **p):
         for k in range(4):
             try:
@@ -46,9 +47,21 @@ class SAPL:
         return out
 
 def coleta(uf):
-    t0 = time.time(); A = SAPL(uf); log = []
+    t0 = time.time(); A = SAPL(uf)
+    U = json.load(open(D / "uf" / f"{uf}.json")); de = U.get("de22", [])
+    r = coleta_sapl(A, de, DESDE, ANOS)
+    if "erro" in r: return uf, r
+    dep, leg, vp, mats, sem, parl = r["dep"], r["leg"], r["vp"], r["mats"], r["sem"], r["parl"]
+    out = {"fonte": f"Assembleia Legislativa ({uf}) · SAPL, dados abertos", "url": A.raiz, "gerado": datetime.date.today().isoformat(),
+           "legislatura": leg.get("__str__"), "temVotos": bool(vp), "dep": dep}
+    json.dump(out, open(OUT / f"{uf}.json", "w"), ensure_ascii=False, separators=(",", ":"))
+    return uf, {"deputados": len(parl), "ligados": len(parl) - len(sem), "materias": len(mats), "votos": len(vp), "seg": round(time.time() - t0), "sem_par": sem[:8]}
+
+def coleta_sapl(A, de, desde, anos):
+    """Parlamentares da legislatura atual de um SAPL, matérias de autoria desde `desde` e votos nominais; casa cada um com a lista `de` (TSE)."""
+    DESDE, ANOS = desde, anos
     legs = A.todos("parlamentares/legislatura/")
-    if not legs: return uf, {"erro": "API indisponível"}
+    if not legs: return {"erro": "API indisponível"}
     leg = max(legs, key=lambda x: x.get("numero") or 0)
     mand = A.todos("parlamentares/mandato/", legislatura=leg["id"]) or [m for m in A.todos("parlamentares/mandato/") if m.get("legislatura") == leg["id"]]
     pids = {m["parlamentar"] for m in mand}
@@ -95,8 +108,7 @@ def coleta(uf):
             j = A.get(f"materia/materialegislativa/{mid}/")
             if j: mats[mid] = j
         for v in vp: votos[v["parlamentar"]].append(v)
-    # junta com os deputados do site (TSE 2022)
-    U = json.load(open(D / "uf" / f"{uf}.json")); de = U.get("de22", [])
+    # junta com a lista do TSE
     idx = {}
     for i, x in enumerate(de):
         idx.setdefault(norm(x[1]), i); idx.setdefault(norm(x[0]), i); idx.setdefault(limpa(x[0]), i)
@@ -124,13 +136,10 @@ def coleta(uf):
             r = regs.get(v["votacao"]) or {}; c, e = desc(r.get("materia"))
             vlist.append([c, e, VOTO.get(v.get("voto"), v.get("voto")), (v.get("data_hora") or "")[:10], r.get("numero_votos_sim"), r.get("numero_votos_nao")])
         reg = {"nome": p.get("nome_parlamentar"), "civil": p.get("nome_completo"), "partido": partido(pid), "foto": p.get("fotografia") or "",
-               "cont": dict(cont), "props": props, "votos": dict(vc), "vlist": vlist, "sapl": f"https://sapl.al.{uf.lower()}.leg.br/parlamentar/{pid}"}
+               "cont": dict(cont), "props": props, "votos": dict(vc), "vlist": vlist, "sapl": f"{A.raiz}/parlamentar/{pid}"}
         if k is None: sem.append(p.get("nome_parlamentar")); dep["x" + str(pid)] = reg
         else: dep[str(k)] = reg
-    out = {"fonte": f"Assembleia Legislativa ({uf}) · SAPL, dados abertos", "url": f"https://sapl.al.{uf.lower()}.leg.br", "gerado": datetime.date.today().isoformat(),
-           "legislatura": leg.get("__str__"), "temVotos": bool(vp), "dep": dep}
-    json.dump(out, open(OUT / f"{uf}.json", "w"), ensure_ascii=False, separators=(",", ":"))
-    return uf, {"deputados": len(parl), "ligados": len(parl) - len(sem), "materias": len(mats), "votos": len(vp), "seg": round(time.time() - t0), "sem_par": sem[:8]}
+    return {"dep": dep, "leg": leg, "vp": vp, "mats": mats, "sem": sem, "parl": parl}
 
 if __name__ == "__main__":
     def seguro(u):

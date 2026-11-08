@@ -68,9 +68,11 @@ def main():
         for n in (p.get("parlamentarRazaoSocial"), p.get("parlamentarNome")):
             if k is None: k = idx.get(limpa(n))
         if k is None:
-            tt = set(limpa(p.get("parlamentarRazaoSocial")).split()) | set(limpa(p.get("parlamentarNome")).split())
+            SUF = {"FILHO", "JUNIOR", "NETO", "SOBRINHO"}
+            tt = (set(limpa(p.get("parlamentarRazaoSocial")).split()) | set(limpa(p.get("parlamentarNome")).split())) - SUF
             best = sorted(((len(tt & q) / max(1, min(len(tt), len(q))), len(tt & q), j) for j, q in toks), reverse=True)
-            if best and best[0][1] >= 2 and best[0][0] >= 0.6 and (len(best) < 2 or best[1][:2] < best[0][:2]): k = best[0][2]
+            unico = len(best) < 2 or best[1][:2] < best[0][:2]
+            if best and unico and (best[0][1] >= 2 and best[0][0] >= 0.6 or best[0][0] >= 0.99): k = best[0][2]
         reg = {"nome": p.get("parlamentarRazaoSocial") or p.get("parlamentarNome"), "civil": "", "partido": p.get("partidoSigla") or "", "foto": p.get("parlamentarFoto") or "",
                "cont": r["cont"], "props": r["props"], "votos": {}, "vlist": [], "pres": r["pres"], "sapl": "https://www3.al.es.gov.br/spl/parlamentares.aspx"}
         if k is None: sem.append(reg["nome"]); dep["x" + str(p["parlamentarID"])] = reg

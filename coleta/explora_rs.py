@@ -11,7 +11,6 @@ dep = next((o for o in ops if "Valdeci" in o or "Sofia" in o), ops[5])
 r = get("https://ww4.al.rs.gov.br/legislativo/pesquisa", {"nomeProponente": dep, "anoProposicao": "2025", "pagina": 1})
 t = r.text; print("dep:", dep, "bytes", len(t))
 i = t.find("resultado"); j = t.find("pesquisar-form")
-t = re.sub(r"<!--[\s\S]*?-->", "", t)
-k = t.find('class="pesquisar-form"'); k2 = t.find("</form>", k)
-corpo = t[k2:k2 + 9000]
-print(re.sub(r"\s+", " ", corpo)[:7000])
+t = re.sub(r"<!--[\s\S]*?-->", "", t); t = re.sub(r"\s+", " ", t)
+for m in list(re.finditer(r"(PL|PR|PDL|PEC|PLC|RC|RDI) ?\d+ ?/ ?20\d\d|resultado|registros|encontrad|pagina=", t))[:12]:
+    print("..", t[max(0, m.start() - 400): m.end() + 400])

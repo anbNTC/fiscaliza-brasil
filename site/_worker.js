@@ -252,6 +252,30 @@ async function paginaPropria(request, env, url) {
     .transform(new Response(res.body, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=600" } }));
 }
 
+/* ---------- endereço próprio para cada votação (/votacao/C/1127/PR): prévia no WhatsApp com o tema e o placar ---------- */
+async function paginaVotacao(request, env, url) {
+  const origin = url.origin; const [, , casa, i, uf0] = url.pathname.split("/"); const C = casa !== "S"; const uf = /^[A-Z]{2}$/.test(uf0 || "") ? uf0 : "";
+  const VL = await json(env, origin, C ? "/data/camara_votacoes.json" : "/data/senado_votacoes.json"); const x = VL && VL[+i];
+  if (!x) return env.ASSETS.fetch(new Request(origin + "/fiscalize"));
+  const tit0 = (C ? x[5] : x[2]) || "Votação", em = String((C ? (x[6] || x[7]) : (x[3] || x[4])) || "").replace(/\s+/g, " ").trim();
+  const apr = C ? x[2] === "1" : x[5] === "A", rej = C ? x[2] === "0" : x[5] === "R", sim = C ? x[3] : x[7], nao = C ? x[4] : x[8];
+  const dt = String(x[1]).split("-").reverse().join("/");
+  const titulo = `${tit0}: como votou cada ${C ? "deputado" : "senador"}${uf ? " de " + uf : ""} · Fiscaliza Brasil`;
+  const desc = `${C ? "Câmara" : "Senado"}, ${dt}. ${apr ? "Aprovado" : rej ? "Rejeitado" : "Votação"}${!C && x[6] === "S" ? " em votação secreta" : ` por ${sim} a ${nao}`}. ${em.slice(0, 180)}${em.length > 180 ? "…" : ""}`;
+  const rota = "#/votacao/" + (C ? "C" : "S") + "/" + (+i) + (uf ? "/" + uf : "");
+  const res = await env.ASSETS.fetch(new Request(origin + "/fiscalize")); const esc2 = (t) => String(t).replace(/"/g, "&quot;");
+  const set = (at, v) => ({ element: (el) => el.setAttribute(at, v) });
+  return new HTMLRewriter()
+    .on("head", { element: (el) => el.prepend(`<script>history.replaceState(null,"","/fiscalize${rota}")</script><link rel="canonical" href="${origin}${url.pathname}">`, { html: true }) })
+    .on("title", { element: (el) => el.setInnerContent(titulo) })
+    .on('meta[name="description"]', set("content", esc2(desc)))
+    .on('meta[property="og:title"]', set("content", esc2(titulo)))
+    .on('meta[property="og:description"]', set("content", esc2(desc)))
+    .on('meta[property="og:url"]', set("content", origin + url.pathname))
+    .on('meta[property="og:image"]', set("content", origin + "/og.png"))
+    .transform(new Response(res.body, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600" } }));
+}
+
 /* ---------- endereço próprio para estado e cidade (/uf/PR, /cidade/PR/75353), para aparecer no Google ---------- */
 async function paginaLugar(request, env, url) {
   const origin = url.origin; const parts = url.pathname.split("/").filter(Boolean).map(decodeURIComponent);
@@ -304,6 +328,7 @@ export default {
     if (url.pathname === "/api/sonda-br") return sondaBR(request);
     if (url.pathname.startsWith("/p/") || url.pathname.startsWith("/partido/")) return paginaPropria(request, env, url);
     if (/^\/(uf|cidade)\//.test(url.pathname)) return paginaLugar(request, env, url);
+    if (/^\/votacao\/[CS]\/\d+/.test(url.pathname)) return paginaVotacao(request, env, url);
     const res = await env.ASSETS.fetch(request);
     if (!(res.headers.get("content-type") || "").includes("text/html")) return res;
     // prévia de links (WhatsApp, Instagram etc.): o endereço da imagem e da página precisa ser completo

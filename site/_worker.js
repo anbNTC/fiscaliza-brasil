@@ -163,10 +163,12 @@ async function tendencias(request, ctx) {
 
 /* ---------- fotos: busca nos sites oficiais uma vez e guarda no cache do Cloudflare ---------- */
 const FOTO_HOSTS = /^(divulgacandcontas\.tse\.jus\.br|www\.camara\.leg\.br|camara\.leg\.br|www\.senado\.leg\.br|senado\.leg\.br|legis\.senado\.leg\.br|portal\.stf\.jus\.br|www\.stf\.jus\.br|ww2\.al\.rs\.gov\.br|www3\.al\.es\.gov\.br)$/;
+// SAPL das Câmaras e Assembleias (sapl.<cidade>.<uf>.leg.br e variações): muitos só respondem por http
+const SAPL_HOSTS = /^sapl\.([a-z0-9-]+\.){1,3}(leg|gov)\.br$/;
 async function foto(request, ctx) {
   const u = new URL(request.url).searchParams.get("u") || "";
   let alvo; try { alvo = new URL(u); } catch (e) { return new Response("url inválida", { status: 400 }); }
-  if (alvo.protocol !== "https:" || !FOTO_HOSTS.test(alvo.hostname)) return new Response("origem não permitida", { status: 403 });
+  if (!((alvo.protocol === "https:" && (FOTO_HOSTS.test(alvo.hostname) || SAPL_HOSTS.test(alvo.hostname))) || (alvo.protocol === "http:" && SAPL_HOSTS.test(alvo.hostname)))) return new Response("origem não permitida", { status: 403 });
   const cache = caches.default; const chave = new Request("https://img.fiscaliza/" + encodeURIComponent(alvo.toString()));
   const hit = await cache.match(chave); if (hit) return hit;
   // 1º tenta direto no site oficial; se ele bloquear o servidor, tenta pelo wsrv.nl (serviço público de imagens)
@@ -185,7 +187,7 @@ async function foto(request, ctx) {
   const rotas = [
     [U, "direto"],
     ["https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=" + encodeURIComponent(U), "google"],
-    ["https://i0.wp.com/" + U.replace(/^https:\/\//, "") + "?ssl=1", "wp"],
+    ["https://i0.wp.com/" + U.replace(/^https?:\/\//, "") + "?ssl=1", "wp"],
     ["https://wsrv.nl/?url=" + encodeURIComponent(U) + "&n=-1", "wsrv"],
   ];
   let ok = {};

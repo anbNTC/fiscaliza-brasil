@@ -3,7 +3,7 @@
 (function () {
   const K = "fb_tema";
   const CX = [".glass", ".card", ".lead", ".pc", ".tile", ".menu a", ".nw", ".hot", ".vimp", ".vrow", ".pcard", ".accard", ".sess", ".it", ".kv > div", ".cal button:not(:disabled)", ".nums div", ".go", ".note", ".cb-key", ".pnum div", ".wk div", ".acst div", ".pbox", ".xfb", ".tn li.it3", ".res a", ".ufb", ".step", ".lk-a", ".mapa", ".stage", ".cfgwarn", ".item", ".panel", ".tabs2", ".dt", ".dcard.w", ".search", ".rep form", ".live", ".cmpbar a"];
-  const INK = [".btn:not(.o)", ".menu i", ".cal button[aria-pressed=\"true\"]", ".yrs button[aria-pressed=\"true\"]", ".trend button[aria-pressed=\"true\"]", ".nav a[aria-current]", ".tabs2 button[aria-selected=\"true\"]", ".tabs button[aria-pressed=\"true\"]", ".xlogo", ".chip.sg", ".acn", ".tg2.pol", ".vimp .pl span.s", ".cb-list li i", ".acbtn[aria-pressed=\"true\"]", ".dcard.k", ".cmpbar", ".step b", ".step > b", ".rk", ".dterm .dcard.k", ".lk-av", ".tema-fixo-x"];
+  const INK = [".btn:not(.o)", ".menu i", ".cal button[aria-pressed=\"true\"]", ".yrs button[aria-pressed=\"true\"]", ".trend button[aria-pressed=\"true\"]", ".nav a[aria-current]", ".tabs2 button[aria-selected=\"true\"]", ".tabs button[aria-pressed=\"true\"]", ".xlogo", ".chip.sg", ".acn", ".tg2.pol", ".vimp .pl span.s", ".cb-list li i", ".acbtn[aria-pressed=\"true\"]", ".dcard.k", ".cmpbar", ".chip[aria-pressed=\"true\"]", ".step i", ".rk", ".dterm .dcard.k", ".lk-av", ".tema-fixo-x"];
   const css = `
   html.escuro{color-scheme:dark;--ink:#EDEDEA;--muted:#A4A7AD;--bg:#0D0F12;--surface:rgba(255,255,255,.05);--edge:rgba(255,255,255,.10);
     --fb-base:#0B0D10;--fb-verde:rgba(0,156,59,.16);--fb-amarelo:rgba(255,214,0,.10);--fb-azul:rgba(30,100,235,.16)}
@@ -14,7 +14,7 @@
   html.escuro :is(.top,.nav){background-color:rgba(16,18,22,.72)!important}
   html.escuro :is(${INK.join(",")}){background:#EDEDEA!important;color:#0B0B0C!important;border-color:#EDEDEA!important}
   html.escuro :is(${INK.join(",")}) *{color:#0B0B0C}
-  html.escuro :is(.btn.o,.home,.yrs button,.trend button,.chip,.tagv.n,.dnav button,.mnav button,.az button,.x,.seta,.minb + *,.cb-form input,.cb-form textarea,.aclogin input,.in,input,select,textarea){background-color:rgba(255,255,255,.07)!important;color:var(--ink)!important;border-color:rgba(255,255,255,.16)!important}
+  html.escuro :is(.btn.o,.tab,.home,.yrs button,.trend button,.chip,.tagv.n,.dnav button,.mnav button,.az button,.x,.seta,.minb + *,.cb-form input,.cb-form textarea,.aclogin input,.in,input,select,textarea){background-color:rgba(255,255,255,.07)!important;color:var(--ink)!important;border-color:rgba(255,255,255,.16)!important}
   html.escuro :is(input,select,textarea)::placeholder{color:#8C9097}
   html.escuro .go .seta{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.18)!important;color:var(--ink)}
   html.escuro .av{background:linear-gradient(135deg,#2A2D33,#1E2126)!important;color:#C9CBD0!important}
@@ -32,6 +32,9 @@
   html.escuro .cmpt th,html.escuro .cmpt td,html.escuro .dt,html.escuro .mrow,html.escuro .rkrow,html.escuro .prow{border-color:rgba(255,255,255,.08)!important}
   html.escuro .dcard{border-color:#EDEDEA!important}
   html.escuro .tema-fixo{background:rgba(16,18,22,.7)!important;border-color:rgba(255,255,255,.14)!important;color:var(--ink)!important}
+  html.escuro .step b{background:none!important;color:var(--ink)!important}
+  html.escuro .btn.o{background-color:rgba(255,255,255,.12)!important;border:1.5px solid rgba(255,255,255,.55)!important;color:#fff!important}
+  html.escuro .btn.o:hover{background-color:rgba(255,255,255,.2)!important}
   .temab{line-height:1}`;
   const st = document.createElement("style"); st.id = "fb-tema"; st.textContent = css;
   const pe = () => { if (!document.getElementById("fb-tema")) (document.body || document.head).append(st); };

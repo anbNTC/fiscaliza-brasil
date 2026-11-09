@@ -318,7 +318,7 @@ async function votadosCidade(uf,ue,nome,ano,cg){
   const cgs=["F","S","E"].filter(c=>mun[ano][c]);cg=cg&&mun[ano][cg]?cg:cgs[0];
   const [top,tot]=mun[ano][cg];const C=V.anos[ano][cg];const L=ln(cg,ano);const mx=top.length?top[0][1]:1;
   el.innerHTML=`<section class="card glass"><h2>Mais votados em ${esc(nome)}</h2>
-   <div class="chips">${anos.map(a=>`<button class="chip" data-a="${a}" style="${a===ano?"background:var(--ink);color:#fff":""}">${a}</button>`).join("")}<span style="width:10px"></span>${cgs.map(c=>`<button class="chip" data-c="${c}" style="${c===cg?"background:var(--ink);color:#fff":""}">${CN[c]}</button>`).join("")}</div>
+   <div class="chips">${anos.map(a=>`<button class="chip" data-a="${a}" aria-pressed="${a===ano}" style="${a===ano?"background:var(--ink);color:var(--bg,#fff)":""}">${a}</button>`).join("")}<span style="width:10px"></span>${cgs.map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c===cg}" style="${c===cg?"background:var(--ink);color:var(--bg,#fff)":""}">${CN[c]}</button>`).join("")}</div>
    <div class="tl" style="margin-top:10px">${top.map(([i,v],k)=>{const p=C[i];const h=L.get(norm(p[1]));const nm=`${k+1}. ${esc(title(p[0]))} <span class="muted small">${esc(p[2])}</span>${p[3]?' <span class="chip" style="padding:2px 7px;font-size:.62rem">Eleito</span>':""}`;
      return `<div><span>${h?`<a href="${h}">${nm}</a>`:nm}</span><b>${mil(v)} <span class="muted small">${tot?(100*v/tot).toLocaleString("pt-BR",{maximumFractionDigits:1}):"0"}%</span></b>${bar(v,mx)}</div>`}).join("")}</div>
    <p class="src">Votos nominais no 1º turno de ${ano} nesta cidade (todas as zonas); % sobre os votos nominais para o cargo aqui. "Eleito" = eleito no estado. Fonte: ${FONTE_TSE}</p></section>`;

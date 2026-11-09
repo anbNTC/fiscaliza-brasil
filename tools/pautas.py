@@ -28,7 +28,7 @@ for w in semanas:
             if not tot: continue
             marg = abs(sim - nao) / tot; pec = tit.startswith("PEC"); apr = (x[2] == "1") if C else (x[5] == "A")
             peso = 50 * (1 - marg) + (25 if pec else 0) + (10 if tot > 400 else 0)
-            oc = oq.split(". ")[0][:150]
+            oc = __import__("re").sub(r"^Votação nominal d(o|a|os|as) ", "", oq.split(". ")[0][:150]); oc = oc[:1].upper() + oc[1:]
             add("votacao", f"{tit} {'na Câmara' if C else 'no Senado'}, {sim} a {nao}: {oc.rstrip('.')}. Veja como votou cada {'deputado' if C else 'senador'} do {UF}",
                 f"{dt(x[1])}. O que foi votado: {oq[:200]} Tema: {str(em)[:160]}", f"#/votacao/{casa}/{i}/{UF}", "Câmara/Senado · Dados Abertos", peso)
 
@@ -68,20 +68,24 @@ for cid, L in (E.get("cid") or {}).items():
         if a[0] in ("C", "S") and a[4] >= 2e6: cand.append((a[4], cid, a))
 for v, cid, a in sorted(cand, reverse=True)[:6]:
     ue, nm, nv = peq[norm(cid)]
-    add("emenda", f"{a[2]} ({a[3]}) mandou {brl(v)} em emendas para {nm.title()}, cidade onde {nv:,} pessoas votaram para deputado federal".replace(",", "."),
+    add("emenda", f"{a[2]} ({a[3]}) mandou {brl(v)} em emendas para {nm.title()}, cidade onde {format(nv, ',').replace(',', '.')} pessoas votaram para deputado federal",
         "Valor pago desde 2023, pelo favorecido na cidade. Vale ver no Portal da Transparência para que serviu.", f"#/cidade/{UF}/{ue}", "Portal da Transparência (CGU) · TSE", 28 + v / 1e6)
 
 # 5) doadores: maior doador pessoa física da campanha de 2022 dos eleitos do estado (quando a coleta do TSE já rodou)
 CP = rd(f"camp/{UF}.json", {}).get("dep", {}) if rd(f"camp/{UF}.json") else {}
 VM = (rd(f"vm/{UF}.json", {}) or {}).get("anos", {}).get("2022", {})
+PJ = ("PARTIDO", "DIRETORIO", "COMISSAO", "FUNDO", "ELEICAO", "ELEICOES", "NACIONAL", "ESTADUAL", "MUNICIPAL", " - BR", "UNIAO BRASIL", "PROGRESSISTAS", "MOVIMENTO DEMOCRATICO", "REPUBLICANOS", "PODEMOS", "CIDADANIA", "SOLIDARIEDADE", "AVANTE", "PATRIOTA", "DEMOCRATAS", "REDE SUSTENTABILIDADE", "AGIR", "MOBILIZACAO NACIONAL", "LTDA", " S/A", " S.A", "EIRELI")
+pj = lambda n: any(w in norm(n) for w in PJ) or norm(n).strip() in ("NOVO", "PL", "PT", "PSD", "MDB", "PP", "PSB", "PDT", "PSDB", "PV", "PCDOB", "PSOL")
+sx = {norm(d[5]): d[10] for d in BR["dep"] if len(d) > 10}
 civ = {norm(d[5]): f"#/p/c/{d[0]}" for d in BR["dep"]}; civ.update({norm(x[2]): f"#/p/s/{x[0]}" for x in BR["sen"]})
 for cg, rot in (("F", "deputado federal"), ("S", "senador")):
     for c in VM.get(cg, []):
         e = CP.get(c[4]) if c[3] else None
         if not e or not e.get("d"): continue
-        pf = [x for x in e["d"] if not any(w in x[0].upper() for w in ("PARTIDO", "DIRETORIO", "DIRETÓRIO", "COMISSAO", "FUNDO", "ELEICAO", "ELEIÇÃO", norm(c[1])[:12]))]
+        tc = set(norm(c[1]).split())
+        pf = [x for x in e["d"] if not pj(x[0]) and not set(norm(x[0]).split()) <= tc]
         if pf and pf[0][1] >= 100000:
-            add("doador", f"{pf[0][0].title()} doou {brl(pf[0][1])} para a campanha de {c[0].title()} ({c[2]}), {rot} eleito pelo {UF} em 2022",
+            add("doador", f"{pf[0][0].title()} doou {brl(pf[0][1])} para a campanha de {c[0].title()} ({c[2]}), {rot if sx.get(norm(c[1])) != 'F' else rot.replace('deputado', 'deputada').replace('senador', 'senadora')} {'eleita' if sx.get(norm(c[1])) == 'F' else 'eleito'} pelo {UF} em 2022",
                 f"Campanha arrecadou {brl(e['c'][0])} no total. Doação de pessoa física é legal até 10% da renda do doador; o dado mostra quem financia, não irregularidade.", civ.get(norm(c[1]), ""), "TSE · prestação de contas", 30 + pf[0][1] / 1e5)
 
 vis = set(); itens = [i for i in sorted(itens, key=lambda x: -x["peso"]) if not (i["titulo"] in vis or vis.add(i["titulo"]))]

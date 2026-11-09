@@ -20,7 +20,7 @@ if __name__ == "__main__":
     if not para: print("etapas com problema, mas sem ALERTA_EMAIL:", ruins); sys.exit(0)
     run = os.environ.get("RUN_URL", "")
     nomes = {"orient": "Câmara · orientações", "emendas": "Emendas federais", "assembleias": "Assembleias (SAPL)", "alesp": "ALESP", "alesc": "ALESC", "alba": "ALBA", "alepe": "Alepe", "ales": "Ales",
-             "alrs": "ALRS", "emest": "Emendas estaduais", "camaras": "Câmaras Municipais", "vm": "TSE · votos por cidade", "camp": "TSE · doadores", "calc": "Cálculos", "pautas": "Pautas"}
+             "alrs": "ALRS", "emest": "Emendas estaduais", "camaras": "Câmaras Municipais", "vm": "TSE · votos por cidade", "camp": "TSE · doadores", "gab": "Câmara · gabinetes", "calc": "Cálculos", "pautas": "Pautas"}
     linhas = "".join(f"<li><b>{nomes.get(k, k)}</b>: {'falhou' if v == 'failure' else v}</li>" for k, v in ruins.items())
     html = f"<h2>Coleta do Fiscaliza Brasil com problema</h2><p>Na coleta de hoje, estas etapas não terminaram bem:</p><ul>{linhas}</ul><p>O resto do site foi atualizado normalmente; essas partes ficam com os dados do dia anterior.</p><p><a href='{run}'>Ver o registro da coleta no GitHub</a></p>"
     print("aviso enviado" if envia(para, f"⚠️ Coleta com problema: {', '.join(nomes.get(k, k) for k in ruins)}", html) else "falha ao enviar aviso")

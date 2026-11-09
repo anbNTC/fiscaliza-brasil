@@ -233,6 +233,7 @@ async function cracha(parts) {
     o = { nome: d[1], foto: d[4], cargo: cargo("dep", d[10]), part: d[2], uf: d[3], civil: title(d[5]) }; voltar = "#/uf/" + d[3]; rich = RICH.has(d[3]); casa = "C";
     chips.push('<span class="chip ok">Em exercício</span>'); if (!d[7]) chips.push('<span class="chip warn">Assumiu como suplente</span>'); if (d[8]) chips.push('<span class="chip new">Reeleito em 2026</span>');
     X = (await loadC(d[3]))[String(d[0])] || null; o.patList = X && X.pat;
+    { const G = await getJSON("data/gab/" + d[3] + ".json").catch(() => null); if (G && G.dep[String(d[0])]) { o.gab = G.dep[String(d[0])]; o.gabInfo = G; } }
     src = FONTE_CAM + " · " + FONTE_TSE; o.mand = "Mandato 2023–2027"; o.link = "https://www.camara.leg.br/deputados/" + d[0]; o.linkN = "Página na Câmara";
   } else if (t === "s") {
     const s = BR.sen.find((x) => String(x[0]) === parts[1]); if (!s) return notFound();
@@ -299,6 +300,7 @@ async function cracha(parts) {
   if (casa) tabs.push(["custo", "Custo do mandato"], ["votos", "Votações"], ["proj", "Projetos"], ["disc", "Discursos"]);
   if (o.est) { tabs.push(["eproj", "Projetos"]); if (o.estInfo.temVotos) tabs.push(["evot", "Votações"]); }
   if (o.emEst) tabs.push(["eem", "Emendas"]);
+  if (o.gab) tabs.push(["gab", "Gabinete"]);
   if (o.vc) tabs.push(["camp", o.vc.v ? "Votos e campanha" : "Campanha"]);
   tabs.push(["pat", "Patrimônio"]);
   tabs.push(["card", "Card p/ Stories"]);
@@ -316,6 +318,10 @@ async function cracha(parts) {
   const show = async (k) => {
     document.querySelectorAll(".tabs2 button").forEach((b) => b.setAttribute("aria-selected", b.dataset.k === k));
     if (k === "resumo") tb.innerHTML = `<h2>Resumo</h2>${kvHTML(secResumo(o, X, casa).concat(kv))}<p class="src">Fonte: ${src}. Atualizado em ${atual}.</p>`;
+    else if (k === "gab") { const cs = {}; o.gab.forEach((g) => (cs[g[1]] = (cs[g[1]] || 0) + 1));
+      tb.innerHTML = `<h2>Quem trabalha no gabinete <span class="muted small">(${o.gab.length})</span></h2><div class="chips">${Object.entries(cs).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c, n]) => `<span class="chip">${esc(c)} · ${n}</span>`).join("")}</div>
+        <div class="tl" style="margin-top:10px">${o.gab.map((g) => `<div><span><b>${esc(g[0])}</b><br><span class="small muted">${esc(g[1])}</span></span><b class="small muted">${g[2] ? "desde " + new Date(g[2] + "T12:00").toLocaleDateString("pt-BR") : ""}</b></div>`).join("")}</div>
+        <p class="src">Secretários parlamentares e outros servidores lotados no gabinete, como publicado pela Câmara. O arquivo não traz o salário de cada um, só o cargo (a tabela de remuneração por nível é pública no site da Câmara). Atualizado em ${new Date(o.gabInfo.gerado + "T12:00").toLocaleDateString("pt-BR")}. Fonte: <a href="${o.gabInfo.url}" target="_blank" rel="noopener">${esc(o.gabInfo.fonte)}</a>.</p>`; }
     else if (k === "custo") { await loadCotaMedia(); tb.innerHTML = `<h2>Quanto custa o mandato</h2>${secCusto(o, X, casa)}`; }
     else if (k === "votos") { tb.innerHTML = `<h2>Como votou</h2><p class="muted small" style="margin:0">Votações nominais do Plenário desde 2023. Toque no filtro para escolher ano${casa === "C" ? " e tema" : ""}.</p><div id="vv" style="display:grid;gap:10px"><p class="muted">Carregando…</p></div><p class="src">Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; await loadPart().catch(() => null); secVotos(X, casa === "C" ? await loadVC() : await loadVS(), casa, $("#vv"), o.part); }
     else if (k === "proj") { tb.innerHTML = `<h2>Projetos apresentados</h2><div id="pp" style="display:grid;gap:10px"></div><p class="src">Desde 2023. Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; secProjetos(X, casa, $("#pp")); }

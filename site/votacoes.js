@@ -86,7 +86,7 @@ async function votacaoPag(casa, i, uf) {
   const VL = C ? await loadVC() : await loadVS(); const x = VL[i]; if (!x) return notFound();
   const tit = C ? x[5] : x[2]; let ement = frase1(C ? (x[6] || x[7]) : (x[3] || x[4])); if (!/[.;)]$/.test(ement)) ement = ement.replace(/\s+\S*$/, "").replace(/[,;:]$/, "") + "…";
   const apr = C ? x[2] === "1" : x[5] === "A", rej = C ? x[2] === "0" : x[5] === "R", secreta = !C && x[6] === "S";
-  const sim = C ? x[3] : x[7], nao = C ? x[4] : x[8]; const oque = String((C ? x[7] : x[4]) || "").replace(/\s+/g, " ").trim();
+  const sim = C ? x[3] : x[7], nao = C ? x[4] : x[8]; const oque = String((C ? x[7] : x[4]) || "").replace(/\s+/g, " ").trim().replace(/^Votação nominal (d[oa]s?|de) /i, "").replace(/^./, (c) => c.toUpperCase());
   const V = C ? await loadC(uf) : await loadS(uf);
   const gente = C ? BR.dep.filter((d) => d[3] === uf).map((d) => ({ id: String(d[0]), nome: d[1], part: d[2], foto: d[4], h: "#/p/c/" + d[0] }))
     : BR.sen.filter((s) => s[4] === uf).map((s) => ({ id: String(s[0]), nome: s[1], part: s[3], foto: s[5], h: "#/p/s/" + s[0] }));

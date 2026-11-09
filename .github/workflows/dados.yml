@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "coleta/emendas_estaduais.py", "coleta/camaras_sapl.py", "coleta/votos_municipio.py", "tools/**", ".github/workflows/dados.yml"]
+    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "coleta/emendas_estaduais.py", "coleta/camaras_sapl.py", "coleta/votos_municipio.py", "coleta/campanha_doadores.py", "tools/**", ".github/workflows/dados.yml"]
 
 permissions:
   contents: write
@@ -120,10 +120,16 @@ jobs:
         timeout-minutes: 40
         run: python coleta/votos_municipio.py 2>&1 | tail -5 | tee -a /tmp/assembleias.log
 
+      - name: TSE · doadores e fornecedores das campanhas dos eleitos (só baixa o ano que ainda não está gravado)
+        id: camp
+        continue-on-error: true
+        timeout-minutes: 60
+        run: python coleta/campanha_doadores.py 2>&1 | tail -4 | tee -a /tmp/assembleias.log
+
       - name: Salva o progresso (Assembleias)
         if: always()
         run: |
-          git add site/data/est site/data/emendas_est site/data/cam site/data/vm 2>/dev/null || true
+          git add site/data/est site/data/emendas_est site/data/cam site/data/vm site/data/camp 2>/dev/null || true
           git diff --cached --quiet || (git commit -m "Assembleias estaduais $(date -u +%F)" && for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done)
 
       - name: Recalcula partidos, ranking, resumo da semana e médias da cota
@@ -134,6 +140,7 @@ jobs:
           python tools/semana.py 2>&1 | tail -2 | tee -a /tmp/calc.log
           python tools/cota_media.py 2>&1 | tail -2 | tee -a /tmp/calc.log
           python tools/sitemap.py 2>&1 | tail -1 | tee -a /tmp/calc.log
+          python tools/pautas.py 2>&1 | tail -1 | tee -a /tmp/calc.log
 
       - name: Relatório da coleta
         if: always()
@@ -155,6 +162,16 @@ jobs:
           git diff --cached --quiet && echo "nada mudou" && exit 0
           git commit -m "Dados atualizados $(date -u +%Y-%m-%d)"
           for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done
+
+      - name: Avisa por e-mail se alguma etapa falhou
+        if: always()
+        continue-on-error: true
+        env:
+          RESEND_API_KEY: "${{ secrets.RESEND_API_KEY }}"
+          ALERTA_EMAIL: "${{ secrets.ALERTA_EMAIL }}"
+          RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ETAPAS: '{"orient": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}", "alesp": "${{ steps.alesp.outcome }}", "alesc": "${{ steps.alesc.outcome }}", "alba": "${{ steps.alba.outcome }}", "alepe": "${{ steps.alepe.outcome }}", "ales": "${{ steps.ales.outcome }}", "alrs": "${{ steps.alrs.outcome }}", "emest": "${{ steps.emest.outcome }}", "camaras": "${{ steps.camaras.outcome }}", "vm": "${{ steps.vm.outcome }}", "camp": "${{ steps.camp.outcome }}", "calc": "${{ steps.calc.outcome }}"}'
+        run: python tools/email_resend.py
 
   publica:
     needs: coleta

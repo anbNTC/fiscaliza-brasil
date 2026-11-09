@@ -261,7 +261,8 @@ async function paginaVotacao(request, env, url) {
   const apr = C ? x[2] === "1" : x[5] === "A", rej = C ? x[2] === "0" : x[5] === "R", sim = C ? x[3] : x[7], nao = C ? x[4] : x[8];
   const dt = String(x[1]).split("-").reverse().join("/");
   const titulo = `${tit0}: como votou cada ${C ? "deputado" : "senador"}${uf ? " de " + uf : ""} · Fiscaliza Brasil`;
-  const desc = `${C ? "Câmara" : "Senado"}, ${dt}. ${apr ? "Aprovado" : rej ? "Rejeitado" : "Votação"}${!C && x[6] === "S" ? " em votação secreta" : ` por ${sim} a ${nao}`}. ${em.slice(0, 180)}${em.length > 180 ? "…" : ""}`;
+  const oq = String((C ? x[7] : x[4]) || "").replace(/\s+/g, " ").trim();
+  const desc = `${C ? "Câmara" : "Senado"}, ${dt}. ${oq ? oq.slice(0, 140) + (oq.length > 140 ? "…" : "") + " " : ""}${apr ? "Aprovado" : rej ? "Rejeitado" : "Resultado"}${!C && x[6] === "S" ? " em votação secreta" : ` por ${sim} a ${nao}`}. Tema: ${em.slice(0, 140)}${em.length > 140 ? "…" : ""}`;
   const rota = "#/votacao/" + (C ? "C" : "S") + "/" + (+i) + (uf ? "/" + uf : "");
   const res = await env.ASSETS.fetch(new Request(origin + "/fiscalize")); const esc2 = (t) => String(t).replace(/"/g, "&quot;");
   const set = (at, v) => ({ element: (el) => el.setAttribute(at, v) });

@@ -81,6 +81,7 @@
 
   function loginHTML() {
     if (USER) return `<div class="aclogin"><p style="margin:0">Salvando no e-mail <b>${esc(USER.email || "")}</b>. A sua lista aparece em qualquer aparelho em que você entrar com ele.</p>
+      <label class="row" style="align-items:center;gap:10px;cursor:pointer"><input type="checkbox" id="acres" style="width:22px;height:22px;flex:none;min-width:0"> <span><b>Receber o resumo semanal por e-mail</b><br><span class="small muted">Toda segunda: como votaram e o que apresentaram os políticos que você acompanha. Dá para parar quando quiser, pelo link do próprio e-mail.</span></span></label>
       <div class="row"><button class="btn o" id="acout" type="button">Sair</button><button class="btn o" id="acdel" type="button">Apagar minha conta</button></div></div>`;
     return `<div class="aclogin"><p style="margin:0">Sua lista já está salva <b>neste aparelho</b>. Para ver em qualquer celular ou computador, entre com o seu e-mail. Não precisa de senha: você recebe um código.</p>
       <div class="row"><input id="acem" type="email" autocomplete="email" placeholder="seu@email.com"><button class="btn" id="acsend" type="button">Receber código</button></div>
@@ -105,6 +106,11 @@
       if (r.error) return msg("Código inválido ou vencido. Peça um novo.");
       USER = r.data.user; await sincronizar(); acompanho();
     };
+    if ($("#acres") && sb && USER) {
+      sb.from("resumo_email").select("ativo").maybeSingle().then((r) => { if (r.data) $("#acres").checked = r.data.ativo; });
+      $("#acres").onchange = async (e) => { const r = await sb.from("resumo_email").upsert({ user_id: USER.id, ativo: e.target.checked, atualizado: new Date().toISOString() });
+        if (r.error) { e.target.checked = !e.target.checked; alert("Não foi possível salvar agora. Tente de novo em alguns minutos."); } };
+    }
     if ($("#acout")) $("#acout").onclick = async () => { await sb.auth.signOut(); USER = null; acompanho(); };
     if ($("#acdel")) $("#acdel").onclick = async () => {
       if (!confirm("Apagar sua conta e a lista salva no e-mail? A lista continua neste aparelho.")) return;
@@ -154,7 +160,15 @@
     document.querySelectorAll("[data-rm]").forEach((b) => (b.onclick = () => { const [tipo, ...r] = b.dataset.rm.split(":"); alternar({ tipo, ref: r.join(":") }); acompanho(); }));
   }
 
-  window.FBAcomp = { botao, tem, alternar, ler, iniciar, acompanho };
+  /* link "parar de receber" do e-mail semanal: #/sair/<código> */
+  async function sair(t) {
+    setNav(""); M.innerHTML = `<section class="card glass"><span class="kick">Resumo semanal</span><h1>Cancelando…</h1></section>`;
+    const sb = sbU(); let ok = false; if (sb && /^[0-9a-f-]{36}$/i.test(t || "")) { const r = await sb.rpc("sair_resumo", { t }); ok = !r.error && r.data; }
+    M.innerHTML = `<section class="card glass"><span class="kick">Resumo semanal</span><h1>${ok ? "Pronto: você não vai mais receber o resumo" : "Não encontrei esta inscrição"}</h1><span class="fx"></span>
+      <p class="muted" style="margin:0">${ok ? "Sua lista de políticos acompanhados continua salva. Para voltar a receber, marque a opção na página Acompanhando." : "Talvez você já tenha saído antes. Se ainda receber o e-mail, desmarque a opção na página Acompanhando."}</p>
+      <div class="btns"><a class="btn" href="#/acompanho">Acompanhando</a><a class="btn o" href="#/">Início</a></div></section>`;
+  }
+  window.FBAcomp = { botao, tem, alternar, ler, iniciar, acompanho, sair };
   window.acompanho = acompanho;
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar); else iniciar();
 })();

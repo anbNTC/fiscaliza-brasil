@@ -12,6 +12,11 @@ const loadS = async (uf) => SS[uf] || (SS[uf] = await getJSON("data/s/" + uf + "
 const loadPat = async (uf) => PAT[uf] || (PAT[uf] = await getJSON("data/pat/" + uf + ".json").catch(() => ({})));
 const loadVC = async () => VCAM || (VCAM = await getJSON("data/camara_votacoes.json"));
 const loadVS = async () => VSEN || (VSEN = await getJSON("data/senado_votacoes.json"));
+const CAMP = {}; const loadCamp = async (f) => CAMP[f] || (CAMP[f] = await getJSON("data/camp/" + f + ".json").then((x) => x.dep || {}).catch(() => ({})));
+const VMA = {}; const loadVMa = async (uf) => VMA[uf] || (VMA[uf] = await getJSON("data/vm/" + uf + ".json").then((x) => x.anos || {}).catch(() => ({})));
+// deputado federal ou senador eleito em 2022: acha o número do TSE pelo nome civil na lista de candidatos do estado
+async function campFederal(uf, civil, cg) { const A = (await loadVMa(uf))["2022"]; if (!A || !A[cg]) return null; const n = norm(civil);
+  const x = A[cg].find((c) => c[3] && norm(c[1]) === n); if (!x) return null; return (await loadCamp(uf))[x[4]] || null; }
 const VV = {}; const loadV = async (uf) => VV[uf] || (VV[uf] = await getJSON("data/v/" + uf + ".json").catch(() => ({})));
 const keyTSE = (civil, nasc) => String(civil || "").normalize("NFKD").replace(/[̀-ͯ]/g, "").toUpperCase().replace(/[^A-Z ]/g, "").trim() + "|" + (nasc || "");
 const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0) + "%";
@@ -189,7 +194,7 @@ function secPat(list) {
   return h + `<p class="src">Fonte: ${FONTE_TSE}. Valores declarados pelo próprio candidato, sem correção.</p>`;
 }
 
-function secCamp(vc, t) {
+function secCamp(vc, t, cp) {
   let h = "";
   if (vc.v) h += kvHTML([["Votos recebidos", mil(vc.v[0]), (vc.v[1] != null ? fx1c(vc.v[1]) + (vc.v[2] === 0 ? "% dos votos nominais no estado" : "% dos votos válidos") : "") + (vc.v[2] === 2 ? " no 2º turno" : "")]].concat(vc.c && vc.v[0] ? [["Custo por voto", brl(vc.c[2] / vc.v[0]), "despesas contratadas ÷ votos"]] : []));
   if (vc.c) {
@@ -202,6 +207,8 @@ function secCamp(vc, t) {
         <span class="small muted"><b style="color:#1F4FBF">●</b> partido/fundo ${pc(pub)} · <b style="color:#B38B00">●</b> próprio ${pc(pro)} · <b style="color:#14703C">●</b> doações e outros ${pc(out)}</span></div>`; }
     if (ro.length) h += `<h3>De onde veio o dinheiro</h3><div class="tl">${ro.map(([k, v]) => `<div><span>${esc(k)}</span><b>${brl(v)}</b>${bar(v, ro[0][1])}</div>`).join("")}</div><p class="small muted" style="margin:0">"Recursos de partido político" inclui o fundo eleitoral e o fundo partidário repassados pelo partido, que são dinheiro público.</p>`;
     if (dd.length) h += `<h3>Onde gastou</h3><div class="tl">${dd.map(([k, v]) => `<div><span>${esc(k)}</span><b>${brl(v)}</b>${bar(v, dd[0][1])}</div>`).join("")}</div>`;
+    if (cp && cp.d && cp.d.length) h += `<h3>Quem financiou <span class="muted small">(maiores de ${mil(cp.nd)} ${cp.nd === 1 ? "doador" : "doadores"})</span></h3><div class="tl">${cp.d.map(([k, v]) => `<div><span>${esc(title(k))}</span><b>${brl(v)}</b>${bar(v, cp.d[0][1])}</div>`).join("")}</div><p class="small muted" style="margin:0">Inclui pessoas físicas, o partido (que repassa o fundo eleitoral) e o próprio candidato, como declarado ao TSE. Desde 2015, empresas não podem doar a campanhas.</p>`;
+    if (cp && cp.f && cp.f.length) h += `<h3>Quem recebeu da campanha <span class="muted small">(maiores de ${mil(cp.nf)} ${cp.nf === 1 ? "fornecedor" : "fornecedores"})</span></h3><div class="tl">${cp.f.map(([k, v]) => `<div><span>${esc(title(k))}</span><b>${brl(v)}</b>${bar(v, cp.f[0][1])}</div>`).join("")}</div>`;
   } else if (t === "m") h += '<p class="muted">Sem prestação de contas encontrada.</p>';
   return h + `<p class="src">Fonte: ${FONTE_TSE} (votação por município e zona; prestação de contas de candidatos). Valores declarados pela campanha.</p>`;
 }
@@ -265,7 +272,12 @@ async function cracha(parts) {
     const ano = t === "m" ? 2024 : (parts[2] === "26" || parts[3] === "26") ? 2026 : 2022;
     o.foto = (o.est && o.est.foto) || ftse(P, ano, t === "m" ? parts[2] : uf); o.ano = ano;
     o.vc = (await loadV(uf))[P[10]] || null;
+    o.cp = (await loadCamp((t === "m" ? "m" : "") + uf))[P[10]] || null;
+    if (o.cp) { if (!o.vc) o.vc = { c: o.cp.c }; else if (!o.vc.c) o.vc.c = o.cp.c; }
     if ((t === "g" && parts[2] === "0") || (t === "m" && parts[3] === "p")) o.plano = planoURL(uf, ano, t === "m" ? parts[2] : uf, P[10]);
+  }
+  if ((t === "c" || (t === "s" && BR.sen.find((x) => String(x[0]) === parts[1])[7] === 2022))) {
+    o.cp = await campFederal(o.uf, o.civil, t === "c" ? "F" : "S"); if (o.cp) { o.vc = { c: o.cp.c }; o.ano = 2022; }
   }
   if ((t === "e" && parts[2] === "22") || t === "x") {
     const EE = await getJSON("data/emendas_est/" + o.uf + ".json").catch(() => null);
@@ -287,7 +299,7 @@ async function cracha(parts) {
   if (casa) tabs.push(["custo", "Custo do mandato"], ["votos", "Votações"], ["proj", "Projetos"], ["disc", "Discursos"]);
   if (o.est) { tabs.push(["eproj", "Projetos"]); if (o.estInfo.temVotos) tabs.push(["evot", "Votações"]); }
   if (o.emEst) tabs.push(["eem", "Emendas"]);
-  if (o.vc) tabs.push(["camp", "Votos e campanha"]);
+  if (o.vc) tabs.push(["camp", o.vc.v ? "Votos e campanha" : "Campanha"]);
   tabs.push(["pat", "Patrimônio"]);
   tabs.push(["card", "Card p/ Stories"]);
   const share = encodeURIComponent(o.nome + " (" + o.cargo + ") no Fiscaliza Brasil: " + location.origin + "/p/" + parts.map(encodeURIComponent).join("/"));
@@ -308,7 +320,7 @@ async function cracha(parts) {
     else if (k === "votos") { tb.innerHTML = `<h2>Como votou</h2><p class="muted small" style="margin:0">Votações nominais do Plenário desde 2023. Toque no filtro para escolher ano${casa === "C" ? " e tema" : ""}.</p><div id="vv" style="display:grid;gap:10px"><p class="muted">Carregando…</p></div><p class="src">Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; await loadPart().catch(() => null); secVotos(X, casa === "C" ? await loadVC() : await loadVS(), casa, $("#vv"), o.part); }
     else if (k === "proj") { tb.innerHTML = `<h2>Projetos apresentados</h2><div id="pp" style="display:grid;gap:10px"></div><p class="src">Desde 2023. Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; secProjetos(X, casa, $("#pp")); }
     else if (k === "disc") tb.innerHTML = `<h2>Discursos</h2>${secDisc(X)}<p class="src">Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}. Resumos e assuntos são os oficiais da Casa.</p>`;
-    else if (k === "camp") tb.innerHTML = `<h2>Votos e campanha · ${o.ano}</h2>${secCamp(o.vc, t)}`;
+    else if (k === "camp") tb.innerHTML = `<h2>${o.vc.v ? "Votos e campanha" : "Campanha"} · ${o.ano}</h2>${secCamp(o.vc, t, o.cp)}`;
     else if (k === "eproj") tb.innerHTML = secEstProj(o);
     else if (k === "evot") tb.innerHTML = secEstVot(o);
     else if (k === "eem") tb.innerHTML = secEmEst(o);

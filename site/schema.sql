@@ -175,3 +175,34 @@ language sql security definer set search_path = public, auth as $$
 $$;
 revoke all on function public.apagar_minha_conta() from public, anon;
 grant execute on function public.apagar_minha_conta() to authenticated;
+
+-- 12) RESUMO SEMANAL POR E-MAIL: só para quem marca a opção na página Acompanhando. Sai pelo link do próprio e-mail, sem login.
+create table if not exists public.resumo_email (
+  user_id uuid primary key default auth.uid() references auth.users(id) on delete cascade,
+  ativo boolean not null default true,
+  token uuid not null default gen_random_uuid(),
+  atualizado timestamptz not null default now()
+);
+alter table public.resumo_email enable row level security;
+drop policy if exists "cada um vê o seu resumo" on public.resumo_email;
+create policy "cada um vê o seu resumo" on public.resumo_email for select using (user_id = auth.uid());
+drop policy if exists "cada um ativa o seu resumo" on public.resumo_email;
+create policy "cada um ativa o seu resumo" on public.resumo_email for insert with check (user_id = auth.uid());
+drop policy if exists "cada um altera o seu resumo" on public.resumo_email;
+create policy "cada um altera o seu resumo" on public.resumo_email for update using (user_id = auth.uid()) with check (user_id = auth.uid());
+-- link "parar de receber" do e-mail: funciona sem login, só com o código secreto de cada pessoa
+create or replace function public.sair_resumo(t uuid) returns boolean
+language sql security definer set search_path = public as $$
+  with u as (update public.resumo_email set ativo = false, atualizado = now() where token = t returning 1) select exists (select 1 from u)
+$$;
+revoke all on function public.sair_resumo(uuid) from public;
+grant execute on function public.sair_resumo(uuid) to anon, authenticated;
+-- lista de envio: só o robô do resumo (chave de serviço) consegue ler
+create or replace function public.resumo_destinatarios() returns table (email text, token uuid, lista jsonb)
+language sql security definer set search_path = public, auth as $$
+  select u.email::text, r.token,
+         coalesce((select jsonb_agg(jsonb_build_object('tipo', a.tipo, 'ref', a.ref, 'dados', a.dados)) from public.acompanha a where a.user_id = r.user_id), '[]'::jsonb)
+  from public.resumo_email r join auth.users u on u.id = r.user_id where r.ativo
+$$;
+revoke all on function public.resumo_destinatarios() from public, anon, authenticated;
+grant execute on function public.resumo_destinatarios() to service_role;

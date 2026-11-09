@@ -31,6 +31,7 @@ function linhaVot(casa, i, VL) {
   const pl = Object.entries(pos).filter(([s]) => (PART.stat[s] || {})[C ? "dep" : "sen"] >= (C ? 3 : 2)).map(([s, p]) => [s, p[i]]).filter(([, v]) => v === "S" || v === "N").sort((a, b) => (PART.stat[b[0]][C ? "dep" : "sen"]) - (PART.stat[a[0]][C ? "dep" : "sen"]));
   return `<div class="vimp"><div class="hd"><span class="cd">${C ? "CÂMARA" : "SENADO"} · ${esc(tit || "Votação")} · ${dataBR(x[1])}</span>${apr ? '<span class="res2 a">Aprovado</span>' : rej ? '<span class="res2 r">Rejeitado</span>' : ""}</div>
     <div class="ti">${esc(frase1(ement))}</div>
+    ${(C ? x[7] : x[4]) ? `<div class="small"><b>Votação:</b> ${esc(frase1(C ? x[7] : x[4]))}</div>` : ""}
     <div class="small muted">${secreta ? "Votação secreta" : `Sim ${mil(sim)} × Não ${mil(nao)}`}${C && x[8] ? " · Governo orientou " + esc(x[8]) : ""}</div>
     ${pl.length ? `<div class="pl">${pl.map(([s, v]) => `<span class="${v === "S" ? "s" : ""}" title="A maioria do ${esc(s)} votou ${v === "S" ? "Sim" : "Não"}">${esc(s)} ${v === "S" ? "SIM" : "NÃO"}</span>`).join("")}</div>` : ""}<a class="small" style="font-weight:700" href="#/votacao/${casa}/${i}">${secreta ? "Ver detalhes →" : `Como votou cada ${C ? "deputado" : "senador"} do seu estado · card para Stories →`}</a></div>`;
 }
@@ -43,7 +44,7 @@ async function votacoesImportam() {
   // relevância: propostas de mudança de lei (não requerimentos), muitos votantes e placar disputado
   const cam = VC.map((x, i) => [i, x]).filter(([, x]) => x[1] >= L0 && /^(PEC|PLP|PL|MPV|PDL|PLV)\b/.test(x[5] || "") && !/requerimento/i.test(x[7] || "") && x[3] + x[4] >= 300)
     .map(([i, x]) => [i, (x[3] + x[4]) * (1 - Math.abs(x[3] - x[4]) / (x[3] + x[4]) * 0.6) * (/^PEC/.test(x[5]) ? 1.3 : 1)]).sort((a, b) => b[1] - a[1]).slice(0, 15).map((a) => a[0]).sort((a, b) => VC[b][1].localeCompare(VC[a][1]));
-  const sen = VS.map((x, i) => [i, x]).filter(([, x]) => x[1] >= L0 && x[6] !== "S" && /^(PEC|PLP|PL|MPV|PDL|PLV)\b/.test(x[2] || "") && x[7] + x[8] >= 50)
+  const sen = VS.map((x, i) => [i, x]).filter(([, x]) => x[1] >= L0 && x[6] !== "S" && /^(PEC|PLP|PL|MPV|PDL|PLV)\b/.test(x[2] || "") && !/requerimento/i.test(x[4] || "") && x[7] + x[8] >= 50)
     .map(([i, x]) => [i, (x[7] + x[8]) * (1 - Math.abs(x[7] - x[8]) / (x[7] + x[8]) * 0.6) * (/^PEC/.test(x[2]) ? 1.3 : 1)]).sort((a, b) => b[1] - a[1]).slice(0, 10).map((a) => a[0]).sort((a, b) => VS[b][1].localeCompare(VS[a][1]));
   M.innerHTML = `<section class="card glass"><span class="kick">Congresso</span><h1>Votações que importam</h1><span class="fx"></span>
      <p class="muted" style="margin:0">As votações mais disputadas e com mais parlamentares dos últimos 12 meses: mudanças na Constituição, leis complementares, projetos de lei e medidas provisórias. Os selos mostram como votou a maioria de cada partido. <b>Preto = Sim</b>, contorno = Não.</p>
@@ -85,7 +86,7 @@ async function votacaoPag(casa, i, uf) {
   const VL = C ? await loadVC() : await loadVS(); const x = VL[i]; if (!x) return notFound();
   const tit = C ? x[5] : x[2]; let ement = frase1(C ? (x[6] || x[7]) : (x[3] || x[4])); if (!/[.;)]$/.test(ement)) ement = ement.replace(/\s+\S*$/, "").replace(/[,;:]$/, "") + "…";
   const apr = C ? x[2] === "1" : x[5] === "A", rej = C ? x[2] === "0" : x[5] === "R", secreta = !C && x[6] === "S";
-  const sim = C ? x[3] : x[7], nao = C ? x[4] : x[8];
+  const sim = C ? x[3] : x[7], nao = C ? x[4] : x[8]; const oque = String((C ? x[7] : x[4]) || "").replace(/\s+/g, " ").trim();
   const V = C ? await loadC(uf) : await loadS(uf);
   const gente = C ? BR.dep.filter((d) => d[3] === uf).map((d) => ({ id: String(d[0]), nome: d[1], part: d[2], foto: d[4], h: "#/p/c/" + d[0] }))
     : BR.sen.filter((s) => s[4] === uf).map((s) => ({ id: String(s[0]), nome: s[1], part: s[3], foto: s[5], h: "#/p/s/" + s[0] }));
@@ -97,6 +98,7 @@ async function votacaoPag(casa, i, uf) {
   const casaN = C ? "Câmara dos Deputados" : "Senado Federal", quemN = C ? "deputados federais" : "senadores";
   const lista = (arr, rot) => arr.length ? `<h3>${rot} <span class="muted small">(${arr.length})</span></h3><div>${arr.map((p) => `<a class="prow" href="${p.h}"><span><b>${esc(p.nome)}</b> <small>${esc(p.part)}</small></span><i>${esc(VNOME[p.voto] || "Não registrou voto")}</i></a>`).join("")}</div>` : "";
   M.innerHTML = `<section class="card glass"><a class="muted small" href="#/votacoes">← Votações que importam</a><span class="kick">${casaN} · ${esc(tit || "Votação")} · ${dataBR(x[1])}</span><h1 style="font-size:clamp(1.3rem,3.6vw,1.9rem)">${esc(ement)}</h1><span class="fx"></span>
+     ${oque ? `<p style="margin:0 0 8px"><b>O que foi votado:</b> ${esc(oque)}</p>` : ""}
      <div class="chips">${apr ? '<span class="res2 a">Aprovado</span>' : rej ? '<span class="res2 r">Rejeitado</span>' : ""}<span class="chip">${secreta ? "Votação secreta" : `Placar geral: Sim ${mil(sim)} × Não ${mil(nao)}`}</span>${C && x[8] ? `<span class="chip">Governo orientou ${esc(x[8])}</span>` : ""}</div>
      <p class="muted small" style="margin:8px 0 4px">Escolha o estado:</p><div class="chips">${Object.keys(BR.ufs).sort().map((u) => `<a class="chip${u === uf ? " on" : ""}" aria-pressed="${u === uf}" style="${u === uf ? "background:var(--ink);color:var(--bg,#fff)" : ""}" href="#/votacao/${casa}/${i}/${u}">${u}</a>`).join("")}</div><div class="btns" style="margin-top:10px"><button class="btn o" id="vlk" type="button">Copiar link desta votação</button></div></section>
    <div class="row2"><section class="card glass"><h2>Como votaram os ${quemN} ${deUF(BR.ufs[uf].nome)}</h2>
@@ -105,7 +107,7 @@ async function votacaoPag(casa, i, uf) {
     <section class="card glass"><h2>Card para Stories</h2><div id="vstc">${secreta ? '<p class="muted">Sem card: a votação foi secreta.</p>' : '<p class="muted">Montando a imagem…</p>'}</div></section></div>`;
   const link = "https://fiscalizaja.com.br/votacao/" + casa + "/" + i + "/" + uf;
   $("#vlk").onclick = async () => { try { if (navigator.share && /Mobi/i.test(navigator.userAgent)) await navigator.share({ title: document.title, url: link }); else { await navigator.clipboard.writeText(link); $("#vlk").textContent = "Link copiado ✓"; } } catch (e) {} };
-  if (!secreta) cardVotacao($("#vstc"), { casa, uf, ufN: BR.ufs[uf].nome, tit, ement, data: dataBR(x[1]), apr, rej, sim, nao, G });
+  if (!secreta) cardVotacao($("#vstc"), { casa, uf, ufN: BR.ufs[uf].nome, tit, ement, oque, data: dataBR(x[1]), apr, rej, sim, nao, G });
 }
 
 async function cardVotacao(el, o) {
@@ -121,9 +123,10 @@ async function cardVotacao(el, o) {
   g.fillStyle = "#0B0B0C"; g.font = F(800, 46); g.textBaseline = "middle"; g.fillText("FISCALIZA BRASIL", 176, 136);
   g.textBaseline = "top"; let y = 230;
   g.fillStyle = "#5E6066"; g.font = F(600, 28, "m"); g.fillText(((o.casa === "C" ? "Câmara" : "Senado") + " · " + (o.tit || "Votação") + " · " + o.data).toUpperCase(), 80, y); y += 56;
-  let fs = 60; g.font = F(800, fs); let L = quebra(o.ement, W - 160); while (L.length > 5 && fs > 40) { fs -= 4; g.font = F(800, fs); L = quebra(o.ement, W - 160); }
-  if (L.length > 5) { L = L.slice(0, 5); L[4] = L[4].replace(/\s*\S*$/, "") + "…"; }
+  let fs = 60; g.font = F(800, fs); let L = quebra(o.ement, W - 160); while (L.length > 4 && fs > 40) { fs -= 4; g.font = F(800, fs); L = quebra(o.ement, W - 160); }
+  if (L.length > 4) { L = L.slice(0, 4); L[3] = L[3].replace(/\s*\S*$/, "") + "…"; }
   g.fillStyle = "#0B0B0C"; L.forEach((l) => { g.fillText(l, 80, y); y += fs * 1.08; });
+  if (o.oque) { y += 6; g.font = F(700, 30, "d"); g.fillStyle = "#5E6066"; let q = quebra("Votação: " + o.oque, W - 160); if (q.length > 2) { q = q.slice(0, 2); q[1] = q[1].replace(/\s*\S*$/, "") + "…"; } q.forEach((l) => { g.fillText(l, 80, y); y += 38; }); }
   y += 18; g.font = F(700, 34, "d"); const res = (o.apr ? "APROVADO" : o.rej ? "REJEITADO" : "") ; 
   if (res) { const tw = g.measureText(res).width; rr(80, y, tw + 48, 60, 30); g.fillStyle = o.apr ? "#14703C" : "#B3261E"; g.fill(); g.fillStyle = "#fff"; g.fillText(res, 104, y + 13); }
   g.fillStyle = "#5E6066"; g.font = F(700, 32, "d"); g.fillText(`Placar geral: Sim ${mil(o.sim)} × Não ${mil(o.nao)}`, res ? 80 + g.measureText(res).width + 90 : 80, y + 13); y += 100;

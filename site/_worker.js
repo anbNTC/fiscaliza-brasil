@@ -252,6 +252,30 @@ async function paginaPropria(request, env, url) {
     .transform(new Response(res.body, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=600" } }));
 }
 
+/* ---------- endereço próprio para estado e cidade (/uf/PR, /cidade/PR/75353), para aparecer no Google ---------- */
+async function paginaLugar(request, env, url) {
+  const origin = url.origin; const parts = url.pathname.split("/").filter(Boolean).map(decodeURIComponent);
+  const uf = (parts[1] || "").toUpperCase(); if (!/^[A-Z]{2}$/.test(uf)) return env.ASSETS.fetch(new Request(origin + "/fiscalize"));
+  const BR = await json(env, origin, "/data/br.json"); const U = BR && BR.ufs[uf]; if (!U) return env.ASSETS.fetch(new Request(origin + "/fiscalize"));
+  let rota, titulo, desc;
+  if (parts[0] === "uf") { rota = "#/uf/" + uf; titulo = U.nome + ": deputados, senadores e governador · Fiscaliza Brasil";
+    desc = `Quem representa ${U.nome}: deputados federais e estaduais, senadores e governador. Como votam, presença, projetos, emendas, gastos e patrimônio, com dados oficiais.`; }
+  else { const D = await json(env, origin, "/data/uf/" + uf + ".json"); const m = D && D.mun && D.mun[parts[2]]; if (!m) return env.ASSETS.fetch(new Request(origin + "/fiscalize"));
+    const nome = tit(m[0]); rota = "#/cidade/" + uf + "/" + parts[2]; titulo = `${nome} (${uf}): prefeito, vereadores e deputados · Fiscaliza Brasil`;
+    desc = `${nome} (${uf}): prefeito${m[1] ? " " + tit(m[1][0]) : ""}, os ${m[3].length} vereadores, os deputados e senadores mais votados na cidade e as emendas parlamentares que chegaram, com dados oficiais.`; }
+  const res = await env.ASSETS.fetch(new Request(origin + "/fiscalize"));
+  const set = (at, v) => ({ element: (el) => el.setAttribute(at, v) });
+  return new HTMLRewriter()
+    .on("head", { element: (el) => el.prepend(`<script>history.replaceState(null,"","/fiscalize${rota.replace(/"/g, "")}")</script><link rel="canonical" href="${origin}${url.pathname}">`, { html: true }) })
+    .on("title", { element: (el) => el.setInnerContent(titulo) })
+    .on('meta[name="description"]', set("content", desc))
+    .on('meta[property="og:title"]', set("content", titulo))
+    .on('meta[property="og:description"]', set("content", desc))
+    .on('meta[property="og:url"]', set("content", origin + url.pathname))
+    .on('meta[property="og:image"]', set("content", origin + "/og.png"))
+    .transform(new Response(res.body, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600" } }));
+}
+
 /* ---------- sonda: testa, a partir do centro de dados do Cloudflare mais próximo de quem abre, se as Assembleias respondem (lista fixa, sem parâmetros) ---------- */
 const SONDA_BR = [
   "https://dadosabertos.almg.gov.br/ws/deputados/em_exercicio?formato=json",
@@ -279,6 +303,7 @@ export default {
     if (url.pathname === "/img") return foto(request, ctx);
     if (url.pathname === "/api/sonda-br") return sondaBR(request);
     if (url.pathname.startsWith("/p/") || url.pathname.startsWith("/partido/")) return paginaPropria(request, env, url);
+    if (/^\/(uf|cidade)\//.test(url.pathname)) return paginaLugar(request, env, url);
     const res = await env.ASSETS.fetch(request);
     if (!(res.headers.get("content-type") || "").includes("text/html")) return res;
     // prévia de links (WhatsApp, Instagram etc.): o endereço da imagem e da página precisa ser completo

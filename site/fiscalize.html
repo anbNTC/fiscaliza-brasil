@@ -298,10 +298,32 @@ async function cidade(uf,ue){
      <div class="chips">${parts.map(([p,n])=>`<span class="chip">${esc(p)} ${n}</span>`).join("")}</div>
      ${uf==="PR"&&ue==="75353"?`<a class="btn o" href="parana.html?q=">Projetos e pedidos dos vereadores de Curitiba</a>`:""}
      <p class="src">Votos e projetos dos vereadores dependem do que cada Câmara publica; a maioria não publica em formato aberto. Fonte: ${FONTE_TSE}</p></section></div>
+   <div id="vmc"></div>
    <section class="card glass"><h2>Vereadores <span class="muted small">(${vs.length})</span></h2><div class="people">${vs.map((p,i)=>pcard(`#/p/m/${uf}/${ue}/${i}`,title(p[0]),partido(p),ftse(p,2024,ue))).join("")}</div>
      <p class="src">Titulares eleitos em 2024. Suplentes que assumiram só aparecem onde a Câmara publica dados abertos (SAPL). Fonte: ${FONTE_TSE}</p></section>`;
   $("#sm").onclick=()=>{store.set("cidade",{uf,ue,nome});cidade(uf,ue)};
-  camCidade(uf,ue).then(()=>emendasCidade(uf,nome));
+  votadosCidade(uf,ue,nome);camCidade(uf,ue).then(()=>emendasCidade(uf,nome));
+}
+/* Mais votados na cidade (TSE, votação por município): deputados federais, estaduais e senadores, 2022 e 2026 */
+async function votadosCidade(uf,ue,nome,ano,cg){
+  const el=$("#vmc");if(!el)return;let V;try{V=await getJSON("data/vm/"+uf+".json")}catch(e){return}
+  const mun=V.mun[ue];if(!mun)return;const anos=Object.keys(mun).sort().reverse();ano=ano&&mun[ano]?ano:anos[0];
+  const D=await loadUF(uf);const NC=new Map();const add=(k,h)=>{if(k&&!NC.has(k))NC.set(k,h)};
+  const ln=(c,a)=>{const m=new Map();
+    if(c==="F"){BR.dep.filter(d=>d[3]===uf).forEach(d=>m.set(norm(d[5]),"#/p/c/"+d[0]));(D.df26||[]).forEach((p,i)=>{if(!m.has(norm(p[1])))m.set(norm(p[1]),`#/p/f/${uf}/${i}`)})}
+    if(c==="S"){BR.sen.filter(x=>x[4]===uf).forEach(x=>m.set(norm(x[2]),"#/p/s/"+x[0]));(D.se26||[]).forEach((p,i)=>{if(!m.has(norm(p[1])))m.set(norm(p[1]),`#/p/n/${uf}/${i}`)})}
+    if(c==="E"){const f=(arr,y)=>(arr||[]).forEach((p,i)=>{if(!m.has(norm(p[1])))m.set(norm(p[1]),`#/p/e/${uf}/${y}/${i}`)});if(a==="2026"){f(D.de26,26);f(D.de22,22)}else{f(D.de22,22);f(D.de26,26)}}
+    return m};
+  const CN={F:uf==="DF"?"Deputado federal":"Deputado federal",E:uf==="DF"?"Deputado distrital":"Deputado estadual",S:"Senador"};
+  const cgs=["F","S","E"].filter(c=>mun[ano][c]);cg=cg&&mun[ano][cg]?cg:cgs[0];
+  const [top,tot]=mun[ano][cg];const C=V.anos[ano][cg];const L=ln(cg,ano);const mx=top.length?top[0][1]:1;
+  el.innerHTML=`<section class="card glass"><h2>Mais votados em ${esc(nome)}</h2>
+   <div class="chips">${anos.map(a=>`<button class="chip" data-a="${a}" style="${a===ano?"background:var(--ink);color:#fff":""}">${a}</button>`).join("")}<span style="width:10px"></span>${cgs.map(c=>`<button class="chip" data-c="${c}" style="${c===cg?"background:var(--ink);color:#fff":""}">${CN[c]}</button>`).join("")}</div>
+   <div class="tl" style="margin-top:10px">${top.map(([i,v],k)=>{const p=C[i];const h=L.get(norm(p[1]));const nm=`${k+1}. ${esc(title(p[0]))} <span class="muted small">${esc(p[2])}</span>${p[3]?' <span class="chip" style="padding:2px 7px;font-size:.62rem">Eleito</span>':""}`;
+     return `<div><span>${h?`<a href="${h}">${nm}</a>`:nm}</span><b>${mil(v)} <span class="muted small">${tot?(100*v/tot).toLocaleString("pt-BR",{maximumFractionDigits:1}):"0"}%</span></b>${bar(v,mx)}</div>`}).join("")}</div>
+   <p class="src">Votos nominais no 1º turno de ${ano} nesta cidade (todas as zonas); % sobre os votos nominais para o cargo aqui. "Eleito" = eleito no estado. Fonte: ${FONTE_TSE}</p></section>`;
+  el.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>votadosCidade(uf,ue,nome,b.dataset.a,cg));
+  el.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>votadosCidade(uf,ue,nome,ano,b.dataset.c));
 }
 /* Câmaras com SAPL público: projetos e votos de cada vereador, e suplentes que assumiram */
 async function camCidade(uf,ue){

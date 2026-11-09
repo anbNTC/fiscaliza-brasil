@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "coleta/emendas_estaduais.py", "coleta/camaras_sapl.py", "tools/**", ".github/workflows/dados.yml"]
+    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "coleta/emendas_estaduais.py", "coleta/camaras_sapl.py", "coleta/votos_municipio.py", "tools/**", ".github/workflows/dados.yml"]
 
 permissions:
   contents: write
@@ -114,10 +114,16 @@ jobs:
         timeout-minutes: 55
         run: python coleta/camaras_sapl.py 2>&1 | tail -45 | tee -a /tmp/assembleias.log
 
+      - name: TSE · votos de cada candidato em cada cidade (só baixa o ano que ainda não está gravado)
+        id: vm
+        continue-on-error: true
+        timeout-minutes: 40
+        run: python coleta/votos_municipio.py 2>&1 | tail -5 | tee -a /tmp/assembleias.log
+
       - name: Salva o progresso (Assembleias)
         if: always()
         run: |
-          git add site/data/est site/data/emendas_est site/data/cam 2>/dev/null || true
+          git add site/data/est site/data/emendas_est site/data/cam site/data/vm 2>/dev/null || true
           git diff --cached --quiet || (git commit -m "Assembleias estaduais $(date -u +%F)" && for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done)
 
       - name: Recalcula partidos, ranking, resumo da semana e médias da cota
@@ -127,6 +133,7 @@ jobs:
           python tools/partidos.py 2>&1 | tail -3 | tee /tmp/calc.log
           python tools/semana.py 2>&1 | tail -2 | tee -a /tmp/calc.log
           python tools/cota_media.py 2>&1 | tail -2 | tee -a /tmp/calc.log
+          python tools/sitemap.py 2>&1 | tail -1 | tee -a /tmp/calc.log
 
       - name: Relatório da coleta
         if: always()
@@ -144,7 +151,7 @@ jobs:
       - name: Grava os dados novos
         if: always()
         run: |
-          git add -A site/data
+          git add -A site/data site/sitemap.xml
           git diff --cached --quiet && echo "nada mudou" && exit 0
           git commit -m "Dados atualizados $(date -u +%Y-%m-%d)"
           for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done

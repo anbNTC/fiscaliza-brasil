@@ -43,6 +43,12 @@
   }
   function contador() { const n = ler().itens.length; document.querySelectorAll(".acn").forEach((e) => (e.textContent = n ? n : "")); }
 
+  const erroPT = (m) => { m = String(m || "");
+    if (/rate limit|too many|security purposes/i.test(m)) return "Muitos pedidos seguidos: espere um minuto e tente de novo.";
+    if (/signups? not allowed/i.test(m)) return "O cadastro de novos e-mails está fechado no momento. Tente mais tarde.";
+    if (/invalid.*email|email.*invalid/i.test(m)) return "Confira se o e-mail está certo.";
+    if (/sending|smtp|confirmation email/i.test(m)) return "O serviço de e-mail falhou. Tente de novo em alguns minutos.";
+    return "Tente de novo em alguns minutos."; };
   /* ---------- login por e-mail (código de 6 dígitos ou link) ---------- */
   async function iniciar() {
     const sb = sbU(); if (!sb) return;
@@ -90,7 +96,7 @@
       $("#acsend").disabled = true; msg("Enviando…", true); $("#acmsg").style.color = "var(--muted)";
       const r = await sb.auth.signInWithOtp({ email: em, options: { shouldCreateUser: true, emailRedirectTo: location.origin + "/fiscalize" } });
       $("#acsend").disabled = false;
-      if (r.error) return msg("Não foi possível enviar: " + r.error.message);
+      if (r.error) return msg("Não foi possível enviar o código. " + erroPT(r.error.message));
       $("#accode").hidden = false; $("#actk").focus(); msg("Enviamos um e-mail. Digite o código aqui ou toque no link do e-mail neste aparelho.", true);
     };
     if ($("#acok")) $("#acok").onclick = async () => {

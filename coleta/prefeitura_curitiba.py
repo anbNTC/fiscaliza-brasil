@@ -3,7 +3,7 @@ Fonte: Portal da Transparência da Prefeitura (www.transparencia.curitiba.pr.gov
 A consulta lista nome, cargo, lotação e remuneração de cada servidor, 10 por página. Para não pesar no site da Prefeitura,
 lemos só os cargos em comissão e as funções gratificadas (onde ficam as equipes de gabinete) e guardamos quem está lotado
 no gabinete do prefeito ou do vice. Saída: junta em site/data/gabm/75353.json (chaves "p" e "v")."""
-import re, html, json, time, datetime, sys
+import re, html, json, time, datetime, sys, os
 from pathlib import Path
 import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -54,6 +54,9 @@ def main():
             for nome, cargo, lot, bruto, liq in L:
                 if GABP.search(lot):
                     gab["v" if re.search("VICE", lot, re.I) else "p"].append([nome.title(), (cargo + " · " + lot.title()).capitalize(), "", round(num(bruto), 2), round(num(liq), 2)])
+            if pg == 1 and os.environ.get("DEPURA"):
+                i = t2.find("gdvPesquisaServidores"); j = t2.rfind("</table>")
+                print("PAGINADOR:", re.sub(r"\s+", " ", t2[j - 1500: j + 1500])[:3000]); print("POSTBACKS:", sorted(set(re.findall(r"__doPostBack\(&#39;([^&]+)&#39;,&#39;([^&]*)&#39;", t2)))[:40])
             if f"Page${pg + 1}" not in t2 or pg > 600: break
             pg += 1; time.sleep(0.6)
             t2 = post(t2, {"__EVENTTARGET": P + "gdvPesquisaServidores", "__EVENTARGUMENT": f"Page${pg}"}, ano, mes, cg)

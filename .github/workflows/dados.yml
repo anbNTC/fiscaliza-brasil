@@ -158,6 +158,7 @@ jobs:
           python tools/semana.py 2>&1 | tail -2 | tee -a /tmp/calc.log
           python tools/cota_media.py 2>&1 | tail -2 | tee -a /tmp/calc.log
           python tools/emendas_autor.py 2>&1 | tail -1 | tee -a /tmp/calc.log
+          python tools/busca.py 2>&1 | tail -1 | tee -a /tmp/calc.log
           python tools/sitemap.py 2>&1 | tail -1 | tee -a /tmp/calc.log
           python tools/pautas.py 2>&1 | tail -1 | tee -a /tmp/calc.log
 

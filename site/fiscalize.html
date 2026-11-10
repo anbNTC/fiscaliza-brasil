@@ -207,8 +207,24 @@ async function wireSearch(id,withPeople){
     for(const [uf,u] of Object.entries(BR?BR.ufs:{}))if(norm(u.nome).startsWith(q)||uf===q)res.push(`<a href="#/uf/${uf}"><span><b>${esc(u.nome)}</b></span><small>Estado</small></a>`);
     const hits=CID.filter(c=>c.n.startsWith(q)).concat(q.length>3?CID.filter(c=>!c.n.startsWith(q)&&c.n.includes(q)):[]).slice(0,8);
     hits.forEach(c=>res.push(`<a href="#/cidade/${c.uf}/${c.ue}"><span><b>${esc(title(c.nome))}</b></span><small>${c.uf}</small></a>`));
-    if(withPeople&&BR){let k=0;for(const p of peopleIndex()){if(p.n.includes(q)){res.push(`<a href="${p.h}"><span><b>${esc(p.nome)}</b> <span class="muted small">${esc(p.sub)}</span></span><small>${p.uf}</small></a>`);if(++k>=10)break}}}
-    out.innerHTML=res.join("")||'<p class="muted small" style="margin:4px 2px">Nada encontrado.</p>'});
+    const seq=++BSEQ;
+    if(!withPeople){out.innerHTML=res.join("")||'<p class="muted small" style="margin:4px 2px">Nada encontrado.</p>';return}
+    const ts=q.split(" ").filter(t=>t.length>=3);
+    if(!ts.length){out.innerHTML=res.join("")+'<p class="muted small" style="margin:4px 2px">Digite pelo menos 3 letras do nome.</p>';return}
+    out.innerHTML=res.join("")+'<p class="muted small" style="margin:4px 2px">Procurando…</p>';
+    buscaPessoas(q,ts).then(L=>{if(seq!==BSEQ)return;
+      const pes=L.slice(0,25).map(e=>`<a href="${e[3]}"><span><b>${esc(e[0])}</b> <span class="muted small">${esc(e[1])}</span></span><small>${esc(e[2])}</small></a>`);
+      out.innerHTML=res.concat(pes).join("")+(L.length>25?`<p class="muted small" style="margin:4px 2px">Mais ${L.length-25} com esse nome. Digite o nome completo ou o sobrenome para achar mais rápido.</p>`:"")||'<p class="muted small" style="margin:4px 2px">Nada encontrado.</p>'})});
+}
+let BSEQ=0;const BCACHE={};
+/* busca de todos os políticos (deputados, senadores, governadores, prefeitos, vices e vereadores): índice em data/busca/{3 letras}.json */
+async function buscaPessoas(q,ts){
+  const t=ts.slice().sort((a,b)=>b.length-a.length)[0],k=t.slice(0,3);
+  if(!BCACHE[k])BCACHE[k]=fetch("data/busca/"+k+".json").then(r=>r.ok?r.json():[]).catch(()=>[]);
+  const L=await BCACHE[k],w=s=>" "+s;
+  const hit=L.filter(e=>ts.every(x=>w(e[4]).includes(" "+x)));
+  const peso=e=>(norm(e[0]).startsWith(q)?0:1)+(/federal|Senador|Governador/.test(e[1])?0:/estadual|Prefeit/.test(e[1])?1:2);
+  const vis=new Set();return hit.sort((a,b)=>peso(a)-peso(b)||a[0].localeCompare(b[0])).filter(e=>!vis.has(e[3])&&vis.add(e[3]));
 }
 let PIDX=null;
 function peopleIndex(){if(PIDX)return PIDX;PIDX=[];
@@ -401,8 +417,8 @@ async function me(){
 }
 async function quem(){
   setNav("quem");await loadBR();
-  M.innerHTML=`<section class="card glass"><span class="kick">Quem é quem</span><h1>Busque um político</h1><span class="fx"></span>${searchBox("q3","Nome do deputado, senador ou governador")}
-   <p class="src">Busca entre deputados federais, senadores e governadores. Para deputados estaduais, prefeitos e vereadores, abra o estado ou a cidade.</p></section>
+  M.innerHTML=`<section class="card glass"><span class="kick">Quem é quem</span><h1>Busque um político</h1><span class="fx"></span>${searchBox("q3","Nome de qualquer político eleito")}
+   <p class="src">Busca entre todos os eleitos que estão no site: deputados federais e estaduais, senadores, governadores e vices, prefeitos e vices e vereadores de todo o Brasil, além dos eleitos em 2026. Procura pelo nome de urna e pelo nome civil.</p></section>
    <section class="card glass"><h2>Senado <span class="muted small">(81)</span></h2><div class="people">${BR.sen.slice().sort((a,b)=>a[1].localeCompare(b[1])).map(s=>pcard("#/p/s/"+s[0],s[1],esc(s[3])+" · "+s[4],s[5])).join("")}</div><p class="src">Fonte: ${FONTE_SEN}</p></section>`;
   wireSearch("q3",true);
 }

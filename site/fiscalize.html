@@ -223,7 +223,7 @@ async function buscaPessoas(q,ts){
   if(!BCACHE[k])BCACHE[k]=fetch("data/busca/"+k+".json").then(r=>r.ok?r.json():[]).catch(()=>[]);
   const L=await BCACHE[k],w=s=>" "+s;
   const hit=L.filter(e=>ts.every(x=>w(e[4]).includes(" "+x)));
-  const peso=e=>(norm(e[0]).startsWith(q)?0:1)+(/federal|Senador|Governador/.test(e[1])?0:/estadual|Prefeit/.test(e[1])?1:2);
+  const peso=e=>{const u=" "+norm(e[0]);return (norm(e[0])===q?0:u.includes(" "+q)?1:ts.every(x=>u.includes(" "+x))?2:4)+(/federal|Senador|Governador/.test(e[1])?0:/estadual|Prefeit/.test(e[1])?0.5:1)};
   const vis=new Set();return hit.sort((a,b)=>peso(a)-peso(b)||a[0].localeCompare(b[0])).filter(e=>!vis.has(e[3])&&vis.add(e[3]));
 }
 let PIDX=null;

@@ -29,14 +29,17 @@ def main():
         fut = {ex.submit(testa, a[0]): a for a in alvos}
         for f in cf.as_completed(fut):
             r = f.result(); host, uf, ue, nome = fut[f]
-            if r and any(e.get("tipo") == "L" or "CAMARA" in (e.get("nome") or "").upper() for e in r):
-                achou[host] = {"host": host, "uf": uf, "ue": ue, "cidade": nome, "entidades": r}
+            if not r: continue
+            cam = [e for e in r if (e.get("tipo") == "L" or "CAMARA" in (e.get("nome") or "").upper())]
+            # a Câmara tem de ser desta cidade (há cidades com o mesmo nome em outros estados)
+            cam = [e for e in cam if (e.get("uf") or "").upper() == uf and slug(e.get("cidade") or "") == slug(nome)]
+            if cam: achou[host] = {"host": host, "uf": uf, "ue": ue, "cidade": nome, "ent": cam[0]["id"]}
     # um portal por cidade (prefere o da Câmara)
     por = {}
     for h, x in sorted(achou.items()):
         if x["ue"] not in por or h.startswith("cm"): por[x["ue"]] = x
     print("ACHADOS", len(por))
-    print(json.dumps([{"host": x["host"], "uf": x["uf"], "ue": x["ue"], "cidade": x["cidade"]} for x in sorted(por.values(), key=lambda z: (z["uf"], z["cidade"]))], ensure_ascii=False))
+    for x in sorted(por.values(), key=lambda z: (z["uf"], z["cidade"])): print("PORTAL " + json.dumps({"host": x["host"], "uf": x["uf"], "ue": x["ue"], "cidade": x["cidade"], "ent": x["ent"]}, ensure_ascii=False))
 
 if __name__ == "__main__":
     main()

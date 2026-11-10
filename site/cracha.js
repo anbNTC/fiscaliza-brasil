@@ -277,7 +277,8 @@ async function cracha(parts) {
       if (t === "e") { const E = await getJSON("data/est/" + uf + ".json").catch(() => null); if (E && parts[2] === (E.ano || "22") && E.dep[parts[3]]) { o.est = E.dep[parts[3]]; o.estInfo = E; } } }
     else if (t === "m") { const m = D.mun[parts[2]]; if (!m) return notFound(); P = parts[3] === "p" ? m[1] : parts[3] === "v" ? m[2] : m[3][+parts[3]]; if (!P) return notFound(); const pp = pTSE(P);
       o = { nome: pp.nome, cargo: cargo(parts[3] === "p" ? "pref" : parts[3] === "v" ? "vp" : "ver", pp.g) + " · " + title(m[0]), part: pp.part, uf }; o.mand = "Eleito em 2024 · mandato 2025–2028"; voltar = `#/cidade/${uf}/${parts[2]}`;
-      if (parts[3] !== "p" && parts[3] !== "v") { const C = await getJSON("data/cam/" + parts[2] + ".json").catch(() => null); if (C && C.dep[parts[3]]) { o.est = C.dep[parts[3]]; o.estInfo = C; } } }
+      if (parts[3] !== "p" && parts[3] !== "v") { const C = await getJSON("data/cam/" + parts[2] + ".json").catch(() => null); if (C && C.dep[parts[3]]) { o.est = C.dep[parts[3]]; o.estInfo = C; }
+        const GM = await getJSON("data/gabm/" + parts[2] + ".json").catch(() => null); if (GM && GM.dep[parts[3]]) { o.gab = GM.dep[parts[3]]; o.gabInfo = GM; o.gabMun = true; } } }
     o.patList = (await loadPat(uf))[keyTSE(P[1], P[5])] || null;
     const ano = t === "m" ? 2024 : (parts[2] === "26" || parts[3] === "26") ? 2026 : 2022;
     o.foto = (o.est && o.est.foto) || ftse(P, ano, t === "m" ? parts[2] : uf); o.ano = ano;
@@ -394,6 +395,13 @@ const SP_VENC = [1710.83, 1906.12, 2101.45, 2296.72, 2492.06, 2687.34, 2882.65, 
 const SP_TAB = "https://www2.camara.leg.br/a-camara/estruturaadm/diretorias/diretoria-de-gestao-pessoas/estrutura-1/depes/secretariado-parlamentar/posse-de-sp-sem-vinculo/TABSP202601MAR202620260303.pdf/view";
 function secGab(o) {
   const g = o.gab || [], dt = (x) => (x ? new Date(String(x).slice(0, 10) + "T12:00").toLocaleDateString("pt-BR") : "");
+  if (o.gabMun) {
+    const tot = g.reduce((a, r) => a + (r[3] || 0), 0), mx = Math.max(1, ...g.map((r) => r[3] || 0));
+    return `<h2>Quem trabalha no gabinete <span class="muted small">(${g.length})</span></h2>
+     <div class="kv"><div><div class="l">Remuneração somada</div><div class="v">${brl(tot)}</div><div class="s">por mês, valores brutos publicados</div></div><div><div class="l">Pessoas</div><div class="v">${mil(g.length)}</div><div class="s">servidores ativos lotados no gabinete</div></div></div>
+     <div class="tl" style="margin-top:10px">${g.map((r) => `<div><span><b>${esc(r[0])}</b><br><span class="small muted">${esc(r[1])}${r[2] ? " · desde " + dt(r[2]) : ""}</span></span><b>${r[3] ? brl(r[3]) : ""}</b>${bar(r[3] || 0, mx)}</div>`).join("")}</div>
+     <p class="src">${esc(o.gabInfo.obs || "")} Fonte: <a href="${o.gabInfo.url}" target="_blank" rel="noopener">${esc(o.gabInfo.fonte)}</a>. Atualizado em ${dt(o.gabInfo.gerado)}.</p>`;
+  }
   if (o.gabSen) {
     const tot = g.reduce((a, r) => a + (r[3] || 0), 0), mx = Math.max(1, ...g.map((r) => r[3] || 0)), [ano, mes] = String(o.gabInfo.mes || "").split("-");
     return `<h2>Quem trabalha no gabinete <span class="muted small">(${g.length})</span></h2>

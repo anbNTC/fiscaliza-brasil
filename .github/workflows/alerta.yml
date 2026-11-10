@@ -1,0 +1,25 @@
+# Alerta diário por e-mail para quem marcou a opção na página Acompanhando (de terça a sábado, depois da coleta da madrugada).
+name: Alerta diário
+on:
+  schedule:
+    - cron: "37 12 * * 2-6"   # terça a sábado, 9:37 em Brasília
+  workflow_dispatch:
+    inputs:
+      teste: { description: "e-mail para teste (envia só para ele)", required: false, default: "" }
+concurrency: { group: resumo, cancel-in-progress: false }
+jobs:
+  envia:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install requests==2.32.3
+      - name: Envia
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: "${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
+          RESEND_API_KEY: "${{ secrets.RESEND_API_KEY }}"
+          TESTE: "${{ inputs.teste }}"
+          MODO: diario
+        run: python tools/resumo_semanal.py

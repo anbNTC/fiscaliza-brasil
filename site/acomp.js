@@ -82,6 +82,7 @@
   function loginHTML() {
     if (USER) return `<div class="aclogin"><p style="margin:0">Salvando no e-mail <b>${esc(USER.email || "")}</b>. A sua lista aparece em qualquer aparelho em que você entrar com ele.</p>
       <label class="row" style="align-items:center;gap:10px;cursor:pointer"><input type="checkbox" id="acres" style="width:22px;height:22px;flex:none;min-width:0"> <span><b>Receber o resumo semanal por e-mail</b><br><span class="small muted">Toda segunda: como votaram e o que apresentaram os políticos que você acompanha. Dá para parar quando quiser, pelo link do próprio e-mail.</span></span></label>
+      <label class="row" style="align-items:center;gap:10px;cursor:pointer"><input type="checkbox" id="acdia" style="width:22px;height:22px;flex:none;min-width:0"> <span><b>Receber alerta diário</b><br><span class="small muted">Na manhã seguinte ao dia em que um político que você acompanha votar no Plenário ou apresentar projeto. Só chega quando há novidade.</span></span></label>
       <div class="row"><button class="btn o" id="acout" type="button">Sair</button><button class="btn o" id="acdel" type="button">Apagar minha conta</button></div></div>`;
     return `<div class="aclogin"><p style="margin:0">Sua lista já está salva <b>neste aparelho</b>. Para ver em qualquer celular ou computador, entre com o seu e-mail. Não precisa de senha: você recebe um código.</p>
       <div class="row"><input id="acem" type="email" autocomplete="email" placeholder="seu@email.com"><button class="btn" id="acsend" type="button">Receber código</button></div>
@@ -107,7 +108,9 @@
       USER = r.data.user; await sincronizar(); acompanho();
     };
     if ($("#acres") && sb && USER) {
-      sb.from("resumo_email").select("ativo").maybeSingle().then((r) => { if (r.data) $("#acres").checked = r.data.ativo; });
+      sb.from("resumo_email").select("ativo,diario").maybeSingle().then((r) => { if (r.data) { $("#acres").checked = r.data.ativo; if ($("#acdia")) $("#acdia").checked = !!r.data.diario; } else if (r.error) { if ($("#acdia")) $("#acdia").closest("label").hidden = true; sb.from("resumo_email").select("ativo").maybeSingle().then((q) => { if (q.data) $("#acres").checked = q.data.ativo; }); } });
+      if ($("#acdia")) $("#acdia").onchange = async (e) => { const r = await sb.from("resumo_email").upsert({ user_id: USER.id, diario: e.target.checked, ativo: $("#acres").checked, atualizado: new Date().toISOString() });
+        if (r.error) { e.target.checked = !e.target.checked; alert("Não foi possível salvar agora. Tente de novo em alguns minutos."); } };
       $("#acres").onchange = async (e) => { const r = await sb.from("resumo_email").upsert({ user_id: USER.id, ativo: e.target.checked, atualizado: new Date().toISOString() });
         if (r.error) { e.target.checked = !e.target.checked; alert("Não foi possível salvar agora. Tente de novo em alguns minutos."); } };
     }

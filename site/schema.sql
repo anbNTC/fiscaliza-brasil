@@ -206,3 +206,21 @@ language sql security definer set search_path = public, auth as $$
 $$;
 revoke all on function public.resumo_destinatarios() from public, anon, authenticated;
 grant execute on function public.resumo_destinatarios() to service_role;
+
+-- 13) Alerta diário por e-mail (além do resumo semanal)
+alter table public.resumo_email add column if not exists diario boolean not null default false;
+drop function if exists public.resumo_destinatarios();
+create function public.resumo_destinatarios() returns table (email text, token uuid, lista jsonb, semanal boolean, diario boolean)
+language sql security definer set search_path = public, auth as $$
+  select u.email::text, r.token,
+         coalesce((select jsonb_agg(jsonb_build_object('tipo', a.tipo, 'ref', a.ref, 'dados', a.dados)) from public.acompanha a where a.user_id = r.user_id), '[]'::jsonb),
+         r.ativo, r.diario
+  from public.resumo_email r join auth.users u on u.id = r.user_id where r.ativo or r.diario
+$$;
+revoke all on function public.resumo_destinatarios() from public, anon, authenticated;
+grant execute on function public.resumo_destinatarios() to service_role;
+create or replace function public.sair_resumo(t uuid) returns boolean
+language sql security definer set search_path = public as $$
+  with u as (update public.resumo_email set ativo = false, diario = false, atualizado = now() where token = t returning 1) select exists (select 1 from u)
+$$;
+grant execute on function public.sair_resumo(uuid) to anon, authenticated;

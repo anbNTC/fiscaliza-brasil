@@ -2,6 +2,7 @@
 O site só responde a acessos do Brasil, então a coleta passa pela saída BR (coleta/saida_br.py).
 Saída: site/data/est/ES.json no mesmo formato das outras Assembleias, com a presença em plenário por ano."""
 import json, re, sys, time, datetime, concurrent.futures as cf
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).resolve().parent)); from legislatura import lista_est
 from collections import Counter
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -58,7 +59,7 @@ def main():
         pg += 1
     print(len(parl), "deputados", flush=True)
     with cf.ThreadPoolExecutor(3) as ex: R = dict(ex.map(coleta_dep, parl))
-    U = json.load(open(D / "uf" / "ES.json")); de = U.get("de22", [])
+    U = json.load(open(D / "uf" / "ES.json")); de, ANO_LEG = lista_est(U)
     idx = {}
     for k, x in enumerate(de): idx.setdefault(limpa(x[0]), k); idx.setdefault(limpa(x[1]), k)
     toks = [(k, set(limpa(x[0]).split()) | set(limpa(x[1]).split())) for k, x in enumerate(de)]
@@ -79,6 +80,7 @@ def main():
         elif str(k) not in dep or sum(reg["cont"].values()) > sum(dep[str(k)]["cont"].values()): dep[str(k)] = reg
     out = {"fonte": "Assembleia Legislativa do Espírito Santo (Ales) · API pública do SPL", "url": "https://www3.al.es.gov.br/dados-abertos.aspx", "gerado": datetime.date.today().isoformat(),
            "legislatura": "20ª legislatura (2023–2027)", "temVotos": False, "dep": dep}
+    out["ano"] = ANO_LEG
     json.dump(out, open(OUT / "ES.json", "w"), ensure_ascii=False, separators=(",", ":"))
     r = {"deputados": len(parl), "ligados": len(parl) - len(sem), "proposicoes": sum(sum(x["cont"].values()) for x in R.values()), "sem_autor": sum(1 for x in R.values() if not x["aid"]), "sem_par": sem[:10]}
     print(json.dumps(r, ensure_ascii=False)); return r

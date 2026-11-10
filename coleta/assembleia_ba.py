@@ -2,6 +2,7 @@
 A partir de ago/2025 a ALBA passou a usar outro sistema, protegido contra acesso automático; por regra do projeto, não contornamos.
 Saída: site/data/est/BA.json no mesmo formato das outras Assembleias."""
 import json, os, re, sys, time, html, datetime, concurrent.futures as cf
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).resolve().parent)); from legislatura import lista_est
 from collections import Counter
 from pathlib import Path
 import requests
@@ -46,7 +47,7 @@ def main():
     ops = [(v, re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", n))).strip()) for v, n in re.findall(r'<option value="(\d+)">([\s\S]*?)</option>', sel.group(0))] if sel else []
     print(len(ops), "deputados", flush=True)
     with cf.ThreadPoolExecutor(3) as ex: R = dict(ex.map(lambda o: coleta_dep(o[0]), ops))
-    U = json.load(open(D / "uf" / "BA.json")); de = U.get("de22", [])
+    U = json.load(open(D / "uf" / "BA.json")); de, ANO_LEG = lista_est(U)
     idx = {}
     for k, x in enumerate(de): idx.setdefault(limpa(x[0]), k); idx.setdefault(limpa(x[1]), k)
     toks = [(k, set(limpa(x[0]).split()) | set(limpa(x[1]).split())) for k, x in enumerate(de)]
@@ -66,6 +67,7 @@ def main():
     out = {"fonte": "Assembleia Legislativa da Bahia (ALBA) · consulta pública de proposições", "url": "https://www.al.ba.gov.br", "gerado": datetime.date.today().isoformat(),
            "legislatura": "20ª legislatura (2023–2027)", "temVotos": False,
            "obs": "Proposições de fevereiro de 2023 a julho de 2025. Desde agosto de 2025, a ALBA usa outro sistema que bloqueia o acesso automático; as proposições mais novas estão no site oficial.", "dep": dep}
+    out["ano"] = ANO_LEG
     json.dump(out, open(OUT / "BA.json", "w"), ensure_ascii=False, separators=(",", ":"))
     r = {"deputados": len(ops), "ligados": len(ops) - len(sem), "proposicoes": sum(len(v) for v in R.values()), "sem_par": sem[:10]}
     print(json.dumps(r, ensure_ascii=False)); return r

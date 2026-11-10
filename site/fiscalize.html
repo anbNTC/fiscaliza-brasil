@@ -263,11 +263,13 @@ const pTSE=(p)=>({nome:title(p[0]),civil:title(p[1]),part:p[2],fed:p[3],g:p[4],n
 async function estado(uf){
   setNav("mapa");await loadBR();const u=BR.ufs[uf];if(!u)return notFound();
   const D=await loadUF(uf);const deps=BR.dep.filter(d=>d[3]===uf),sens=BR.sen.filter(s=>s[4]===uf);
-  const [g,v]=u.gov,[g26,v26]=u.gov26;const de=uf==="DF"?"dd":"de";
+  const PG=empossado("gov"),PL=empossado("leg");
+  const [g,v]=PG?u.gov26:u.gov,[g26,v26]=PG?u.gov:u.gov26,gA=PG?"26":"22",gB=PG?"22":"26";const de=uf==="DF"?"dd":"de";
+  const DEA=PL&&D.de26.length?D.de26:D.de22,DEB=PL&&D.de26.length?D.de22:D.de26,eA=DEA===D.de26?"26":"22",eB=eA==="26"?"22":"26";
   const st=store.get("aba_"+uf)||"atual";
   M.innerHTML=`<section class="card glass"><a class="muted small" href="#/mapa">← Mapa</a><span class="kick">Estado</span><h1>${esc(u.nome)}</h1><span class="fx"></span>
-    <p class="muted" style="margin:0">Quem representa ${esc(u.nome)}: governador, ${sens.length} senadores, ${deps.length} deputados federais e ${D.de22.length} deputados ${uf==="DF"?"distritais":"estaduais"}. Os eleitos em 2026 tomam posse em 1º de janeiro (governador) e 1º de fevereiro de 2027 (deputados e senadores).</p>
-    <div class="tabs" role="group" aria-label="Período"><button class="tab" data-t="atual" aria-pressed="${st==="atual"}">Mandato atual</button><button class="tab" data-t="26" aria-pressed="${st==="26"}">Eleitos em 2026</button></div></section>
+    <p class="muted" style="margin:0">Quem representa ${esc(u.nome)}: governador, ${sens.length} senadores, ${deps.length} deputados federais e ${DEA.length} deputados ${uf==="DF"?"distritais":"estaduais"}.${PL?"":" Os eleitos em 2026 tomam posse em 6 de janeiro (governador) e 1º de fevereiro de 2027 (deputados e senadores)."}</p>
+    <div class="tabs" role="group" aria-label="Período"><button class="tab" data-t="atual" aria-pressed="${st==="atual"}">Mandato atual</button><button class="tab" data-t="26" aria-pressed="${st==="26"}">${PL?"Mandato anterior":"Eleitos em 2026"}</button></div></section>
    <div id="est"></div>
    <section class="card glass"><h2>Cidades de ${esc(u.nome)}</h2><p class="muted small" style="margin:0">Prefeito, vice e vereadores eleitos em 2024 em cada uma das ${Object.keys(D.mun).length} cidades.</p>
     <div class="filter"><input id="fc" type="search" placeholder="Filtrar cidade" aria-label="Filtrar cidade"></div><div class="res" id="lc"></div></section>`;
@@ -275,22 +277,27 @@ async function estado(uf){
   const draw=t=>{store.set("aba_"+uf,t);document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));
     if(t==="atual"){
       est.innerHTML=`<div class="row2"><section class="card glass"><h2>Governo do estado</h2>
-         ${g?lead(`#/p/g/${uf}/0/22`,title(g[0]),cargo("gov",g[4])+" · "+esc(g[2])+" · eleito em 2022",ftse(g,2022,uf)):""}
-         ${v?lead(`#/p/g/${uf}/1/22`,title(v[0]),cargo("vice",v[4])+" · "+esc(v[2]),ftse(v,2022,uf)):""}
-         <p class="src">Eleitos em 2022 (mandato 2023–2026). Se houve renúncia ou afastamento, o TSE não registra: confira no site do governo do estado. Fonte: ${FONTE_TSE}</p></section>
+         ${g?lead(`#/p/g/${uf}/0/${gA}`,title(g[0]),cargo("gov",g[4])+" · "+esc(g[2])+" · eleito em 20"+gA,ftse(g,+("20"+gA),uf)):""}
+         ${v?lead(`#/p/g/${uf}/1/${gA}`,title(v[0]),cargo("vice",v[4])+" · "+esc(v[2]),ftse(v,+("20"+gA),uf)):""}
+         <p class="src">${PG?"Eleitos em 2026 (mandato 2027–2030).":"Eleitos em 2022 (mandato 2023–2026)."} Se houve renúncia ou afastamento, o TSE não registra: confira no site do governo do estado. Fonte: ${FONTE_TSE}</p></section>
         <section class="card glass"><h2>Senadores <span class="muted small">(${sens.length})</span></h2>
-         ${sens.map(s=>lead("#/p/s/"+s[0],s[1],esc(s[3])+" · "+(s[7]===2022?"mandato até 2031":"mandato até jan/2027")+(s[6]!=="Titular"?" · suplente":""),s[5])).join("")}
+         ${sens.map(s=>lead("#/p/s/"+s[0],s[1],esc(s[3])+" · "+(s[7]===2022?"mandato até 2031":s[7]===2026?"mandato até 2035":"mandato até jan/2027")+(s[6]!=="Titular"?" · suplente":""),s[5])).join("")}
          <p class="src">Fonte: ${FONTE_SEN}</p></section></div>
        <section class="card glass"><h2>Deputados federais <span class="muted small">(${deps.length})</span></h2><div class="people">${deps.map(d=>pcard("#/p/c/"+d[0],d[1],esc(d[2]),d[4],d[8]?'<span class="chip new">Reeleito em 2026</span>':"")).join("")}</div><p class="src">Em exercício hoje. Fonte: ${FONTE_CAM}</p></section>
-       <section class="card glass"><h2>Deputados ${uf==="DF"?"distritais":"estaduais"} <span class="muted small">(${D.de22.length})</span></h2>
-         <div class="people">${D.de22.map((p,i)=>pcard(`#/p/e/${uf}/22/${i}`,title(p[0]),partido(p),ftse(p,2022,uf),D.de26.some(q=>q[1]===p[1])?'<span class="chip new">Reeleito em 2026</span>':"")).join("")}</div>
-         <p class="src">Eleitos em 2022 (mandato até jan/2027). Fonte: ${FONTE_TSE}</p></section><div id="supl"></div><div id="banc"></div>`;
+       <section class="card glass"><h2>Deputados ${uf==="DF"?"distritais":"estaduais"} <span class="muted small">(${DEA.length})</span></h2>
+         <div class="people">${DEA.map((p,i)=>pcard(`#/p/e/${uf}/${eA}/${i}`,title(p[0]),partido(p),ftse(p,+("20"+eA),uf),eA==="22"&&D.de26.some(q=>q[1]===p[1])?'<span class="chip new">Reeleito em 2026</span>':"")).join("")}</div>
+         <p class="src">${eA==="26"?"Eleitos em 2026 (mandato 2027–2031).":"Eleitos em 2022 (mandato até jan/2027)."} Fonte: ${FONTE_TSE}</p></section><div id="supl"></div><div id="banc"></div>`;
       supl(uf);banc(uf);
     }else{
-      est.innerHTML=`<div class="note">Eleitos em outubro de 2026. Ainda não tomaram posse.</div>
+      if(PL){est.innerHTML=`<div class="note">Mandato 2023–2027, já encerrado. Quem foi eleito em 2022 e não voltou em 2026 continua com a ficha e o histórico aqui.</div>
+       <div class="row2"><section class="card glass"><h2>Governo do estado (2023–2026)</h2>
+         ${g26?lead(`#/p/g/${uf}/0/${gB}`,title(g26[0]),cargo("gov",g26[4])+" · "+esc(g26[2]),ftse(g26,+("20"+gB),uf)):'<p class="muted">Sem dado.</p>'}
+         ${v26?lead(`#/p/g/${uf}/1/${gB}`,title(v26[0]),cargo("vice",v26[4])+" · "+esc(v26[2]),ftse(v26,+("20"+gB),uf)):""}<p class="src">Fonte: ${FONTE_TSE}</p></section></div>
+       <section class="card glass"><h2>Deputados ${uf==="DF"?"distritais":"estaduais"} (2023–2027) <span class="muted small">(${DEB.length})</span></h2><div class="people">${DEB.map((p,i)=>pcard(`#/p/e/${uf}/${eB}/${i}`,title(p[0]),partido(p),ftse(p,+("20"+eB),uf))).join("")}</div><p class="src">Fonte: ${FONTE_TSE}</p></section>`;return}
+      est.innerHTML=`<div class="note">${PG?"Eleitos em outubro de 2026. O governador já tomou posse; deputados e senadores assumem em 1º/02/2027.":"Eleitos em outubro de 2026. Ainda não tomaram posse."}</div>
        <div class="row2"><section class="card glass"><h2>Governo do estado</h2>
-         ${g26?lead(`#/p/g/${uf}/0/26`,title(g26[0]),cargo("gov",g26[4])+" · "+esc(g26[2]),ftse(g26,2026,uf)):'<p class="muted">Sem dado.</p>'}
-         ${v26?lead(`#/p/g/${uf}/1/26`,title(v26[0]),cargo("vice",v26[4])+" · "+esc(v26[2]),ftse(v26,2026,uf)):""}<p class="src">Posse em 1º/01/2027. Fonte: ${FONTE_TSE}</p></section>
+         ${u.gov26[0]?lead(`#/p/g/${uf}/0/26`,title(u.gov26[0][0]),cargo("gov",u.gov26[0][4])+" · "+esc(u.gov26[0][2]),ftse(u.gov26[0],2026,uf)):'<p class="muted">Sem dado.</p>'}
+         ${u.gov26[1]?lead(`#/p/g/${uf}/1/26`,title(u.gov26[1][0]),cargo("vice",u.gov26[1][4])+" · "+esc(u.gov26[1][2]),ftse(u.gov26[1],2026,uf)):""}<p class="src">${PG?"Em exercício desde 6/01/2027.":"Posse em 6/01/2027."} Fonte: ${FONTE_TSE}</p></section>
         <section class="card glass"><h2>Senadores eleitos <span class="muted small">(${D.se26.length})</span></h2>${D.se26.map((p,i)=>lead(`#/p/n/${uf}/26/${i}`,title(p[0]),partido(p)+" · mandato 2027–2035",ftse(p,2026,uf))).join("")}<p class="src">Fonte: ${FONTE_TSE}</p></section></div>
        <section class="card glass"><h2>Deputados federais eleitos <span class="muted small">(${D.df26.length})</span></h2><div class="people">${D.df26.map((p,i)=>pcard(`#/p/f/${uf}/26/${i}`,title(p[0]),partido(p),ftse(p,2026,uf))).join("")}</div><p class="src">Fonte: ${FONTE_TSE}</p></section>
        <section class="card glass"><h2>Deputados ${uf==="DF"?"distritais":"estaduais"} eleitos <span class="muted small">(${D.de26.length})</span></h2><div class="people">${D.de26.map((p,i)=>pcard(`#/p/e/${uf}/26/${i}`,title(p[0]),partido(p),ftse(p,2026,uf))).join("")}</div><p class="src">Fonte: ${FONTE_TSE}</p></section>`;

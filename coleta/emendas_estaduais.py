@@ -5,6 +5,7 @@ Saída: site/data/emendas_est/{UF}.json
   {"fonte", "url", "gerado", "metrica", "dep": {"chave": [nome, k_de22 (int) | chave "x..." da Assembleia | None, total, pago, [[cidade, valor] x10]]},
    "cid": {CIDADE_NORMALIZADA: [[chave, valor] ...]}}"""
 import csv, difflib, io, json, re, sys, datetime, zipfile
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).resolve().parent)); from legislatura import lista_est
 from collections import defaultdict
 from pathlib import Path
 import requests
@@ -115,7 +116,7 @@ def um(uf):
         if not a or (not emp and not pago): continue
         ch = limpa(a) or norm(a); nome.setdefault(ch, a)
         tot[ch][0] += emp; tot[ch][1] += pago; cid[ch][m or "SEM MUNICIPIO"] += emp or pago; n += 1
-    de = json.load(open(D / "uf" / f"{uf}.json")).get("de22", [])
+    de, ANO_LEG = lista_est(json.load(open(D / "uf" / f"{uf}.json")))
     L = liga([nome[c] for c in tot], de)
     L.update({n: k for n, k in liga_est([n for n, k in L.items() if k is None], uf).items()})
     dep = {}
@@ -128,6 +129,7 @@ def um(uf):
     for c in porCid: porCid[c].sort(key=lambda x: -x[1])
     out = {"fonte": fonte, "url": url, "gerado": datetime.date.today().isoformat(), "desde": ANO0,
            "metrica": "valor empenhado (reservado no orçamento para pagar), de " + str(ANO0) + " até hoje", "dep": dep, "cid": porCid}
+    out["ano"] = ANO_LEG
     json.dump(out, open(OUT / f"{uf}.json", "w"), ensure_ascii=False, separators=(",", ":"))
     lig = sum(1 for v in dep.values() if v[1] is not None)
     r = {"uf": uf, "linhas": n, "autores": len(dep), "ligados": lig, "empenhado": round(sum(v[2] for v in dep.values())), "pago": round(sum(v[3] for v in dep.values())),

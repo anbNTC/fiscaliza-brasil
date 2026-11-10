@@ -1,6 +1,7 @@
 """ALESP (São Paulo): deputados, proposituras e autores, pelos arquivos oficiais de dados abertos (atualizados todo dia).
 Saída: site/data/est/SP.json no mesmo formato das Assembleias com SAPL (sem votos: a ALESP não publica votos de plenário)."""
 import io, json, re, sys, unicodedata, zipfile, datetime
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).resolve().parent)); from legislatura import lista_est
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -66,7 +67,7 @@ def main():
         i = campo(a, "IdDocumento")
         if i in props: por[(campo(a, "IdAutor"), norm(campo(a, "NomeAutor")))].append(i)
     # liga deputado ALESP -> autor -> deputado do site (TSE 2022)
-    U = json.load(open(D / "uf" / "SP.json")); de = U.get("de22", [])
+    U = json.load(open(D / "uf" / "SP.json")); de, ANO_LEG = lista_est(U)
     idx = {}
     for k, x in enumerate(de): idx.setdefault(norm(x[0]), k); idx.setdefault(norm(x[1]), k); idx.setdefault(limpa(x[0]), k)
     toks = [(j, set(limpa(x[0]).split()) | set(limpa(x[1]).split())) for j, x in enumerate(de)]
@@ -95,6 +96,7 @@ def main():
         else: dep[str(k)] = reg
     out = {"fonte": "Assembleia Legislativa de São Paulo (ALESP) · Dados Abertos", "url": "https://www.al.sp.gov.br/dados-abertos/", "gerado": datetime.date.today().isoformat(),
            "legislatura": "20ª legislatura (2023–2027)", "temVotos": False, "dep": dep}
+    out["ano"] = ANO_LEG
     json.dump(out, open(OUT / "SP.json", "w"), ensure_ascii=False, separators=(",", ":"))
     r = {"deputados": len(em), "ligados": len(em) - len(sem), "proposituras": len(props), "autorias": n_aut, "sem_par": sem[:10]}
     print(json.dumps(r, ensure_ascii=False)); return r

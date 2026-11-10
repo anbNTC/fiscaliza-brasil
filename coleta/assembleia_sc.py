@@ -2,6 +2,7 @@
 Lê a lista filtrada por autor, página por página, devagar para não sobrecarregar o site da Assembleia.
 Saída: site/data/est/SC.json no mesmo formato das outras Assembleias."""
 import json, os, re, sys, time, html, datetime, concurrent.futures as cf
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).resolve().parent)); from legislatura import lista_est
 from collections import Counter
 from pathlib import Path
 import requests
@@ -59,7 +60,7 @@ def main():
     ops = re.findall(r'<option value="([a-z0-9\-]+)"[^>]*>\s*(Deputad[oa] [^<]+?)\s*</option>', t)
     print(len(ops), "deputados em exercício na lista", flush=True)
     with cf.ThreadPoolExecutor(3) as ex: R = dict(ex.map(lambda o: coleta_dep(o[0]), ops))
-    U = json.load(open(D / "uf" / "SC.json")); de = U.get("de22", [])
+    U = json.load(open(D / "uf" / "SC.json")); de, ANO_LEG = lista_est(U)
     idx = {}
     for k, x in enumerate(de): idx.setdefault(limpa(x[0]), k); idx.setdefault(limpa(x[1]), k)
     toks = [(k, set(limpa(x[0]).split()) | set(limpa(x[1]).split())) for k, x in enumerate(de)]
@@ -76,6 +77,7 @@ def main():
         else: dep[str(k)] = reg
     out = {"fonte": "Assembleia Legislativa de Santa Catarina (ALESC) · e-Legis", "url": B, "gerado": datetime.date.today().isoformat(),
            "legislatura": "20ª legislatura (2023–2027)", "temVotos": False, "dep": dep}
+    out["ano"] = ANO_LEG
     json.dump(out, open(OUT / "SC.json", "w"), ensure_ascii=False, separators=(",", ":"))
     r = {"deputados": len(ops), "ligados": len(ops) - len(sem), "proposicoes": sum(sum(x["cont"].values()) for x in R.values()), "parciais": sum(1 for x in R.values() if x["corte"]), "sem_par": sem[:10]}
     print(json.dumps(r, ensure_ascii=False)); return r

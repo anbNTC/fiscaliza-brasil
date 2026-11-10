@@ -3,6 +3,7 @@ A página de resultados traz a lista completa em JSON (usada pelo botão "Gerar 
 O site só responde a acessos do Brasil, então a coleta passa pela saída BR (coleta/saida_br.py).
 Saída: site/data/est/RS.json no mesmo formato das outras Assembleias."""
 import json, re, sys, time, html, datetime, concurrent.futures as cf
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).resolve().parent)); from legislatura import lista_est
 from collections import Counter
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -39,7 +40,7 @@ def main():
     t = get(f"{B}/legislativo").text
     sel = re.search(r'<select name="nomeProponente"[\s\S]*?</select>', t)
     ops = [html.unescape(x).strip() for x in re.findall(r'<option value="([^"]*)"', sel.group(0))] if sel else []
-    U = json.load(open(D / "uf" / "RS.json")); de = U.get("de22", [])
+    U = json.load(open(D / "uf" / "RS.json")); de, ANO_LEG = lista_est(U)
     idx = {}
     for k, x in enumerate(de): idx.setdefault(limpa(x[0]), k); idx.setdefault(limpa(x[1]), k)
     toks = [(k, set(limpa(x[0]).split()) | set(limpa(x[1]).split())) for k, x in enumerate(de)]
@@ -76,6 +77,7 @@ def main():
                        "sapl": f"{B}/legislativo/pesquisa?nomeProponente={nome.replace(' ', '+')}"}
     out = {"fonte": "Assembleia Legislativa do Rio Grande do Sul (ALRS) · pesquisa de proposições", "url": f"{B}/legislativo", "gerado": datetime.date.today().isoformat(),
            "legislatura": "56ª legislatura (2023–2027)", "temVotos": False, "dep": dep}
+    out["ano"] = ANO_LEG
     json.dump(out, open(OUT / "RS.json", "w"), ensure_ascii=False, separators=(",", ":"))
     falta = [de[k][0] for k in range(len(de)) if k not in alvo.values()]
     r = {"eleitos": len(de), "ligados": len(dep), "proposicoes": sum(len(v) for v in R.values()), "sem_par": falta[:12]}

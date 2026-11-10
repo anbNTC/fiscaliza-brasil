@@ -4,6 +4,7 @@ O filtro de tipo da API é ignorado: um pedido por ano traz tudo.
 Votos ficam em PDFs atrás de reCAPTCHA: não coletamos (o site diz isso).
 Saída: site/data/est/PR.json no mesmo formato das outras Assembleias, mais "leis" = [[número, ano, ementa, homenagem 0/1, autor principal 0/1, data]]."""
 import json, re, sys, time, html, datetime
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).resolve().parent)); from legislatura import lista_est
 from collections import Counter
 from pathlib import Path
 import requests
@@ -80,7 +81,7 @@ def main():
                 if d: R[d["slug"]]["leis"].append([x.get("numero"), ano, (x.get("ementa") or "").strip()[:220], 1 if HOMENAGEM.search(norm(x.get("assunto") or "")) else 0, 1 if i == 0 else 0, (x.get("data") or "")[:10]])
         print(ano, len(L), "proposições,", len(LL), "normas", flush=True); time.sleep(1)
     if nprop < 1000: raise RuntimeError(f"poucas proposições da ALEP ({nprop}); não grava")
-    U = json.load(open(D / "uf" / "PR.json")); de = U.get("de22", [])
+    U = json.load(open(D / "uf" / "PR.json")); de, ANO_LEG = lista_est(U)
     idx = {}
     for k, x in enumerate(de): idx.setdefault(limpa(x[0]), k); idx.setdefault(limpa(x[1]), k)
     toks = [(k, set(limpa(x[0]).split()) | set(limpa(x[1]).split())) for k, x in enumerate(de)]
@@ -99,6 +100,7 @@ def main():
     out = {"fonte": "Assembleia Legislativa do Paraná (ALEP) · API pública", "url": SITE, "gerado": datetime.date.today().isoformat(),
            "legislatura": "20ª legislatura (2023–2027)", "temVotos": False,
            "obs": "A ALEP publica os votos de cada deputado só em PDFs protegidos por reCAPTCHA, fora do formato de dados abertos. Por isso não aparecem aqui.", "dep": dep}
+    out["ano"] = ANO_LEG
     json.dump(out, open(OUT / "PR.json", "w"), ensure_ascii=False, separators=(",", ":"))
     r = {"deputados": len(ald), "ligados": len(ald) - len(sem), "proposicoes": nprop, "leis": nlei, "sem_par": sem[:10]}
     print(json.dumps(r, ensure_ascii=False)); return r

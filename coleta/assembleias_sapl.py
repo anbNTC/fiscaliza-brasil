@@ -3,6 +3,7 @@ e, onde a Assembleia registra, o voto de cada deputado.
 Saída: site/data/est/{UF}.json  {"fonte", "gerado", "dep": {chave: {...}}}  onde chave = índice do deputado em uf/{UF}.json (de22).
 Sem captcha nem bloqueio: só a API pública do SAPL."""
 import json, os, re, sys, time, unicodedata, datetime, concurrent.futures as cf
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).resolve().parent)); from legislatura import lista_est
 from collections import Counter, defaultdict
 from pathlib import Path
 import requests
@@ -48,12 +49,13 @@ class SAPL:
 
 def coleta(uf):
     t0 = time.time(); A = SAPL(uf)
-    U = json.load(open(D / "uf" / f"{uf}.json")); de = U.get("de22", [])
+    U = json.load(open(D / "uf" / f"{uf}.json")); de, ANO_LEG = lista_est(U)
     r = coleta_sapl(A, de, DESDE, ANOS)
     if "erro" in r: return uf, r
     dep, leg, vp, mats, sem, parl = r["dep"], r["leg"], r["vp"], r["mats"], r["sem"], r["parl"]
     out = {"fonte": f"Assembleia Legislativa ({uf}) · SAPL, dados abertos", "url": A.raiz, "gerado": datetime.date.today().isoformat(),
            "legislatura": leg.get("__str__"), "temVotos": bool(vp), "dep": dep}
+    out["ano"] = ANO_LEG
     json.dump(out, open(OUT / f"{uf}.json", "w"), ensure_ascii=False, separators=(",", ":"))
     return uf, {"deputados": len(parl), "ligados": len(parl) - len(sem), "materias": len(mats), "votos": len(vp), "seg": round(time.time() - t0), "sem_par": sem[:8]}
 

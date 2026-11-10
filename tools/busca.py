@@ -1,7 +1,8 @@
 """Índice de busca de todos os políticos do site (Quem é quem): deputados federais e estaduais, senadores, governadores e vices,
 prefeitos e vices, vereadores, eleitos de 2026. Saída: site/data/busca/{3 letras}.json, cada um com os nomes que têm uma palavra
 começando por essas letras: [[nome, cargo · partido · lugar, UF, link, texto normalizado]]."""
-import json, re, unicodedata, shutil
+import json, re, unicodedata, shutil, datetime
+PG = datetime.date.today() >= datetime.date(2027, 1, 6); PL = datetime.date.today() >= datetime.date(2027, 2, 1)  # virada de mandato
 from collections import defaultdict
 from pathlib import Path
 
@@ -22,15 +23,15 @@ vistos = {e[4] + e[2] for e in E}
 for uf, u in B["ufs"].items():
     for ano, k in (("22", "gov"), ("26", "gov26")):
         for i, p in enumerate((u.get(k) or [])[:2]):
-            if p: add(p, ("Governador(a)" if i == 0 else "Vice-governador(a)") + (" eleito(a) em 2026" if ano == "26" else ""), uf, f"#/p/g/{uf}/{i}/{ano}")
+            if p: add(p, ("Governador(a)" if i == 0 else "Vice-governador(a)") + ((" eleito(a) em 2026" if not PG else "") if ano == "26" else (" (2023–2026)" if PG else "")), uf, f"#/p/g/{uf}/{i}/{ano}")
 for f in sorted((D / "uf").glob("*.json")):
     uf = f.stem; U = json.load(open(f))
-    for i, p in enumerate(U.get("de22") or []): add(p, "Deputado(a) estadual", uf, f"#/p/e/{uf}/22/{i}")
-    for i, p in enumerate(U.get("de26") or []): add(p, "Deputado(a) estadual eleito(a) em 2026", uf, f"#/p/e/{uf}/26/{i}")
+    for i, p in enumerate(U.get("de22") or []): add(p, "Deputado(a) estadual" + (" (2023–2027)" if PL else ""), uf, f"#/p/e/{uf}/22/{i}")
+    for i, p in enumerate(U.get("de26") or []): add(p, "Deputado(a) estadual" + ("" if PL else " eleito(a) em 2026"), uf, f"#/p/e/{uf}/26/{i}")
     for i, p in enumerate(U.get("df26") or []):
-        if norm(p[0] + " " + p[1]) + uf not in vistos: add(p, "Deputado(a) federal eleito(a) em 2026", uf, f"#/p/f/{uf}/26/{i}")
+        if norm(p[0] + " " + p[1]) + uf not in vistos: add(p, "Deputado(a) federal" + ("" if PL else " eleito(a) em 2026"), uf, f"#/p/f/{uf}/26/{i}")
     for i, p in enumerate(U.get("se26") or []):
-        if norm(p[0] + " " + p[1]) + uf not in vistos: add(p, "Senador(a) eleito(a) em 2026", uf, f"#/p/n/{uf}/26/{i}")
+        if norm(p[0] + " " + p[1]) + uf not in vistos: add(p, "Senador(a)" + ("" if PL else " eleito(a) em 2026"), uf, f"#/p/n/{uf}/26/{i}")
     for ue, m in (U.get("mun") or {}).items():
         c = tit(m[0]); add(m[1], "Prefeito(a)", uf, f"#/p/m/{uf}/{ue}/p", c); add(m[2], "Vice-prefeito(a)", uf, f"#/p/m/{uf}/{ue}/v", c)
         for i, p in enumerate(m[3] or []): add(p, "Vereador(a)", uf, f"#/p/m/{uf}/{ue}/{i}", c)

@@ -2,6 +2,7 @@
 O site só responde a acessos do Brasil, então a coleta passa pela saída BR (coleta/saida_br.py).
 Saída: site/data/est/PE.json no mesmo formato das outras Assembleias."""
 import io, json, re, sys, datetime
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).resolve().parent)); from legislatura import lista_est
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -42,7 +43,7 @@ def main():
     por = defaultdict(list)
     for x in todos:
         for n in x["aut"]: por[limpa(n)].append(x)
-    U = json.load(open(D / "uf" / "PE.json")); de = U.get("de22", [])
+    U = json.load(open(D / "uf" / "PE.json")); de, ANO_LEG = lista_est(U)
     idx = {}
     for k, x in enumerate(de): idx.setdefault(limpa(x[0]), k); idx.setdefault(limpa(x[1]), k)
     toks = [(k, set(limpa(x[0]).split()) | set(limpa(x[1]).split())) for k, x in enumerate(de)]
@@ -68,6 +69,7 @@ def main():
         elif str(k) not in dep or sum(reg["cont"].values()) > sum(dep[str(k)]["cont"].values()): dep[str(k)] = reg
     out = {"fonte": "Assembleia Legislativa de Pernambuco (Alepe) · Dados Abertos", "url": "https://dadosabertos.alepe.pe.gov.br", "gerado": datetime.date.today().isoformat(),
            "legislatura": "20ª legislatura (2023–2027)", "temVotos": False, "dep": dep}
+    out["ano"] = ANO_LEG
     json.dump(out, open(OUT / "PE.json", "w"), ensure_ascii=False, separators=(",", ":"))
     r = {"deputados": len(parl), "registros": len(dep), "ligados": sum(1 for k in dep if not k.startswith("x")), "proposicoes": len(todos), "sem_par": sem[:12]}
     print(json.dumps(r, ensure_ascii=False)); return r

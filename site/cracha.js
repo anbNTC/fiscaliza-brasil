@@ -1,6 +1,9 @@
 /* Ficha (crachá) do político: cabeçalho, abas e o formulário "Reportar erro".
    Usa as funções e dados globais de fiscalize.html ($, M, esc, norm, title, brl, mil, BR, loadBR, loadUF, getJSON...). */
 "use strict";
+/* Virada de mandato: os governadores eleitos em 2026 assumem em 6/01/2027 (EC 111/2021) e deputados e senadores em 1º/02/2027. A partir dessas datas o site passa sozinho a tratá-los como em exercício. */
+const POSSE = { gov: "2027-01-06", leg: "2027-02-01" };
+function empossado(k) { return Date.now() >= Date.parse(POSSE[k] + "T00:00:00-03:00"); }
 const __pb = document.createElement("style"); __pb.textContent = ".pbox{display:grid;gap:8px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.75);border:1px solid rgba(11,11,12,.08)}.pbox b{font-family:var(--f-display)}.mbars{display:flex;align-items:flex-end;gap:3px;height:96px;padding:4px 0;border-bottom:1px solid rgba(11,11,12,.12)}.mbars i{flex:1;background:rgba(11,11,12,.25);border-radius:3px 3px 0 0;min-width:4px}.mbars i.top{background:#B3261E}"; document.head.append(__pb);
 const SUBSIDIO = 46366.19; // Decreto Legislativo 172/2022, desde 01/02/2025 (deputados e senadores)
 const DEP_GAB = 165806.07, DEP_MORADIA = 4253.00; // Câmara, transparência/gastos-parlamentares
@@ -264,13 +267,14 @@ async function cracha(parts) {
   } else {
     const uf = parts[1]; const D = await loadUF(uf); voltar = "#/uf/" + uf; src = FONTE_TSE;
     if (t === "g") { P = (parts[3] === "26" ? BR.ufs[uf].gov26 : BR.ufs[uf].gov)[+parts[2]]; if (!P) return notFound(); const pp = pTSE(P);
-      o = { nome: pp.nome, cargo: cargo(parts[2] === "0" ? "gov" : "vice", pp.g) + " · " + BR.ufs[uf].nome, part: pp.part, uf }; o.mand = parts[3] === "26" ? "Eleito em 2026 · posse em 1º/01/2027" : "Eleito em 2022 · mandato 2023–2026";
-      if (parts[3] === "26") chips.push('<span class="chip new">Eleito em 2026</span>'); }
+      o = { nome: pp.nome, cargo: cargo(parts[2] === "0" ? "gov" : "vice", pp.g) + " · " + BR.ufs[uf].nome, part: pp.part, uf }; o.mand = parts[3] === "26" ? (empossado("gov") ? "Eleito em 2026 · mandato 2027–2030" : "Eleito em 2026 · posse em 6/01/2027") : "Eleito em 2022 · mandato 2023–2026" + (empossado("gov") ? " (encerrado)" : "");
+      if (parts[3] === "26") chips.push(empossado("gov") ? '<span class="chip ok">Em exercício</span>' : '<span class="chip new">Eleito em 2026</span>'); else if (empossado("gov")) chips.push('<span class="chip">Mandato encerrado</span>'); }
     else if (t === "e" || t === "f" || t === "n") { const arr = t === "e" ? (parts[2] === "26" ? D.de26 : D.de22) : t === "f" ? D.df26 : D.se26; P = arr[+parts[3]]; if (!P) return notFound(); const pp = pTSE(P);
       const ck = t === "e" ? (uf === "DF" ? "dd" : "de") : t === "f" ? "dep" : "sen"; o = { nome: pp.nome, cargo: cargo(ck, pp.g) + " · " + uf, part: pp.part, uf };
-      o.mand = parts[2] === "26" ? "Eleito em 2026 · posse em fev/2027" : "Eleito em 2022 · mandato até jan/2027"; if (parts[2] === "26") chips.push('<span class="chip new">Eleito em 2026</span>');
+      const pl = empossado("leg"); o.mand = parts[2] === "26" ? (pl ? "Eleito em 2026 · mandato 2027–" + (t === "n" ? "2035" : "2031") : "Eleito em 2026 · posse em 1º/02/2027") : "Eleito em 2022 · mandato 2023–2027" + (pl ? " (encerrado)" : "");
+      if (parts[2] === "26") chips.push(pl ? '<span class="chip ok">Em exercício</span>' : '<span class="chip new">Eleito em 2026</span>'); else if (pl && !D.de26.some((q) => q[1] === P[1])) chips.push('<span class="chip">Mandato encerrado</span>');
       if (t === "e" && parts[2] === "22" && D.de26.some((q) => q[1] === P[1])) chips.push('<span class="chip new">Reeleito em 2026</span>');
-      if (t === "e" && parts[2] === "22") { const E = await getJSON("data/est/" + uf + ".json").catch(() => null); if (E && E.dep[parts[3]]) { o.est = E.dep[parts[3]]; o.estInfo = E; } } }
+      if (t === "e") { const E = await getJSON("data/est/" + uf + ".json").catch(() => null); if (E && parts[2] === (E.ano || "22") && E.dep[parts[3]]) { o.est = E.dep[parts[3]]; o.estInfo = E; } } }
     else if (t === "m") { const m = D.mun[parts[2]]; if (!m) return notFound(); P = parts[3] === "p" ? m[1] : parts[3] === "v" ? m[2] : m[3][+parts[3]]; if (!P) return notFound(); const pp = pTSE(P);
       o = { nome: pp.nome, cargo: cargo(parts[3] === "p" ? "pref" : parts[3] === "v" ? "vp" : "ver", pp.g) + " · " + title(m[0]), part: pp.part, uf }; o.mand = "Eleito em 2024 · mandato 2025–2028"; voltar = `#/cidade/${uf}/${parts[2]}`;
       if (parts[3] !== "p" && parts[3] !== "v") { const C = await getJSON("data/cam/" + parts[2] + ".json").catch(() => null); if (C && C.dep[parts[3]]) { o.est = C.dep[parts[3]]; o.estInfo = C; } } }
@@ -285,9 +289,9 @@ async function cracha(parts) {
   if ((t === "c" || (t === "s" && BR.sen.find((x) => String(x[0]) === parts[1])[7] === 2022))) {
     o.cp = await campFederal(o.uf, o.civil, t === "c" ? "F" : "S"); if (o.cp) { o.vc = { c: o.cp.c }; o.ano = 2022; }
   }
-  if ((t === "e" && parts[2] === "22") || t === "x") {
+  if (t === "e" || t === "x") {
     const EE = await getJSON("data/emendas_est/" + o.uf + ".json").catch(() => null);
-    if (EE) { const key = t === "x" ? parts[2] : +parts[3]; const it = Object.values(EE.dep).find((v) => v[1] === key); if (it) { o.emEst = it; o.emEstInfo = EE; } }
+    if (EE && (t === "x" || parts[2] === (EE.ano || "22"))) { const key = t === "x" ? parts[2] : +parts[3]; const it = Object.values(EE.dep).find((v) => v[1] === key); if (it) { o.emEst = it; o.emEstInfo = EE; } }
   }
   const pp = P ? pTSE(P) : null; if (pp) o.civil = o.civil || pp.civil;
   // concordância: eleita / reeleita para mulheres

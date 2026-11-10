@@ -18,7 +18,7 @@
 const FBOuvir = (() => {
   let falando = false;
   const parar = () => { try { speechSynthesis.cancel(); } catch (e) {} falando = false; marca(); };
-  const marca = () => document.querySelectorAll(".ouvir").forEach((b) => { b.setAttribute("aria-pressed", falando); b.title = falando ? "Parar a leitura" : "Ouvir esta página"; b.innerHTML = falando ? "■<span class=\"acl-t\"> Parar</span>" : "🔊<span class=\"acl-t\"> Ouvir</span>"; });
+  const marca = () => document.querySelectorAll(".ouvir").forEach((b) => { b.setAttribute("aria-pressed", falando); b.title = falando ? "Parar a leitura" : "Ouvir esta página"; b.innerHTML = falando ? '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg><span class="acl-t"> Parar</span>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><span class="acl-t"> Ouvir</span>'; });
   const texto = () => { const m = document.getElementById("main"); if (!m) return ""; const c = m.cloneNode(true); c.querySelectorAll("script,style,svg,button,select,input,textarea,.src").forEach((e) => e.remove()); return c.innerText.replace(/\s+\n/g, "\n").replace(/[·•→←]/g, " ").trim(); };
   const falar = () => {
     if (!("speechSynthesis" in window)) { alert("Este navegador não tem leitura em voz alta."); return; }

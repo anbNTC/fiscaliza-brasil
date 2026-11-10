@@ -125,6 +125,9 @@ h3{font-size:1.02rem}
 .note{font-size:.86rem;padding:10px 14px;border-radius:14px;background:rgba(242,194,0,.16);border:1px solid rgba(242,194,0,.35)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media (max-width:520px){.top .acl-t{display:none}}
+.top .acl svg{width:17px;height:17px;display:block}.top .acl{display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:560px){.top{gap:6px;padding-left:12px;padding-right:12px}.top .brand{gap:7px;flex:1 1 auto;min-width:0}.top .brand svg{width:30px;height:30px}.top .brand b{font-size:.86rem;overflow:hidden;text-overflow:ellipsis}.top .sp{display:none}.top .home{padding:0;width:38px;height:38px;flex:none;display:inline-flex;align-items:center;justify-content:center;font-size:.95rem}.top .home+.home{margin-left:0}.top .home.ini .ini-t{display:none}}
+@media (max-width:360px){.top .brand b{display:none}}
 .top .home+.home{margin-left:6px}
 #est{display:grid;gap:16px;min-width:0}
 </style>
@@ -133,7 +136,7 @@ h3{font-size:1.02rem}
 <body>
 <header class="top glass">
   <a class="brand" href="#/" aria-label="Fiscalize: início"><svg viewBox="4 4 106 106" aria-hidden="true"><defs><clipPath id="fbl"><circle cx="50" cy="50" r="27"/></clipPath></defs><path d="M50 8 92 50 50 92 8 50Z" fill="#F7C21B"/><rect x="78" y="74" width="34" height="15" rx="7.5" transform="rotate(45 78 74)" fill="#0E8A4B"/><circle cx="50" cy="50" r="31" fill="#fff"/><circle cx="50" cy="50" r="27" fill="#1F4FBF"/><path clip-path="url(#fbl)" d="M14 52C34 36 66 36 88 46L88 54C66 45 34 45 14 60Z" fill="#fff"/><circle cx="40" cy="38" r="5" fill="#fff" opacity=".45"/></svg><b>Fiscaliza Brasil</b></a>
-  <span class="sp"></span><button class="home acl temab" type="button" onclick="FBTema.alternar()"></button><button class="home acl ouvir" type="button" onclick="FBOuvir.falar()" title="Ouvir esta página">🔊<span class="acl-t"> Ouvir</span></button><a class="home acl" href="#/acompanho" aria-label="Acompanhando">★<span class="acl-t"> Acompanhando</span><span class="acn"></span></a><a class="home" href="index.html">← Início<span class="acl-t"> do site</span></a>
+  <span class="sp"></span><button class="home acl temab" type="button" onclick="FBTema.alternar()"></button><button class="home acl ouvir" type="button" onclick="FBOuvir.falar()" title="Ouvir esta página" aria-label="Ouvir esta página"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><span class="acl-t"> Ouvir</span></button><a class="home acl" href="#/acompanho" aria-label="Acompanhando"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><span class="acl-t"> Acompanhando</span><span class="acn"></span></a><a class="home ini" href="index.html" aria-label="Início do site">←<span class="ini-t"> Início</span><span class="acl-t"> do site</span></a>
 </header>
 <main id="main"><p class="empty">Carregando…</p></main>
 <nav class="nav glass" aria-label="Navegação">

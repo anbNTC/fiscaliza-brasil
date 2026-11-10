@@ -41,7 +41,7 @@
   let pref = null; try { pref = localStorage.getItem(K); } catch (e) {}
   const sistema = matchMedia("(prefers-color-scheme: dark)");
   const aplica = () => { pe(); const esc = pref ? pref === "escuro" : sistema.matches; document.documentElement.classList.toggle("escuro", esc);
-    document.querySelectorAll(".temab").forEach((b) => { b.innerHTML = esc ? '☀<span class="acl-t"> Claro</span>' : '☾<span class="acl-t"> Escuro</span>'; b.title = esc ? "Usar o modo claro" : "Usar o modo escuro"; });
+    document.querySelectorAll(".temab").forEach((b) => { b.innerHTML = esc ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="acl-t"> Claro</span>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><span class="acl-t"> Escuro</span>'; b.setAttribute("aria-label", esc ? "Usar o modo claro" : "Usar o modo escuro"); b.title = esc ? "Usar o modo claro" : "Usar o modo escuro"; });
     const mc = document.querySelector('meta[name="theme-color"]'); if (mc) mc.content = esc ? "#0B0D10" : "#FBFBF7"; };
   window.FBTema = { alternar() { const esc = document.documentElement.classList.contains("escuro"); pref = esc ? "claro" : "escuro"; try { localStorage.setItem(K, pref); } catch (e) {} aplica(); } };
   sistema.addEventListener && sistema.addEventListener("change", aplica);

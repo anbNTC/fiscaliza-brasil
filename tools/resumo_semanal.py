@@ -16,7 +16,7 @@ VOTO = {"S": "Sim", "N": "Não", "A": "Abstenção", "O": "Obstrução", "P": "P
 
 def destinatarios():
     k = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
-    r = requests.post(f"{SB_URL}/rest/v1/rpc/resumo_destinatarios", headers={"apikey": k, "Authorization": "Bearer " + k, "Content-Type": "application/json"}, data="{}", timeout=60)
+    r = requests.post(f"{SB_URL}/rest/v1/rpc/resumo_destinatarios", headers={"apikey": k, "Content-Type": "application/json", **({} if k.startswith("sb_") else {"Authorization": "Bearer " + k})}, data="{}", timeout=60)
     r.raise_for_status(); return r.json()
 
 BR = json.load(open(D / "br.json")); S = json.load(open(D / "semana.json")); VC = json.load(open(D / "camara_votacoes.json")); VS = json.load(open(D / "senado_votacoes.json"))

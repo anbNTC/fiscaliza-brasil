@@ -3,7 +3,7 @@ Lê a lista de envio no Supabase (função resumo_destinatarios, só com a chave
 Segredos (só no GitHub): SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY. Limite do plano grátis do Resend: 100 e-mails por dia (MAX_ENVIOS).
 TESTE=email@x: manda só para esse endereço, com a lista dele, sem tocar nos outros.
 MODO=diario: alerta do dia (quem marcou "alerta diário"): votações e projetos desde ontem; só manda se houver novidade."""
-import json, os, sys, time, datetime, html
+import json, os, sys, time, datetime, html, re
 from pathlib import Path
 import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -35,7 +35,7 @@ dep = {str(d[0]): d for d in BR["dep"]}; sen = {str(x[0]): x for x in BR["sen"]}
 
 def bloco(it):
     d = it.get("dados") or {}; ref = it["ref"]; t, _, rid = ref.partition("/"); nome = d.get("nome") or ref; link = f"{SITE}/p/{ref}"
-    cab = f'<tr><td style="padding:18px 0 6px"><a href="{link}" style="color:#0B0B0C;font-weight:800;font-size:17px;text-decoration:none">{e(nome)}</a><br><span style="color:#5E6066;font-size:13px">{e(d.get("cargo") or "")}{" · " + e(d.get("part")) if d.get("part") else ""}</span></td></tr>'
+    cab = f'<tr><td style="padding:18px 0 6px"><a href="{link}" style="color:#0B0B0C;font-weight:800;font-size:17px;text-decoration:none">{e(nome)}</a><br><span style="color:#5E6066;font-size:13px">{e(re.sub(r"\(a\)", "", d.get("cargo") or ""))}{" · " + e(d.get("part")) if d.get("part") else ""}</span></td></tr>'
     if t in ("m", "e"):  # vereadores e deputados estaduais: projetos novos onde a Câmara ou a Assembleia publica em dados abertos
         partes = rid.split("/"); X = {}
         try:

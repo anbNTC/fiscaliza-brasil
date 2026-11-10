@@ -1,26 +1,14 @@
-"""Sonda (temporária): descobre a API do portal de transparência Elotech (eloweb) usado pela Câmara de Curitiba."""
-import requests, re, sys, os
-sys.path.insert(0, os.path.dirname(__file__))
-import saida_br
-H = {"user-agent": "Mozilla/5.0 FiscalizaBrasil/1.0"}
+"""Sonda (temporária): parâmetros da API de servidores do portal Elotech."""
+import requests, re
+H = {"user-agent": "Mozilla/5.0 FiscalizaBrasil/1.0", "accept": "application/json"}
 B = "https://cmcuritiba.eloweb.net"
-def g(u, br=False):
-    try: return saida_br.get(u, headers=H, timeout=90, tentativas=1) if br else requests.get(u, headers=H, timeout=90)
-    except Exception as e: print(u, repr(e)[:150]); return None
-br = False
-for br in (False, True):
-    r = g(B + "/portaltransparencia/1/servidores", br); print("== pagina", "br" if br else "direto", r.status_code if r is not None else None, len(r.text) if r is not None else 0)
-    if r is not None and r.ok: break
-t = r.text if r is not None else ""
-srcs = re.findall(r'src="([^"]+\.js)"', t); print("scripts", srcs)
-achados = set()
-for s in srcs:
-    u = s if s.startswith("http") else B + (s if s.startswith("/") else "/portaltransparencia/" + s)
-    j = g(u, br)
-    if j is None or not j.ok: print("js falhou", u); continue
-    js = j.text; print("js", u, len(js))
-    for m in re.findall(r'["\'`](/?[a-zA-Z0-9_\-/]*(?:api|servidor|folha|remunera)[a-zA-Z0-9_\-/{}$.]*)["\'`]', js):
-        if len(m) < 120: achados.add(m)
-    for m in re.findall(r'https?://[a-zA-Z0-9.\-]+/[a-zA-Z0-9_\-/]*', js):
-        if "api" in m.lower(): achados.add(m)
-print("\n".join(sorted(achados)[:150]))
+js = requests.get(B + "/portaltransparencia/static/js/main.0d4cf918.chunk.js", headers=H, timeout=90).text
+for pat in ("api/servidores/", "api/servidores/verbas/", "api/estrutura-organizacional/lotacoes/", "api/exercicios/entidade/", "api/entidades/"):
+    for m in list(re.finditer(re.escape(pat), js))[:3]:
+        print("##", pat, js[max(0, m.start() - 350): m.start() + 450].replace("\n", " ")); print()
+for u in ("/portaltransparencia-api/api/entidades/", "/portaltransparencia-api/api/exercicios/entidade/1", "/portaltransparencia-api/api/servidores/situacoes",
+          "/portaltransparencia-api/api/servidores/?entidade=1&exercicio=2026&mes=9&page=0&size=3",
+          "/portaltransparencia-api/api/servidores/?entidade=1&exercicio=2026&page=0&size=3"):
+    try:
+        r = requests.get(B + u, headers=H, timeout=60); print("==", u, r.status_code, r.text[:900])
+    except Exception as e: print(u, e)

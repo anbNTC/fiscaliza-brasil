@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "coleta/emendas_estaduais.py", "coleta/camaras_sapl.py", "coleta/votos_municipio.py", "coleta/campanha_doadores.py", "coleta/camara_gabinete.py", "coleta/assembleia_pr.py", "coleta/camara_curitiba.py", "proxy-br/**", "tools/**", ".github/workflows/dados.yml"]
+    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "coleta/emendas_estaduais.py", "coleta/camaras_sapl.py", "coleta/votos_municipio.py", "coleta/campanha_doadores.py", "coleta/camara_gabinete.py", "coleta/camara_verba_gabinete.py", "coleta/senado_gabinete.py", "coleta/assembleia_pr.py", "coleta/camara_curitiba.py", "proxy-br/**", "tools/**", ".github/workflows/dados.yml"]
 
 permissions:
   contents: write
@@ -120,6 +120,18 @@ jobs:
         timeout-minutes: 15
         run: python coleta/camara_curitiba.py 2>&1 | tail -6 | tee -a /tmp/assembleias.log
 
+      - name: Senado · gabinete de cada senador com salário
+        id: sgab
+        continue-on-error: true
+        timeout-minutes: 15
+        run: python coleta/senado_gabinete.py 2>&1 | tail -4
+
+      - name: Câmara · verba de gabinete de cada deputado
+        id: verba
+        continue-on-error: true
+        timeout-minutes: 40
+        run: python coleta/camara_verba_gabinete.py 2>&1 | tail -4
+
       - name: Emendas de deputados estaduais (PE, MG, GO)
         id: emest
         continue-on-error: true
@@ -190,7 +202,7 @@ jobs:
           RESEND_API_KEY: "${{ secrets.RESEND_API_KEY }}"
           ALERTA_EMAIL: "${{ secrets.ALERTA_EMAIL }}"
           RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          ETAPAS: '{"orient": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}", "alesp": "${{ steps.alesp.outcome }}", "alesc": "${{ steps.alesc.outcome }}", "alba": "${{ steps.alba.outcome }}", "alepe": "${{ steps.alepe.outcome }}", "ales": "${{ steps.ales.outcome }}", "alrs": "${{ steps.alrs.outcome }}", "alep": "${{ steps.alep.outcome }}", "cmc": "${{ steps.cmc.outcome }}", "emest": "${{ steps.emest.outcome }}", "camaras": "${{ steps.camaras.outcome }}", "vm": "${{ steps.vm.outcome }}", "camp": "${{ steps.camp.outcome }}", "gab": "${{ steps.gab.outcome }}", "calc": "${{ steps.calc.outcome }}"}'
+          ETAPAS: '{"orient": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}", "alesp": "${{ steps.alesp.outcome }}", "alesc": "${{ steps.alesc.outcome }}", "alba": "${{ steps.alba.outcome }}", "alepe": "${{ steps.alepe.outcome }}", "ales": "${{ steps.ales.outcome }}", "alrs": "${{ steps.alrs.outcome }}", "alep": "${{ steps.alep.outcome }}", "sgab": "${{ steps.sgab.outcome }}", "verba": "${{ steps.verba.outcome }}", "cmc": "${{ steps.cmc.outcome }}", "emest": "${{ steps.emest.outcome }}", "camaras": "${{ steps.camaras.outcome }}", "vm": "${{ steps.vm.outcome }}", "camp": "${{ steps.camp.outcome }}", "gab": "${{ steps.gab.outcome }}", "calc": "${{ steps.calc.outcome }}"}'
         run: python tools/email_resend.py
 
   publica:

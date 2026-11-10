@@ -237,6 +237,7 @@ async function cracha(parts) {
     chips.push('<span class="chip ok">Em exercício</span>'); if (!d[7]) chips.push('<span class="chip warn">Assumiu como suplente</span>'); if (d[8]) chips.push('<span class="chip new">Reeleito em 2026</span>');
     X = (await loadC(d[3]))[String(d[0])] || null; o.patList = X && X.pat;
     { const G = await getJSON("data/gab/" + d[3] + ".json").catch(() => null); if (G && G.dep[String(d[0])]) { o.gab = G.dep[String(d[0])]; o.gabInfo = G; } }
+    o.id = d[0]; { const V = await getJSON("data/gab/verba.json").catch(() => null); if (V && V.dep[String(d[0])]) { o.verba = V.dep[String(d[0])]; o.verbaInfo = V; if (!o.gab) o.gab = []; } }
     o.emAut = ((await getJSON("data/emendas/aut_" + d[3] + ".json").catch(() => ({}))).dep || {})["C:" + d[0]] || null;
     src = FONTE_CAM + " · " + FONTE_TSE; o.mand = "Mandato 2023–2027"; o.link = "https://www.camara.leg.br/deputados/" + d[0]; o.linkN = "Página na Câmara";
   } else if (t === "s") {
@@ -245,6 +246,7 @@ async function cracha(parts) {
     chips.push('<span class="chip ok">Em exercício</span>'); if (s[9]) chips.push('<span class="chip new">Reeleito em 2026</span>');
     X = (await loadS(s[4]))[String(s[0])] || null; o.patList = X && X.pat;
     o.emAut = ((await getJSON("data/emendas/aut_" + s[4] + ".json").catch(() => ({}))).dep || {})["S:" + s[0]] || null;
+    { const G = await getJSON("data/gab/senado.json").catch(() => null); if (G && G.dep[String(s[0])]) { o.gab = G.dep[String(s[0])]; o.gabInfo = G; o.gabSen = true; } }
     o.mand = s[7] === 2022 ? "Mandato 2023–2031" : "Mandato até 31/01/2027"; src = FONTE_SEN + " · " + FONTE_TSE; o.link = "https://www25.senado.leg.br/web/senadores/senador/-/perfil/" + s[0]; o.linkN = "Página no Senado";
   } else if (t === "w") {
     // vereador que exerceu mandato sem estar entre os eleitos de 2024 (em geral, suplente que assumiu), pela lista do SAPL da Câmara
@@ -324,10 +326,7 @@ async function cracha(parts) {
     if (k === "resumo" && casa === "C") await loadVC().catch(() => null);
     if (k === "resumo" && casa && X && !X.fp && !o.cpp) o.cpp = await contaPartido(o, X, casa).catch(() => null);
     if (k === "resumo") tb.innerHTML = `<h2>Resumo</h2>${kvHTML(secResumo(o, X, casa).concat(kv))}<p class="src">Fonte: ${src}. Atualizado em ${atual}.</p>`;
-    else if (k === "gab") { const cs = {}; o.gab.forEach((g) => (cs[g[1]] = (cs[g[1]] || 0) + 1));
-      tb.innerHTML = `<h2>Quem trabalha no gabinete <span class="muted small">(${o.gab.length})</span></h2><div class="chips">${Object.entries(cs).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c, n]) => `<span class="chip">${esc(c)} · ${n}</span>`).join("")}</div>
-        <div class="tl" style="margin-top:10px">${o.gab.map((g) => `<div><span><b>${esc(g[0])}</b><br><span class="small muted">${esc(g[1])}</span></span><b class="small muted">${g[2] ? "desde " + new Date(g[2] + "T12:00").toLocaleDateString("pt-BR") : ""}</b></div>`).join("")}</div>
-        <p class="src">Secretários parlamentares e outros servidores lotados no gabinete, como publicado pela Câmara. O arquivo não traz o salário de cada um, só o cargo (a tabela de remuneração por nível é pública no site da Câmara). Atualizado em ${new Date(o.gabInfo.gerado + "T12:00").toLocaleDateString("pt-BR")}. Fonte: <a href="${o.gabInfo.url}" target="_blank" rel="noopener">${esc(o.gabInfo.fonte)}</a>.</p>`; }
+    else if (k === "gab") tb.innerHTML = secGab(o);
     else if (k === "custo") { await loadCotaMedia(); tb.innerHTML = `<h2>Quanto custa o mandato</h2>${secCusto(o, X, casa)}`; }
     else if (k === "votos") { tb.innerHTML = `<h2>Como votou</h2><p class="muted small" style="margin:0">Votações nominais do Plenário desde 2023. Toque no filtro para escolher ano${casa === "C" ? " e tema" : ""}.</p><div id="vv" style="display:grid;gap:10px"><p class="muted">Carregando…</p></div><p class="src">Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; await loadPart().catch(() => null); secVotos(X, casa === "C" ? await loadVC() : await loadVS(), casa, $("#vv"), o.part); }
     else if (k === "proj") { tb.innerHTML = `<h2>Projetos apresentados</h2><div id="pp" style="display:grid;gap:10px"></div><p class="src">Desde 2023. Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; secProjetos(X, casa, $("#pp")); }
@@ -385,6 +384,35 @@ function secEmEst(o) {
    <h3>Para onde foi</h3><div class="tl">${cs.map(([c, v]) => `<div><span>${esc(title(c))}</span><b>${brl(v)}</b>${bar(v, mx)}</div>`).join("")}</div>
    <p class="small muted" style="margin:0">A cidade é a informada pelo governo do estado para cada emenda. Quando o dinheiro vai para um órgão estadual, pode aparecer a capital ou "sem município".</p>
    <p class="src">Fonte: <a href="${esc(I.url)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>. Atualizado em ${new Date(I.gerado + "T12:00").toLocaleDateString("pt-BR")}.</p>`;
+}
+/* Secretário parlamentar: vencimento por nível (Câmara, tabela em vigor desde 18/02/2026, Lei 15.349/2026). Com a gratificação de representação (GRG), o valor dobra. */
+const SP_VENC = [1710.83, 1906.12, 2101.45, 2296.72, 2492.06, 2687.34, 2882.65, 3077.95, 3273.26, 3468.54, 3663.85, 4054.45, 4445.03, 4835.65, 5226.24, 5616.84, 6202.74, 6788.64, 7374.54, 7960.44, 8546.34, 9327.56, 10108.74, 11544.1, 12979.45];
+const SP_TAB = "https://www2.camara.leg.br/a-camara/estruturaadm/diretorias/diretoria-de-gestao-pessoas/estrutura-1/depes/secretariado-parlamentar/posse-de-sp-sem-vinculo/TABSP202601MAR202620260303.pdf/view";
+function secGab(o) {
+  const g = o.gab || [], dt = (x) => (x ? new Date(String(x).slice(0, 10) + "T12:00").toLocaleDateString("pt-BR") : "");
+  if (o.gabSen) {
+    const tot = g.reduce((a, r) => a + (r[3] || 0), 0), mx = Math.max(1, ...g.map((r) => r[3] || 0)), [ano, mes] = String(o.gabInfo.mes || "").split("-");
+    return `<h2>Quem trabalha no gabinete <span class="muted small">(${g.length})</span></h2>
+     <div class="kv"><div><div class="l">Folha do gabinete</div><div class="v">${brl(tot)}</div><div class="s">salários brutos em ${mes}/${ano}, folha normal</div></div><div><div class="l">Pessoas</div><div class="v">${mil(g.length)}</div><div class="s">no gabinete em Brasília e nos escritórios no estado</div></div></div>
+     <div class="tl" style="margin-top:10px">${g.map((r) => `<div><span><b>${esc(r[0])}</b><br><span class="small muted">${esc(r[1])}${r[2] ? " · desde " + r[2] : ""}</span></span><b>${r[3] != null ? brl(r[3]) : '<span class="small muted">sem folha no mês</span>'}${r[4] != null ? `<br><span class="small muted">líquido ${brl(r[4])}</span>` : ""}</b>${bar(r[3] || 0, mx)}</div>`).join("")}</div>
+     <p class="src">Salário bruto = remuneração básica, vantagens pessoais e função, sem auxílios e diárias. Líquido = depois de imposto e previdência. É o que o Senado publica, pelo nome, na folha normal de ${mes}/${ano}. Fonte: <a href="${o.gabInfo.url}" target="_blank" rel="noopener">${esc(o.gabInfo.fonte)}</a>. Atualizado em ${dt(o.gabInfo.gerado)}.</p>`;
+  }
+  let h = "";
+  if (o.verba) {
+    const anos = Object.keys(o.verba).sort().reverse(), a0 = anos[0], M = o.verba[a0], lim = o.verbaInfo.limite || 0, tot = M.reduce((a, m) => a + m[1], 0), med = M.length ? M.reduce((a, m) => a + (m[2] || 0), 0) / M.length : 0;
+    const NM = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"], mx = Math.max(1, ...M.map((m) => m[1]));
+    h += `<h2>Verba de gabinete</h2>
+     <div class="kv"><div><div class="l">Gasto em ${a0}</div><div class="v">${brl(tot)}</div><div class="s">${M.length} ${M.length === 1 ? "mês" : "meses"} com salários pagos</div></div><div><div class="l">Uso do limite</div><div class="v">${med.toFixed(0)}%</div><div class="s">média por mês · limite atual ${brl(lim)} por mês</div></div></div>
+     <div class="tl">${M.map((m) => `<div><span>${NM[m[0] - 1]}/${a0}</span><b>${brl(m[1])}${m[2] != null ? ` <span class="small muted">${String(m[2]).replace(".", ",")}%</span>` : ""}</b>${bar(m[1], mx)}</div>`).join("")}</div>
+     ${anos.length > 1 ? `<p class="small muted" style="margin:6px 0 0">${anos.slice(1).map((a) => `${a}: ${brl(o.verba[a].reduce((x, m) => x + m[1], 0))}`).join(" · ")}</p>` : ""}
+     <p class="src">A verba de gabinete paga os salários dos até 25 secretários parlamentares. A porcentagem é sobre o limite em vigor naquele mês. Fonte: <a href="https://www.camara.leg.br/deputados/${o.id || ""}" target="_blank" rel="noopener">página oficial do deputado na Câmara</a>. Atualizado em ${dt(o.verbaInfo.gerado)}.</p>`;
+  }
+  if (!g.length) return h;
+  const nv = (c) => { const m = /\(SP(\d\d)([CSU])?\)/.exec(c || ""); return m ? +m[1] : 0; };
+  const cs = {}; g.forEach((r) => (cs[r[1]] = (cs[r[1]] || 0) + 1));
+  return h + `<h2>Quem trabalha no gabinete <span class="muted small">(${g.length})</span></h2><div class="chips">${Object.entries(cs).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c, n]) => `<span class="chip">${esc(c)} · ${n}</span>`).join("")}</div>
+    <div class="tl" style="margin-top:10px">${g.map((r) => { const n = nv(r[1]), v = n ? SP_VENC[n - 1] : 0; return `<div><span><b>${esc(r[0])}</b><br><span class="small muted">${esc(r[1])}${r[2] ? " · desde " + dt(r[2]) : ""}</span></span><b class="small">${v ? `${brl(v)} a ${brl(2 * v)}<br><span class="muted">faixa do nível SP${String(n).padStart(2, "0")}</span>` : '<span class="muted">cargo sem tabela de secretário</span>'}</b></div>`; }).join("")}</div>
+    <p class="src">A Câmara não publica o salário com o nome de cada pessoa: o arquivo mensal de remuneração traz só um número no lugar do nome. Por isso mostramos a faixa oficial do nível de cada secretário parlamentar: o vencimento bruto, sem e com a gratificação de representação (que dobra o valor), pela <a href="${SP_TAB}" target="_blank" rel="noopener">tabela em vigor desde 18/02/2026</a> (Lei 15.349/2026), sem o auxílio-alimentação. Fonte do cadastro: <a href="${o.gabInfo ? o.gabInfo.url : "#"}" target="_blank" rel="noopener">${o.gabInfo ? esc(o.gabInfo.fonte) : "Câmara dos Deputados"}</a>${o.gabInfo ? ", atualizado em " + dt(o.gabInfo.gerado) : ""}.</p>`;
 }
 function secEmFed(o) {
   const e = o.emAut, mx = e.c.length ? e.c[0][2] : 1, mf = e.f.length ? e.f[0][1] : 1;

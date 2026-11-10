@@ -4,7 +4,7 @@
 /* Virada de mandato: os governadores eleitos em 2026 assumem em 6/01/2027 (EC 111/2021) e deputados e senadores em 1º/02/2027. A partir dessas datas o site passa sozinho a tratá-los como em exercício. */
 const POSSE = { gov: "2027-01-06", leg: "2027-02-01" };
 function empossado(k) { return Date.now() >= Date.parse(POSSE[k] + "T00:00:00-03:00"); }
-const __pb = document.createElement("style"); __pb.textContent = ".pbox{display:grid;gap:8px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.75);border:1px solid rgba(11,11,12,.08)}.pbox b{font-family:var(--f-display)}.mbars{display:flex;align-items:flex-end;gap:3px;height:96px;padding:4px 0;border-bottom:1px solid rgba(11,11,12,.12)}.mbars i{flex:1;background:rgba(11,11,12,.25);border-radius:3px 3px 0 0;min-width:4px}.mbars i.top{background:#B3261E}"; document.head.append(__pb);
+const __pb = document.createElement("style"); __pb.textContent = ".lai{margin-top:18px;padding-top:14px;border-top:1px solid rgba(127,127,127,.25)}.lai .chip{cursor:pointer}.pbox{display:grid;gap:8px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.75);border:1px solid rgba(11,11,12,.08)}.pbox b{font-family:var(--f-display)}.mbars{display:flex;align-items:flex-end;gap:3px;height:96px;padding:4px 0;border-bottom:1px solid rgba(11,11,12,.12)}.mbars i{flex:1;background:rgba(11,11,12,.25);border-radius:3px 3px 0 0;min-width:4px}.mbars i.top{background:#B3261E}"; document.head.append(__pb);
 const SUBSIDIO = 46366.19; // Decreto Legislativo 172/2022, desde 01/02/2025 (deputados e senadores)
 const DEP_GAB = 165806.07, DEP_MORADIA = 4253.00; // Câmara, transparência/gastos-parlamentares
 const LINK_GASTOS_CAM = '<a href="https://www.camara.leg.br/transparencia/gastos-parlamentares" target="_blank" rel="noopener">Câmara · Gastos parlamentares</a>';
@@ -330,8 +330,8 @@ async function cracha(parts) {
     document.querySelectorAll(".tabs2 button").forEach((b) => b.setAttribute("aria-selected", b.dataset.k === k));
     if (k === "resumo" && casa === "C") await loadVC().catch(() => null);
     if (k === "resumo" && casa && X && !X.fp && !o.cpp) o.cpp = await contaPartido(o, X, casa).catch(() => null);
-    if (k === "resumo") tb.innerHTML = `<h2>Resumo</h2>${kvHTML(secResumo(o, X, casa).concat(kv))}<p class="src">Fonte: ${src}. Atualizado em ${atual}.</p>`;
-    else if (k === "gab") tb.innerHTML = secGab(o);
+    if (k === "resumo") { tb.innerHTML = `<h2>Resumo</h2>${kvHTML(secResumo(o, X, casa).concat(kv))}<p class="src">Fonte: ${src}. Atualizado em ${atual}.</p>` + lacunasHTML(o, parts); ligaLAI(tb); }
+    else if (k === "gab") { tb.innerHTML = secGab(o); histGab(o, parts, tb); }
     else if (k === "custo") { await loadCotaMedia(); tb.innerHTML = `<h2>Quanto custa o mandato</h2>${secCusto(o, X, casa)}`; }
     else if (k === "votos") { tb.innerHTML = `<h2>Como votou</h2><p class="muted small" style="margin:0">Votações nominais do Plenário desde 2023. Toque no filtro para escolher ano${casa === "C" ? " e tema" : ""}.</p><div id="vv" style="display:grid;gap:10px"><p class="muted">Carregando…</p></div><p class="src">Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; await loadPart().catch(() => null); secVotos(X, casa === "C" ? await loadVC() : await loadVS(), casa, $("#vv"), o.part); }
     else if (k === "proj") { tb.innerHTML = `<h2>Projetos apresentados</h2><div id="pp" style="display:grid;gap:10px"></div><p class="src">Desde 2023. Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; secProjetos(X, casa, $("#pp")); }
@@ -390,6 +390,37 @@ function secEmEst(o) {
    <p class="small muted" style="margin:0">A cidade é a informada pelo governo do estado para cada emenda. Quando o dinheiro vai para um órgão estadual, pode aparecer a capital ou "sem município".</p>
    <p class="src">Fonte: <a href="${esc(I.url)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>. Atualizado em ${new Date(I.gerado + "T12:00").toLocaleDateString("pt-BR")}.</p>`;
 }
+/* Pedido de acesso à informação (LAI) pronto para o que o órgão não publica em formato aberto. */
+const LAI_ITENS = {
+  votos: "a lista de todas as votações realizadas em Plenário desde 1º/01/2023, com o voto nominal de cada parlamentar (sim, não, abstenção, obstrução ou ausência) em cada uma",
+  projetos: "a lista das proposições apresentadas por cada parlamentar desde 1º/01/2023, com tipo, número, ementa, data de apresentação, autores e situação atual",
+  gabinete: "a lista dos servidores lotados em cada gabinete, com nome, cargo, data de nomeação e remuneração bruta mensal, atualizada mês a mês",
+};
+const LAI_NOME = { votos: "Votos de cada um", projetos: "Projetos apresentados", gabinete: "Funcionários do gabinete e salários" };
+function lacunasHTML(o, parts) {
+  const t = parts[0], uf = o.uf || parts[1] || ""; let org = "", falta = [];
+  const cid = (o.cargo || "").split(" · ").slice(-1)[0];
+  if (t === "e") { org = "Assembleia Legislativa " + (typeof deUF === "function" && BR.ufs[uf] ? deUF(BR.ufs[uf].nome) : "do estado"); if (!o.est || o.estInfo.temVotos === false || !(o.est.vlist || []).length) falta.push("votos"); if (!o.est || !(o.est.props || []).length) falta.push("projetos"); falta.push("gabinete"); }
+  else if (t === "m" && parts[3] !== "p" && parts[3] !== "v") { org = "Câmara Municipal de " + cid; if (!o.est || o.estInfo.temVotos === false || !(o.est.vlist || []).length) falta.push("votos"); if (!o.est || !(o.est.props || []).length) falta.push("projetos"); if (!o.gab) falta.push("gabinete"); }
+  else if (t === "m") { org = "Prefeitura Municipal de " + cid; falta.push("gabinete"); }
+  else if (t === "g") { org = "Governo do Estado " + (typeof deUF === "function" && BR.ufs[uf] ? deUF(BR.ufs[uf].nome) : ""); falta.push("gabinete"); }
+  if (!falta.length || !org) return "";
+  const busca = "https://www.google.com/search?q=" + encodeURIComponent("e-SIC " + org);
+  const art = /^Governo/.test(org) ? "o" : "a";
+  return `<section class="lai"><h3>O que ${art} ${esc(org)} não publica em formato aberto</h3>
+    <p class="small muted" style="margin:0 0 8px">Pela Lei de Acesso à Informação (Lei 12.527/2011), qualquer pessoa pode pedir esses dados, sem precisar explicar o motivo. O órgão tem 20 dias para responder, prorrogáveis por mais 10.</p>
+    <div class="chips">${falta.map((f) => `<button class="chip" data-lai="${f}" data-org="${esc(org)}" data-sic="${esc(busca)}">${LAI_NOME[f]}: pedir pela LAI</button>`).join("")}</div><div class="laibox"></div></section>`;
+}
+function ligaLAI(el) {
+  el.querySelectorAll("[data-lai]").forEach((b) => b.onclick = () => {
+    const f = b.dataset.lai, org = b.dataset.org, box = el.querySelector(".laibox");
+    const txt = `${/^Governo/.test(org) ? "Ao" : "À"} ${org},\n\nCom base na Lei nº 12.527/2011 (Lei de Acesso à Informação), solicito ${LAI_ITENS[f]}.\n\nPeço que os dados sejam enviados em formato aberto e legível por máquina (planilha, CSV ou JSON), como prevê o art. 8º, § 3º, II e III da mesma lei, e que passem a ser publicados de forma permanente no portal da transparência, como determina o art. 8º.\n\nAtenciosamente,\n[seu nome]`;
+    box.innerHTML = `<textarea class="laitxt" rows="10" style="width:100%;margin-top:10px;font:inherit;padding:12px;border-radius:14px;border:1px solid var(--line,#ddd);background:var(--bg,#fff);color:var(--ink,#0B0B0C)">${esc(txt)}</textarea>
+      <div class="chips" style="margin-top:8px"><button class="btn" data-cp>Copiar o pedido</button><a class="btn o" href="${b.dataset.sic}" target="_blank" rel="noopener">Achar o e-SIC do órgão ↗</a></div>
+      <p class="src">Mande pelo e-SIC (Serviço de Informação ao Cidadão) do órgão e guarde o número do protocolo. Sem resposta em 20 dias, cabe recurso à autoridade superior. Se receber os dados, mande para o Fiscaliza Brasil pelo botão "Reportar erro" que a gente coloca no site.</p>`;
+    box.querySelector("[data-cp]").onclick = (ev) => { const ta = box.querySelector(".laitxt"); navigator.clipboard.writeText(ta.value).then(() => { ev.target.textContent = "Copiado"; }).catch(() => { ta.select(); }); };
+  });
+}
 /* Secretário parlamentar: vencimento por nível (Câmara, tabela em vigor desde 18/02/2026, Lei 15.349/2026). Com a gratificação de representação (GRG), o valor dobra. */
 const SP_VENC = [1710.83, 1906.12, 2101.45, 2296.72, 2492.06, 2687.34, 2882.65, 3077.95, 3273.26, 3468.54, 3663.85, 4054.45, 4445.03, 4835.65, 5226.24, 5616.84, 6202.74, 6788.64, 7374.54, 7960.44, 8546.34, 9327.56, 10108.74, 11544.1, 12979.45];
 const SP_TAB = "https://www2.camara.leg.br/a-camara/estruturaadm/diretorias/diretoria-de-gestao-pessoas/estrutura-1/depes/secretariado-parlamentar/posse-de-sp-sem-vinculo/TABSP202601MAR202620260303.pdf/view";
@@ -425,6 +456,16 @@ function secGab(o) {
   return h + `<h2>Quem trabalha no gabinete <span class="muted small">(${g.length})</span></h2><div class="chips">${Object.entries(cs).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c, n]) => `<span class="chip">${esc(c)} · ${n}</span>`).join("")}</div>
     <div class="tl" style="margin-top:10px">${g.map((r) => { const n = nv(r[1]), v = n ? SP_VENC[n - 1] : 0; return `<div><span><b>${esc(r[0])}</b><br><span class="small muted">${esc(r[1])}${r[2] ? " · desde " + dt(r[2]) : ""}</span></span><b class="small">${v ? `${brl(v)} a ${brl(2 * v)}<br><span class="muted">faixa do nível SP${String(n).padStart(2, "0")}</span>` : '<span class="muted">cargo sem tabela de secretário</span>'}</b></div>`; }).join("")}</div>
     <p class="src">A Câmara não publica o salário com o nome de cada pessoa: o arquivo mensal de remuneração traz só um número no lugar do nome. Por isso mostramos a faixa oficial do nível de cada secretário parlamentar: o vencimento bruto, sem e com a gratificação de representação (que dobra o valor), pela <a href="${SP_TAB}" target="_blank" rel="noopener">tabela em vigor desde 18/02/2026</a> (Lei 15.349/2026), sem o auxílio-alimentação. Fonte do cadastro: <a href="${o.gabInfo ? o.gabInfo.url : "#"}" target="_blank" rel="noopener">${o.gabInfo ? esc(o.gabInfo.fonte) : "Câmara dos Deputados"}</a>${o.gabInfo ? ", atualizado em " + dt(o.gabInfo.gerado) : ""}.</p>`;
+}
+async function histGab(o, parts, tb) {
+  const t = parts[0], ch = t === "c" ? "c" + o.uf : t === "s" ? "senado" : t === "m" ? "m" + parts[2] : null, id = t === "m" ? parts[3] : parts[1];
+  if (!ch || !o.gab) return;
+  const Hh = await getJSON("data/gab/hist/" + ch + ".json").catch(() => null); if (!Hh) return;
+  const ev = ((Hh.ev || {})[id] || []).slice().reverse(), dt = (x) => new Date(x + "T12:00").toLocaleDateString("pt-BR");
+  const div = document.createElement("div");
+  div.innerHTML = `<h3>Entradas e saídas</h3>${ev.length ? `<div class="tl">${ev.slice(0, 60).map((e) => `<div><span><b>${e[1] === "+" ? "Entrou" : "Saiu"}:</b> ${esc(e[2])}${e[3] ? ` <span class="small muted">${esc(e[3])}</span>` : ""}</span><b class="small muted">${dt(e[0])}</b></div>`).join("")}</div>` : `<p class="small muted">Nenhuma mudança desde ${dt(Hh.desde)}.</p>`}
+    <p class="src">O Fiscaliza Brasil compara a lista do gabinete a cada coleta desde ${dt(Hh.desde)} e anota quem entrou e quem saiu na data em que percebeu a mudança.</p>`;
+  tb.appendChild(div);
 }
 function secEmFed(o) {
   const e = o.emAut, mx = e.c.length ? e.c[0][2] : 1, mf = e.f.length ? e.f[0][1] : 1;

@@ -58,8 +58,12 @@ def um(p, U):
         if (s.get("situacao") or "").upper() != "ATIVO": continue
         lot = s.get("descricaoLotacao") or ""
         lots[lot] += 1
-        if not GAB.search(lot): continue
-        ativos += 1; i = dono(lot)
+        if re.match(r"^\s*VEREADOR", s.get("descricaoCargo") or "", re.I): continue  # o próprio vereador
+        if GAB.search(lot): i = dono(lot)
+        else:  # algumas Câmaras usam o nome do vereador como lotação (ex.: Petrópolis)
+            i = idx.get(limpa(lot)); 
+            if i is None: continue
+        ativos += 1
         if i is None: outros += 1; continue
         dep[str(i)].append([(s.get("nome") or "").title(), (s.get("descricaoCargo") or "").strip().capitalize(), s.get("dataAdmissao") or "", round(float(s.get("remuneracao") or 0), 2)])
     for v in dep.values(): v.sort(key=lambda r: -r[3])

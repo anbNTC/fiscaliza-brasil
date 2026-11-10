@@ -1,7 +1,8 @@
 """Resumo semanal por e-mail para quem marcou a opção na página Acompanhando.
 Lê a lista de envio no Supabase (função resumo_destinatarios, só com a chave de serviço) e envia pelo Resend.
 Segredos (só no GitHub): SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY. Limite do plano grátis do Resend: 100 e-mails por dia (MAX_ENVIOS).
-TESTE=email@x: manda só para esse endereço, com a lista dele, sem tocar nos outros."""
+TESTE=email@x: manda só para esse endereço, com a lista dele, sem tocar nos outros.
+MODO=diario: alerta do dia (quem marcou "alerta diário"): votações e projetos desde ontem; só manda se houver novidade."""
 import json, os, sys, time, datetime, html
 from pathlib import Path
 import requests
@@ -20,9 +21,9 @@ def destinatarios():
     r.raise_for_status(); return r.json()
 
 BR = json.load(open(D / "br.json")); S = json.load(open(D / "semana.json")); VC = json.load(open(D / "camara_votacoes.json")); VS = json.load(open(D / "senado_votacoes.json"))
-hoje = datetime.date.today(); ini = (hoje - datetime.timedelta(days=7)).isoformat()
-semana = [w for w in S["semanas"] if w["seg"] >= (hoje - datetime.timedelta(days=13)).isoformat()]
-vc = sorted({i for w in semana for i in w["c"] if VC[i][1] >= ini}); vs = sorted({i for w in semana for i in w["s"] if VS[i][1] >= ini})
+DIARIO = os.environ.get("MODO", "") == "diario"
+hoje = datetime.date.today(); ini = (hoje - datetime.timedelta(days=1 if DIARIO else 7)).isoformat()
+vc = [i for i, x in enumerate(VC) if x[1] >= ini]; vs = [i for i, x in enumerate(VS) if x[1] >= ini]
 CACHE = {}
 def dados(casa, uf):
     k = casa + uf
@@ -61,7 +62,7 @@ def bloco(it):
         cor = "#14703C" if c == "S" else "#B3261E" if c == "N" else "#5E6066"
         linhas.append(f'<tr><td style="padding:6px 0;border-top:1px solid #eee;font-size:14px"><b style="color:{cor}">{VOTO.get(c, "Não registrou voto")}</b>{" · <span style=\'color:#B3261E\'>contra o partido</span>" if f == "r" else ""} — {e(tit)} ({dt(x[1])})<br><span style="color:#5E6066;font-size:13px">{e(em)}{"…" if len(em) >= 140 else ""}</span> <a href="{SITE}/votacao/{"C" if C else "S"}/{i}/{info[3] if C else info[4]}" style="font-size:13px">como votou cada um</a></td></tr>')
     novos = [p for p in (X.get("au") or {}).get("l", []) if C and len(p) > 4 and str(p[4]) >= ini and p[1] in ("PL", "PLP", "PEC", "PDL")]
-    res = f"Votou em {votou} de {len(L)} votações nominais do Plenário" + (f", {contra} contra o próprio partido" if contra else "") + "." if L else "Sem votações nominais no Plenário nesta semana."
+    res = f"Votou em {votou} de {len(L)} votações nominais do Plenário" + (f", {contra} contra o próprio partido" if contra else "") + "." if L else ("Sem votações nominais no Plenário desde ontem." if DIARIO else "Sem votações nominais no Plenário nesta semana.")
     h = cab + f'<tr><td style="font-size:14px;padding-bottom:4px">{res}</td></tr>' + "".join(linhas)
     if novos: h += '<tr><td style="padding-top:8px;font-size:14px"><b>Projetos novos</b></td></tr>' + "".join(f'<tr><td style="font-size:13px;padding:3px 0">{e(p[1])} {e(p[2])}/{e(p[3])}: {e(str(p[5])[:160])}</td></tr>' for p in novos[:5])
     return h, bool(L or novos)
@@ -72,23 +73,25 @@ def email(r):
     blocos = [bloco(it) for it in pols[:20]]
     if not any(b[1] for b in blocos): return None
     sair = f"{SITE}/fiscalize#/sair/{r['token']}"
-    corpo = f'''<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#0B0B0C"><h2 style="margin:0 0 4px">Fiscaliza Brasil · resumo da semana</h2>
-<p style="color:#5E6066;margin:0 0 6px">Semana até {hoje.strftime("%d/%m/%Y")}: o que fizeram os políticos que você acompanha. Dados oficiais da Câmara e do Senado.</p>
+    tit = "alerta do dia" if DIARIO else "resumo da semana"; per = f"Desde {dt(ini)}" if DIARIO else f'Semana até {hoje.strftime("%d/%m/%Y")}'
+    corpo = f'''<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#0B0B0C"><h2 style="margin:0 0 4px">Fiscaliza Brasil · {tit}</h2>
+<p style="color:#5E6066;margin:0 0 6px">{per}: o que fizeram os políticos que você acompanha. Dados oficiais.</p>
 <table width="100%" cellpadding="0" cellspacing="0">{"".join(b[0] for b in blocos)}</table>
 <p style="margin-top:22px"><a href="{SITE}/fiscalize#/acompanho" style="background:#0B0B0C;color:#fff;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:700">Ver tudo no site</a></p>
-<p style="color:#8C9097;font-size:12px;margin-top:24px">"Não registrou voto" inclui ausência, licença e falta de registro: os dados abertos não dizem o motivo.<br>Você recebe porque marcou o resumo semanal no Fiscaliza Brasil. <a href="{sair}">Parar de receber</a>.<br>Vamos fiscalizar tudo · fiscalizaja.com.br</p></div>'''
+<p style="color:#8C9097;font-size:12px;margin-top:24px">"Não registrou voto" inclui ausência, licença e falta de registro: os dados abertos não dizem o motivo.<br>Você recebe porque marcou {"o alerta diário" if DIARIO else "o resumo semanal"} no Fiscaliza Brasil. <a href="{sair}">Parar de receber</a>.<br>Vamos fiscalizar tudo · fiscalizaja.com.br</p></div>'''
     return corpo, sair
 
 def main():
     teste = os.environ.get("TESTE", "").strip()
-    R = destinatarios(); print(len(R), "inscritos;", len(vc), "votações na Câmara e", len(vs), "no Senado desde", ini)
+    R = [r for r in destinatarios() if (r.get("diario") if DIARIO else r.get("semanal", True))]; print(len(R), "inscritos;", len(vc), "votações na Câmara e", len(vs), "no Senado desde", ini)
     if teste: R = [r for r in R if r["email"].lower() == teste.lower()]; print("teste: só", len(R))
     n = 0
     for r in R:
         if n >= MAX: print("limite de envios do dia atingido; faltaram", len(R) - n); break
         m = email(r)
         if not m: continue
-        if envia(r["email"], f"Resumo da semana · {hoje.strftime('%d/%m')} · Fiscaliza Brasil", m[0], cabecalhos={"List-Unsubscribe": f"<{m[1]}>"}): n += 1
+        assunto = f"{'Alerta do dia' if DIARIO else 'Resumo da semana'} · {hoje.strftime('%d/%m')} · Fiscaliza Brasil"
+        if envia(r["email"], assunto, m[0], cabecalhos={"List-Unsubscribe": f"<{m[1]}>"}): n += 1
         time.sleep(0.6)
     print("enviados:", n)
 

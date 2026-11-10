@@ -240,6 +240,7 @@ async function cracha(parts) {
     chips.push('<span class="chip ok">Em exercício</span>'); if (!d[7]) chips.push('<span class="chip warn">Assumiu como suplente</span>'); if (d[8]) chips.push('<span class="chip new">Reeleito em 2026</span>');
     X = (await loadC(d[3]))[String(d[0])] || null; o.patList = X && X.pat;
     { const G = await getJSON("data/gab/" + d[3] + ".json").catch(() => null); if (G && G.dep[String(d[0])]) { o.gab = G.dep[String(d[0])]; o.gabInfo = G; } }
+    { const VG = await getJSON("data/gab/viagens.json").catch(() => null); if (VG && VG.dep[String(d[0])]) { o.viag = VG.dep[String(d[0])]; o.viagInfo = VG; } }
     o.id = d[0]; { const V = await getJSON("data/gab/verba.json").catch(() => null); if (V && V.dep[String(d[0])]) { o.verba = V.dep[String(d[0])]; o.verbaInfo = V; if (!o.gab) o.gab = []; } }
     o.emAut = ((await getJSON("data/emendas/aut_" + d[3] + ".json").catch(() => ({}))).dep || {})["C:" + d[0]] || null;
     src = FONTE_CAM + " · " + FONTE_TSE; o.mand = "Mandato 2023–2027"; o.link = "https://www.camara.leg.br/deputados/" + d[0]; o.linkN = "Página na Câmara";
@@ -250,6 +251,7 @@ async function cracha(parts) {
     X = (await loadS(s[4]))[String(s[0])] || null; o.patList = X && X.pat;
     o.emAut = ((await getJSON("data/emendas/aut_" + s[4] + ".json").catch(() => ({}))).dep || {})["S:" + s[0]] || null;
     { const G = await getJSON("data/gab/senado.json").catch(() => null); if (G && G.dep[String(s[0])]) { o.gab = G.dep[String(s[0])]; o.gabInfo = G; o.gabSen = true; } }
+    { const SD = await getJSON("data/gab/senado_diarias.json").catch(() => null); if (SD && SD.dep[String(s[0])]) { o.diar = SD.dep[String(s[0])]; o.diarInfo = SD; } }
     o.mand = s[7] === 2022 ? "Mandato 2023–2031" : "Mandato até 31/01/2027"; src = FONTE_SEN + " · " + FONTE_TSE; o.link = "https://www25.senado.leg.br/web/senadores/senador/-/perfil/" + s[0]; o.linkN = "Página no Senado";
   } else if (t === "w") {
     // vereador que exerceu mandato sem estar entre os eleitos de 2024 (em geral, suplente que assumiu), pela lista do SAPL da Câmara
@@ -312,6 +314,7 @@ async function cracha(parts) {
   if (o.emEst) tabs.push(["eem", "Emendas"]);
   if (o.emAut) tabs.push(["emf", "Emendas"]);
   if (o.gab) tabs.push(["gab", "Gabinete"]);
+  if (o.viag || o.diar) tabs.push(["via", "Viagens"]);
   if (o.vc) tabs.push(["camp", o.vc.v ? "Votos e campanha" : "Campanha"]);
   tabs.push(["pat", "Patrimônio"]);
   tabs.push(["card", "Card p/ Stories"]);
@@ -332,6 +335,7 @@ async function cracha(parts) {
     if (k === "resumo" && casa && X && !X.fp && !o.cpp) o.cpp = await contaPartido(o, X, casa).catch(() => null);
     if (k === "resumo") { tb.innerHTML = `<h2>Resumo</h2>${kvHTML(secResumo(o, X, casa).concat(kv))}<p class="src">Fonte: ${src}. Atualizado em ${atual}.</p>` + lacunasHTML(o, parts); ligaLAI(tb); }
     else if (k === "gab") { tb.innerHTML = secGab(o); histGab(o, parts, tb); }
+    else if (k === "via") tb.innerHTML = secViagens(o);
     else if (k === "custo") { await loadCotaMedia(); tb.innerHTML = `<h2>Quanto custa o mandato</h2>${secCusto(o, X, casa)}`; }
     else if (k === "votos") { tb.innerHTML = `<h2>Como votou</h2><p class="muted small" style="margin:0">Votações nominais do Plenário desde 2023. Toque no filtro para escolher ano${casa === "C" ? " e tema" : ""}.</p><div id="vv" style="display:grid;gap:10px"><p class="muted">Carregando…</p></div><p class="src">Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; await loadPart().catch(() => null); secVotos(X, casa === "C" ? await loadVC() : await loadVS(), casa, $("#vv"), o.part); }
     else if (k === "proj") { tb.innerHTML = `<h2>Projetos apresentados</h2><div id="pp" style="display:grid;gap:10px"></div><p class="src">Desde 2023. Fonte: ${casa === "C" ? FONTE_CAM : FONTE_SEN}.</p>`; secProjetos(X, casa, $("#pp")); }
@@ -456,6 +460,25 @@ function secGab(o) {
   return h + `<h2>Quem trabalha no gabinete <span class="muted small">(${g.length})</span></h2><div class="chips">${Object.entries(cs).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c, n]) => `<span class="chip">${esc(c)} · ${n}</span>`).join("")}</div>
     <div class="tl" style="margin-top:10px">${g.map((r) => { const n = nv(r[1]), v = n ? SP_VENC[n - 1] : 0; return `<div><span><b>${esc(r[0])}</b><br><span class="small muted">${esc(r[1])}${r[2] ? " · desde " + dt(r[2]) : ""}</span></span><b class="small">${v ? `${brl(v)} a ${brl(2 * v)}<br><span class="muted">faixa do nível SP${String(n).padStart(2, "0")}</span>` : '<span class="muted">cargo sem tabela de secretário</span>'}</b></div>`; }).join("")}</div>
     <p class="src">A Câmara não publica o salário com o nome de cada pessoa: o arquivo mensal de remuneração traz só um número no lugar do nome. Por isso mostramos a faixa oficial do nível de cada secretário parlamentar: o vencimento bruto, sem e com a gratificação de representação (que dobra o valor), pela <a href="${SP_TAB}" target="_blank" rel="noopener">tabela em vigor desde 18/02/2026</a> (Lei 15.349/2026), sem o auxílio-alimentação. Fonte do cadastro: <a href="${o.gabInfo ? o.gabInfo.url : "#"}" target="_blank" rel="noopener">${o.gabInfo ? esc(o.gabInfo.fonte) : "Câmara dos Deputados"}</a>${o.gabInfo ? ", atualizado em " + dt(o.gabInfo.gerado) : ""}.</p>`;
+}
+function secViagens(o) {
+  const dt = (x) => new Date(String(x).slice(0, 10) + "T12:00").toLocaleDateString("pt-BR"); let h = "";
+  if (o.viag) {
+    const v = o.viag.v || [], tp = v.reduce((a, x) => a + x[4], 0), td = v.reduce((a, x) => a + x[5], 0);
+    h += `<h2>Viagens em missão oficial</h2>
+     ${v.length ? `<div class="kv"><div><div class="l">Viagens</div><div class="v">${mil(v.length)}</div><div class="s">registradas</div></div><div><div class="l">Custo</div><div class="v">${brl(tp + td)}</div><div class="s">${brl(tp)} em passagens e ${brl(td)} em diárias</div></div></div>
+      <div class="tl">${v.map((x) => `<div><span><b>${esc(x[3] || "Destino não informado")}</b> <span class="small muted">${esc(x[1])}</span><br><span class="small muted">${esc(x[2])}</span></span><b>${brl(x[4] + x[5])}</b></div>`).join("")}</div>` : '<p class="muted">Nenhuma viagem em missão oficial registrada neste ano.</p>'}
+     <h3>Moradia em Brasília</h3><div class="kv"><div><div class="l">Imóvel funcional</div><div class="v small">${esc(o.viag.imovel || "Sem informação")}</div></div><div><div class="l">Auxílio-moradia</div><div class="v small">${esc(o.viag.auxilio || "Sem informação")}</div></div></div>
+     <p class="src">Missão oficial é a viagem a trabalho autorizada pela Câmara, paga com passagens e diárias (fora da cota parlamentar). A Câmara mostra as viagens do ano corrente; o Fiscaliza Brasil guarda as de cada coleta a partir de novembro de 2026. Fonte: <a href="https://www.camara.leg.br/deputados/${o.id}" target="_blank" rel="noopener">${esc(o.viagInfo.fonte)}</a>. Atualizado em ${dt(o.viagInfo.gerado)}.</p>`;
+  }
+  if (o.diar) {
+    const ms = Object.entries(o.diar).sort().reverse(), tot = ms.reduce((a, x) => a + x[1], 0), mx = Math.max(1, ...ms.map((x) => x[1]));
+    const NM = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+    h += `<h2>Diárias recebidas</h2><div class="kv"><div><div class="l">Total desde 2023</div><div class="v">${brl(tot)}</div><div class="s">em ${ms.length} ${ms.length === 1 ? "mês" : "meses"} com diárias</div></div></div>
+     <div class="tl">${ms.slice(0, 24).map(([m, v]) => `<div><span>${NM[+m.slice(5) - 1]}/${m.slice(0, 4)}</span><b>${brl(v)}</b>${bar(v, mx)}</div>`).join("")}</div>
+     <p class="src">Diária é o valor pago para cobrir hospedagem e alimentação em viagem a serviço. O Senado publica o valor por mês, mas não o destino. Fonte: ${esc(o.diarInfo.fonte)}. Atualizado em ${dt(o.diarInfo.gerado)}.</p>`;
+  }
+  return h;
 }
 async function histGab(o, parts, tb) {
   const t = parts[0], ch = t === "c" ? "c" + o.uf : t === "s" ? "senado" : t === "m" ? "m" + parts[2] : null, id = t === "m" ? parts[3] : parts[1];

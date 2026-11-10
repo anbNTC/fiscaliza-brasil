@@ -29,7 +29,7 @@ def get(host, path, ent=None, ex=None, tent=3):
 
 def um(p, U):
     host = p["host"]; ents = get(host, "/api/entidades/") or []
-    cam = [e for e in ents if e.get("tipo") == "L" or "CAMARA" in limpa(e.get("nome", ""))]
+    cam = [e for e in ents if e.get("id") == p.get("ent")] or [e for e in ents if e.get("tipo") == "L" or "CAMARA" in limpa(e.get("nome", ""))]
     if not cam: return None, "sem entidade Câmara"
     ent = cam[0]["id"]; ex = HOJE.year
     pessoas = []; pg = 0
@@ -53,10 +53,11 @@ def um(p, U):
         t = set(limpa(cands[-1]).split())
         best = sorted(((len(t & q), i) for i, q in toks), reverse=True)
         if best and best[0][0] >= 2 and (len(best) < 2 or best[1][0] < best[0][0]): return best[0][1]
-    dep = defaultdict(list); outros = 0; ativos = 0
+    dep = defaultdict(list); outros = 0; ativos = 0; lots = defaultdict(int)
     for s in pessoas:
         if (s.get("situacao") or "").upper() != "ATIVO": continue
         lot = s.get("descricaoLotacao") or ""
+        lots[lot] += 1
         if not GAB.search(lot): continue
         ativos += 1; i = dono(lot)
         if i is None: outros += 1; continue
@@ -66,7 +67,8 @@ def um(p, U):
            "gerado": HOJE.isoformat(), "dep": dep, "outros": outros,
            "obs": "Remuneração como publicada no portal da Câmara (valor do cargo, sem descontos). Só servidores ativos lotados em gabinete de vereador."}
     json.dump(out, open(OUT / f"{p['ue']}.json", "w"), ensure_ascii=False, separators=(",", ":"))
-    return {"servidores": len(pessoas), "gabinetes": len(dep), "pessoas_em_gabinete": ativos, "sem_vereador": outros}, None
+    return {"servidores": len(pessoas), "gabinetes": len(dep), "pessoas_em_gabinete": ativos, "sem_vereador": outros,
+            "lotacoes": [k for k, _ in sorted(lots.items(), key=lambda z: -z[1])[:6]] if not dep else []}, None
 
 def main():
     P = json.load(open(Path(__file__).resolve().parent / "elotech_portais.json")); res = {}; UF = {}

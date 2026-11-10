@@ -16,14 +16,16 @@ PAINEL = f"{BASE}/++api++/atividade-parlamentar/painel-de-atividades-legislativa
 # painéis conhecidos (o coletor também procura novos na página do painel)
 PAINEIS = {"2026": "9fdfe2f1-3fa7-4b94-93d4-35395d20ed25", "2025": "54e229cd-2665-48cf-8933-a0641a7f2cb0"}
 S = requests.Session(); S.headers.update(H)
+import saida_br  # a CMC só responde a acessos do Brasil
 FORA = {"conheca-os-vereadores", "liderancas-e-blocos-parlamentares", "lista-de-presenca", "mesa-diretora", "corregedoria", "frentes-parlamentares", "representacao-externa"}
 
 def get(u, js=True):
     for k in range(4):
         try:
-            r = S.get(u, timeout=60, headers={"accept": "application/json" if js else "text/html"})
-            if r.status_code == 404: return None
-            if r.ok: return r.json() if js else r.text
+            r = saida_br.get(u, headers={"accept": "application/json" if js else "text/html", "user-agent": H["user-agent"]}, timeout=90, tentativas=1)
+            if r is not None and r.status_code == 404: return None
+            if r is not None and r.ok: return r.json() if js else r.text
+            print(u, r.status_code if r is not None else "sem resposta", flush=True)
         except Exception as e: print(u, repr(e)[:100], flush=True)
         time.sleep(3 * (k + 1))
     return None

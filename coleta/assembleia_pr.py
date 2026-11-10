@@ -44,7 +44,7 @@ def deputados():
         if slug in vistos: continue
         vistos.add(slug); txt = " ".join(re.sub(r"<[^>]+>", " ", html.unescape(bloco)).split()); partes = txt.split(" ")
         if len(partes) < 2: continue
-        partido = partes.pop(); nome = re.sub(r"^(PRESIDENTE|\d+º (SECRETÁRIO|SECRETÁRIA|VICE-PRESIDENTE)|DEPUTADO|DEPUTADA)\s+", "", " ".join(partes))
+        partido = partes.pop(); nome = re.sub(r"^(PRESIDENTE|\d+º\s+(SECRETÁRI[OA]|VICE-PRESIDENTE)|DEPUTAD[OA])\s+", "", " ".join(partes), flags=re.I)
         foto = re.search(r'<img[^>]+src="([^"]+)"', bloco)
         out.append({"slug": slug, "nome": nome, "partido": partido, "key": ALIAS.get(slug, norm(nome)), "foto": foto.group(1) if foto else ""})
     return out

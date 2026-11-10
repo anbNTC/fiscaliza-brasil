@@ -5,7 +5,7 @@ on:
     - cron: "47 13 * * 1"   # segunda, 10:47 em Brasília
   workflow_dispatch:
     inputs:
-      teste: { description: "e-mail para teste (envia só para ele)", required: false, default: "" }
+      teste: { description: "escreva sim para mandar só para o e-mail do ALERTA_EMAIL (o repositório é público: não escreva e-mails aqui)", required: false, default: "" }
 concurrency: { group: resumo, cancel-in-progress: false }
 jobs:
   envia:
@@ -20,5 +20,5 @@ jobs:
         env:
           SUPABASE_SERVICE_ROLE_KEY: "${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
           RESEND_API_KEY: "${{ secrets.RESEND_API_KEY }}"
-          TESTE: "${{ inputs.teste }}"
+          TESTE: "${{ inputs.teste == 'sim' && secrets.ALERTA_EMAIL || '' }}"
         run: python tools/resumo_semanal.py

@@ -3,16 +3,12 @@ import requests, re, io, csv, subprocess, collections, json
 H = {"user-agent": "Mozilla/5.0 FiscalizaBrasil/1.0"}
 g = lambda u, **k: requests.get(u, timeout=180, headers=H, **k)
 B = "https://www2.camara.leg.br/a-camara/estruturaadm/diretorias/diretoria-de-gestao-pessoas/estrutura-1/depes/secretariado-parlamentar/posse-de-sp-sem-vinculo/"
-for nm in ("TABSP202601MAR202620260303.pdf",):
-    r = g(B + nm); print("PDF", r.status_code, r.headers.get("content-type"), len(r.content))
-    if r.ok and r.content[:4] == b"%PDF":
-        subprocess.run(["pip", "install", "-q", "pypdf"]); import pypdf; print("\n".join(pg.extract_text(extraction_mode="layout") for pg in pypdf.PdfReader(io.BytesIO(r.content)).pages)[:7000])
 r = g("https://www2.camara.leg.br/transparencia/recursos-humanos/remuneracao/relatorios-consolidados-por-ano-e-mes/2026/outubro-de-2026-csv")
 t = r.content.decode("latin-1") if b"\xc3" not in r.content[:20000] else r.content.decode("utf-8")
 rows = list(csv.reader(io.StringIO(t), delimiter=";")); h = rows[0]
-c = collections.Counter(x[6] for x in rows[1:] if x[1] == "Secretário Parlamentar" and x[2] == "Normal")
+c = collections.Counter(x[6] for x in rows[1:] if len(x) > 6 and x[1] == "Secretário Parlamentar" and x[2] == "Normal")
 print("FUNCAO SP (valor: n):", sorted(c.items(), key=lambda z: float(z[0].replace(",", ".")))[:80])
-print("GRUPOS:", collections.Counter(x[1] for x in rows[1:]).most_common(20))
+print("GRUPOS:", collections.Counter(x[1] for x in rows[1:] if len(x) > 1).most_common(20))
 r = g("https://dadosabertos.camara.leg.br/arquivos/funcionarios/csv/funcionarios.csv")
 F = list(csv.DictReader(io.StringIO(r.content.decode("utf-8-sig")), delimiter=";")); print("CAMPOS", list(F[0].keys()))
 cc = collections.Counter((x.get("cargo") or "") for x in F if (x.get("grupo") or "").startswith("Secret")); print("CODIGOS SP:", sorted(cc.items()))

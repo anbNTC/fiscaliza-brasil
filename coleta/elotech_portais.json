@@ -4,566 +4,737 @@
 "uf": "PR",
 "ue": "74195",
 "cidade": "ANDIRÁ",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "antonina.eloweb.net",
 "uf": "PR",
 "ue": "74217",
 "cidade": "ANTONINA",
-"ent": 2
+"ent": 2,
+"pref": 4,
+"host_pref": null
 },
 {
 "host": "antonioolinto.eloweb.net",
 "uf": "PR",
 "ue": "74233",
 "cidade": "ANTONIO OLINTO",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "araruna.eloweb.net",
 "uf": "PR",
 "ue": "74314",
 "cidade": "ARARUNA",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "ariranhadoivai.eloweb.net",
 "uf": "PR",
 "ue": "75086",
 "cidade": "ARIRANHA DO IVAÍ",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "borrazopolis.eloweb.net",
 "uf": "PR",
 "ue": "74632",
 "cidade": "BORRAZÓPOLIS",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "brasilandiadosul.eloweb.net",
 "uf": "PR",
 "ue": "74187",
 "cidade": "BRASILÂNDIA DO SUL",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cafezaldosul.eloweb.net",
 "uf": "PR",
 "ue": "74209",
 "cidade": "CAFEZAL DO SUL",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cambara.eloweb.net",
 "uf": "PR",
 "ue": "74691",
 "cidade": "CAMBARÁ",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "campinadalagoa.eloweb.net",
 "uf": "PR",
 "ue": "74756",
 "cidade": "CAMPINA DA LAGOA",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "colorado.eloweb.net",
 "uf": "PR",
 "ue": "75159",
 "cidade": "COLORADO",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cruzeirodooeste.eloweb.net",
 "uf": "PR",
 "ue": "75299",
 "cidade": "CRUZEIRO DO OESTE",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cruzeirodosul.eloweb.net",
 "uf": "PR",
 "ue": "75310",
 "cidade": "CRUZEIRO DO SUL",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cruzmaltina.eloweb.net",
 "uf": "PR",
 "ue": "75264",
 "cidade": "CRUZMALTINA",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cmcuritiba.eloweb.net",
 "uf": "PR",
 "ue": "75353",
 "cidade": "CURITIBA",
-"ent": 1
+"ent": 1,
+"pref": 2,
+"host_pref": null
 },
 {
 "host": "diamantedoeste.eloweb.net",
 "uf": "PR",
 "ue": "75400",
 "cidade": "DIAMANTE D'OESTE",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "diamantedonorte.eloweb.net",
 "uf": "PR",
 "ue": "75396",
 "cidade": "DIAMANTE DO NORTE",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "douradina.eloweb.net",
 "uf": "PR",
 "ue": "84654",
 "cidade": "DOURADINA",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "doutorcamargo.eloweb.net",
 "uf": "PR",
 "ue": "75434",
 "cidade": "DOUTOR CAMARGO",
-"ent": 3
+"ent": 3,
+"pref": 2,
+"host_pref": null
 },
 {
 "host": "doutorulysses.eloweb.net",
 "uf": "PR",
 "ue": "74942",
 "cidade": "DOUTOR ULYSSES",
-"ent": 6
+"ent": 6,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "faxinal.eloweb.net",
 "uf": "PR",
 "ue": "75493",
 "cidade": "FAXINAL",
-"ent": 3
+"ent": 3,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "floresta.eloweb.net",
 "uf": "PR",
 "ue": "75558",
 "cidade": "FLORESTA",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "florestopolis.eloweb.net",
 "uf": "PR",
 "ue": "75574",
 "cidade": "FLORESTÓPOLIS",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "florida.eloweb.net",
 "uf": "PR",
 "ue": "75590",
 "cidade": "FLÓRIDA",
-"ent": 9
+"ent": 9,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "franciscoalves.eloweb.net",
 "uf": "PR",
 "ue": "79774",
 "cidade": "FRANCISCO ALVES",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cminaja.eloweb.net",
 "uf": "PR",
 "ue": "76015",
 "cidade": "INAJÁ",
-"ent": 2
+"ent": 2,
+"pref": 3,
+"host_pref": null
 },
 {
 "host": "ipiranga.eloweb.net",
 "uf": "PR",
 "ue": "76031",
 "cidade": "IPIRANGA",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "iretama.eloweb.net",
 "uf": "PR",
 "ue": "76090",
 "cidade": "IRETAMA",
-"ent": 5
+"ent": 5,
+"pref": 2,
+"host_pref": null
 },
 {
 "host": "itaguaje.eloweb.net",
 "uf": "PR",
 "ue": "76112",
 "cidade": "ITAGUAJÉ",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "itambaraca.eloweb.net",
 "uf": "PR",
 "ue": "76139",
 "cidade": "ITAMBARACÁ",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "itambe.eloweb.net",
 "uf": "PR",
 "ue": "76155",
 "cidade": "ITAMBÉ",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "jaguapita.eloweb.net",
 "uf": "PR",
 "ue": "76317",
 "cidade": "JAGUAPITÃ",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "jardimalegre.eloweb.net",
 "uf": "PR",
 "ue": "76430",
 "cidade": "JARDIM ALEGRE",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "jardimolinda.eloweb.net",
 "uf": "PR",
 "ue": "76457",
 "cidade": "JARDIM OLINDA",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "jussara.eloweb.net",
 "uf": "PR",
 "ue": "76538",
 "cidade": "JUSSARA",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "kalore.eloweb.net",
 "uf": "PR",
 "ue": "76554",
 "cidade": "KALORÉ",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "lidianopolis.eloweb.net",
 "uf": "PR",
 "ue": "74489",
 "cidade": "LIDIANÓPOLIS",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "loanda.eloweb.net",
 "uf": "PR",
 "ue": "76635",
 "cidade": "LOANDA",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cmlondrina.eloweb.net",
 "uf": "PR",
 "ue": "76678",
 "cidade": "LONDRINA",
-"ent": 1
+"ent": 1,
+"pref": 2,
+"host_pref": null
 },
 {
 "host": "luiziana.eloweb.net",
 "uf": "PR",
 "ue": "75809",
 "cidade": "LUIZIANA",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "lunardelli.eloweb.net",
 "uf": "PR",
 "ue": "84590",
 "cidade": "LUNARDELLI",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "mariahelena.eloweb.net",
 "uf": "PR",
 "ue": "76856",
 "cidade": "MARIA HELENA",
-"ent": 4
+"ent": 4,
+"pref": 3,
+"host_pref": null
 },
 {
 "host": "marilena.eloweb.net",
 "uf": "PR",
 "ue": "79758",
 "cidade": "MARILENA",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "marumbi.eloweb.net",
 "uf": "PR",
 "ue": "76970",
 "cidade": "MARUMBI",
-"ent": 3
+"ent": 3,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "mauadaserra.eloweb.net",
 "uf": "PR",
 "ue": "74543",
 "cidade": "MAUÁ DA SERRA",
-"ent": 2
+"ent": 2,
+"pref": 5,
+"host_pref": null
 },
 {
 "host": "moreirasales.eloweb.net",
 "uf": "PR",
 "ue": "77070",
 "cidade": "MOREIRA SALES",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "nossasenhoradasgracas.eloweb.net",
 "uf": "PR",
 "ue": "77135",
 "cidade": "NOSSA SENHORA DAS GRAÇAS",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "novacantu.eloweb.net",
 "uf": "PR",
 "ue": "77194",
 "cidade": "NOVA CANTU",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "novaesperanca.eloweb.net",
 "uf": "PR",
 "ue": "77216",
 "cidade": "NOVA ESPERANÇA",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "novalondrina.eloweb.net",
 "uf": "PR",
 "ue": "77259",
 "cidade": "NOVA LONDRINA",
-"ent": 2
+"ent": 2,
+"pref": 3,
+"host_pref": null
 },
 {
 "host": "novaolimpia.eloweb.net",
 "uf": "PR",
 "ue": "79677",
 "cidade": "NOVA OLÍMPIA",
-"ent": 5
+"ent": 5,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "palotina.eloweb.net",
 "uf": "PR",
 "ue": "77399",
 "cidade": "PALOTINA",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "paranapoema.eloweb.net",
 "uf": "PR",
 "ue": "77470",
 "cidade": "PARANAPOEMA",
-"ent": 3
+"ent": 3,
+"pref": 6,
+"host_pref": null
 },
 {
 "host": "cmparaisodonorte.eloweb.net",
 "uf": "PR",
 "ue": "77410",
 "cidade": "PARAÍSO DO NORTE",
-"ent": 1
+"ent": 1,
+"pref": 4,
+"host_pref": null
 },
 {
 "host": "peabiru.eloweb.net",
 "uf": "PR",
 "ue": "77577",
 "cidade": "PEABIRU",
-"ent": 3
+"ent": 3,
+"pref": 5,
+"host_pref": null
 },
 {
 "host": "perobal.eloweb.net",
 "uf": "PR",
 "ue": "75507",
 "cidade": "PEROBAL",
-"ent": 4
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cmpinhais.eloweb.net",
 "uf": "PR",
 "ue": "75043",
 "cidade": "PINHAIS",
-"ent": 1
+"ent": 1,
+"pref": null,
+"host_pref": null
 },
 {
 "host": "primeirodemaio.eloweb.net",
 "uf": "PR",
 "ue": "77895",
 "cidade": "PRIMEIRO DE MAIO",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "quartocentenario.eloweb.net",
 "uf": "PR",
 "ue": "75582",
 "cidade": "QUARTO CENTENÁRIO",
-"ent": 3
+"ent": 3,
+"pref": 4,
+"host_pref": null
 },
 {
 "host": "quatigua.eloweb.net",
 "uf": "PR",
 "ue": "77933",
 "cidade": "QUATIGUÁ",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "querenciadonorte.eloweb.net",
 "uf": "PR",
 "ue": "77976",
 "cidade": "QUERÊNCIA DO NORTE",
-"ent": 4
+"ent": 4,
+"pref": 3,
+"host_pref": null
 },
 {
 "host": "ribeiraoclaro.eloweb.net",
 "uf": "PR",
 "ue": "78131",
 "cidade": "RIBEIRÃO CLARO",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "roncador.eloweb.net",
 "uf": "PR",
 "ue": "78271",
 "cidade": "RONCADOR",
-"ent": 3
+"ent": 3,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "rosariodoivai.eloweb.net",
 "uf": "PR",
 "ue": "75744",
 "cidade": "ROSÁRIO DO IVAÍ",
-"ent": 4
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "santaines.eloweb.net",
 "uf": "PR",
 "ue": "78476",
 "cidade": "SANTA INÊS",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "santaisabeldoivai.eloweb.net",
 "uf": "PR",
 "ue": "78492",
 "cidade": "SANTA ISABEL DO IVAÍ",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "sarandi.eloweb.net",
 "uf": "PR",
 "ue": "84611",
 "cidade": "SARANDI",
-"ent": 3
+"ent": 3,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "saojoaodocaiua.eloweb.net",
 "uf": "PR",
 "ue": "78735",
 "cidade": "SÃO JOÃO DO CAIUÁ",
-"ent": 3
+"ent": 3,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cmsaojoaodoivai.eloweb.net",
 "uf": "PR",
 "ue": "78751",
 "cidade": "SÃO JOÃO DO IVAÍ",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "saopedrodoparana.eloweb.net",
 "uf": "PR",
 "ue": "78930",
 "cidade": "SÃO PEDRO DO PARANÁ",
-"ent": 3
+"ent": 3,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "tamboara.eloweb.net",
 "uf": "PR",
 "ue": "79090",
 "cidade": "TAMBOARA",
-"ent": 4
-},
-{
-"host": "tapejara.eloweb.net",
-"uf": "PR",
-"ue": "79111",
-"cidade": "TAPEJARA",
-"ent": 7
+"ent": 4,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "tapira.eloweb.net",
 "uf": "PR",
 "ue": "79731",
 "cidade": "TAPIRA",
-"ent": 3
+"ent": 3,
+"pref": 2,
+"host_pref": null
 },
 {
 "host": "terraboa.eloweb.net",
 "uf": "PR",
 "ue": "79170",
 "cidade": "TERRA BOA",
-"ent": 2
+"ent": 2,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cmitaborai.eloweb.net",
 "uf": "RJ",
 "ue": "58378",
 "cidade": "ITABORAÍ",
-"ent": 2
+"ent": 2,
+"pref": null,
+"host_pref": null
 },
 {
 "host": "cmmarica.eloweb.net",
 "uf": "RJ",
 "ue": "58530",
 "cidade": "MARICÁ",
-"ent": 20
+"ent": 20,
+"pref": null,
+"host_pref": null
 },
 {
 "host": "cmpetropolis.eloweb.net",
 "uf": "RJ",
 "ue": "58777",
 "cidade": "PETRÓPOLIS",
-"ent": 1
+"ent": 1,
+"pref": null,
+"host_pref": null
 },
 {
 "host": "riobonito.eloweb.net",
 "uf": "RJ",
 "ue": "58858",
 "cidade": "RIO BONITO",
-"ent": 8
+"ent": 8,
+"pref": 10,
+"host_pref": null
+},
+{
+"host": "saogoncalo.eloweb.net",
+"uf": "RJ",
+"ue": "58971",
+"cidade": "SÃO GONÇALO",
+"ent": null,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "cmtangua.eloweb.net",
 "uf": "RJ",
 "ue": "58360",
 "cidade": "TANGUÁ",
-"ent": 2
+"ent": 2,
+"pref": null,
+"host_pref": null
 },
 {
 "host": "cacoal.eloweb.net",
 "uf": "RO",
 "ue": "00094",
 "cidade": "CACOAL",
-"ent": 15
+"ent": 15,
+"pref": 1,
+"host_pref": null
 },
 {
 "host": "ministroandreazza.eloweb.net",
 "uf": "RO",
 "ue": "00604",
 "cidade": "MINISTRO ANDREAZZA",
-"ent": 5
+"ent": 5,
+"pref": 1,
+"host_pref": null
+},
+{
+"host": "tapejara.eloweb.net",
+"uf": "RS",
+"ue": "89214",
+"cidade": "TAPEJARA",
+"ent": 2,
+"pref": null,
+"host_pref": null
 }
 ]

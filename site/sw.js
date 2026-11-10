@@ -1,6 +1,6 @@
 /* Fiscaliza Brasil como aplicativo: guarda as páginas e os dados já vistos para abrir rápido e funcionar sem internet.
-   Páginas: tenta a rede primeiro. Arquivos e dados: entrega o guardado na hora e atualiza em segundo plano. */
-const V = "fb-v1";
+   Tudo tenta a rede primeiro (para ninguém ver versão velha depois de uma atualização) e usa o guardado só sem internet. */
+const V = "fb-v2";
 self.addEventListener("install", (e) => { self.skipWaiting(); e.waitUntil(caches.open(V).then((c) => c.addAll(["/", "/fiscalize", "/ui.css", "/fundo.css", "/icon-192.png"]).catch(() => {}))); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== V).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", (e) => {
@@ -11,9 +11,5 @@ self.addEventListener("fetch", (e) => {
     e.respondWith(fetch(r).then((res) => { const cp = res.clone(); caches.open(V).then((c) => c.put(r, cp)); return res; }).catch(() => caches.match(r).then((m) => m || caches.match("/"))));
     return;
   }
-  e.respondWith(caches.open(V).then(async (c) => {
-    const hit = await c.match(r);
-    const net = fetch(r).then((res) => { if (res.ok) c.put(r, res.clone()); return res; }).catch(() => hit);
-    return hit || net;
-  }));
+  e.respondWith(caches.open(V).then((c) => fetch(r).then((res) => { if (res.ok) c.put(r, res.clone()); return res; }).catch(() => c.match(r))));
 });

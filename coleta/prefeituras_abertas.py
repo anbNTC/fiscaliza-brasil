@@ -1,7 +1,8 @@
 """Gabinete do prefeito e do vice nas Prefeituras que publicam a folha com nome e lotação em dados abertos (arquivo CSV).
 Uma entrada por cidade em PREF abaixo. Cada uma diz onde está o conjunto de dados (CKAN) e como reconhecer o gabinete.
 Saída: junta em site/data/gabm/{ue}.json (chaves "p" e "v"), igual às outras fontes de gabinete."""
-import csv, io, json, re, sys, time, datetime
+import csv, io, json, re, sys, time, datetime, unicodedata
+from collections import Counter
 from pathlib import Path
 import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -47,12 +48,14 @@ def uma(c):
     if not b: return "arquivo indisponível"
     txt = b.decode("utf-8-sig") if b[:3] == b"\xef\xbb\xbf" or b"\xc3" in b[:50000] else b.decode("latin-1")
     sep = ";" if txt[:2000].count(";") > txt[:2000].count(",") else ","
-    rd = csv.DictReader(io.StringIO(txt), delimiter=sep); cols = {k.strip().upper(): k for k in (rd.fieldnames or [])}
-    col = lambda nome: cols.get(nome.upper())
-    out = {"p": [], "v": []}; n = 0
+    sa = lambda x: unicodedata.normalize("NFKD", x).encode("ascii", "ignore").decode().strip().upper()
+    rd = csv.DictReader(io.StringIO(txt), delimiter=sep); cols = {sa(k): k for k in (rd.fieldnames or [])}
+    col = lambda nome: cols.get(sa(nome))
+    out = {"p": [], "v": []}; n = 0; gabs = Counter()
     for row in rd:
         n += 1
         lot = " · ".join((row.get(col(k)) or "").strip() for k in c["lot"] if col(k))
+        if re.search(r"GAB|PREFEIT", lot, re.I): gabs[lot] += 1
         if not GABP.search(lot): continue
         cg = (row.get(col(c["cargo"])) or "").strip()
         if re.match(r"^\s*(VICE[\s-]*)?PREFEIT", cg, re.I): continue
@@ -64,7 +67,7 @@ def uma(c):
     if out:
         grava(c["ue"], {"_tipo": "pref", "dep": out, "fonte": f"Prefeitura de {c['cidade']} · dados abertos (folha dos servidores)", "url": c["pagina"], "competencia": comp,
                         "obs": f"Remuneração total{' de ' + comp if comp else ''}, como publicada pela Prefeitura em dados abertos. Só servidores lotados no gabinete do prefeito ou do vice."})
-    return {"linhas": n, "gabinete": {k: len(v) for k, v in out.items()}, "arquivo": r.get("name"), "colunas": list(cols)[:12]}
+    return {"linhas": n, "gabinete": {k: len(v) for k, v in out.items()}, "arquivo": r.get("name"), "lotacoes_gab": gabs.most_common(12) if not out else []}
 
 def main():
     for c in PREF:

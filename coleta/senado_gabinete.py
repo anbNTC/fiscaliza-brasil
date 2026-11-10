@@ -23,6 +23,31 @@ def get(u):
         except Exception as e: print(u, repr(e)[:100], flush=True)
         time.sleep(5 * (k + 1))
 
+def diarias(sen):
+    """Diárias pagas a cada senador por mês (folha nominal do Senado). Guarda os meses já lidos e busca só os que faltam."""
+    p = OUT / "senado_diarias.json"
+    try: X = json.load(open(p))
+    except Exception: X = {"meses": [], "dep": {}}
+    nomes = {norm(s[2]): str(s[0]) for s in sen}; nomes.update({norm(s[1]): str(s[0]) for s in sen})
+    hoje = datetime.date.today(); m = datetime.date(2023, 2, 1); feitos = set(X["meses"]); novos = 0
+    while m < hoje.replace(day=1):
+        k = f"{m.year}-{m.month:02d}"
+        recentes = (hoje.year * 12 + hoje.month) - (m.year * 12 + m.month) <= 2
+        if k not in feitos or recentes:
+            R = get(f"{API}/remuneracoes/{m.year}/{m.month}")
+            if R:
+                soma = defaultdict(float)
+                for x in R:
+                    sid = nomes.get(norm(x.get("nome")))
+                    if sid: soma[sid] += num(x.get("diarias"))
+                for sid, v in soma.items():
+                    if v: X["dep"].setdefault(sid, {})[k] = round(v, 2)
+                feitos.add(k); novos += 1
+        m = (m.replace(day=28) + datetime.timedelta(days=5)).replace(day=1)
+    X["meses"] = sorted(feitos); X["fonte"] = "Senado Federal · Dados Abertos Administrativos (remuneração nominal, campo diárias)"; X["gerado"] = hoje.isoformat()
+    json.dump(X, open(p, "w"), ensure_ascii=False, separators=(",", ":"))
+    print("diárias de senadores:", novos, "meses lidos,", len(X["dep"]), "senadores com diárias")
+
 def main():
     A = get(f"{API}/servidores/ativos") or []
     if len(A) < 3000: raise RuntimeError(f"lista de servidores do Senado incompleta ({len(A)})")
@@ -63,3 +88,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    try: diarias(json.load(open(D / "br.json"))["sen"])
+    except Exception as e: print("diárias falhou:", repr(e)[:200])

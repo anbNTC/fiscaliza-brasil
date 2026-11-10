@@ -19,7 +19,31 @@ def tabela(t, rotulo):
     if not m: return []
     return [[re.sub(r"<[^>]+>", "", html.unescape(c)).strip() for c in re.findall(r"<t[dh][^>]*>([\s\S]*?)</t[dh]>", tr)] for tr in re.findall(r"<tr[\s\S]*?</tr>", m.group(0))]
 
-def um(idd, ano):
+def extras(t):
+    """Imóvel funcional, auxílio-moradia e nº de viagens em missão oficial (quadro "Benefícios" da página do deputado)."""
+    txt = lambda m: " ".join(re.sub(r"<[^>]+>", " ", html.unescape(m.group(1))).split()) if m else ""
+    im = txt(re.search(r'Imóvel funcional.*?</h3>\s*<span[^>]*>(.*?)</span>', t, re.S))
+    au = txt(re.search(r'Auxílio-moradia.*?</h3>\s*(.*?)</div>', t, re.S))
+    vg = re.search(r'Viagens em missão oficial.*?</h3>\s*<(?:a|span)[^>]*>\s*(\d+)\s*<', t, re.S)
+    return {"imovel": im, "auxilio": au[:160], "viagens": int(vg.group(1)) if vg else None}
+
+def missoes(idd):
+    """Viagens em missão oficial: período, assunto, destino, passagens e diárias (página pública de cada deputado)."""
+    for k in range(3):
+        try:
+            r = S.get(f"https://www.camara.leg.br/deputados/{idd}/missao-oficial", timeout=60)
+            if r.ok: break
+        except Exception: pass
+        time.sleep(4 * (k + 1))
+    else: return None
+    out = []
+    for tr in re.findall(r"<tr>\s*<td>[\s\S]*?</tr>", r.text):
+        c = [" ".join(re.sub(r"<[^>]+>", " ", html.unescape(x)).split()) for x in re.findall(r"<td[^>]*>([\s\S]*?)</td>", tr)]
+        cod = re.search(r"codViagem(?:=|&#x3D;)(\d+)", tr)
+        if len(c) >= 5: out.append([cod.group(1) if cod else c[0], c[0], c[1][:200], c[2].strip(" ,"), num(c[3]) or 0, num(c[4]) or 0])
+    return out
+
+def um(idd, ano, html_out=None):
     for k in range(3):
         try:
             r = S.get(f"https://www.camara.leg.br/deputados/{idd}?ano={ano}", timeout=60)
@@ -28,7 +52,9 @@ def um(idd, ano):
         except Exception: pass
         time.sleep(4 * (k + 1))
     else: return None, None
-    t = r.text; lim = re.search(r"limite mensal de R\$ ([\d.]+,\d\d) para pagar", t)
+    t = r.text
+    if html_out is not None: html_out.append(t)
+    lim = re.search(r"limite mensal de R\$ ([\d.]+,\d\d) para pagar", t)
     meses = []
     for row in tabela(t, "Gasto mensal da verba de gabinete"):
         if len(row) >= 2 and row[0][:3].upper() in MES and num(row[1]) is not None:
@@ -40,11 +66,21 @@ def main():
     try: X = json.load(open(ARQ))
     except Exception: X = {"dep": {}}
     lim = X.get("limite"); n = 0; vazios = 0
+    VG = D / "gab" / "viagens.json"
+    try: Y = json.load(open(VG))
+    except Exception: Y = {"dep": {}}
     for idd in ids:
         reg = X["dep"].setdefault(str(idd), {})
         for ano in ANOS:
             if str(ano) in reg and ano not in REFAZ: continue
-            m, l = um(idd, ano); time.sleep(0.4)
+            pag = []; m, l = um(idd, ano, pag if ano == HOJE.year else None); time.sleep(0.4)
+            if pag:
+                ex = extras(pag[0]); y = Y["dep"].setdefault(str(idd), {"v": []}); y.update({"imovel": ex["imovel"], "auxilio": ex["auxilio"]})
+                if ex["viagens"]:
+                    ms = missoes(idd); time.sleep(0.4)
+                    if ms:
+                        vis = {v[0] for v in y["v"]}; y["v"] += [v for v in ms if v[0] not in vis]
+                        y["v"].sort(key=lambda v: "-".join(reversed(v[1][:10].split("/"))), reverse=True)
             if m is None: continue
             if l: lim = l
             if m: reg[str(ano)] = m; n += 1
@@ -53,9 +89,11 @@ def main():
     X["dep"] = {k: v for k, v in X["dep"].items() if v}
     if n == 0 and not X["dep"]: raise RuntimeError("nenhuma verba de gabinete lida: a página pode ter mudado")
     json.dump(X, open(ARQ, "w"), ensure_ascii=False, separators=(",", ":"))
+    Y.update({"fonte": "Câmara dos Deputados · página oficial de cada deputado (benefícios e viagens em missão oficial)", "gerado": HOJE.isoformat()})
+    json.dump(Y, open(VG, "w"), ensure_ascii=False, separators=(",", ":"))
     print(json.dumps({"deputados": len(X["dep"]), "anos_lidos": n, "sem_dado": vazios, "limite": lim}))
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:  # teste: python camara_verba_gabinete.py 220683
-        for a in ANOS: print(a, um(sys.argv[1], a))
+        pg = []; print(um(sys.argv[1], HOJE.year, pg)); print(extras(pg[0])); print(missoes(sys.argv[1]))
     else: main()

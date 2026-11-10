@@ -84,6 +84,7 @@ def camara(BR):
                 dep_info[r["deputado_id"]] = (r["deputado_nome"], r["deputado_siglaPartido"], r["deputado_siglaUf"], r["deputado_urlFoto"], r["dataHoraVoto"])
     V = [r for r in V if VT.get(r["id"])]  # só as que têm voto registrado
     V.sort(key=lambda r: (r["data"], r["dataHoraRegistro"]))
+    if not V: print("Câmara: nenhuma votação nominal nova desde", ult, "(as", len(alvo), "do Plenário foram simbólicas)"); return 0
     novos = []; temas = {}
     for r in V:
         pr = P.get(r["id"]) or O.get(r["id"]) or {}

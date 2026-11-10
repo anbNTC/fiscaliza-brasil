@@ -318,8 +318,12 @@ async function agora() {
     if (!url) { box.innerHTML = '<div class="xfb"><b>A lista do X ainda não foi escolhida.</b><span class="small muted">No painel, abra "Lateral do X" e cole o endereço de uma lista pública do X.</span></div>'; return; }
     const abrir = `<a class="btn o" style="justify-self:start;padding:9px 16px;text-decoration:none" href="${esc(url)}" target="_blank" rel="noopener">Abrir a lista no X</a>`;
     box.innerHTML = `<a class="twitter-timeline" data-height="640" data-dnt="true" data-lang="pt" data-chrome="noheader nofooter transparent noborders" href="${esc(url)}">Carregando posts do X…</a>${abrir}`;
-    if (window.twttr && twttr.widgets) twttr.widgets.load(box); else if (!document.getElementById("x-wjs")) { const sc = document.createElement("script"); sc.id = "x-wjs"; sc.async = true; sc.src = "https://platform.twitter.com/widgets.js"; document.head.append(sc); }
-    setTimeout(() => { if ($("#x-box") && !$("#x-box iframe")) $("#x-box").innerHTML = `<div class="xfb"><b>O X não mostrou os posts aqui.</b><span class="small muted">Às vezes o X só exibe listas para quem está logado nele, ou o navegador bloqueia o conteúdo do X. Pela lista você vê tudo direto no X.</span>${abrir}</div>`; }, 9000);
+    // o X só "desenha" a lista quando consegue mostrar posts; o iframe pode existir vazio (lista exige login, bloqueio do navegador)
+    let ok = false;
+    const liga = () => { try { twttr.events.bind("rendered", (ev) => { if (box.contains(ev.target)) { const f = box.querySelector("iframe"); ok = !!(f && (f.offsetHeight > 120 || parseInt(f.style.height) > 120)); } }); } catch (e) {} };
+    if (window.twttr && twttr.widgets) { liga(); twttr.widgets.load(box); }
+    else if (!document.getElementById("x-wjs")) { window.twttr = window.twttr || { _e: [], ready(f) { this._e.push(f); } }; twttr.ready(liga); const sc = document.createElement("script"); sc.id = "x-wjs"; sc.async = true; sc.src = "https://platform.twitter.com/widgets.js"; document.head.append(sc); }
+    setTimeout(() => { const f = box.querySelector("iframe"); if (f && (f.offsetHeight > 120 || parseInt(f.style.height) > 120)) ok = true; if ($("#x-box") && !ok) $("#x-box").innerHTML = `<div class="xfb"><b>O X não mostrou os posts aqui.</b><span class="small muted">Às vezes o X só exibe listas para quem está logado nele, ou o navegador bloqueia o conteúdo do X. Pela lista você vê tudo direto no X.</span>${abrir}</div>`; }, 9000);
   };
   /* lateral: em alta no Brasil (Google Trends) */
   let tFiltro = "pol", tData = null;

@@ -35,6 +35,19 @@ dep = {str(d[0]): d for d in BR["dep"]}; sen = {str(x[0]): x for x in BR["sen"]}
 def bloco(it):
     d = it.get("dados") or {}; ref = it["ref"]; t, _, rid = ref.partition("/"); nome = d.get("nome") or ref; link = f"{SITE}/p/{ref}"
     cab = f'<tr><td style="padding:18px 0 6px"><a href="{link}" style="color:#0B0B0C;font-weight:800;font-size:17px;text-decoration:none">{e(nome)}</a><br><span style="color:#5E6066;font-size:13px">{e(d.get("cargo") or "")}{" · " + e(d.get("part")) if d.get("part") else ""}</span></td></tr>'
+    if t in ("m", "e"):  # vereadores e deputados estaduais: projetos novos onde a Câmara ou a Assembleia publica em dados abertos
+        partes = rid.split("/"); X = {}
+        try:
+            if t == "m" and len(partes) == 3: X = (json.load(open(D / "cam" / f"{partes[1]}.json")).get("dep") or {}).get(partes[2]) or {}
+            elif t == "e" and len(partes) == 3:
+                E = json.load(open(D / "est" / f"{partes[0]}.json"))
+                if partes[1] == str(E.get("ano", "22")): X = (E.get("dep") or {}).get(partes[2]) or {}
+        except Exception: X = {}
+        novos = [p for p in (X.get("props") or []) if len(p) > 2 and str(p[2]) >= ini]
+        if novos:
+            return cab + '<tr><td style="font-size:14px;padding-bottom:4px"><b>Projetos novos</b></td></tr>' + "".join(f'<tr><td style="font-size:13px;padding:3px 0">{e(p[0])}: {e(str(p[1])[:160])}</td></tr>' for p in novos[:6]), True
+        msg = "Sem projeto novo registrado nesta semana." if X.get("props") else "Esta Casa não publica a lista de projetos nem os votos de cada um em dados abertos."
+        return cab + f'<tr><td style="font-size:14px;color:#5E6066">{msg} <a href="{link}">Ver a ficha</a></td></tr>', False
     if t not in ("c", "s"):
         return cab + f'<tr><td style="font-size:14px;color:#5E6066">Para este cargo, o voto de cada um não é publicado em dados abertos toda semana. <a href="{link}">Ver a ficha</a></td></tr>', False
     C = t == "c"; info = dep.get(rid) if C else sen.get(rid)

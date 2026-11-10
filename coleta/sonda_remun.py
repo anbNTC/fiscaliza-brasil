@@ -6,7 +6,7 @@ B = "https://www2.camara.leg.br/a-camara/estruturaadm/diretorias/diretoria-de-ge
 for nm in ("TABSP202601MAR202620260303.pdf",):
     r = g(B + nm); print("PDF", r.status_code, r.headers.get("content-type"), len(r.content))
     if r.ok and r.content[:4] == b"%PDF":
-        open("/tmp/t.pdf", "wb").write(r.content); print(subprocess.run(["pdftotext", "-layout", "/tmp/t.pdf", "-"], capture_output=True, text=True).stdout[:6000])
+        subprocess.run(["pip", "install", "-q", "pypdf"]); import pypdf; print("\n".join(pg.extract_text(extraction_mode="layout") for pg in pypdf.PdfReader(io.BytesIO(r.content)).pages)[:7000])
 r = g("https://www2.camara.leg.br/transparencia/recursos-humanos/remuneracao/relatorios-consolidados-por-ano-e-mes/2026/outubro-de-2026-csv")
 t = r.content.decode("latin-1") if b"\xc3" not in r.content[:20000] else r.content.decode("utf-8")
 rows = list(csv.reader(io.StringIO(t), delimiter=";")); h = rows[0]

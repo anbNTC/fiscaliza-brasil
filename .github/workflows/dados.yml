@@ -5,10 +5,7 @@ name: Dados
 on:
   schedule:
     - cron: "17 6 * * *"   # 03:17 em Brasília, todo dia
-  workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ["coleta/camara_orient.py", "coleta/emendas.py", "coleta/assembleias_sapl.py", "coleta/assembleia_sp.py", "coleta/assembleia_sc.py", "coleta/assembleia_ba.py", "coleta/assembleia_pe.py", "coleta/assembleia_es.py", "coleta/assembleia_rs.py", "coleta/saida_br.py", "coleta/emendas_estaduais.py", "coleta/camaras_sapl.py", "coleta/votos_municipio.py", "coleta/campanha_doadores.py", "coleta/camara_gabinete.py", "coleta/camara_verba_gabinete.py", "coleta/senado_gabinete.py", "coleta/assembleia_pr.py", "coleta/camara_curitiba.py", "proxy-br/**", "tools/**", ".github/workflows/dados.yml"]
+  workflow_dispatch:   # mudanças nos coletores não disparam mais a coleta inteira (gastava os minutos do GitHub); use a Coleta avulsa
 
 permissions:
   contents: write

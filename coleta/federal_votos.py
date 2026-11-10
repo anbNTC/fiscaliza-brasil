@@ -64,13 +64,13 @@ def camara(BR):
     V = []; P = {}; O = {}; G = {}; VT = defaultdict(dict); dep_info = {}
     for ano in anos:
         for r in csv_ano("votacoes", ano):
-            if r["siglaOrgao"] == "PLEN" and r["data"] >= ult and r["id"] not in ids and (int0(r["votosSim"]) + int0(r["votosNao"]) + int0(r["votosOutros"])) > 0: V.append(r)
+            if r["siglaOrgao"] == "PLEN" and r["data"] >= ult and r["id"] not in ids: V.append(r)  # nominal = tem voto registrado (filtrado abaixo)
         # checagem: o critério reproduz o que já existe?
         if ano == int(ult[:4]):
             ja = sum(1 for x in VC if x[1][:4] == str(ano))
             print("Câmara: votações nominais já gravadas em", ano, ja, flush=True)
-    if not V: print("Câmara: nenhuma votação nominal nova desde", ult); return 0
-    alvo = {r["id"] for r in V}
+    if not V: print("Câmara: nenhuma votação nova desde", ult); return 0
+    alvo = {r["id"] for r in V}; print("Câmara: votações do Plenário depois de", ult, "a conferir:", len(alvo), flush=True)
     for ano in anos:
         for r in csv_ano("votacoesProposicoes", ano):
             if r["idVotacao"] in alvo and r["idVotacao"] not in P: P[r["idVotacao"]] = r

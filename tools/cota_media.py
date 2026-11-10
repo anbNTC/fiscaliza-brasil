@@ -1,4 +1,4 @@
-"""Gera data/cota_media.json (médias da cota por Casa) e data/emendas_pr.json (emendas dos parlamentares do PR por cidade)."""
+"""Gera data/cota_media.json (médias da cota por Casa) ."""
 import json, re, unicodedata, statistics
 from pathlib import Path
 from collections import defaultdict
@@ -15,14 +15,3 @@ for casa, pasta in (("C", "c"), ("S", "s")):
     out[casa] = {"n": len(tot), "media": round(statistics.mean(tot)), "mediana": round(statistics.median(tot)), "p90": round(sorted(tot)[int(len(tot) * .9)])}
 json.dump(out, open(D / 'cota_media.json', 'w'))
 print(out)
-s = open(S / 'parana.html').read()
-d = json.loads(re.search(r'<script type="application/json" id="data">(.*?)</script>', s, re.S).group(1))
-cid = defaultdict(list)
-for p in d['P']:
-    if p['casa'] not in ('C', 'S'): continue
-    for m, uf, tot, fav in p.get('fav') or []:
-        if uf != 'PR' or not tot: continue
-        cid[norm(m)].append([p['casa'], str(p['id']), p['nome'], p['partido'], round(tot), [[a, round(b)] for a, b in fav[:3]]])
-for k in cid: cid[k].sort(key=lambda x: -x[4])
-json.dump({"gerado": d.get("gerado"), "fonte": "Portal da Transparência (CGU) · Emendas parlamentares por favorecido, 2023 a 2026", "cid": cid}, open(D / 'emendas_pr.json', 'w'), ensure_ascii=False, separators=(',', ':'))
-print(len(cid), 'cidades', (D / 'emendas_pr.json').stat().st_size // 1024, 'KB', cid.get('CURITIBA', [])[:2])

@@ -81,6 +81,9 @@ function secResumo(o, X, casa) {
   const k = [];
   if (X && X.sess && X.sess[1]) k.push(["Presença nas sessões", pct(X.sess[0], X.sess[1]), `presente em ${mil(X.sess[0])} de ${mil(X.sess[1])} dias com sessão deliberativa do Plenário desde que assumiu`]);
   if (X && X.pres && X.pres[1]) k.push(["Participação nas votações", pct(X.pres[0], X.pres[1]), `votou em ${mil(X.pres[0])} de ${mil(X.pres[1])} votações nominais do Plenário desde que assumiu`]);
+  if (X && X.fp) { const a = (X.fp.match(/g/g) || []).length, c = (X.fp.match(/r/g) || []).length; if (a + c) k.push(["Votou com o partido", pct(a, a + c), `contra o partido ${mil(c)} ${c === 1 ? "vez" : "vezes"}, em ${mil(a + c)} votações com posição clara do partido`]); }
+  if (casa === "C" && X && X.v && VCAM) { let a = 0, n = 0; VCAM.forEach((x, i) => { const g = x[8], v = X.v[i]; if ((g === "Sim" || g === "Não") && (v === "S" || v === "N")) { n++; if ((g === "Sim") === (v === "S")) a++; } }); if (n) k.push(["Votou com o governo", pct(a, n), `em ${mil(n)} votações em que o governo orientou Sim ou Não`]); }
+  if (o.emAut) k.push(["Emendas pagas", brl(o.emAut.t), `para ${mil(o.emAut.n)} ${o.emAut.n === 1 ? "cidade" : "cidades"} desde 2023`]);
   if (X && X.au) { const c = X.au.c || {}; const nprop = ["PL", "PLP", "PEC", "PDL", "PRS"].reduce((a, t) => a + (c[t] || 0), 0); k.push(["Projetos apresentados", mil(nprop), "PL, PLP, PEC e PDL desde 2023 (autor ou coautor)"]); }
   if (X && X.cota) { const tot = Object.values(X.cota.a).reduce((a, t) => a + Object.values(t).reduce((x, y) => x + y, 0), 0); k.push(["Cota parlamentar gasta", brl(tot), "reembolsos de 2023 a 2026"]); }
   else if (casa) k.push(["Cota parlamentar gasta", "—", "sem gastos registrados no período"]);
@@ -234,12 +237,14 @@ async function cracha(parts) {
     chips.push('<span class="chip ok">Em exercício</span>'); if (!d[7]) chips.push('<span class="chip warn">Assumiu como suplente</span>'); if (d[8]) chips.push('<span class="chip new">Reeleito em 2026</span>');
     X = (await loadC(d[3]))[String(d[0])] || null; o.patList = X && X.pat;
     { const G = await getJSON("data/gab/" + d[3] + ".json").catch(() => null); if (G && G.dep[String(d[0])]) { o.gab = G.dep[String(d[0])]; o.gabInfo = G; } }
+    o.emAut = ((await getJSON("data/emendas/aut_" + d[3] + ".json").catch(() => ({}))).dep || {})["C:" + d[0]] || null;
     src = FONTE_CAM + " · " + FONTE_TSE; o.mand = "Mandato 2023–2027"; o.link = "https://www.camara.leg.br/deputados/" + d[0]; o.linkN = "Página na Câmara";
   } else if (t === "s") {
     const s = BR.sen.find((x) => String(x[0]) === parts[1]); if (!s) return notFound();
     o = { nome: s[1], foto: s[5], cargo: "Senador(a)" + (s[6] !== "Titular" ? " · suplente em exercício" : ""), part: s[3], uf: s[4], civil: s[2] }; voltar = "#/uf/" + s[4]; casa = "S";
     chips.push('<span class="chip ok">Em exercício</span>'); if (s[9]) chips.push('<span class="chip new">Reeleito em 2026</span>');
     X = (await loadS(s[4]))[String(s[0])] || null; o.patList = X && X.pat;
+    o.emAut = ((await getJSON("data/emendas/aut_" + s[4] + ".json").catch(() => ({}))).dep || {})["S:" + s[0]] || null;
     o.mand = s[7] === 2022 ? "Mandato 2023–2031" : "Mandato até 31/01/2027"; src = FONTE_SEN + " · " + FONTE_TSE; o.link = "https://www25.senado.leg.br/web/senadores/senador/-/perfil/" + s[0]; o.linkN = "Página no Senado";
   } else if (t === "w") {
     // vereador que exerceu mandato sem estar entre os eleitos de 2024 (em geral, suplente que assumiu), pela lista do SAPL da Câmara
@@ -263,11 +268,9 @@ async function cracha(parts) {
       const ck = t === "e" ? (uf === "DF" ? "dd" : "de") : t === "f" ? "dep" : "sen"; o = { nome: pp.nome, cargo: cargo(ck, pp.g) + " · " + uf, part: pp.part, uf };
       o.mand = parts[2] === "26" ? "Eleito em 2026 · posse em fev/2027" : "Eleito em 2022 · mandato até jan/2027"; if (parts[2] === "26") chips.push('<span class="chip new">Eleito em 2026</span>');
       if (t === "e" && parts[2] === "22" && D.de26.some((q) => q[1] === P[1])) chips.push('<span class="chip new">Reeleito em 2026</span>');
-      rich = t === "e" && uf === "PR" && parts[2] === "22";
       if (t === "e" && parts[2] === "22") { const E = await getJSON("data/est/" + uf + ".json").catch(() => null); if (E && E.dep[parts[3]]) { o.est = E.dep[parts[3]]; o.estInfo = E; } } }
     else if (t === "m") { const m = D.mun[parts[2]]; if (!m) return notFound(); P = parts[3] === "p" ? m[1] : parts[3] === "v" ? m[2] : m[3][+parts[3]]; if (!P) return notFound(); const pp = pTSE(P);
       o = { nome: pp.nome, cargo: cargo(parts[3] === "p" ? "pref" : parts[3] === "v" ? "vp" : "ver", pp.g) + " · " + title(m[0]), part: pp.part, uf }; o.mand = "Eleito em 2024 · mandato 2025–2028"; voltar = `#/cidade/${uf}/${parts[2]}`;
-      rich = parts[3] !== "p" && parts[3] !== "v" && uf === "PR" && parts[2] === "75353";
       if (parts[3] !== "p" && parts[3] !== "v") { const C = await getJSON("data/cam/" + parts[2] + ".json").catch(() => null); if (C && C.dep[parts[3]]) { o.est = C.dep[parts[3]]; o.estInfo = C; } } }
     o.patList = (await loadPat(uf))[keyTSE(P[1], P[5])] || null;
     const ano = t === "m" ? 2024 : (parts[2] === "26" || parts[3] === "26") ? 2026 : 2022;
@@ -300,6 +303,7 @@ async function cracha(parts) {
   if (casa) tabs.push(["custo", "Custo do mandato"], ["votos", "Votações"], ["proj", "Projetos"], ["disc", "Discursos"]);
   if (o.est) { tabs.push(["eproj", "Projetos"]); if (o.estInfo.temVotos) tabs.push(["evot", "Votações"]); }
   if (o.emEst) tabs.push(["eem", "Emendas"]);
+  if (o.emAut) tabs.push(["emf", "Emendas"]);
   if (o.gab) tabs.push(["gab", "Gabinete"]);
   if (o.vc) tabs.push(["camp", o.vc.v ? "Votos e campanha" : "Campanha"]);
   tabs.push(["pat", "Patrimônio"]);
@@ -308,7 +312,7 @@ async function cracha(parts) {
   const atual = new Date(BR.gerado + "T12:00").toLocaleDateString("pt-BR");
   M.innerHTML = `<section class="card glass"><a class="muted small" href="${voltar}">← Voltar</a>
     <div class="hero">${av(o.nome, o.foto, "lg")}<div style="display:grid;gap:6px"><span class="kick">${esc(o.cargo)}</span><h1>${esc(o.nome)}</h1><div class="chips"><span class="chip">${esc(o.part)}</span><span class="chip">${esc(o.uf)}</span>${chips.join("")}</div></div></div>
-    <div class="btns">${rich ? `<a class="btn" href="parana.html?q=${encodeURIComponent(o.nome)}">${t === "m" ? "Atividade na Câmara de Curitiba" : t === "e" ? "Projetos e leis na ALEP" : "Votos com orientação de bancada e emendas"}</a>` : ""}${o.link ? `<a class="btn o" href="${o.link}" target="_blank" rel="noopener">${o.linkN}</a>` : ""}<a class="btn o" href="https://wa.me/?text=${share}" target="_blank" rel="noopener">WhatsApp</a>${o.plano ? `<a class="btn o" href="${o.plano}" target="_blank" rel="noopener">Plano de governo (TSE)</a>` : ""}<button class="btn o" id="acf" type="button">☆ Acompanhar</button>${casa ? '<button class="btn o" id="cmpf" type="button">+ Comparar</button>' : ""}<button class="btn o" id="rep">Reportar erro</button></div></section>
+    <div class="btns">${o.link ? `<a class="btn o" href="${o.link}" target="_blank" rel="noopener">${o.linkN}</a>` : ""}<a class="btn o" href="https://wa.me/?text=${share}" target="_blank" rel="noopener">WhatsApp</a>${o.plano ? `<a class="btn o" href="${o.plano}" target="_blank" rel="noopener">Plano de governo (TSE)</a>` : ""}<button class="btn o" id="acf" type="button">☆ Acompanhar</button>${casa ? '<button class="btn o" id="cmpf" type="button">+ Comparar</button>' : ""}<button class="btn o" id="rep">Reportar erro</button></div></section>
    <section class="card glass" style="padding:8px"><div class="tabs2" role="tablist">${tabs.map(([k, l], i) => `<button role="tab" data-k="${k}" aria-selected="${i === 0}">${l}</button>`).join("")}</div></section>
    <section class="card glass" id="tb"></section>`;
   $("#rep").onclick = () => reportar(o.nome + " · " + o.cargo);
@@ -317,6 +321,7 @@ async function cracha(parts) {
   const tb = $("#tb");
   const show = async (k) => {
     document.querySelectorAll(".tabs2 button").forEach((b) => b.setAttribute("aria-selected", b.dataset.k === k));
+    if (k === "resumo" && casa === "C") await loadVC().catch(() => null);
     if (k === "resumo") tb.innerHTML = `<h2>Resumo</h2>${kvHTML(secResumo(o, X, casa).concat(kv))}<p class="src">Fonte: ${src}. Atualizado em ${atual}.</p>`;
     else if (k === "gab") { const cs = {}; o.gab.forEach((g) => (cs[g[1]] = (cs[g[1]] || 0) + 1));
       tb.innerHTML = `<h2>Quem trabalha no gabinete <span class="muted small">(${o.gab.length})</span></h2><div class="chips">${Object.entries(cs).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c, n]) => `<span class="chip">${esc(c)} · ${n}</span>`).join("")}</div>
@@ -330,6 +335,7 @@ async function cracha(parts) {
     else if (k === "eproj") tb.innerHTML = secEstProj(o);
     else if (k === "evot") tb.innerHTML = secEstVot(o);
     else if (k === "eem") tb.innerHTML = secEmEst(o);
+    else if (k === "emf") tb.innerHTML = secEmFed(o);
     else if (k === "pat") tb.innerHTML = `<h2>Patrimônio declarado</h2>${secPat(o.patList)}`;
     else if (k === "card") { tb.innerHTML = `<h2>Card para Stories</h2><div id="stc"><p class="muted">Montando a imagem…</p></div>`; await cardStories($("#stc"), Object.assign({}, o, { cargo: String(o.cargo || "").split(" · ")[0] }), await statsCard(o, X, casa), await notaCard(o, X, casa)); }
   };
@@ -351,7 +357,7 @@ async function statsCard(o, X, casa) {
     const au = (X.au && X.au.c) || {}; st.push([["PL", "PLP", "PEC", "PDL", "PRS"].reduce((s, t) => s + (au[t] || 0), 0), "Projetos apresentados"]);
     if (X.cota) st.push([brlc(Object.values(X.cota.a).reduce((s, t) => s + Object.values(t).reduce((x, y) => x + y, 0), 0)), "Cota parlamentar gasta"]);
   }
-  if (o.est) { const cs = o.estInfo && o.estInfo.casa ? "na Câmara" : "na Assembleia"; const pc = ["PLO", "PL", "PLC", "PEC", "PDL", "PRE", "PLL", "PLCM"].reduce((x, k) => x + ((o.est.cont || {})[k] || 0), 0); st.push([mil(pc), "Projetos " + cs + " desde " + (o.estInfo && o.estInfo.casa ? "2025" : "2023")]);
+  if (o.est) { const cs = o.estInfo && o.estInfo.casa ? "na Câmara" : "na Assembleia"; const pc = ["PLO", "PL", "PLC", "PEC", "PDL", "PRE", "PLL", "PLCM", "PLI", "PCOL"].reduce((x, k) => x + ((o.est.cont || {})[k] || 0), 0); st.push([mil(pc), "Projetos " + cs + " desde " + ((o.estInfo && o.estInfo.desde) || (o.estInfo && o.estInfo.casa ? "2025" : "2023"))]);
     const tv = Object.values(o.est.votos || {}).reduce((x, y) => x + y, 0); if (tv) st.push([mil(tv), "Votos registrados " + cs]); }
   if (st.length < 4 && o.vc && o.vc.v) st.push([mil(o.vc.v[0]), "Votos em " + o.ano]);
   if (st.length < 4 && o.vc && o.vc.c) st.push([brlc(o.vc.c[0]), "Arrecadou na campanha"]);
@@ -369,7 +375,7 @@ const REGIAO = { AC: "NORTE", AM: "NORTE", AP: "NORTE", PA: "NORTE", RO: "NORTE"
 function planoURL(uf, ano, ue, sq) { if (!sq || !ELEI[ano]) return ""; return `https://divulgacandcontas.tse.jus.br/divulga/#/candidato/${REGIAO[uf] || "BR"}/${uf}/${ELEI[ano]}/${sq}/${ano}/${ue}`; }
 
 /* deputados estaduais: dados das Assembleias que publicam no SAPL */
-const TIPOS_EST = { PLO: "Projetos de lei", PL: "Projetos de lei", PLC: "Projetos de lei complementar", PEC: "Propostas de emenda à Constituição", PDL: "Projetos de decreto legislativo", PRE: "Projetos de resolução", PR: "Projetos de resolução", IND: "Indicações", REQ: "Requerimentos", MOC: "Moções", PINF: "Pedidos de informação" };
+const TIPOS_EST = { PLI: "Projetos de autoria própria", PCOL: "Projetos em coautoria", REQP: "Requerimentos à Prefeitura", PLO: "Projetos de lei", PL: "Projetos de lei", PLC: "Projetos de lei complementar", PEC: "Propostas de emenda à Constituição", PDL: "Projetos de decreto legislativo", PRE: "Projetos de resolução", PR: "Projetos de resolução", IND: "Indicações", REQ: "Requerimentos", MOC: "Moções", PINF: "Pedidos de informação" };
 /* emendas do deputado estadual ao orçamento do estado (onde o governo publica com o nome do autor) */
 function secEmEst(o) {
   const [, , emp, pago, cs] = o.emEst, I = o.emEstInfo; const mx = cs.length ? cs[0][1] : 1;
@@ -379,12 +385,27 @@ function secEmEst(o) {
    <p class="small muted" style="margin:0">A cidade é a informada pelo governo do estado para cada emenda. Quando o dinheiro vai para um órgão estadual, pode aparecer a capital ou "sem município".</p>
    <p class="src">Fonte: <a href="${esc(I.url)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>. Atualizado em ${new Date(I.gerado + "T12:00").toLocaleDateString("pt-BR")}.</p>`;
 }
+function secEmFed(o) {
+  const e = o.emAut, mx = e.c.length ? e.c[0][2] : 1, mf = e.f.length ? e.f[0][1] : 1;
+  return `<h2>Emendas enviadas <span class="muted small">(desde 2023)</span></h2>
+   <div class="kv"><div><div class="l">Total pago</div><div class="v">${brl(e.t)}</div><div class="s">emendas individuais e de autoria identificada</div></div><div><div class="l">Cidades</div><div class="v">${mil(e.n)}</div><div class="s">receberam pelo menos uma</div></div></div>
+   <h3>Para onde foi o dinheiro${e.n > e.c.length ? ` <span class="muted small">(as ${e.c.length} cidades que mais receberam)</span>` : ""}</h3>
+   <div class="tl">${e.c.map(([uf, m, v, fv]) => `<div><span><b>${esc(title(m))}</b> <span class="small muted">${esc(uf)}</span>${fv && fv.length ? `<br><span class="small muted">${fv.map(([n, x]) => esc(title(n)) + " " + brl(x)).join(" · ")}</span>` : ""}</span><b>${brl(v)}</b>${bar(v, mx)}</div>`).join("")}</div>
+   <h3>Quem mais recebeu</h3><div class="tl">${e.f.map(([n, v]) => `<div><span>${esc(title(n))}</span><b>${brl(v)}</b>${bar(v, mf)}</div>`).join("")}</div>
+   <p class="src">A cidade é a do cadastro de quem recebeu: dinheiro repassado ao governo do estado aparece na capital, e pagamentos ao Banco do Brasil aparecem em Brasília. Valores pagos desde 2023. Fonte: Portal da Transparência (CGU), emendas parlamentares por favorecido.</p>`;
+}
+const HOMEN = /utilidade p[úu]blica|denomina|t[íi]tulo (honor[íi]fico|de cidad)|cidad[ãa](o|ã) honor[áa]ri|honra ao m[ée]rito|comenda|institui (o|a) (dia|semana|m[êe]s)|inclui no calend[áa]rio|calend[áa]rio oficial|data comemorativa|voto de (louvor|congratula|aplauso|pesar)|mo[çc][ãa]o de (louvor|congratula|aplauso|pesar)|patrim[ôo]nio cultural imaterial|capital (estadual|nacional) d/i;
 function secEstProj(o) {
   const e = o.est, I = o.estInfo; const c = Object.entries(e.cont || {}).sort((a, b) => b[1] - a[1]);
-  const casaN = I.casa ? "na " + I.casa : "na Assembleia", ano0 = I.casa ? "2025" : "2023";
+  const casaN = I.casa ? "na " + I.casa : "na Assembleia", ano0 = I.desde || (I.casa ? "2025" : "2023");
   return `<h2>Projetos ${casaN}</h2>
    <div class="kv">${c.slice(0, 6).map(([k, n]) => `<div><div class="l">${esc(TIPOS_EST[k] || k)}</div><div class="v">${mil(n)}</div><div class="s">desde ${ano0}</div></div>`).join("") || `<div><div class="v">0</div><div class="s">nenhuma proposição registrada desde ${ano0}</div></div>`}</div>
-   ${e.props.length ? `<h3>Projetos apresentados (mais recentes)</h3><div class="lst">${e.props.map((p) => `<div class="it"><div class="hd"><span class="cd">${esc(p[0])} · ${p[2] ? new Date(p[2] + "T12:00").toLocaleDateString("pt-BR") : ""}</span>${p[3] ? '<span class="vt n0">Em tramitação</span>' : ""}</div><div>${esc(p[1])}</div></div>`).join("")}</div>` : ""}
+   ${e.anos && Object.keys(e.anos).length > 1 ? `<h3>Por ano</h3><div class="kv">${Object.entries(e.anos).sort((a, b) => b[0] - a[0]).map(([a, c]) => `<div><div class="l">${esc(a)}</div><div class="v">${mil(Object.entries(c).filter(([k]) => k === "PLI" || k === "PCOL").reduce((x, [, y]) => x + y, 0))}</div><div class="s">projetos · ${mil((c.REQP || 0) + (c.REQ || 0))} requerimentos · ${mil(c.PINF || 0)} pedidos de informação</div></div>`).join("")}</div>` : ""}
+   ${e.leis && e.leis.length ? (() => { const h = e.leis.filter((l) => l[3]), c = e.leis.filter((l) => !l[3]); const li = (L) => L.map((l) => `<div class="it"><div class="hd"><span class="cd">Lei ${esc(l[0])}/${esc(l[1])}${l[5] ? " · " + new Date(l[5] + "T12:00").toLocaleDateString("pt-BR") : ""}</span>${l[4] ? "" : '<span class="vt n0">Coautoria</span>'}</div><div>${esc(l[2])}</div></div>`).join("");
+      return `<h3>Leis aprovadas <span class="muted small">(${mil(e.leis.length)} desde 2023)</span></h3><div class="kv"><div><div class="l">Leis de conteúdo</div><div class="v">${mil(c.length)}</div><div class="s">criam ou mudam regras</div></div><div><div class="l">Homenagens</div><div class="v">${mil(h.length)}</div><div class="s">utilidade pública, nomes, datas e títulos</div></div></div>
+        ${c.length ? `<div class="lst">${li(c.slice(0, 30))}</div>` : ""}${h.length ? `<details style="margin-top:8px"><summary class="small">Ver as ${mil(h.length)} homenagens</summary><div class="lst">${li(h)}</div></details>` : ""}`; })() : ""}
+   ${e.props.length ? (() => { const h = e.props.filter((p) => HOMEN.test(p[1])), c = e.props.filter((p) => !HOMEN.test(p[1])); const it = (L) => L.map((p) => `<div class="it"><div class="hd"><span class="cd">${esc(p[0])} · ${p[2] ? new Date(p[2] + "T12:00").toLocaleDateString("pt-BR") : ""}</span>${p[3] ? '<span class="vt n0">Em tramitação</span>' : ""}${p[4] === 0 ? '<span class="vt n0">Coautoria</span>' : ""}</div><div>${esc(p[1])}</div></div>`).join("");
+      return `<h3>Projetos apresentados (mais recentes)</h3>${h.length ? `<p class="small muted" style="margin:0">${mil(c.length)} de conteúdo e ${mil(h.length)} de homenagem (utilidade pública, nomes de ruas e prédios, datas comemorativas e títulos), separados pela ementa.</p>` : ""}<div class="lst">${it(c)}</div>${h.length ? `<details style="margin-top:8px"><summary class="small">Ver os ${mil(h.length)} projetos de homenagem</summary><div class="lst">${it(h)}</div></details>` : ""}`; })() : ""}
    ${e.pres && Object.keys(e.pres).length ? `<h3>Presença nas sessões do plenário</h3><div class="kv">${Object.entries(e.pres).sort((a, b) => b[0] - a[0]).map(([a, f]) => { const tot = Object.values(f).reduce((x, y) => x + y, 0), pr = f["Presente"] || 0; return `<div><div class="l">${esc(a)}</div><div class="v">${tot ? Math.round((pr / tot) * 100) : 0}%</div><div class="s">${mil(pr)} de ${mil(tot)} registros</div></div>`; }).join("")}</div>` : ""}
    ${I.obs ? `<div class="note">${esc(I.obs)}</div>` : ""}${e.parcial ? '<div class="note">Lista parcial: ${I.casa ? "este vereador" : "este deputado"} tem muitas proposições e mostramos as mais recentes.</div>' : ""}
    <p class="src">Fonte: <a href="${esc(e.sapl)}" target="_blank" rel="noopener">${esc(I.fonte)}</a>. Inclui autoria e coautoria. Atualizado em ${new Date(I.gerado + "T12:00").toLocaleDateString("pt-BR")}.</p>`;

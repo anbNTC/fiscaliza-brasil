@@ -299,7 +299,6 @@ async function cidade(uf,ue){
      <p class="src">Eleitos em 2024 (mandato 2025–2028). Fonte: ${FONTE_TSE}</p></section>
     <section class="card glass"><h2>Câmara Municipal</h2><p style="margin:0"><b class="kv-n" style="font-family:var(--f-display);font-size:1.6rem">${vs.length}</b> <span class="muted">vereadores eleitos em 2024</span></p>
      <div class="chips">${parts.map(([p,n])=>`<span class="chip">${esc(p)} ${n}</span>`).join("")}</div>
-     ${uf==="PR"&&ue==="75353"?`<a class="btn o" href="parana.html?q=">Projetos e pedidos dos vereadores de Curitiba</a>`:""}
      <p class="src">Votos e projetos dos vereadores dependem do que cada Câmara publica; a maioria não publica em formato aberto. Fonte: ${FONTE_TSE}</p></section></div>
    <div id="vmc"></div>
    <section class="card glass"><h2>Vereadores <span class="muted small">(${vs.length})</span></h2><div class="people">${vs.map((p,i)=>pcard(`#/p/m/${uf}/${ue}/${i}`,title(p[0]),partido(p),ftse(p,2024,ue))).join("")}</div>
@@ -364,7 +363,6 @@ async function banc(uf){
 const EMUF={};
 async function emendasCidade(uf,nome){
   let EMPR=EMUF[uf]||(EMUF[uf]=await getJSON("data/emendas/"+uf+".json").catch(()=>null));
-  if(!EMPR&&uf==="PR")EMPR=EMUF[uf]=await getJSON("data/emendas_pr.json").catch(()=>null);
   if(!EMPR)return;
   const ALL=EMPR.cid[String(nome).normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z ]/g,"").trim()]||[];
   const L=ALL.filter(x=>x[0]==="C"||x[0]==="S"||x[0]==="X"),K=ALL.filter(x=>x[0]!=="C"&&x[0]!=="S"&&x[0]!=="X");

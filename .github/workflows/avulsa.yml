@@ -1,0 +1,33 @@
+# Roda um ou mais coletores fora da coleta diária e grava o resultado (para dados novos não esperarem o dia seguinte).
+name: Coleta avulsa
+on:
+  workflow_dispatch:
+    inputs:
+      scripts: { description: "coletores em coleta/ separados por espaço (ex.: assembleia_pr.py camara_curitiba.py)", required: true }
+      tools: { description: "scripts em tools/ para rodar depois (ex.: emendas_autor.py)", required: false, default: "" }
+concurrency: { group: avulsa, cancel-in-progress: false }
+permissions: { contents: write }
+jobs:
+  c:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install requests==2.32.3
+      - name: Coleta
+        env: { T: "${{ secrets.CLOUDFLARE_API_TOKEN }}", SCRIPTS: "${{ inputs.scripts }}", TOOLS: "${{ inputs.tools }}" }
+        run: |
+          export CHAVE_BR=$(printf '%s' "$T-fiscaliza-br" | sha256sum | cut -c1-48); echo "::add-mask::$CHAVE_BR"
+          for s in $SCRIPTS; do echo "== $s"; python "coleta/$s" 2>&1 | tail -15; done
+          for s in $TOOLS; do echo "== $s"; python "tools/$s" 2>&1 | tail -3; done
+      - name: Grava
+        run: |
+          git config user.name "Fiscaliza Brasil (robô)"; git config user.email "robo@fiscalizaja.com.br"
+          git add -A site/data
+          git diff --cached --quiet || (git commit -m "Coleta avulsa: ${{ inputs.scripts }} $(date -u +%F)" && for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; sleep 7; done)
+  publica:
+    needs: c
+    uses: ./.github/workflows/publica.yml
+    secrets: inherit

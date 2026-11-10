@@ -12,6 +12,14 @@
 },
 {
 "tipo": "cota",
+"titulo": "46% da cota de Sandro Alex (PSD-PR) foi para um só fornecedor",
+"texto": "Kd Comunicacoes Ltda recebeu R$ 90.000 de um total de R$ 196.499 desde 2023.",
+"link": "#/p/c/160621",
+"fonte": "Câmara · Dados Abertos (cota parlamentar)",
+"peso": 43.7
+},
+{
+"tipo": "cota",
 "titulo": "42% da cota de Ricardo Barros (PP-PR) foi para um só fornecedor",
 "texto": "Orn Midia Comunicação Eireli recebeu R$ 231.500 de um total de R$ 547.614 desde 2023.",
 "link": "#/p/c/73788",
@@ -20,19 +28,11 @@
 },
 {
 "tipo": "cota",
-"titulo": "36% da cota de Vermelho (PL-PR) foi para um só fornecedor",
-"texto": "3Front Comunicacao Ltda recebeu R$ 688.000 de um total de R$ 1,9 milhões desde 2023.",
+"titulo": "37% da cota de Vermelho (PL-PR) foi para um só fornecedor",
+"texto": "3Front Comunicacao Ltda recebeu R$ 715.259 de um total de R$ 2,0 milhões desde 2023.",
 "link": "#/p/c/204396",
 "fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 40.8
-},
-{
-"tipo": "cota",
-"titulo": "32% da cota de Sandro Alex (PSD-PR) foi para um só fornecedor",
-"texto": "Kd Comunicacoes Ltda recebeu R$ 50.000 de um total de R$ 154.795 desde 2023.",
-"link": "#/p/c/160621",
-"fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 39.7
+"peso": 41.0
 },
 {
 "tipo": "emenda",
@@ -44,7 +44,7 @@
 },
 {
 "tipo": "cota",
-"titulo": "Diego Garcia (UNIÃO-PR) está entre os 10% de deputados que mais gastaram a cota parlamentar: R$ 2,0 milhões desde 2023",
+"titulo": "Diego Garcia (UNIÃO-PR) está entre os 10% de deputados que mais gastaram a cota parlamentar: R$ 2,1 milhões desde 2023",
 "texto": "Gasto típico (mediana) na Câmara: R$ 1,7 milhões.",
 "link": "#/p/c/178929",
 "fonte": "Câmara · Dados Abertos (cota parlamentar)",

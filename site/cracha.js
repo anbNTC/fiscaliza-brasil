@@ -230,14 +230,14 @@ async function cracha(parts) {
   const t = parts[0]; let o = {}, P = null, src = "", voltar = "", chips = [], rich = false, X = null, casa = null;
   if (t === "c") {
     const d = BR.dep.find((x) => String(x[0]) === parts[1]); if (!d) return notFound();
-    o = { nome: d[1], foto: d[4], cargo: cargo("dep", d[10]), part: d[2], uf: d[3], civil: title(d[5]) }; voltar = "#/uf/" + d[3]; rich = RICH.has(d[3]); casa = "C";
+    o = { nome: d[1], foto: d[4], cargo: cargo("dep", d[10]), part: d[2], uf: d[3], civil: title(d[5]) }; voltar = "#/uf/" + d[3]; casa = "C";
     chips.push('<span class="chip ok">Em exercício</span>'); if (!d[7]) chips.push('<span class="chip warn">Assumiu como suplente</span>'); if (d[8]) chips.push('<span class="chip new">Reeleito em 2026</span>');
     X = (await loadC(d[3]))[String(d[0])] || null; o.patList = X && X.pat;
     { const G = await getJSON("data/gab/" + d[3] + ".json").catch(() => null); if (G && G.dep[String(d[0])]) { o.gab = G.dep[String(d[0])]; o.gabInfo = G; } }
     src = FONTE_CAM + " · " + FONTE_TSE; o.mand = "Mandato 2023–2027"; o.link = "https://www.camara.leg.br/deputados/" + d[0]; o.linkN = "Página na Câmara";
   } else if (t === "s") {
     const s = BR.sen.find((x) => String(x[0]) === parts[1]); if (!s) return notFound();
-    o = { nome: s[1], foto: s[5], cargo: "Senador(a)" + (s[6] !== "Titular" ? " · suplente em exercício" : ""), part: s[3], uf: s[4], civil: s[2] }; voltar = "#/uf/" + s[4]; rich = RICH.has(s[4]); casa = "S";
+    o = { nome: s[1], foto: s[5], cargo: "Senador(a)" + (s[6] !== "Titular" ? " · suplente em exercício" : ""), part: s[3], uf: s[4], civil: s[2] }; voltar = "#/uf/" + s[4]; casa = "S";
     chips.push('<span class="chip ok">Em exercício</span>'); if (s[9]) chips.push('<span class="chip new">Reeleito em 2026</span>');
     X = (await loadS(s[4]))[String(s[0])] || null; o.patList = X && X.pat;
     o.mand = s[7] === 2022 ? "Mandato 2023–2031" : "Mandato até 31/01/2027"; src = FONTE_SEN + " · " + FONTE_TSE; o.link = "https://www25.senado.leg.br/web/senadores/senador/-/perfil/" + s[0]; o.linkN = "Página no Senado";

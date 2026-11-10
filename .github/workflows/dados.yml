@@ -22,6 +22,25 @@ jobs:
         with: { python-version: "3.12" }
       - run: pip install requests==2.32.3
 
+      - name: Câmara e Senado · votações nominais novas e voto de cada parlamentar
+        id: fvotos
+        continue-on-error: true
+        timeout-minutes: 30
+        run: python coleta/federal_votos.py 2>&1 | tail -8 | tee /tmp/federal.log
+
+      - name: Câmara e Senado · projetos apresentados e cota parlamentar
+        id: fperfil
+        continue-on-error: true
+        timeout-minutes: 40
+        run: python coleta/federal_perfil.py 2>&1 | tail -8 | tee -a /tmp/federal.log
+
+      - name: Salva o progresso (Câmara e Senado)
+        if: always()
+        run: |
+          git config user.name "Fiscaliza Brasil (robô)"; git config user.email "robo@fiscalizaja.com.br"
+          git add site/data/br.json site/data/camara_votacoes.json site/data/senado_votacoes.json site/data/c site/data/s 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "Câmara e Senado: votações, projetos e cota $(date -u +%F)" && for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done)
+
       - name: Câmara · orientação dos partidos e partido no dia de cada votação
         id: orient
         continue-on-error: true
@@ -179,8 +198,8 @@ jobs:
           def tail(f):
               p = pathlib.Path(f); return p.read_text()[-1500:] if p.exists() else ""
           rel = {"quando": datetime.datetime.utcnow().isoformat() + "Z",
-                 "etapas": {"orientacoes": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "calculos": "${{ steps.calc.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}"},
-                 "log": {"orientacoes": tail("/tmp/orient.log"), "emendas": tail("/tmp/emendas.log"), "calculos": tail("/tmp/calc.log"), "assembleias": tail("/tmp/assembleias.log")}}
+                 "etapas": {"federal_votos": "${{ steps.fvotos.outcome }}", "federal_perfil": "${{ steps.fperfil.outcome }}", "orientacoes": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "calculos": "${{ steps.calc.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}"},
+                 "log": {"federal": tail("/tmp/federal.log"), "orientacoes": tail("/tmp/orient.log"), "emendas": tail("/tmp/emendas.log"), "calculos": tail("/tmp/calc.log"), "assembleias": tail("/tmp/assembleias.log")}}
           json.dump(rel, open("site/data/_coleta.json", "w"), ensure_ascii=False, indent=1)
           PY
 
@@ -199,7 +218,7 @@ jobs:
           RESEND_API_KEY: "${{ secrets.RESEND_API_KEY }}"
           ALERTA_EMAIL: "${{ secrets.ALERTA_EMAIL }}"
           RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          ETAPAS: '{"orient": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}", "alesp": "${{ steps.alesp.outcome }}", "alesc": "${{ steps.alesc.outcome }}", "alba": "${{ steps.alba.outcome }}", "alepe": "${{ steps.alepe.outcome }}", "ales": "${{ steps.ales.outcome }}", "alrs": "${{ steps.alrs.outcome }}", "alep": "${{ steps.alep.outcome }}", "sgab": "${{ steps.sgab.outcome }}", "verba": "${{ steps.verba.outcome }}", "cmc": "${{ steps.cmc.outcome }}", "emest": "${{ steps.emest.outcome }}", "camaras": "${{ steps.camaras.outcome }}", "vm": "${{ steps.vm.outcome }}", "camp": "${{ steps.camp.outcome }}", "gab": "${{ steps.gab.outcome }}", "calc": "${{ steps.calc.outcome }}"}'
+          ETAPAS: '{"fvotos": "${{ steps.fvotos.outcome }}", "fperfil": "${{ steps.fperfil.outcome }}", "orient": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}", "alesp": "${{ steps.alesp.outcome }}", "alesc": "${{ steps.alesc.outcome }}", "alba": "${{ steps.alba.outcome }}", "alepe": "${{ steps.alepe.outcome }}", "ales": "${{ steps.ales.outcome }}", "alrs": "${{ steps.alrs.outcome }}", "alep": "${{ steps.alep.outcome }}", "sgab": "${{ steps.sgab.outcome }}", "verba": "${{ steps.verba.outcome }}", "cmc": "${{ steps.cmc.outcome }}", "emest": "${{ steps.emest.outcome }}", "camaras": "${{ steps.camaras.outcome }}", "vm": "${{ steps.vm.outcome }}", "camp": "${{ steps.camp.outcome }}", "gab": "${{ steps.gab.outcome }}", "calc": "${{ steps.calc.outcome }}"}'
         run: python tools/email_resend.py
 
   publica:

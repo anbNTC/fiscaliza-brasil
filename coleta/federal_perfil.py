@@ -73,7 +73,13 @@ def cota_camara(ids):
                 "f": [[n, round(v)] for n, v in sorted(F[k].items(), key=lambda x: -x[1])[:8]]} for k in A}
 
 def cota_senado(sen):
-    nome = {norm(s[1]): str(s[0]) for s in sen}
+    nome = {norm(s[1]): str(s[0]) for s in sen}; nome.update({norm(s[2]): str(s[0]) for s in sen})
+    civis = [(set(norm(s[2]).split()), str(s[0])) for s in sen]
+    def acha(n):
+        n = norm(n)
+        if n in nome: return nome[n]
+        t = set(n.split()); c = [k for q, k in civis if len(t) >= 2 and t <= q]
+        nome[n] = c[0] if len(c) == 1 else None; return nome[n]
     A = defaultdict(lambda: defaultdict(lambda: defaultdict(float))); M = defaultdict(lambda: defaultdict(float)); F = defaultdict(lambda: defaultdict(float)); sem = Counter()
     for ano in ANOS:
         b = baixa(f"https://www.senado.gov.br/transparencia/LAI/verba/despesa_ceaps_{ano}.csv")
@@ -81,7 +87,7 @@ def cota_senado(sen):
         t = b.decode("latin-1"); linhas = t.splitlines()
         i0 = next(i for i, l in enumerate(linhas) if l.upper().startswith('"ANO"') or l.upper().startswith("ANO;"))
         for r in csv.DictReader(io.StringIO("\n".join(linhas[i0:])), delimiter=";"):
-            k = nome.get(norm(r.get("SENADOR")))
+            k = acha(r.get("SENADOR"))
             if not k: sem[r.get("SENADOR")] += 1; continue
             v = num(r.get("VALOR_REEMBOLSADO")); cat = (r.get("TIPO_DESPESA") or "Outros").split(",")[0].strip()
             A[k][str(ano)][cat] += v; M[k][f'{ano}-{int(r.get("MES") or 0):02d}'] += v; F[k][(r.get("FORNECEDOR") or "Não informado").strip()] += v

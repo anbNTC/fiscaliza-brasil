@@ -162,7 +162,7 @@ async function tendencias(request, ctx) {
 }
 
 /* ---------- fotos: busca nos sites oficiais uma vez e guarda no cache do Cloudflare ---------- */
-const FOTO_HOSTS = /^(divulgacandcontas\.tse\.jus\.br|www\.camara\.leg\.br|camara\.leg\.br|www\.senado\.leg\.br|senado\.leg\.br|legis\.senado\.leg\.br|portal\.stf\.jus\.br|www\.stf\.jus\.br|ww2\.al\.rs\.gov\.br|www3\.al\.es\.gov\.br)$/;
+const FOTO_HOSTS = /^(divulgacandcontas\.tse\.jus\.br|www\.camara\.leg\.br|camara\.leg\.br|www\.senado\.leg\.br|senado\.leg\.br|legis\.senado\.leg\.br|portal\.stf\.jus\.br|www\.stf\.jus\.br|ww2\.al\.rs\.gov\.br|www3\.al\.es\.gov\.br|storage2\.assembleia\.pr\.leg\.br|www\.assembleia\.pr\.leg\.br|www\.cmc\.pr\.gov\.br)$/;
 // SAPL das Câmaras e Assembleias (sapl.<cidade>.<uf>.leg.br e variações): muitos só respondem por http
 const SAPL_HOSTS = /^sapl\.([a-z0-9-]+\.){1,3}(leg|gov)\.br$/;
 async function foto(request, ctx) {
@@ -323,6 +323,8 @@ async function sondaBR(request) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    // a antiga página "Paraná em detalhe" virou parte das fichas nacionais
+    if (/^\/parana(\.html)?\/?$/.test(url.pathname)) return Response.redirect(url.origin + "/fiscalize#/uf/PR", 301);
     if (url.pathname === "/api/noticias") return noticias(request, ctx);
     if (url.pathname === "/api/tendencias") return tendencias(request, ctx);
     if (url.pathname === "/img") return foto(request, ctx);

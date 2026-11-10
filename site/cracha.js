@@ -81,7 +81,7 @@ function secResumo(o, X, casa) {
   const k = [];
   if (X && X.sess && X.sess[1]) k.push(["Presença nas sessões", pct(X.sess[0], X.sess[1]), `presente em ${mil(X.sess[0])} de ${mil(X.sess[1])} dias com sessão deliberativa do Plenário desde que assumiu`]);
   if (X && X.pres && X.pres[1]) k.push(["Participação nas votações", pct(X.pres[0], X.pres[1]), `votou em ${mil(X.pres[0])} de ${mil(X.pres[1])} votações nominais do Plenário desde que assumiu`]);
-  if (X && X.fp) { const a = (X.fp.match(/g/g) || []).length, c = (X.fp.match(/r/g) || []).length; if (a + c) k.push(["Votou com o partido", pct(a, a + c), `contra o partido ${mil(c)} ${c === 1 ? "vez" : "vezes"}, em ${mil(a + c)} votações com posição clara do partido`]); }
+  if (X && (X.fp || o.cpp)) { const a = X.fp ? (X.fp.match(/g/g) || []).length : o.cpp.a, c = X.fp ? (X.fp.match(/r/g) || []).length : o.cpp.c; if (a + c) k.push(["Votou com o partido", pct(a, a + c), `contra o partido ${mil(c)} ${c === 1 ? "vez" : "vezes"}, em ${mil(a + c)} votações com posição clara do partido`]); }
   if (casa === "C" && X && X.v && VCAM) { let a = 0, n = 0; VCAM.forEach((x, i) => { const g = x[8], v = X.v[i]; if ((g === "Sim" || g === "Não") && (v === "S" || v === "N")) { n++; if ((g === "Sim") === (v === "S")) a++; } }); if (n) k.push(["Votou com o governo", pct(a, n), `em ${mil(n)} votações em que o governo orientou Sim ou Não`]); }
   if (o.emAut) k.push(["Emendas pagas", brl(o.emAut.t), `para ${mil(o.emAut.n)} ${o.emAut.n === 1 ? "cidade" : "cidades"} desde 2023`]);
   if (X && X.au) { const c = X.au.c || {}; const nprop = ["PL", "PLP", "PEC", "PDL", "PRS"].reduce((a, t) => a + (c[t] || 0), 0); k.push(["Projetos apresentados", mil(nprop), "PL, PLP, PEC e PDL desde 2023 (autor ou coautor)"]); }
@@ -322,6 +322,7 @@ async function cracha(parts) {
   const show = async (k) => {
     document.querySelectorAll(".tabs2 button").forEach((b) => b.setAttribute("aria-selected", b.dataset.k === k));
     if (k === "resumo" && casa === "C") await loadVC().catch(() => null);
+    if (k === "resumo" && casa && X && !X.fp && !o.cpp) o.cpp = await contaPartido(o, X, casa).catch(() => null);
     if (k === "resumo") tb.innerHTML = `<h2>Resumo</h2>${kvHTML(secResumo(o, X, casa).concat(kv))}<p class="src">Fonte: ${src}. Atualizado em ${atual}.</p>`;
     else if (k === "gab") { const cs = {}; o.gab.forEach((g) => (cs[g[1]] = (cs[g[1]] || 0) + 1));
       tb.innerHTML = `<h2>Quem trabalha no gabinete <span class="muted small">(${o.gab.length})</span></h2><div class="chips">${Object.entries(cs).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c, n]) => `<span class="chip">${esc(c)} · ${n}</span>`).join("")}</div>
@@ -390,7 +391,7 @@ function secEmFed(o) {
   return `<h2>Emendas enviadas <span class="muted small">(desde 2023)</span></h2>
    <div class="kv"><div><div class="l">Total pago</div><div class="v">${brl(e.t)}</div><div class="s">emendas individuais e de autoria identificada</div></div><div><div class="l">Cidades</div><div class="v">${mil(e.n)}</div><div class="s">receberam pelo menos uma</div></div></div>
    <h3>Para onde foi o dinheiro${e.n > e.c.length ? ` <span class="muted small">(as ${e.c.length} cidades que mais receberam)</span>` : ""}</h3>
-   <div class="tl">${e.c.map(([uf, m, v, fv]) => `<div><span><b>${esc(title(m))}</b> <span class="small muted">${esc(uf)}</span>${fv && fv.length ? `<br><span class="small muted">${fv.map(([n, x]) => esc(title(n)) + " " + brl(x)).join(" · ")}</span>` : ""}</span><b>${brl(v)}</b>${bar(v, mx)}</div>`).join("")}</div>
+   <div class="tl">${e.c.map(([uf, m, v, fv, ue]) => `<div><span>${ue ? `<a href="#/cidade/${esc(uf)}/${esc(ue)}"><b>${esc(title(m))}</b></a>` : `<b>${esc(title(m))}</b>`} <span class="small muted">${esc(uf)}</span>${fv && fv.length ? `<br><span class="small muted">${fv.map(([n, x]) => esc(title(n)) + " " + brl(x)).join(" · ")}</span>` : ""}</span><b>${brl(v)}</b>${bar(v, mx)}</div>`).join("")}</div>
    <h3>Quem mais recebeu</h3><div class="tl">${e.f.map(([n, v]) => `<div><span>${esc(title(n))}</span><b>${brl(v)}</b>${bar(v, mf)}</div>`).join("")}</div>
    <p class="src">A cidade é a do cadastro de quem recebeu: dinheiro repassado ao governo do estado aparece na capital, e pagamentos ao Banco do Brasil aparecem em Brasília. Valores pagos desde 2023. Fonte: Portal da Transparência (CGU), emendas parlamentares por favorecido.</p>`;
 }

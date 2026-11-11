@@ -151,7 +151,7 @@ jobs:
       - name: Câmaras Municipais (portais Elotech) · gabinete de cada vereador com salário
         id: gabm
         continue-on-error: true
-        timeout-minutes: 40
+        timeout-minutes: 75
         run: python coleta/gabinetes_elotech.py 2>&1 | tail -4
 
       - name: Prefeituras com folha em dados abertos · gabinete do prefeito e do vice

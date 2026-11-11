@@ -16,6 +16,8 @@ UA = {"user-agent": "Mozilla/5.0 (FiscalizaBrasil/1.0; +https://fiscalizaja.com.
 REG = Path(__file__).resolve().parent / "convite_enviados.json"
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
 SITE = "https://fiscalizaja.com.br/fiscalize"
+UF = json.load(open(Path(__file__).resolve().parents[1] / "site" / "data" / "uf" / "PR.json"))
+FEM = {"xsargento-tania-guerreiro"}
 slug = lambda s: unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower()
 
 def federais():
@@ -42,9 +44,17 @@ def estaduais():
         nome = re.search(r"<h1[^>]*>([\s\S]*?)</h1>", p); nome = " ".join(re.sub(r"<[^>]+>", " ", html.unescape(nome.group(1))).split()) if nome else sl
         nome = re.sub(r"^(PRESIDENTE|\d+º\s+(SECRETÁRI[OA]|VICE-PRESIDENTE)|DEPUTAD[OA])\s+", "", nome, flags=re.I).title()
         ems = [e for e in dict.fromkeys(EMAIL.findall(html.unescape(p))) if "assembleia.pr.leg.br" in e or "alep" in e]
-        out.append({"k": f"e{sl}", "nome": nome, "sexo": "F" if re.search(r"\bDEPUTADA\b", p[:20000]) else "", "cargo": "Deputado(a) Estadual",
+        k = chave[sl]; nome = E["dep"][k].get("nome") or nome
+        try: sx = UF["de" + ano][int(k)][4]
+        except Exception: sx = ""
+        out.append({"k": f"e{sl}", "nome": nome, "sexo": sx, "cargo": "Deputado(a) Estadual",
                     "email": ems[0] if ems else "", "link": f"{SITE}#/p/e/PR/{ano}/{chave[sl]}"})
     return out
+
+def sexo_ver(k):
+    if k in FEM: return "F"
+    try: return UF["mun"]["75353"][3][int(k)][4]
+    except Exception: return ""
 
 def vereadores():
     out = []
@@ -58,18 +68,19 @@ def vereadores():
         j = r.json() if r is not None and r.ok else {}
         if j.get("ex_vereador"): continue
         ems = [e for e in dict.fromkeys(EMAIL.findall(json.dumps(j, ensure_ascii=False))) if "cmc.pr.gov.br" in e]
-        out.append({"k": f"m{sl}", "nome": j.get("title") or X[chave[sl]]["nome"], "sexo": "F" if re.search(r"vereadora", json.dumps(j, ensure_ascii=False)[:5000], re.I) else "",
+        out.append({"k": f"m{sl}", "nome": j.get("title") or X[chave[sl]]["nome"], "sexo": sexo_ver(chave[sl]),
                     "cargo": "Vereador(a)", "email": ems[0] if ems else "", "link": f"{SITE}#/p/m/PR/75353/{chave[sl]}"})
     return out
 
 def tratamento(p):
     f = p["sexo"] == "F"
+    if p["sexo"] not in ("F", "M"): return "Excelentíssimo(a) Senhor(a) " + p["cargo"] + " " + p["nome"], None
     c = {"Deputado(a) Federal": ("Deputada Federal" if f else "Deputado Federal"), "Deputado(a) Estadual": ("Deputada Estadual" if f else "Deputado Estadual"),
          "Vereador(a)": ("Vereadora" if f else "Vereador")}.get(p["cargo"], p["cargo"])
     return ("Excelentíssima Senhora " if f else "Excelentíssimo Senhor ") + c + " " + p["nome"], f
 
 def texto(p):
-    saud, f = tratamento(p); sr = "a senhora" if f else "o senhor"
+    saud, f = tratamento(p); sr = "a senhora" if f else "o(a) senhor(a)" if f is None else "o senhor"
     return f"""{saud},
 
 Meu nome é Abraão Nery. Estudo política há 12 anos e criei o Fiscaliza Brasil (fiscalizaja.com.br), uma plataforma gratuita e apartidária que reúne em um só lugar o trabalho dos nossos representantes, a partir de dados oficiais e abertos.

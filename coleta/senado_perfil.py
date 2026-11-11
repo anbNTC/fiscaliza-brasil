@@ -15,7 +15,10 @@ HOJE = datetime.date.today()
 LISTA = {"PL", "PLP", "PEC", "PDL", "PRS"}
 norm = lambda s: unicodedata.normalize("NFKD", str(s or "")).encode("ascii", "ignore").decode().upper()
 GENERICO = {"DISCURSO", "COMENTARIO", "DEFESA", "REGISTRO", "CRITICA", "ANALISE", "ATUACAO", "GOVERNO FEDERAL", "BRASIL", "SENADO", "SENADO FEDERAL", "PROJETO DE LEI",
-            "ALTERACAO", "LEI FEDERAL", "IMPORTANCIA", "APOIO", "SOLICITACAO", "NECESSIDADE", "PAIS", "ANUNCIO", "APRESENTACAO", "AUTORIA", "ORADOR", "PARTICIPAÇÃO", "PARTICIPACAO"}
+            "ALTERACAO", "LEI FEDERAL", "IMPORTANCIA", "APOIO", "SOLICITACAO", "NECESSIDADE", "PAIS", "ANUNCIO", "APRESENTACAO", "AUTORIA", "ORADOR", "PARTICIPAÇÃO", "PARTICIPACAO",
+            "CRIACAO", "OBJETIVO", "DISCUSSAO", "AUTORIZACAO", "PAUTA", "VOTACAO", "APROVACAO", "REQUERIMENTO", "SESSAO", "PLENARIO", "SENADOR", "ELOGIO", "HOMENAGEM",
+            "ENCAMINHAMENTO", "ORIENTACAO", "BANCADA", "PARECER", "RELATOR", "EMENDA", "INCLUSAO", "PRAZO", "PEDIDO", "AGRADECIMENTO", "QUESTAO DE ORDEM", "MATERIA", "ACORDO",
+            "REFERENCIA", "PROPOSTA", "TEXTO", "LEI", "AMPLIACAO", "MELHORIA", "GARANTIA", "ACESSO", "REDUCAO", "AUMENTO", "PROGRAMA", "POLITICAS PUBLICAS", "INFORMACAO"}
 
 def get(u):
     for k in range(4):
@@ -53,7 +56,7 @@ def discursos(cod):
             n += 1; anos[str(ano)] += 1; tipos[((p.get("TipoUsoPalavra") or {}).get("Descricao") or "Outros").strip()] += 1
             for t in re.split(r"[,.\n]", p.get("Indexacao") or ""):
                 t = t.strip()
-                if 3 < len(t) < 40 and norm(t) not in GENERICO: kw[t.title()] += 1
+                if 3 < len(t) < 40 and norm(t) not in GENERICO and not re.search(r"PROJETO|PROPOSTA DE EMENDA|MEDIDA PROVISORIA|\(", norm(t)): kw[t.title()] += 1
         time.sleep(0.3)
     return {"n": n, "ano": dict(anos), "tipos": dict(tipos.most_common()), "kw": [[k, v] for k, v in kw.most_common(12)]}
 

@@ -19,6 +19,8 @@
   html.escuro :is(.go,.tile,.pc,.lk-a){box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.07)!important}
   html.escuro :is(.go,.tile,.pc,.lk-a):hover{transform:none!important;background-color:rgba(255,255,255,.09)!important;border-color:rgba(255,255,255,.22)!important;box-shadow:0 10px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.10)!important}
   html.escuro :is(.go,.tile,.pc,.lk-a){isolation:isolate}
+  /* desfoque (vidro) dentro de outro vidro: o Chrome desenha um retângulo claro atrás do elemento de dentro. Só o de fora fica com desfoque. */
+  html.escuro :is(.glass,.card,.go,.tile,.pc,.top,.nav) *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
   html.escuro .go .seta{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.18)!important;color:var(--ink)}
   html.escuro .av{background:linear-gradient(135deg,#2A2D33,#1E2126)!important;color:#C9CBD0!important}
   html.escuro .tagv.g,html.escuro .res2.a{background:rgba(30,158,85,.18)!important;color:#7FD6A2!important}

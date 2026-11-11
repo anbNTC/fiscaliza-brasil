@@ -23,6 +23,11 @@ PREF = [
     {"cidade": "São Paulo", "uf": "SP", "ue": "71072", "ckan": "https://dados.prefeitura.sp.gov.br", "pacote": "remuneracao-servidores-prefeitura-de-sao-paulo",
      "pagina": "https://dados.prefeitura.sp.gov.br/dataset/remuneracao-servidores-prefeitura-de-sao-paulo", "br": True, "ordem": "created",
      "nome": "Nome completo", "cargo": "Cargo em Comissão", "cargo2": "Cargo Base", "lot": ["Unidade"], "valor": "Remuneração Bruta"},
+    # Porto Alegre: a Prefeitura publica cargo e salário, mas no lugar do nome há só um código. Mostramos o cargo; o órgão "GP" é o Gabinete do Prefeito.
+    {"cidade": "Porto Alegre", "uf": "RS", "ue": "88013", "ckan": "https://dadosabertos.poa.br", "pacote": "folha-de-pagamento-servidores-ativos",
+     "pagina": "https://dadosabertos.poa.br/dataset/folha-de-pagamento-servidores-ativos", "semnome": True,
+     "nome": "nome_cargo", "cargo": "nome_cargo", "lot": ["origem"], "gabp": r"^GP$", "vicep": r"^$",
+     "valor": ["remuneracao_basica", "remuneracao_eventual"], "desc": ["deducoes_obrigatorias", "abate_teto"], "anomes": "competencia", "extra": "tipovinc"},
 ]
 GABP = re.compile(r"GABINETE\s+DO\s+PREFEITO|GAB\.?\s*(DO\s+)?PREFEITO|VICE[\s-]*PREFEIT", re.I)
 num = lambda s: float(re.sub(r"[^\d,.-]", "", str(s or "0")).replace(".", "").replace(",", ".") or 0) if "," in str(s or "") else float(re.sub(r"[^\d.-]", "", str(s or "0")) or 0)
@@ -93,22 +98,33 @@ def uma(c):
     rd = csv.DictReader(io.StringIO(txt), delimiter=sep); cols = {sa(k): k for k in (rd.fieldnames or [])}
     col = lambda nome: cols.get(sa(nome))
     out = {"p": [], "v": []}; n = 0; gabs = Counter(); topo = (0, 0)
-    per = lambda row: (int(num(row.get(col(c["ano"])))), int(num(row.get(col(c["mes"]))))) if c.get("mes") else (0, 0)
+    def per(row):
+        if c.get("anomes"):
+            m = re.match(r"(20\d\d)-?(\d\d)", row.get(col(c["anomes"])) or ""); return (int(m.group(1)), int(m.group(2))) if m else (0, 0)
+        return (int(num(row.get(col(c["ano"])))), int(num(row.get(col(c["mes"]))))) if c.get("mes") else (0, 0)
+    gp = re.compile(c["gabp"], re.I) if c.get("gabp") else GABP; vp = re.compile(c.get("vicep") or r"VICE", re.I)
+    soma = lambda row, ks: sum(num(row.get(col(k))) for k in (ks if isinstance(ks, list) else [ks]))
     for row in rd:
         n += 1; pr = per(row); topo = max(topo, pr)
         lot = " · ".join((row.get(col(k)) or "").strip() for k in c["lot"] if col(k))
         if re.search(r"GAB|PREFEIT", lot, re.I): gabs[lot] += 1
-        if not GABP.search(lot): continue
+        if not gp.search(lot): continue
         cg = (row.get(col(c["cargo"])) or "").strip() or ((row.get(col(c["cargo2"])) or "").strip() if c.get("cargo2") else "")
         if re.match(r"^\s*(VICE[\s-]*)?PREFEIT", cg, re.I): continue
-        k = "v" if re.search(r"VICE", lot, re.I) else "p"
+        k = "v" if c.get("vicep") != r"^$" and vp.search(lot) else "p"
         if re.match(r"^\s*SERVIDOR(A)?\s+P[UÚ]BLIC", row.get(col(c["nome"])) or "", re.I): continue   # nome protegido por lei (ex.: segurança): não dá para listar
-        lin = [(row.get(col(c["nome"])) or "").strip().title(), (cg.capitalize() + (" · " + lot.split(" · ")[-1].title() if " · " in lot else "")), "", round(num(row.get(col(c["valor"]))), 2)]
+        bruto = soma(row, c["valor"])
+        if c.get("semnome"):   # sem nome publicado: mostra o cargo e o vínculo
+            lin = [cg.capitalize() or "Cargo não informado", "Nome não publicado pela Prefeitura" + (" · " + (row.get(col(c["extra"])) or "").strip().capitalize() if c.get("extra") else ""), "", round(bruto, 2)]
+        else:
+            lin = [(row.get(col(c["nome"])) or "").strip().title(), (cg.capitalize() + (" · " + lot.split(" · ")[-1].title() if " · " in lot else "")), "", round(bruto, 2)]
         if c.get("liq"): lin.append(round(num(row.get(col(c["liq"]))), 2))
+        elif c.get("desc"): lin.append(round(bruto - soma(row, c["desc"]), 2))
         out[k].append((pr, lin))
     out = {k: [l for pr, l in v if pr == topo] for k, v in out.items()}
     # a mesma pessoa pode ter mais de uma linha no mês (ex.: salário e uma parcela à parte): soma numa linha só
     for k, v in out.items():
+        if c.get("semnome"): continue
         jun = {}
         for l in v:
             if l[0] in jun: jun[l[0]][3:] = [round(a + b, 2) for a, b in zip(jun[l[0]][3:], l[3:])]
@@ -123,7 +139,8 @@ def uma(c):
     if topo != (0, 0): comp = f"{topo[1]:02d}/{topo[0]}"
     if out:
         grava(c["ue"], {"_tipo": "pref", "dep": out, "fonte": f"Prefeitura de {c['cidade']} · dados abertos (folha dos servidores)", "url": c["pagina"], "competencia": comp,
-                        "obs": f"Remuneração {'bruta e líquida' if c.get('liq') else 'total'}{' de ' + comp if comp else ''}, como publicada pela Prefeitura em dados abertos. Só servidores lotados no gabinete do prefeito ou do vice."})
+                        "obs": f"Remuneração {'bruta e líquida' if c.get('liq') or c.get('desc') else 'total'}{' de ' + comp if comp else ''}, como publicada pela Prefeitura em dados abertos. Só servidores lotados no gabinete do prefeito ou do vice."
+                               + (" A Prefeitura não publica o nome dos servidores nesse arquivo, só o cargo e um código no lugar do nome." if c.get("semnome") else "")})
     return {"linhas": n, "gabinete": {k: len(v) for k, v in out.items()}, "arquivo": r.get("name"), "lotacoes_gab": gabs.most_common(12) if not out else []}
 
 def main():

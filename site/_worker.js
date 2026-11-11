@@ -253,7 +253,7 @@ async function montaCongresso() {
   for (const e of (C && C.dados) || []) {
     const o = (e.orgaos || [])[0] || {};
     ev.push({ casa: "C", h: (e.dataHoraInicio || "").slice(11, 16), sit: situ(e.situacao || ""), tipo: e.descricaoTipo || "", org: o.sigla || "", orgn: o.apelido || o.nome || "",
-      d: String(e.descricao || "").split("\n")[0].slice(0, 160), u: e.urlRegistro || `https://www.camara.leg.br/evento-legislativo/${e.id}`, plen: o.sigla === "PLEN" || o.sigla === "CN", cpi: /^CPI|^CPMI/.test(o.sigla || "") });
+      d: String(e.descricao || "").split(/\r?\n/)[0].trim().slice(0, 160), u: e.urlRegistro || `https://www.camara.leg.br/evento-legislativo/${e.id}`, plen: o.sigla === "PLEN" || o.sigla === "CN", cpi: /^CPI|^CPMI/.test(o.sigla || "") });
   }
   for (const x of acha(P, (o) => o.CodigoSessao && (o.Data || o.Hora))) {
     if (x.Data && x.Data !== dia) continue;

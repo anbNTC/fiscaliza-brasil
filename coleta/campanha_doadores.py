@@ -17,6 +17,9 @@ ANOS = [int(a) for a in os.environ.get("ANOS", "2022 2024 2026").split()]
 REFAZ_ANOS = {int(a) for a in os.environ.get("REFAZ_ANOS", "2026").split()}
 H = {"user-agent": "Mozilla/5.0 FiscalizaBrasil/1.0"}
 TOP = 10
+MIN_IDX = float(os.environ.get("MIN_IDX", "1000"))   # doações a partir deste valor entram na busca "Quem financiou quem"
+DOA = D / "doa"
+normd = lambda s: re.sub(r"\s+", " ", re.sub(r"[^A-Z0-9 ]", " ", __import__("unicodedata").normalize("NFKD", str(s or "")).encode("ascii", "ignore").decode().upper())).strip()
 
 def num(s):
     s = str(s or "").strip()
@@ -56,6 +59,56 @@ def interesse():
     except Exception as e: print("br.json:", e)
     return q
 
+def rotas():
+    """SQ do candidato -> [nome, cargo, UF, endereço da ficha], para a busca de doadores levar à ficha certa."""
+    R = {}; tit = lambda x: " ".join(w.capitalize() for w in str(x).split())
+    BR = json.load(open(D / "br.json"))
+    dep = {normd(d[5]): d for d in BR["dep"]}; sen = {normd(x[2]): x for x in BR["sen"]}
+    for uf, u in BR["ufs"].items():
+        for k, a in (("gov", "22"), ("gov26", "26")):
+            for i, p in enumerate((u.get(k) or [])[:2]):
+                if p and len(p) > 10: R[str(p[10])] = [tit(p[0]), fem(("Governador" if i == 0 else "Vice-governador") + (" (eleito em 2026)" if a == "26" else ""), p[4]), uf, f"#/p/g/{uf}/{i}/{a}"]
+    for f in (D / "uf").glob("*.json"):
+        U = json.load(open(f)); uf = f.stem
+        for k, a, t, c in (("de22", "22", "e", "Deputado estadual"), ("de26", "26", "e", "Deputado estadual (eleito em 2026)"), ("df26", "26", "f", "Deputado federal (eleito em 2026)"), ("se26", "26", "n", "Senador (eleito em 2026)")):
+            for i, p in enumerate(U.get(k) or []):
+                if len(p) > 10: R[str(p[10])] = [tit(p[0]), fem(c, p[4]), uf, f"#/p/{t}/{uf}/{a}/{i}"]
+        for ue, m in (U.get("mun") or {}).items():
+            for k, p in (("p", m[1]), ("v", m[2])) + tuple((str(i), q) for i, q in enumerate(m[3] or [])):
+                if p and len(p) > 10: R[str(p[10])] = [tit(p[0]), fem({"p": "Prefeito", "v": "Vice-prefeito"}.get(k, "Vereador"), p[4]) + " · " + tit(m[0]), uf, f"#/p/m/{uf}/{ue}/{k}"]
+    for f in (D / "vm").glob("*.json"):
+        V = json.load(open(f)); uf = f.stem
+        for x in (V.get("anos", {}).get("2022", {}).get("F") or []):
+            d = dep.get(normd(x[1]))
+            if x[3] and d: R[str(x[4])] = [d[1], fem("Deputado federal", d[10] if len(d) > 10 else ""), uf, f"#/p/c/{d[0]}"]
+        for x in (V.get("anos", {}).get("2022", {}).get("S") or []):
+            d = sen.get(normd(x[1]))
+            if x[3] and d: R[str(x[4])] = [d[1], "Senador", uf, f"#/p/s/{d[0]}"]
+    return R
+
+ROTAS = {}
+FEM = [("Governador", "Governadora"), ("Vice-governador", "Vice-governadora"), ("Deputado", "Deputada"), ("Senador", "Senadora"), ("Prefeito", "Prefeita"), ("Vice-prefeito", "Vice-prefeita"), ("Vereador", "Vereadora"), ("eleito", "eleita")]
+def fem(c, sx):
+    if sx != "F": return c
+    for a, b in FEM: c = re.sub(r"\b" + a + r"\b", b, c)
+    return c
+
+def grava_indice(ano, idx, R):
+    """site/data/doa/{ano}/{2 letras}.json: [[doador, total, nº de candidatos, [[nome, cargo, UF, ficha, valor] ... maiores 200]]]"""
+    por = defaultdict(list)
+    for (quem, uf, sq), v in idx.items():
+        if v >= MIN_IDX and sq in R: por[quem].append(R[sq] + [round(v)])
+    pasta = DOA / str(ano)
+    if pasta.exists(): __import__("shutil").rmtree(pasta)
+    pasta.mkdir(parents=True)
+    G = defaultdict(list)
+    for quem, L in por.items():
+        L.sort(key=lambda x: -x[4]); k = (normd(quem).replace(" ", "") + "__")[:2]
+        G[k].append([quem, sum(x[4] for x in L), len(L), L[:200]])
+    for k, L in G.items():
+        L.sort(key=lambda x: -x[1]); json.dump(L, open(pasta / f"{k}.json", "w"), ensure_ascii=False, separators=(",", ":"))
+    print(ano, "índice de doadores:", len(por), "doadores,", round(sum(p.stat().st_size for p in pasta.glob("*.json")) / 1e6, 1), "MB", flush=True)
+
 def baixa(ano):
     tmp = tempfile.NamedTemporaryFile(suffix=".zip", delete=False)
     with requests.get(URL.format(ano=ano), headers=H, stream=True, timeout=(30, 1800)) as r:
@@ -67,7 +120,7 @@ def col(r, *ps):
     for k in r:
         if all(p in k for p in ps): return k
 
-def um_ano(ano, alvo, saida):
+def um_ano(ano, alvo, saida, idx=None):
     f = baixa(ano)
     if not f: return False
     z = zipfile.ZipFile(f); feitos = set()
@@ -91,7 +144,8 @@ def um_ano(ano, alvo, saida):
                 if sq not in quer: continue
                 v = num(r.get(ks["v"])); T[sq] += v
                 quem = nome(r.get(ks["n"])) or nome(r.get(ks["n2"]) if ks["n2"] else "") or "Não informado"
-                A[sq][quem] += v; O[sq][nome(r.get(ks["o"])) or "Outros"] += v
+                A[sq][quem] += v; ori = nome(r.get(ks["o"])) or "Outros"; O[sq][ori] += v
+                if idx is not None and tipo == "receitas" and quem != "Não informado" and not re.search(r"pr[oó]prios", ori, re.I): idx[(quem, uf, sq)] += v
         S = saida.setdefault(uf, {})
         for sq in T:
             e = S.setdefault(sq, {"c": [0, [], 0, []]})
@@ -107,11 +161,14 @@ def main():
     q = interesse(); res = {}
     for ano in ANOS:
         ja = all(arq(uf, ano).exists() and str(ano) in json.load(open(arq(uf, ano))).get("anos", []) for uf in q[ano]) if q[ano] else False
+        ja = ja and (DOA / str(ano)).exists()   # sem o índice de doadores deste ano: baixa de novo uma vez
         if ja and os.environ.get("REFAZ") != "1" and ano not in REFAZ_ANOS: print(ano, "já gravado"); continue
-        saida = {}
-        try: ok = um_ano(ano, q[ano], saida)
+        saida = {}; idx = defaultdict(float)
+        try: ok = um_ano(ano, q[ano], saida, idx)
         except Exception as e: print(ano, "falhou:", repr(e), flush=True); continue
         if not ok: continue
+        try: grava_indice(ano, idx, ROTAS or ROTAS.update(rotas()) or ROTAS)
+        except Exception as e: print(ano, "índice de doadores falhou:", repr(e)[:200], flush=True)
         for uf, S in saida.items():
             p = arq(uf, ano)
             try: X = json.load(open(p))

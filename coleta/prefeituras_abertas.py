@@ -17,7 +17,7 @@ PREF = [
     # Recife: um arquivo por ano, com a coluna do mês; ficamos com o mês mais recente do arquivo.
     {"cidade": "Recife", "uf": "PE", "ue": "25313", "ckan": "https://dados.recife.pe.gov.br", "pacote": "servidores",
      "pagina": "https://dados.recife.pe.gov.br/dataset/servidores",
-     "nome": "nsalsenome", "cargo": "nsalsecarg", "lot": ["esalseunidade"], "valor": "vsalseremu", "liq": "vsalseliqd",
+     "nome": "nsalsenome", "cargo": "nsalsecarg", "lot": ["esalseunidade"], "valor": "vsalseprov", "liq": "vsalseliqd",
      "ano": "asalseanoo", "mes": "asalsemess"},
 ]
 GABP = re.compile(r"GABINETE\s+DO\s+PREFEITO|GAB\.?\s*(DO\s+)?PREFEITO|VICE[\s-]*PREFEIT", re.I)
@@ -88,6 +88,13 @@ def uma(c):
         if c.get("liq"): lin.append(round(num(row.get(col(c["liq"]))), 2))
         out[k].append((pr, lin))
     out = {k: [l for pr, l in v if pr == topo] for k, v in out.items()}
+    # a mesma pessoa pode ter mais de uma linha no mês (ex.: salário e uma parcela à parte): soma numa linha só
+    for k, v in out.items():
+        jun = {}
+        for l in v:
+            if l[0] in jun: jun[l[0]][3:] = [round(a + b, 2) for a, b in zip(jun[l[0]][3:], l[3:])]
+            else: jun[l[0]] = list(l)
+        out[k] = list(jun.values())
     for v in out.values(): v.sort(key=lambda r: -r[3])
     out = {k: v for k, v in out.items() if v}
     comp = re.search(r"(\d{2})[-_](20\d\d)", r.get("url") or ""); comp = f"{comp.group(1)}/{comp.group(2)}" if comp else ""

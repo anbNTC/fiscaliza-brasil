@@ -89,7 +89,7 @@ def texto(p):
 
 Meu nome é Abraão Nery. Estudo política há 12 anos e criei o Fiscaliza Brasil (fiscalizaja.com.br), uma plataforma gratuita e apartidária que reúne em um só lugar o trabalho dos nossos representantes, a partir de dados oficiais e abertos.
 
-Gravei um vídeo curto explicando como funciona:
+Gravei um vídeo curto, rápido e dinâmico explicando como funciona:
 https://www.instagram.com/p/DfmgSBVuX7m/
 
 No portal, qualquer cidadão encontra, de forma simples:
@@ -104,7 +104,7 @@ Basta digitar o nome de um político, a cidade ou o CEP. Todas as informações 
 A sua página no portal está aqui:
 {p['link']}
 
-O objetivo é aproximar o cidadão do trabalho legislativo e mostrar, com dados, o que cada mandato tem feito. Por isso, gostaria de pedir o seu apoio para divulgar a plataforma nas suas redes e entre os seus eleitores. Também convido {sr} e a sua equipe a conferir a sua página. Se encontrarem qualquer informação incompleta ou incorreta, terei prazer em corrigir.
+O objetivo é aproximar o cidadão do trabalho legislativo e mostrar, com dados, o que cada mandato tem feito. Por isso, gostaria de pedir o seu apoio para divulgar a plataforma nas suas redes e entre os seus eleitores, repostando o meu vídeo ou fazendo o seu próprio vídeo. Também convido {sr} e a sua equipe a conferir a sua página. Se encontrarem qualquer informação incompleta ou incorreta, terei prazer em corrigir.
 
 Observação: vamos criar uma página dedicada a todos os parlamentares que divulgarem o portal, com nome, foto, cargo e redes sociais, como reconhecimento pelo apoio à transparência.
 
@@ -140,8 +140,9 @@ def visual(p):
    <p style="margin:0 0 14px;font:600 17px/1.5 {T};color:#0B0B0C">{E(saud)},</p>
    <p style="margin:0 0 14px;font:16px/1.6 {T};color:#26272B">Meu nome é Abraão Nery. Estudo política há 12 anos e criei o <b>Fiscaliza Brasil</b> (<a href="https://fiscalizaja.com.br" style="color:#0B0B0C">fiscalizaja.com.br</a>), uma plataforma gratuita e apartidária que reúne em um só lugar o trabalho dos nossos representantes, a partir de dados oficiais e abertos.</p>
    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0;background:#0B0B0C;border-radius:20px"><tr><td style="padding:20px 22px">
-     <div style="font:600 11px {MONO};letter-spacing:.14em;text-transform:uppercase;color:#F7C21B">Vídeo · 1 minuto</div>
-     <div style="margin:6px 0 14px;font:700 19px/1.3 {F};color:#FFFFFF">Veja como a plataforma funciona</div>
+     <div style="font:600 11px {MONO};letter-spacing:.14em;text-transform:uppercase;color:#F7C21B">Vídeo curto · rápido e dinâmico</div>
+     <div style="margin:6px 0 6px;font:700 19px/1.3 {F};color:#FFFFFF">Veja como a plataforma funciona</div>
+     <div style="margin:0 0 14px;font:15px/1.5 {T};color:#D5D6DA">Para divulgar, basta repostar este vídeo ou gravar o seu próprio vídeo apresentando a plataforma.</div>
      {btn("https://www.instagram.com/p/DfmgSBVuX7m/", "▶ Assistir no Instagram", False)}</td></tr></table>
    <p style="margin:6px 0 4px;font:700 18px {F};color:#0B0B0C">No portal, qualquer cidadão encontra:</p>
    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
@@ -155,7 +156,7 @@ def visual(p):
      <div style="font:600 11px {MONO};letter-spacing:.14em;text-transform:uppercase;color:#5E6066">A sua página</div>
      <div style="margin:6px 0 14px;font:700 19px/1.3 {F};color:#0B0B0C">{E(p["nome"])}</div>
      {btn(p["link"], "Ver a minha página no Fiscaliza")}</td></tr></table>
-   <p style="margin:0 0 14px;font:16px/1.6 {T};color:#26272B">O objetivo é aproximar o cidadão do trabalho legislativo e mostrar, com dados, o que cada mandato tem feito. Por isso, gostaria de pedir o seu apoio para <b>divulgar a plataforma</b> nas suas redes e entre os seus eleitores. Também convido {sr} e a sua equipe a conferir a sua página. Se encontrarem qualquer informação incompleta ou incorreta, terei prazer em corrigir.</p>
+   <p style="margin:0 0 14px;font:16px/1.6 {T};color:#26272B">O objetivo é aproximar o cidadão do trabalho legislativo e mostrar, com dados, o que cada mandato tem feito. Por isso, gostaria de pedir o seu apoio para <b>divulgar a plataforma</b> nas suas redes e entre os seus eleitores, <b>repostando o meu vídeo ou fazendo o seu próprio vídeo</b>. Também convido {sr} e a sua equipe a conferir a sua página. Se encontrarem qualquer informação incompleta ou incorreta, terei prazer em corrigir.</p>
    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;border-radius:20px;background:#FFF8DC;border:1px solid #F7C21B"><tr><td style="padding:18px 22px;font:16px/1.55 {T};color:#0B0B0C">
      <b style="font-family:{F}">⭐ Reconhecimento</b><br>Vamos criar uma página dedicada a todos os parlamentares que divulgarem o portal, com nome, foto, cargo e redes sociais, como reconhecimento pelo apoio à transparência.</td></tr></table>
    <p style="margin:0 0 22px;font:16px/1.6 {T};color:#26272B">Agradeço pela atenção e fico à disposição.</p>

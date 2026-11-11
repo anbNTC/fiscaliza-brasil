@@ -118,6 +118,8 @@ def uma(c):
     out = {k: v for k, v in out.items() if v}
     comp = re.search(r"(\d{2})[-_]?(20\d\d)", (r.get("url") or "").rsplit("/", 1)[-1]) or re.search(r"(\d{2})[-_/](20\d\d)", (r.get("name") or "") + " " + (r.get("description") or ""))
     comp = f"{comp.group(1)}/{comp.group(2)}" if comp and 1 <= int(comp.group(1)) <= 12 else ""
+    m2 = re.search(r"(20\d\d)(0[1-9]|1[0-2])(?:_|\.|$)", (r.get("url") or "").rsplit("/", 1)[-1])   # ex.: mes_ano_folha_202609_...
+    if not comp and m2: comp = f"{m2.group(2)}/{m2.group(1)}"
     if topo != (0, 0): comp = f"{topo[1]:02d}/{topo[0]}"
     if out:
         grava(c["ue"], {"_tipo": "pref", "dep": out, "fonte": f"Prefeitura de {c['cidade']} · dados abertos (folha dos servidores)", "url": c["pagina"], "competencia": comp,

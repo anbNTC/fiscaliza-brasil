@@ -147,13 +147,15 @@
   }
   async function acompanho() {
     setNav("mais"); document.title = "Acompanhando · Fiscaliza Brasil";
-    const L = ler().itens; const pol = L.filter((i) => i.tipo === "p"), par = L.filter((i) => i.tipo === "partido");
+    const L = ler().itens; const pol = L.filter((i) => i.tipo === "p"), par = L.filter((i) => i.tipo === "partido"), tem = L.filter((i) => i.tipo === "tema");
     M.innerHTML = `<section class="card glass"><span class="kick">Acompanhando</span><h1>Quem você acompanha</h1><span class="fx"></span>
        <p class="muted" style="margin:0">Escolha políticos de qualquer cargo e partidos com o botão <b>☆ Acompanhar</b> na ficha de cada um. Aqui você vê, num lugar só, se eles estão indo às votações e se votam junto com o partido (<b style="color:#14703C">verde</b>) ou contra (<b style="color:#B3261E">vermelho</b>).</p>
        <div class="btns"><a class="btn o" href="#/quem">Buscar políticos</a><a class="btn o" href="#/partidos">Ver partidos</a></div></section>
      <section class="card glass"><h2 style="margin:0">Salvar em todos os aparelhos</h2><div id="aclog">${loginHTML()}</div></section>
      <section class="card glass"><h2 style="margin:0">Políticos <span class="muted small">(${pol.length})</span></h2><div class="acgrid" id="acp">${pol.length ? '<p class="muted">Carregando…</p>' : '<p class="muted" style="margin:0">Nenhum político ainda. Abra a ficha de um político e toque em ☆ Acompanhar.</p>'}</div></section>
-     <section class="card glass"><h2 style="margin:0">Partidos <span class="muted small">(${par.length})</span></h2><div class="acgrid" id="acpt">${par.length ? "" : '<p class="muted" style="margin:0">Nenhum partido ainda. Abra um partido em PARTIDOS e toque em ☆ Acompanhar.</p>'}</div></section>`;
+     <section class="card glass"><h2 style="margin:0">Partidos <span class="muted small">(${par.length})</span></h2><div class="acgrid" id="acpt">${par.length ? "" : '<p class="muted" style="margin:0">Nenhum partido ainda. Abra um partido em PARTIDOS e toque em ☆ Acompanhar.</p>'}</div></section>
+     <section class="card glass"><h2 style="margin:0">Temas <span class="muted small">(${tem.length})</span></h2><p class="muted small" style="margin:0">No alerta diário por e-mail, você recebe as manchetes do dia sobre cada tema. Para adicionar, use "Avise-me quando" em <a href="#/agora">Acontece agora</a>.</p>
+       <div class="avc" style="display:flex;flex-wrap:wrap;gap:6px">${tem.map((t) => `<button class="btn o" style="padding:6px 12px" type="button" data-rm="tema:${esc(t.ref)}" aria-label="Parar de avisar">${esc(t.ref)} ✕</button>`).join("") || '<span class="muted small">Nenhum tema ainda.</span>'}</div></section>`;
     ligarLogin();
     if (par.length) { await loadPart(); $("#acpt").innerHTML = par.map((it) => { const p = PART.partidos.find((x) => x.s === it.ref); if (!p) return ""; const s = PART.stat[p.s];
       return `<div class="accard"><div class="hd">${selo(p)}<span style="min-width:0"><b>${esc(p.nome)}</b><small>${s.dep} deputados · ${s.sen} senadores</small></span><button class="x" type="button" data-rm="partido:${esc(p.s)}" aria-label="Parar de acompanhar">✕</button></div>

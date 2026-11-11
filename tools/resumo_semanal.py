@@ -67,15 +67,32 @@ def bloco(it):
     if novos: h += '<tr><td style="padding-top:8px;font-size:14px"><b>Projetos novos</b></td></tr>' + "".join(f'<tr><td style="font-size:13px;padding:3px 0">{e(p[1])} {e(p[2])}/{e(p[3])}: {e(str(p[5])[:160])}</td></tr>' for p in novos[:5])
     return h, bool(L or novos)
 
+NOT = None
+def noticias():
+    """Manchetes do Acontece agora (o mesmo servidor do site), para os temas que a pessoa pediu em "Avise-me quando"."""
+    global NOT
+    if NOT is None:
+        try: NOT = requests.get(f"{SITE}/api/noticias", timeout=60, headers={"user-agent": "FiscalizaBrasil/1.0 (resumo)"}).json()
+        except Exception as ex: print("notícias indisponíveis:", repr(ex)[:100]); NOT = {"itens": [], "fontes": []}
+    return NOT
+sa = lambda x: __import__("unicodedata").normalize("NFKD", str(x or "")).encode("ascii", "ignore").decode().lower()
+def bloco_tema(it):
+    N = noticias(); nomes = {f["id"]: f["nome"] for f in N.get("fontes", [])}; termo = it["ref"]; t0 = sa(termo)
+    lim = (datetime.datetime.utcnow() - datetime.timedelta(days=1 if DIARIO else 3)).isoformat()
+    hits = [i for i in N.get("itens", []) if i.get("d", "") >= lim and re.search(r"(^|\W)" + re.escape(t0) + r"(\W|$)", sa(i.get("t")))]
+    cab = f'<tr><td style="padding:18px 0 6px"><span style="color:#0B0B0C;font-weight:800;font-size:17px">🔔 {e(termo)}</span></td></tr>'
+    if not hits: return cab + '<tr><td style="font-size:14px;color:#5E6066">Nenhuma manchete sobre este tema nos veículos que acompanhamos.</td></tr>', False
+    return cab + "".join(f'<tr><td style="padding:5px 0;border-top:1px solid #eee;font-size:14px"><a href="{e(i["l"])}" style="color:#0B0B0C">{e(i["t"])}</a> <span style="color:#5E6066;font-size:12px">· {e(nomes.get(i["s"], i["s"]))}</span></td></tr>' for i in hits[:6]), True
+
 def email(r):
-    pols = [it for it in r["lista"] if it.get("tipo") == "p"]
-    if not pols: return None
-    blocos = [bloco(it) for it in pols[:20]]
+    pols = [it for it in r["lista"] if it.get("tipo") == "p"]; temas = [it for it in r["lista"] if it.get("tipo") == "tema"]
+    if not pols and not temas: return None
+    blocos = [bloco(it) for it in pols[:20]] + [bloco_tema(it) for it in temas[:10]]
     if not any(b[1] for b in blocos): return None
     sair = f"{SITE}/fiscalize#/sair/{r['token']}"
     tit = "alerta do dia" if DIARIO else "resumo da semana"; per = f"Desde {dt(ini)}" if DIARIO else f'Semana até {hoje.strftime("%d/%m/%Y")}'
     corpo = f'''<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#0B0B0C"><h2 style="margin:0 0 4px">Fiscaliza Brasil · {tit}</h2>
-<p style="color:#5E6066;margin:0 0 6px">{per}: o que fizeram os políticos que você acompanha. Dados oficiais.</p>
+<p style="color:#5E6066;margin:0 0 6px">{per}: o que fizeram os políticos e os temas que você acompanha. Dados oficiais.</p>
 <table width="100%" cellpadding="0" cellspacing="0">{"".join(b[0] for b in blocos)}</table>
 <p style="margin-top:22px"><a href="{SITE}/fiscalize#/acompanho" style="background:#0B0B0C;color:#fff;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:700">Ver tudo no site</a></p>
 <p style="color:#8C9097;font-size:12px;margin-top:24px">"Não registrou voto" inclui ausência, licença e falta de registro: os dados abertos não dizem o motivo.<br>Você recebe porque marcou {"o alerta diário" if DIARIO else "o resumo semanal"} no Fiscaliza Brasil. <a href="{sair}">Parar de receber</a>.<br>Vamos fiscalizar tudo · fiscalizaja.com.br</p></div>'''

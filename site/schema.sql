@@ -224,3 +224,7 @@ language sql security definer set search_path = public as $$
   with u as (update public.resumo_email set ativo = false, diario = false, atualizado = now() where token = t returning 1) select exists (select 1 from u)
 $$;
 grant execute on function public.sair_resumo(uuid) to anon, authenticated;
+
+-- 14) "Avise-me quando": temas (palavras) acompanhados, que entram no alerta diário com as manchetes do dia
+alter table public.acompanha drop constraint if exists acompanha_tipo_check;
+alter table public.acompanha add constraint acompanha_tipo_check check (tipo in ('p', 'partido', 'tema'));

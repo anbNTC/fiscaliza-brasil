@@ -227,24 +227,83 @@ async function stf() {
 let AG_T = null;
 const haQuanto = (iso) => { const m = Math.round((Date.now() - Date.parse(iso)) / 6e4); if (m < 1) return "agora"; if (m < 60) return `há ${m} min`; const h = Math.floor(m / 60); if (h < 24) return `há ${h} h`; return new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + " " + new Date(iso).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); };
 const normT = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+/* Político citado na manchete vira link para a ficha (deputados federais e senadores em exercício).
+   Casa o nome de urna completo; o sobrenome sozinho só quando é raro (7+ letras, um só parlamentar com ele) e não é nome de outra pessoa conhecida. */
+let POL_IDX = null;
+const semAc = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "");
+const POL_FORA = new Set("bolsonaro lula moraes mendes barroso fachin dino zanin toffoli fux nunes mendonca gomes neves calheiros silva santos oliveira souza ferreira pereira costa lima alves ribeiro rodrigues martins barbosa carvalho almeida araujo vermelho junior filho neto sobrinho brasil paulo maria pastor delegado delegada coronel general capitao sargento professor professora doutor doutora tenente cabo soldado bispo irmao padre missionario policial federal reforma governo".split(" "));
+function politicosNaManchete(t) {
+  if (typeof BR === "undefined" || !BR || !BR.dep) return [];
+  if (!POL_IDX) {
+    const L = [...BR.dep.map((d) => ({ n: d[1], h: "#/p/c/" + d[0], c: "Dep." })), ...BR.sen.map((x) => ({ n: x[1], h: "#/p/s/" + x[0], c: "Sen." }))];
+    const sob = {}; L.forEach((p) => { const w = semAc(p.n).split(/\s+/).pop(); sob[w] = (sob[w] || 0) + 1; });
+    POL_IDX = L.map((p) => { const w = semAc(p.n).split(/\s+/); const pad = [];
+      if (w.length >= 2) pad.push(w.join("\\s+"));
+      const ult = w[w.length - 1]; if (ult.length >= 7 && sob[ult] === 1 && !POL_FORA.has(ult.toLowerCase())) pad.push(ult);
+      return pad.length ? { ...p, re: new RegExp("(^|[^\\p{L}])(" + pad.join("|") + ")(?![\\p{L}])", "u") } : null; }).filter(Boolean);
+  }
+  const tt = semAc(t); const out = [];
+  for (const p of POL_IDX) if (p.re.test(tt) && !out.some((o) => o.h === p.h)) { out.push(p); if (out.length >= 3) break; }
+  return out;
+}
+/* card para Stories com o resumo do dia (1080x1920) */
+async function cardResumo(el, T) {
+  const W = 1080, H = 1920, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const g = cv.getContext("2d");
+  try { await Promise.all(["800 80px 'Bricolage Grotesque'", "700 40px 'Familjen Grotesk'", "600 30px 'JetBrains Mono'"].map((f) => document.fonts.load(f))); } catch (e) {}
+  const F = (w, s, fam) => `${w} ${s}px ${fam === "m" ? "'JetBrains Mono',monospace" : fam === "d" ? "'Familjen Grotesk',sans-serif" : "'Bricolage Grotesque','Familjen Grotesk',sans-serif"}`;
+  const linhas = (txt, max) => { const ws = String(txt).split(" "); const L = []; let cur = ""; ws.forEach((w) => { const n = cur ? cur + " " + w : w; if (g.measureText(n).width > max && cur) { L.push(cur); cur = w; } else cur = n; }); if (cur) L.push(cur); return L; };
+  g.fillStyle = "#FBFBF7"; g.fillRect(0, 0, W, H);
+  [[0, 0, "rgba(0,156,59,.22)"], [W, 560, "rgba(255,214,0,.30)"], [300, H, "rgba(30,100,235,.20)"]].forEach(([x, y, c]) => { const gr = g.createRadialGradient(x, y, 0, x, y, 1000); gr.addColorStop(0, c); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, W, H); });
+  const logo = await new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = "/icon-192.png"; });
+  if (logo) g.drawImage(logo, 80, 96, 76, 76);
+  g.fillStyle = "#0B0B0C"; g.font = F(800, 46); g.textBaseline = "middle"; g.fillText("FISCALIZA BRASIL", 176, 136);
+  g.textBaseline = "top"; g.fillStyle = "#D93025"; g.font = F(600, 30, "m"); g.fillText("RESUMO DO DIA · " + new Date().toLocaleDateString("pt-BR"), 80, 240);
+  g.fillStyle = "#0B0B0C"; g.font = F(800, 92); g.fillText("O que está", 80, 290); g.fillText("em todo lugar", 80, 385);
+  let y = 530;
+  T.slice(0, 5).forEach((x, k) => {
+    g.fillStyle = "#D93025"; g.font = F(800, 72); g.fillText(String(k + 1), 80, y - 6);
+    g.fillStyle = "#0B0B0C"; g.font = F(700, 40, "d"); const L = linhas(x.t, W - 260).slice(0, 3); L.forEach((l, j) => g.fillText(l, 170, y + j * 48));
+    g.fillStyle = "#5E6066"; g.font = F(600, 24, "m"); g.fillText(`${x.n} VEÍCULOS${x.cego ? " · PONTO CEGO" : ""}`, 170, y + L.length * 48 + 8);
+    y += L.length * 48 + 70;
+  });
+  g.fillStyle = "rgba(11,11,12,.15)"; g.fillRect(80, H - 250, W - 160, 2);
+  g.textAlign = "center"; g.fillStyle = "#0B0B0C"; g.font = F(800, 60); g.fillText("SIGA: @oabraaonery", W / 2, H - 225);
+  g.fillStyle = "#5E6066"; g.font = F(600, 28, "m"); g.fillText("VAMOS FISCALIZAR TUDO · fiscalizaja.com.br", W / 2, H - 135); g.textAlign = "left";
+  const nome = "fiscaliza-resumo-" + new Date().toISOString().slice(0, 10) + ".png";
+  el.innerHTML = `<div class="btns" style="justify-content:center"><button class="btn" id="rs-dl" type="button">Baixar imagem</button><button class="btn o" id="rs-sh" type="button" hidden>Compartilhar</button></div><p class="muted small" style="margin:0;text-align:center">Imagem em 1080 × 1920, no tamanho dos Stories.</p>`;
+  el.prepend(cv);
+  const blob = await new Promise((ok) => cv.toBlob(ok, "image/png"));
+  $("#rs-dl").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = nome; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); };
+  const fl = new File([blob], nome, { type: "image/png" });
+  if (navigator.canShare && navigator.canShare({ files: [fl] })) { $("#rs-sh").hidden = false; $("#rs-sh").onclick = () => navigator.share({ files: [fl], title: "Resumo do dia" }).catch(() => {}); }
+}
 async function agora() {
   setNav("mais"); clearInterval(AG_T);
-  let filtro = "todos", termo = null, data = null, lim = 40, cliques = [];
+  let filtro = "todos", termo = null, data = null, lim = 40, cliques = [], cegos = new Set();
+  await loadBR().catch(() => {});
+  const chipsPol = (t) => { const L = politicosNaManchete(t); return L.length ? `<div class="pch">${L.map((p) => `<a href="${p.h}" title="Ver a ficha no Fiscaliza">📋 ${esc(p.n)}</a>`).join("")}</div>` : ""; };
   document.body.classList.add("wide");
   M.innerHTML = `<div class="ag"><section class="card glass ag-a"><span class="kick" style="display:flex;align-items:center;gap:8px"><i class="live"></i>Ao vivo</span><h1>Acontece agora</h1><span class="fx"></span>
      <p class="muted" style="margin:0">As manchetes de política dos principais veículos do país, atualizadas a cada poucos minutos. Toque numa manchete para ler a matéria no site do veículo.</p>
      <div id="ag-tr"></div><p class="src" id="ag-st" style="margin:0"></p></section>
+   <section class="card glass ag-v" id="ag-vivo"><h2 style="display:flex;align-items:center;gap:8px"><i class="live"></i>Ao vivo no Congresso</h2><p class="muted small" style="margin:0">O que está acontecendo agora e a agenda de hoje na Câmara e no Senado: Plenário, comissões e CPIs.</p><div id="cg-l"><p class="muted small">Carregando…</p></div><p class="src" id="cg-st" style="margin:0"></p></section>
+   <section class="card glass ag-r" id="ag-res"><h2>Resumo do dia em 1 minuto</h2><p class="muted small" style="margin:0">Os 5 assuntos que mais veículos estão cobrindo agora.</p><ol class="rs" id="rs-l"><li class="muted small">Carregando…</li></ol><div class="btns"><button class="btn" id="rs-card" type="button">Gerar card para Stories</button></div><div id="rs-cv"></div></section>
    <section class="card glass ag-b" id="ag-alta-c"><h2 style="display:flex;align-items:center;gap:8px">Em alta agora</h2><p class="muted small" style="margin:0">Assuntos cobertos por vários veículos ao mesmo tempo, os mais clicados aqui e as manchetes que os próprios veículos chamam de polêmica.</p><div class="lst" id="ag-alta"><p class="muted">Carregando…</p></div></section>
+   <section class="card glass ag-e" id="ag-uf"><div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap"><h2 style="margin:0" id="uf-h">Notícias do seu estado</h2><select id="uf-sel" aria-label="Estado"></select></div><p class="muted small" style="margin:0">Política do estado escolhido: g1 local, jornais do estado e a Assembleia Legislativa (onde ela publica notícias em RSS).</p><div class="lst" id="uf-l"><p class="muted small">Carregando…</p></div><p class="src" id="uf-st" style="margin:0"></p></section>
+   <section class="card glass ag-w" id="ag-vid"><div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap"><h2 style="margin:0">Vídeos e podcasts agora</h2><div class="yrs" id="vd-f"></div></div><p class="muted small" style="margin:0">Os vídeos de política mais recentes dos canais de TV e jornais no YouTube (de todos os lados) e os últimos episódios dos podcasts de política.</p><div id="vd-l"><p class="muted small">Carregando…</p></div><p class="src" id="vd-st" style="margin:0"></p></section>
    <aside class="ag-s">
+     <section class="card glass sd" id="ag-ff"><div class="sdh"><span class="xlogo" style="background:#0E8A4B" aria-hidden="true">✓</span><div><h2 style="margin:0">Feito pelo Fiscaliza</h2><p class="muted small" style="margin:0">Notícias que só os nossos dados mostram</p></div></div><div class="lst" id="ff-l"><p class="muted small">Carregando…</p></div></section>
+     <section class="card glass sd" id="ag-av"><div class="sdh"><span class="xlogo" style="background:#F7C21B;color:#0B0B0C" aria-hidden="true">🔔</span><div><h2 style="margin:0">Avise-me quando</h2><p class="muted small" style="margin:0">Receba no alerta diário por e-mail as manchetes sobre um tema ou político</p></div></div><div id="av-b"></div></section>
      <section class="card glass sd"><div class="sdh"><span class="xlogo" aria-hidden="true">𝕏</span><div><h2 style="margin:0">No X agora</h2><p class="muted small" style="margin:0" id="x-sub">Posts de jornalistas e veículos de todos os lados</p></div></div><div id="x-box"><p class="muted small">Carregando…</p></div></section>
      <section class="card glass sd"><div class="sdh"><span class="xlogo up" aria-hidden="true">↗</span><div><h2 style="margin:0">Em alta no Brasil</h2><p class="muted small" style="margin:0">O que as pessoas mais estão buscando agora</p></div></div><div class="yrs" id="tn-f"></div><ol class="tn" id="tn-l"><li class="muted small">Carregando…</li></ol><p class="src" id="tn-st" style="margin:0"></p></section>
+     <section class="card glass sd"><div class="sdh"><span class="xlogo" style="background:#1185FE" aria-hidden="true">🦋</span><div><h2 style="margin:0">No Bluesky agora</h2><p class="muted small" style="margin:0">Posts de veículos e checadores</p></div></div><div class="lst" id="bs-l"><p class="muted small">Carregando…</p></div><p class="src" id="bs-st" style="margin:0"></p></section>
    </aside>
    <section class="card glass ag-c"><h2>Mais recentes</h2><div class="yrs" id="ag-f"></div><div class="lst" id="ag-l"></div></section>
    </div>
    <p class="src">As manchetes, os links e os horários vêm dos feeds públicos (RSS) de cada veículo, que é o dono do conteúdo. "Em alta" é calculado pela quantidade de veículos que publicaram o mesmo assunto e pelos cliques no Fiscaliza Brasil. O selo "Polêmica" aparece quando a própria manchete usa termos como polêmica, machista, racista, ataque, ameaça ou ofensa; ele não é uma opinião do Fiscaliza Brasil.</p>
    <style>body.wide main{max-width:1320px}
-   .ag{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);grid-template-areas:"a" "b" "s" "c"}.ag-a{grid-area:a}.ag-b{grid-area:b}.ag-c{grid-area:c}.ag-s{grid-area:s;display:grid;gap:16px;align-content:start;min-width:0}
-   @media (min-width:1000px){.ag{grid-template-columns:minmax(0,1fr) 380px;grid-template-areas:"a s" "b s" "c s";align-items:start}.ag-s{position:sticky;top:76px;max-height:calc(100svh - 92px);overflow:auto;scrollbar-width:thin;border-radius:24px}}
+   .ag{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);grid-template-areas:"a" "v" "r" "b" "e" "s" "w" "c"}.ag-a{grid-area:a}.ag-b{grid-area:b}.ag-c{grid-area:c}.ag-v{grid-area:v}.ag-r{grid-area:r}.ag-e{grid-area:e}.ag-w{grid-area:w}.ag-s{grid-area:s;display:grid;gap:16px;align-content:start;min-width:0}
+   @media (min-width:1000px){.ag{grid-template-columns:minmax(0,1fr) 380px;grid-template-areas:"a s" "v s" "r s" "b s" "e s" "w s" "c s";align-items:start}.ag-s{position:sticky;top:76px;max-height:calc(100svh - 92px);overflow:auto;scrollbar-width:thin;border-radius:24px}}
    .sd{gap:12px}.sdh{display:flex;gap:12px;align-items:center}.xlogo{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:#0B0B0C;color:#fff;font-size:1.25rem;font-weight:700}.xlogo.up{background:var(--azul,#1F4FBF)}
    #x-box{display:grid;gap:10px}#x-box iframe{border-radius:16px!important}.xfb{display:grid;gap:8px;padding:14px;border-radius:16px;background:rgba(255,255,255,.78);border:1px solid rgba(11,11,12,.08)}
    .tn{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:tn}.tn li.it3{counter-increment:tn;display:grid;grid-template-columns:28px minmax(0,1fr);gap:4px 10px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.78);border:1px solid rgba(11,11,12,.08)}
@@ -260,6 +319,18 @@ async function agora() {
    .tg2{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;color:#fff;background:#D93025}
    .tg2.pol{background:#0B0B0C}.tg2.clk{background:var(--azul)}.rk{font-family:var(--f-display);font-weight:700;font-size:1.4rem;color:#D93025;line-height:1}
    .cob{display:none;gap:6px}.cob.on{display:grid}.cob a{font-size:.88rem;text-decoration:none;color:inherit;padding:6px 0;border-top:1px solid rgba(11,11,12,.08)}.cob a b{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;margin-right:6px}
+   .tg2.cego{background:#6B3FA0}.pch{display:flex;flex-wrap:wrap;gap:6px}.pch a{font-size:.74rem;font-weight:700;text-decoration:none;color:var(--ink);background:rgba(31,79,191,.08);border:1px solid rgba(31,79,191,.25);border-radius:999px;padding:3px 10px}.pch a:hover{background:rgba(31,79,191,.16)}
+   .nw a.ti{color:inherit;text-decoration:none}.nw a.ti:hover{text-decoration:underline}
+   .cg{display:grid;gap:8px;margin:0;padding:0;list-style:none}.cg li{display:grid;grid-template-columns:56px minmax(0,1fr);gap:2px 12px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(11,11,12,.08)}
+   .cg li.on{border-color:rgba(217,48,37,.45);background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,236,232,.9))}.cg .hr{font-family:var(--f-mono);font-weight:700;font-size:.9rem;grid-row:span 2}.cg .hr small{display:block;color:#D93025;font-size:.62rem;letter-spacing:.06em}
+   .cg .ds{font-size:.88rem;line-height:1.3;overflow-wrap:anywhere}.cg .mt{font-size:.75rem;color:var(--muted);display:flex;gap:4px 10px;flex-wrap:wrap}.cg .mt a{color:var(--ink);font-weight:700}.cg li.x{opacity:.55}.cg[hidden]{display:none}
+   .rs{margin:0;padding:0;list-style:none;display:grid;gap:8px;counter-reset:rs}.rs li{counter-increment:rs;display:grid;grid-template-columns:30px minmax(0,1fr);gap:2px 10px;align-items:start}.rs li::before{content:counter(rs);font-family:var(--f-display);font-weight:800;font-size:1.3rem;color:#D93025;grid-row:span 2;line-height:1.1}
+   .rs a{font-family:var(--f-display);font-weight:700;line-height:1.25;color:inherit;text-decoration:none}.rs small{color:var(--muted)}#rs-cv canvas{width:100%;max-width:320px;height:auto;border-radius:18px;display:block;margin:6px auto;box-shadow:0 10px 30px rgba(0,0,0,.15)}
+   .vds{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,260px);gap:12px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}.vd{scroll-snap-align:start;display:grid;gap:6px;text-decoration:none;color:inherit}.vd img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:14px;background:#ddd}
+   .vd b{font-family:var(--f-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.vd span{font-family:var(--f-display);font-weight:700;font-size:.92rem;line-height:1.25;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+   .bs{display:grid;gap:4px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(11,11,12,.08);text-decoration:none;color:inherit;font-size:.86rem;line-height:1.35}.bs b{font-size:.74rem}.bs span{overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+   .avf{display:flex;gap:8px;flex-wrap:wrap}.avf input{flex:1;min-width:150px;border:1px solid rgba(11,11,12,.18);border-radius:999px;padding:9px 14px;font:inherit;background:rgba(255,255,255,.85)}.avc{display:flex;flex-wrap:wrap;gap:6px}.avc button{border:1px solid rgba(11,11,12,.14);background:rgba(255,255,255,.8);border-radius:999px;padding:5px 11px;font-size:.8rem;font-weight:700}.avc button.on{background:var(--ink);color:#fff}
+   #uf-sel{border:1px solid rgba(11,11,12,.18);border-radius:999px;padding:7px 12px;font:inherit;font-weight:700;background:rgba(255,255,255,.85)}
    .trend{display:flex;gap:6px;flex-wrap:wrap}.trend button{border:1px solid rgba(11,11,12,.14);background:rgba(255,255,255,.75);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.85rem}.trend button[aria-pressed="true"]{background:var(--ink);color:#fff}.trend small{color:var(--muted);font-weight:600;margin-left:4px}</style>`;
   const fontes = () => Object.fromEntries(data.fontes.map((f) => [f.id, f]));
   const clique = (it) => { try { const sb = sbClient(); if (sb) sb.rpc("noticia_clique", { p_url: it.l, p_titulo: it.t, p_fonte: it.s }).then(() => {}, () => {}); } catch (e) {} };
@@ -273,8 +344,8 @@ async function agora() {
     const maisClic = cliques.filter((c) => !usados.has(c.url)).sort((a, b) => b.cliques - a.cliques).slice(0, 3);
     grupos.slice(0, 8).forEach((g, k) => {
       const pri = g.its.slice().sort((a, b) => (F[b.s] && F[b.s].grupo === "Agências oficiais") - (F[a.s] && F[a.s].grupo === "Agências oficiais") || a.d.localeCompare(b.d))[0];
-      cards.push(`<div class="hot"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="rk">${k + 1}</span>${g.n >= 2 ? `<span class="tg2">🔥 Em alta · ${g.n} veículos</span>` : ""}${g.polem ? `<span class="tg2 pol">⚠ Polêmica</span>` : ""}${g.c ? `<span class="tg2 clk">${mil(g.c)} cliques</span>` : ""}<span class="small muted">${haQuanto(g.ult)}</span></div>
-        ${linkHTML(pri, "ti")}${esc(pri.t)}</a><span class="small muted">${esc((F[pri.s] || {}).nome || pri.s)}${g.its.length > 1 ? ` e mais ${g.its.length - 1}` : ""}</span>
+      cards.push(`<div class="hot"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="rk">${k + 1}</span>${g.n >= 2 ? `<span class="tg2">🔥 Em alta · ${g.n} veículos</span>` : ""}${g.polem ? `<span class="tg2 pol">⚠ Polêmica</span>` : ""}${g.cego ? `<span class="tg2 cego" title="Só veículos de um dos lados publicaram este assunto">👁 Ponto cego · só ${g.cego === "e" ? "a direita" : "a esquerda"} está cobrindo</span>` : ""}${g.c ? `<span class="tg2 clk">${mil(g.c)} cliques</span>` : ""}<span class="small muted">${haQuanto(g.ult)}</span></div>
+        ${linkHTML(pri, "ti")}${esc(pri.t)}</a>${chipsPol(g.its.map((x) => x.t).join(" · "))}<span class="small muted">${esc((F[pri.s] || {}).nome || pri.s)}${g.its.length > 1 ? ` e mais ${g.its.length - 1}` : ""}</span>
         ${g.its.length > 1 ? `<button class="btn o" style="justify-self:start;padding:8px 14px" data-cob="${k}">Ver cobertura (${g.its.length})</button><div class="cob" id="cob${k}">${g.its.map((it) => `${linkHTML(it, "")}<b>${esc((F[it.s] || {}).nome || it.s)}</b>${esc(it.t)}</a>`).join("")}</div>` : ""}</div>`);
     });
     maisClic.forEach((c) => cards.push(`<div class="hot"><div style="display:flex;gap:10px;align-items:center"><span class="tg2 clk">Mais clicada · ${mil(c.cliques)}</span></div><a class="ti" href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.titulo || c.url)}</a><span class="small muted">${esc((F[c.fonte] || {}).nome || c.fonte || "")}</span></div>`));
@@ -284,10 +355,10 @@ async function agora() {
   };
   const drawLista = () => {
     const F = fontes(); const grupos = [...new Set(data.fontes.map((f) => f.grupo))];
-    $("#ag-f").innerHTML = [["todos", "Todos"], ["pol", "⚠ Polêmicas"], ...grupos.map((g) => ["g:" + g, g]), ...data.fontes.filter((f) => f.ok).map((f) => ["s:" + f.id, f.nome])].map(([k, n]) => `<button data-k="${esc(k)}" aria-pressed="${k === filtro}">${esc(n)}</button>`).join("");
+    $("#ag-f").innerHTML = [["todos", "Todos"], ["pol", "⚠ Polêmicas"], ["cego", "👁 Ponto cego"], ...grupos.map((g) => ["g:" + g, g]), ...data.fontes.filter((f) => f.ok).map((f) => ["s:" + f.id, f.nome])].map(([k, n]) => `<button data-k="${esc(k)}" aria-pressed="${k === filtro}">${esc(n)}</button>`).join("");
     document.querySelectorAll("#ag-f button").forEach((b) => (b.onclick = () => { filtro = b.dataset.k; lim = 40; drawLista(); }));
-    const f = data.itens.filter((i) => (filtro === "todos" || (filtro === "pol" ? i.p : filtro.startsWith("s:") ? i.s === filtro.slice(2) : (F[i.s] || {}).grupo === filtro.slice(2))) && (!termo || normT(i.t).includes(normT(termo))));
-    $("#ag-l").innerHTML = (termo ? `<div class="note">Mostrando manchetes sobre <b>${esc(termo)}</b>. <a href="#" id="ag-x">Limpar</a></div>` : "") + f.slice(0, lim).map((i) => `${linkHTML(i, "nw")}<span class="src2"><b>${esc((F[i.s] || {}).nome || i.s)}</b><span>${haQuanto(i.d)}</span>${i.p ? '<span class="tg2 pol" style="padding:2px 8px">⚠ Polêmica</span>' : ""}</span><span class="ti">${esc(i.t)}</span></a>`).join("") || '<p class="muted">Nenhuma manchete.</p>';
+    const f = data.itens.filter((i) => (filtro === "todos" || (filtro === "pol" ? i.p : filtro === "cego" ? cegos.has(i.l) : filtro.startsWith("s:") ? i.s === filtro.slice(2) : (F[i.s] || {}).grupo === filtro.slice(2))) && (!termo || normT(i.t).includes(normT(termo))));
+    $("#ag-l").innerHTML = (termo ? `<div class="note">Mostrando manchetes sobre <b>${esc(termo)}</b>. <a href="#" id="ag-x">Limpar</a></div>` : "") + f.slice(0, lim).map((i) => `<div class="nw"><span class="src2"><b>${esc((F[i.s] || {}).nome || i.s)}</b><span>${haQuanto(i.d)}</span>${i.p ? '<span class="tg2 pol" style="padding:2px 8px">⚠ Polêmica</span>' : ""}${cegos.has(i.l) ? '<span class="tg2 cego" style="padding:2px 8px">👁 Ponto cego</span>' : ""}</span>${linkHTML(i, "ti")}${esc(i.t)}</a>${chipsPol(i.t)}</div>`).join("") || '<p class="muted">Nenhuma manchete.</p>';
     if (termo) $("#ag-x").onclick = (e) => { e.preventDefault(); termo = null; drawTr(); drawLista(); };
     if (f.length > lim) { $("#ag-l").insertAdjacentHTML("beforeend", '<button class="btn o more" id="ag-m">Ver mais</button>'); $("#ag-m").onclick = () => { lim += 40; drawLista(); }; }
     wireClicks($("#ag-l"));
@@ -297,13 +368,15 @@ async function agora() {
     $("#ag-tr").innerHTML = a.length ? `<div class="kick" style="margin:4px 0 6px">Assuntos do momento</div><div class="trend">${a.map(([n, c]) => `<button data-t="${esc(n)}" aria-pressed="${n === termo}">${esc(n)}<small>${c}</small></button>`).join("")}</div>` : "";
     document.querySelectorAll("#ag-tr button").forEach((b) => (b.onclick = () => { termo = termo === b.dataset.t ? null : b.dataset.t; drawTr(); drawLista(); $("#ag-l").scrollIntoView({ behavior: "smooth", block: "start" }); }));
   };
-  const draw = () => { drawTr(); drawAlta(); drawLista();
+  const draw = () => { cegos = new Set((data.alta || []).filter((g) => g.cego).flatMap((g) => g.ids.map((i) => (data.itens[i] || {}).l)));
+    drawTr(); drawAlta(); drawLista(); drawResumo(); drawAvise();
     const off = data.fontes.filter((x) => !x.ok).map((x) => x.nome);
     $("#ag-st").textContent = `Atualizado às ${new Date(data.gerado).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} · ${data.fontes.filter((x) => x.ok).length} veículos` + (off.length ? ` · fora do ar agora: ${off.join(", ")}` : ""); };
   try { const g = JSON.parse(localStorage.getItem("fb_noticias") || "null"); if (g && g.itens) { data = g; draw(); } } catch (err) {}
   const load = async () => {
     try {
       const r = await fetch("/api/noticias", { cache: "no-store" }); if (!r.ok) throw new Error(r.status); data = await r.json();
+      if (data.parcial && (load.n = (load.n || 0) + 1) < 6) setTimeout(load, 4000);
       try { localStorage.setItem("fb_noticias", JSON.stringify(data)); } catch (err) {}
       try { const sb = sbClient(); if (sb) { const ontem = new Date(Date.now() - 864e5).toISOString().slice(0, 10); const q = await sb.from("noticias_cliques").select("url,titulo,fonte,cliques").gte("dia", ontem).order("cliques", { ascending: false }).limit(50); if (!q.error) cliques = q.data || []; } } catch (e) {}
       draw();
@@ -340,7 +413,93 @@ async function agora() {
     try { const r = await fetch("/api/tendencias", { cache: "no-store" }); if (!r.ok) throw new Error(r.status); tData = await r.json(); drawTend(); }
     catch (e) { if (!tData) $("#tn-l").innerHTML = '<li class="muted small">Os assuntos em alta funcionam no site publicado (vêm do servidor do Fiscaliza Brasil no Cloudflare).</li>'; }
   };
-  xLista(); loadTend();
+
+  /* resumo do dia: os 5 assuntos com mais veículos; botão gera o card para Stories */
+  const topo5 = () => { const F = fontes(); return (data.alta || []).map((g) => ({ ...g, its: g.ids.map((i) => data.itens[i]).filter(Boolean) })).filter((g) => g.its.length && g.n >= 2).sort((a, b) => b.n - a.n || b.score - a.score).slice(0, 5)
+    .map((g) => { const pri = g.its.slice().sort((a, b) => ((F[b.s] || {}).grupo === "Agências oficiais") - ((F[a.s] || {}).grupo === "Agências oficiais") || a.d.localeCompare(b.d))[0]; return { t: pri.t, l: pri.l, n: g.n, s: (F[pri.s] || {}).nome || pri.s, cego: g.cego }; }); };
+  const drawResumo = () => {
+    const T = topo5();
+    $("#rs-l").innerHTML = T.length ? T.map((x) => `<li><a href="${esc(x.l)}" target="_blank" rel="noopener">${esc(x.t)}</a><small>${x.n} veículos · primeiro a dar: ${esc(x.s)}${x.cego ? " · 👁 ponto cego" : ""}</small></li>`).join("") : '<li class="muted small">Ainda não há assuntos cobertos por vários veículos hoje.</li>';
+    $("#rs-card").hidden = !T.length; $("#rs-card").onclick = () => cardResumo($("#rs-cv"), T);
+  };
+  /* avise-me: temas guardados em Acompanhando (tipo "tema"); vão no alerta diário por e-mail */
+  const drawAvise = () => {
+    const box = $("#av-b"); if (!box || !window.FBAcomp) return;
+    const meus = FBAcomp.ler().itens.filter((i) => i.tipo === "tema");
+    const sug = (data && data.assuntos || []).map(([n]) => n).filter((n) => !meus.some((m) => normT(m.ref) === normT(n))).slice(0, 6);
+    box.innerHTML = `<form class="avf" id="av-f"><input id="av-i" maxlength="60" placeholder="Ex.: reforma tributária, Nikolas Ferreira" aria-label="Tema ou político"><button class="btn" type="submit">Avisar</button></form>
+      ${meus.length ? `<div class="kick" style="margin:10px 0 4px">Você será avisado sobre</div><div class="avc">${meus.map((m) => `<button class="on" data-del="${esc(m.ref)}" title="Parar de avisar">${esc(m.ref)} ✕</button>`).join("")}</div>` : ""}
+      ${sug.length ? `<div class="kick" style="margin:10px 0 4px">Assuntos do momento</div><div class="avc">${sug.map((n) => `<button data-add="${esc(n)}">+ ${esc(n)}</button>`).join("")}</div>` : ""}
+      <p class="muted small" style="margin:8px 0 0">O aviso chega no <a href="#/acompanho">alerta diário</a>: entre com o seu e-mail na página Acompanhando e marque "alerta diário". Os temas ficam guardados junto com os políticos que você acompanha.</p>`;
+    const add = (t) => { t = String(t || "").trim().replace(/\s+/g, " ").slice(0, 60); if (t.length < 3) return; if (!FBAcomp.tem("tema", t)) FBAcomp.alternar({ tipo: "tema", ref: t, nome: t }); if (typeof toast2 === "function") toast2(`Pronto: vamos avisar sobre "${t}".`); drawAvise(); };
+    $("#av-f").onsubmit = (e) => { e.preventDefault(); add($("#av-i").value); };
+    box.querySelectorAll("[data-add]").forEach((b) => (b.onclick = () => add(b.dataset.add)));
+    box.querySelectorAll("[data-del]").forEach((b) => (b.onclick = () => { FBAcomp.alternar({ tipo: "tema", ref: b.dataset.del }); drawAvise(); }));
+  };
+  /* ao vivo no Congresso */
+  const loadCongresso = async () => {
+    try {
+      const r = await fetch("/api/congresso", { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json();
+      const ev = j.ev || []; const vivo = ev.filter((e) => e.sit === "andamento" || e.sit === "suspensa"); const prox = ev.filter((e) => e.sit === "agendada"); const fim = ev.filter((e) => e.sit === "encerrada" || e.sit === "cancelada");
+      const li = (e) => `<li class="${e.sit === "andamento" ? "on" : e.sit === "cancelada" ? "x" : ""}"><span class="hr">${esc(e.h || "")}${e.sit === "andamento" ? "<small>AO VIVO</small>" : e.sit === "suspensa" ? "<small>SUSPENSA</small>" : e.sit === "cancelada" ? "<small style='color:var(--muted)'>CANCELADA</small>" : e.sit === "encerrada" ? "<small style='color:var(--muted)'>ENCERRADA</small>" : ""}</span>
+        <span class="ds"><b>${e.casa === "C" ? "Câmara" : "Senado"} · ${esc(e.plen ? (e.casa === "C" ? "Plenário" : "Plenário do Senado") : e.org)}</b>${e.cpi ? ' <span class="tg2" style="padding:1px 8px">CPI</span>' : ""} ${esc(e.tipo)}${e.d ? ": " + esc(e.d) : ""}</span>
+        <span class="mt">${e.orgn && !e.plen ? `<span>${esc(e.orgn)}</span>` : ""}<a href="${esc(e.u)}" target="_blank" rel="noopener">${e.sit === "andamento" ? "Assistir agora" : /youtu/.test(e.u) ? "Ver gravação" : "Página oficial"}</a></span></li>`;
+      const mostra = [...vivo, ...prox.slice(0, Math.max(3, 8 - vivo.length))]; const resto = [...prox.slice(mostra.length - vivo.length), ...fim];
+      $("#cg-l").innerHTML = (vivo.length ? "" : '<p class="muted small" style="margin:6px 0">Nada transmitido ao vivo neste momento.</p>') + (mostra.length ? `<ul class="cg">${mostra.map(li).join("")}</ul>` : '<p class="muted small">Sem sessões nem reuniões marcadas para hoje.</p>')
+        + (resto.length ? `<button class="btn o" style="justify-self:start;padding:8px 14px;margin-top:8px" id="cg-m">Ver a agenda completa de hoje (${ev.length})</button><ul class="cg" id="cg-r" hidden style="margin-top:8px">${resto.map(li).join("")}</ul>` : "");
+      if ($("#cg-m")) $("#cg-m").onclick = () => { $("#cg-r").hidden = !$("#cg-r").hidden; $("#cg-m").textContent = $("#cg-r").hidden ? `Ver a agenda completa de hoje (${ev.length})` : "Fechar a agenda"; };
+      $("#cg-st").textContent = `Fonte: Dados Abertos da Câmara e do Senado (agenda de ${new Date(j.dia + "T12:00").toLocaleDateString("pt-BR")}) · atualizado às ${new Date(j.gerado).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}` + (!j.ok.camara ? " · a Câmara não respondeu agora" : "") + (!j.ok.senado ? " · o Senado não respondeu agora" : "");
+    } catch (e) { $("#cg-l").innerHTML = '<p class="muted small">A agenda ao vivo funciona no site publicado (vem do servidor do Fiscaliza Brasil no Cloudflare).</p>'; }
+  };
+  /* notícias do seu estado */
+  const UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
+  let ufN = (() => { try { return localStorage.getItem("fb_uf_noticias") || (store.get("cidade") || {}).uf || ""; } catch (e) { return ""; } })();
+  const loadRegional = async () => {
+    const sel = $("#uf-sel"); sel.innerHTML = `<option value="">Escolha o estado</option>` + UFS.map((u) => `<option value="${u}"${u === ufN ? " selected" : ""}>${u}</option>`).join("");
+    sel.onchange = () => { ufN = sel.value; try { localStorage.setItem("fb_uf_noticias", ufN); } catch (e) {} loadRegional(); };
+    if (!ufN) { $("#uf-l").innerHTML = '<p class="muted small">Escolha o estado ao lado (ou a sua cidade em "Me representa") para ver a política local.</p>'; $("#uf-st").textContent = ""; return; }
+    $("#uf-h").textContent = "Notícias do seu estado · " + ufN;
+    try {
+      const r = await fetch("/api/regional?uf=" + ufN, { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json(); const N = Object.fromEntries(j.fontes.map((f) => [f.id, f.nome]));
+      $("#uf-l").innerHTML = j.itens.slice(0, 12).map((i) => `<div class="nw"><span class="src2"><b>${esc(N[i.s] || i.s)}</b><span>${haQuanto(i.d)}</span></span><a class="ti" href="${esc(i.l)}" target="_blank" rel="noopener">${esc(i.t)}</a>${chipsPol(i.t)}</div>`).join("") || '<p class="muted small">Nenhuma notícia de política do estado nos últimos dias.</p>';
+      $("#uf-st").textContent = "Fontes: " + j.fontes.filter((f) => f.ok).map((f) => f.nome).join(", ") + ". Cada manchete leva à matéria no site do veículo.";
+    } catch (e) { $("#uf-l").innerHTML = '<p class="muted small">As notícias do estado funcionam no site publicado.</p>'; }
+  };
+  /* vídeos e podcasts */
+  let vdTipo = "v", vdData = null;
+  const drawVideos = () => {
+    $("#vd-f").innerHTML = [["v", "Vídeos"], ["p", "Podcasts"]].map(([k, n]) => `<button data-k="${k}" aria-pressed="${k === vdTipo}">${n}</button>`).join("");
+    $("#vd-f").querySelectorAll("button").forEach((b) => (b.onclick = () => { vdTipo = b.dataset.k; drawVideos(); }));
+    const N = Object.fromEntries(vdData.fontes.map((f) => [f.id, f.nome])); const its = vdData.itens.filter((i) => i.s.startsWith(vdTipo + "-"));
+    $("#vd-l").innerHTML = !its.length ? '<p class="muted small">Nada novo agora.</p>' : vdTipo === "v"
+      ? `<div class="vds">${its.slice(0, 24).map((i) => `<a class="vd" href="${esc(i.l)}" target="_blank" rel="noopener">${i.img ? `<img src="${esc(i.img)}" alt="" loading="lazy">` : ""}<b>${esc(N[i.s] || "")} · ${haQuanto(i.d)}</b><span>${esc(i.t)}</span></a>`).join("")}</div>`
+      : `<div class="lst">${its.slice(0, 12).map((i) => `<a class="nw" href="${esc(i.l)}" target="_blank" rel="noopener"><span class="src2"><b>🎧 ${esc(N[i.s] || "")}</b><span>${haQuanto(i.d)}</span></span><span class="ti">${esc(i.t)}</span></a>`).join("")}</div>`;
+    $("#vd-st").textContent = `Canais e podcasts: ${vdData.fontes.filter((f) => f.ok && f.id.startsWith(vdTipo + "-")).map((f) => f.nome).join(", ")}. O vídeo e o áudio abrem no site de cada um.`;
+  };
+  const loadVideos = async () => { try { const r = await fetch("/api/videos", { cache: "no-store" }); if (!r.ok) throw new Error(r.status); vdData = await r.json(); drawVideos(); } catch (e) { $("#vd-l").innerHTML = '<p class="muted small">Os vídeos funcionam no site publicado.</p>'; } };
+  /* Bluesky */
+  const loadBsky = async () => {
+    try { const r = await fetch("/api/bluesky", { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json(); const N = Object.fromEntries(j.fontes.map((f) => [f.id, f.nome]));
+      $("#bs-l").innerHTML = j.itens.slice(0, 15).map((i) => `<a class="bs" href="${esc(i.l)}" target="_blank" rel="noopener"><b>${esc(N[i.s] || "")} · <span class="muted">${haQuanto(i.d)}</span></b><span>${esc(i.t)}</span></a>`).join("") || '<p class="muted small">Nada novo agora.</p>';
+      $("#bs-st").textContent = "Do RSS público de cada perfil no Bluesky.";
+    } catch (e) { $("#bs-l").innerHTML = '<p class="muted small">Os posts do Bluesky funcionam no site publicado.</p>'; }
+  };
+  /* feito pelo Fiscaliza: votações nominais recentes e quem votou contra o partido (dados nossos) */
+  const feitoFiscaliza = async () => {
+    try {
+      const [VCa, VSa, S] = await Promise.all([getJSON("data/camara_votacoes.json").catch(() => []), getJSON("data/senado_votacoes.json").catch(() => []), getJSON("data/semana.json").catch(() => null)]);
+      const lim = new Date(Date.now() - 10 * 864e5).toISOString().slice(0, 10); const it = [];
+      VCa.forEach((x, i) => { if (x && x[1] >= lim && !/requerimento/i.test(x[7] || "")) it.push([x[1], `<b>Câmara</b> ${x[2] === "1" ? "aprovou" : "rejeitou"} ${esc(x[5] || "votação")} por ${x[3]} a ${x[4]}. <a href="#/votacao/C/${i}">Como votou cada deputado</a>`]); });
+      VSa.forEach((x, i) => { if (x && x[1] >= lim && !/requerimento/i.test(x[4] || "")) it.push([x[1], `<b>Senado</b> ${x[5] === "A" ? "aprovou" : "rejeitou"} ${esc(x[2] || "votação")}${x[6] === "S" ? " em voto secreto" : ` por ${x[7]} a ${x[8]}`}. <a href="#/votacao/S/${i}">Como votou cada senador</a>`]); });
+      it.sort((a, b) => b[0].localeCompare(a[0]));
+      const w = S && S.semanas && S.semanas[0]; const contra = w ? (w.contra || []).slice().sort((a, b) => b[5] - a[5]).slice(0, 4) : [];
+      const dt = (d) => new Date(d + "T12:00").toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+      $("#ff-l").innerHTML = (it.length ? it.slice(0, 5).map(([d, h]) => `<div class="nw" style="font-size:.88rem"><span class="src2"><b>Votação nominal</b><span>${dt(d)}</span></span><span>${h}</span></div>`).join("") : '<p class="muted small">Sem votações nominais no Plenário nos últimos 10 dias.</p>')
+        + (contra.length ? `<div class="nw" style="font-size:.88rem"><span class="src2"><b>Votaram contra o próprio partido</b><span>semana de ${dt(w.seg)}</span></span><span>${contra.map((c) => `<a href="#/p/${c[0] === "C" ? "c" : "s"}/${c[1]}">${esc(c[2])}</a> (${esc(c[3])}-${esc(c[4])}) ${c[5]}×`).join(" · ")}</span></div>` : "")
+        + '<a class="btn o" style="justify-self:start;padding:8px 14px;text-decoration:none" href="#/semana">A semana no Congresso</a>';
+    } catch (e) { $("#ff-l").innerHTML = '<p class="muted small">Não consegui carregar agora.</p>'; }
+  };
+  xLista(); loadTend(); loadCongresso(); loadRegional(); loadVideos(); loadBsky(); feitoFiscaliza();
   await load();
-  AG_T = setInterval(() => { if (location.hash.startsWith("#/agora")) { load(); loadTend(); } else clearInterval(AG_T); }, 120000);
+  AG_T = setInterval(() => { if (location.hash.startsWith("#/agora")) { load(); loadTend(); loadCongresso(); } else clearInterval(AG_T); }, 120000);
 }

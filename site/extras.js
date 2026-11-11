@@ -141,12 +141,38 @@ async function mais() {
     <a href="#/acompanho"><i>★</i><span><b>Acompanhando</b><small>Os políticos e partidos que você escolheu acompanhar, num lugar só.</small></span><span>→</span></a>
     <a href="#/partidos"><i>⚑</i><span><b>Partidos</b><small>O que cada partido diz defender e como a bancada vota de verdade.</small></span><span>→</span></a>
     <a href="#/agora"><i>●</i><span><b>Acontece agora</b><small>As manchetes de política dos principais veículos do país, atualizadas ao vivo.</small></span><span>→</span></a>
+    <a href="#/doadores"><i>$</i><span><b>Quem financiou quem</b><small>Busque uma empresa, pessoa ou partido e veja quais eleitos receberam doações dele na campanha.</small></span><span>→</span></a>
     <a href="#/impostometro"><i>R$</i><span><b>Impostômetro</b><small>Quanto o governo federal arrecada a cada ano, por estado e por tipo de tributo.</small></span><span>→</span></a>
     <a href="#/congresso"><i>⚖</i><span><b>Pauta do Congresso</b><small>O calendário do Plenário da Câmara e do Senado e o resultado de cada votação.</small></span><span>→</span></a>
     <a href="distrital.html"><i>◎</i><span><b>Voto distrital</b><small>Como ficariam a Câmara e as Assembleias com o voto distrital misto no Brasil.</small></span><span>→</span></a>
     <a href="#/dicionario"><i>Aa</i><span><b>Dicionário político</b><small>Os termos da política explicados em palavras simples, com a fonte oficial.</small></span><span>→</span></a>
     <a href="#/governos"><i>↗</i><span><b>Governos lado a lado</b><small>Inflação, PIB, juros, dólar, desemprego e dívida pública, governo a governo.</small></span><span>→</span></a>
     <a href="#/stf"><i>§</i><span><b>Agenda do STF</b><small>A pauta de julgamentos do Supremo, processo a processo, e os seus 11 ministros.</small></span><span>→</span></a><a href="#/comparar"><i>⇄</i><span><b>Comparar</b><small>Coloque de 2 a 4 deputados ou senadores lado a lado.</small></span><span>→</span></a><a href="#" onclick="instalarApp();return false"><i>⬇</i><span><b>Instalar o app</b><small>Coloque o Fiscaliza Brasil na tela do celular, como um aplicativo.</small></span><span>→</span></a><a href="#/metodologia"><i>?</i><span><b>Como calculamos</b><small>De onde vem e como é feito cada número do Fiscaliza Brasil.</small></span><span>→</span></a><a href="#/privacidade"><i>🔒</i><span><b>Privacidade</b><small>Quais dados guardamos, por quê, e como pedir para apagar.</small></span><span>→</span></a><a href="#/colabore"><i>♥</i><span><b>Colabore</b><small>Doe pelo Pix ou mande ideias e correções para manter o portal no ar.</small></span><span>→</span></a></nav></section>`;
+}
+
+/* ---------------- Quem financiou quem (doadores de campanha, TSE) ---------------- */
+async function doadores(q0) {
+  setNav("mais"); q0 = q0 ? decodeURIComponent(q0) : "";
+  const nd = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+  M.innerHTML = `<section class="card glass"><span class="kick">Campanhas</span><h1>Quem financiou quem</h1><span class="fx"></span>
+     <p class="muted" style="margin:0">Digite o nome de uma empresa, pessoa ou partido e veja quais eleitos receberam doações dele na campanha (eleições de 2022, 2024 e 2026). Toque num político para abrir a ficha.</p>
+     <form id="dq" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><input id="dqi" type="search" value="${esc(q0)}" placeholder="Ex.: nome da empresa ou do doador" style="flex:1;min-width:200px;border:1px solid rgba(11,11,12,.18);border-radius:999px;padding:11px 16px;font:inherit;background:rgba(255,255,255,.85)"><button class="btn" type="submit">Buscar</button></form>
+     <p class="src">Fonte: TSE · prestação de contas dos candidatos (receitas). Entram as doações de R$ 1.000 ou mais para os eleitos que estão no site. O TSE publica o nome do doador; o CPF e o CNPJ não são mostrados aqui. Os valores de 2026 mudam até a prestação de contas final.</p></section>
+   <div id="dr"></div>`;
+  $("#dq").onsubmit = (e) => { e.preventDefault(); const v = $("#dqi").value.trim(); if (v.length >= 3) location.hash = "#/doadores/" + encodeURIComponent(v); };
+  if (q0.trim().length < 3) return;
+  const qq = nd(q0); const k = (qq.replace(/ /g, "") + "__").slice(0, 2);
+  $("#dr").innerHTML = '<section class="card glass"><p class="muted">Buscando…</p></section>';
+  const anos = ["2026", "2024", "2022"]; const res = await Promise.all(anos.map((a) => getJSON(`data/doa/${a}/${k}.json`).catch(() => [])));
+  const pal = qq.split(" ").filter((w) => w.length >= 2);
+  const achou = [];
+  res.forEach((L, i) => (L || []).forEach((d) => { const n = nd(d[0]); if (n === qq || pal.every((w) => n.includes(w))) achou.push({ ano: anos[i], d }); }));
+  achou.sort((a, b) => (nd(b.d[0]) === qq) - (nd(a.d[0]) === qq) || b.d[1] - a.d[1]);
+  if (!achou.length) { $("#dr").innerHTML = `<section class="card glass"><p class="muted" style="margin:0">Nenhuma doação de R$ 1.000 ou mais de "<b>${esc(q0)}</b>" para os eleitos que estão no site. Confira a grafia: a busca usa o nome como o TSE publica (começando pela primeira palavra do nome).</p></section>`; return; }
+  $("#dr").innerHTML = achou.slice(0, 30).map(({ ano, d }) => `<section class="card glass"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline"><h2 style="margin:0">${esc(title(d[0]))}</h2><span class="chip">Eleição de ${ano}</span></div>
+     <div class="kv"><div><div class="l">Doou</div><div class="v">${brl(d[1])}</div><div class="s">soma das doações de R$ 1.000 ou mais</div></div><div><div class="l">Eleitos que receberam</div><div class="v">${mil(d[2])}</div><div class="s">${d[2] > d[3].length ? `mostrando os ${d[3].length} maiores` : "todos aqui"}</div></div></div>
+     <div class="tl">${d[3].map((p) => `<div><span><a href="${p[3]}"><b>${esc(p[0])}</b></a><br><span class="small muted">${esc(p[1])} · ${esc(p[2])}</span></span><b>${brl(p[4])}</b>${bar(p[4], d[3][0][4])}</div>`).join("")}</div></section>`).join("")
+    + (achou.length > 30 ? `<p class="muted small">Mostrando 30 de ${achou.length} doadores com esse nome. Escreva o nome mais completo para filtrar.</p>` : "");
 }
 
 /* ---------------- Governos lado a lado ---------------- */

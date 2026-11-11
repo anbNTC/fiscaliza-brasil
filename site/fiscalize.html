@@ -202,7 +202,13 @@ function setNav(n){document.body.classList.remove("wide");document.querySelector
 function searchBox(id,ph){return `<label class="search">${ICON_S}<input id="${id}" type="search" placeholder="${esc(ph)}" autocomplete="off" aria-label="${esc(ph)}"></label><div class="res" id="${id}-r"></div>`}
 async function wireSearch(id,withPeople){
   const inp=$("#"+id),out=$("#"+id+"-r");await loadCID();if(withPeople)await loadBR();
-  inp.addEventListener("input",()=>{const q=norm(inp.value);out.innerHTML="";if(q.length<2)return;
+  inp.addEventListener("input",()=>{const cep=inp.value.replace(/\D/g,"");
+    if(/^\d{5}-?\d{0,3}$/.test(inp.value.trim())){if(cep.length<8){out.innerHTML='<p class="muted small" style="margin:4px 2px">Digite os 8 números do CEP.</p>';return}
+      out.innerHTML='<p class="muted small" style="margin:4px 2px">Procurando o CEP…</p>';
+      fetch("https://viacep.com.br/ws/"+cep+"/json/").then(r=>r.json()).then(j=>{if(j.erro||!j.localidade){out.innerHTML='<p class="muted small" style="margin:4px 2px">CEP não encontrado.</p>';return}
+        const c=CID.find(x=>x.uf===j.uf&&x.n===norm(j.localidade));
+        out.innerHTML=c?`<a href="#/cidade/${c.uf}/${c.ue}"><span><b>${esc(j.localidade)}</b> <span class="muted small">CEP ${cep.slice(0,5)}-${cep.slice(5)}${j.bairro?" · "+esc(j.bairro):""}</span></span><small>${c.uf}</small></a>`:`<p class="muted small" style="margin:4px 2px">${esc(j.localidade)} (${esc(j.uf)}) não está na lista de cidades.</p>`}).catch(()=>{out.innerHTML='<p class="muted small" style="margin:4px 2px">Não consegui consultar o CEP agora. Digite o nome da cidade.</p>'});return}
+    const q=norm(inp.value);out.innerHTML="";if(q.length<2)return;
     const res=[];
     for(const [uf,u] of Object.entries(BR?BR.ufs:{}))if(norm(u.nome).startsWith(q)||uf===q)res.push(`<a href="#/uf/${uf}"><span><b>${esc(u.nome)}</b></span><small>Estado</small></a>`);
     const hits=CID.filter(c=>c.n.startsWith(q)).concat(q.length>3?CID.filter(c=>!c.n.startsWith(q)&&c.n.includes(q)):[]).slice(0,8);
@@ -242,7 +248,7 @@ async function inicio(){
     <div class="steps"><div class="step"><i>1</i><span><b>Escolha o lugar</b><span class="muted small">A sua cidade ou o seu estado, pelo mapa ou pela busca.</span></span></div>
     <div class="step"><i>2</i><span><b>Veja quem está no cargo</b><span class="muted small">Vereadores, prefeito, deputados, senadores e governador.</span></span></div>
     <div class="step"><i>3</i><span><b>Abra a ficha</b><span class="muted small">Partido, patrimônio, eleições, votos, projetos e gastos.</span></span></div></div>
-    ${searchBox("q0","Digite sua cidade, estado ou um político")}
+    ${searchBox("q0","Cidade, CEP, estado ou político")}
     <div class="btns"><a class="btn" href="#/mapa">Começar pelo mapa</a><a class="btn o" href="#/me">Minha cidade</a></div></section>`;
   wireSearch("q0",true);
 }
@@ -316,6 +322,7 @@ async function cidade(uf,ue){
   const vs=m[3];const bp={};vs.forEach(p=>bp[p[2]]=(bp[p[2]]||0)+1);const parts=Object.entries(bp).sort((a,b)=>b[1]-a[1]);
   M.innerHTML=`<section class="card glass"><a class="muted small" href="#/uf/${uf}">← ${esc(u.nome)}</a><span class="kick">Cidade · ${uf}</span><h1>${esc(nome)}</h1><span class="fx"></span>
     <div class="btns"><button class="btn ${meu&&meu.ue===ue?"o":""}" id="sm">${meu&&meu.ue===ue?"✓ Esta é a minha cidade":"Esta é a minha cidade"}</button><a class="btn o" href="#/uf/${uf}">Deputados, senadores e governador de ${uf}</a></div></section>
+   <div id="agora"></div>
    <div class="row2"><section class="card glass"><h2>Prefeitura</h2>
      ${m[1]?lead(`#/p/m/${uf}/${ue}/p`,title(m[1][0]),cargo("pref",m[1][4])+" · "+partido(m[1]),ftse(m[1],2024,ue)):'<p class="muted">Sem dado do prefeito (eleição suplementar ou pendente).</p>'}
      ${m[2]?lead(`#/p/m/${uf}/${ue}/v`,title(m[2][0]),cargo("vp",m[2][4])+" · "+partido(m[2]),ftse(m[2],2024,ue)):""}
@@ -327,7 +334,7 @@ async function cidade(uf,ue){
    <section class="card glass"><h2>Vereadores <span class="muted small">(${vs.length})</span></h2><div class="people">${vs.map((p,i)=>pcard(`#/p/m/${uf}/${ue}/${i}`,title(p[0]),partido(p),ftse(p,2024,ue))).join("")}</div>
      <p class="src">Titulares eleitos em 2024. Suplentes que assumiram só aparecem onde a Câmara publica dados abertos (SAPL). Fonte: ${FONTE_TSE}</p></section>`;
   $("#sm").onclick=()=>{store.set("cidade",{uf,ue,nome});cidade(uf,ue)};
-  votadosCidade(uf,ue,nome);camCidade(uf,ue).then(()=>emendasCidade(uf,nome));
+  agoraCidade(uf,ue,nome,m);votadosCidade(uf,ue,nome);camCidade(uf,ue).then(()=>emendasCidade(uf,nome));
 }
 /* Mais votados na cidade (TSE, votação por município): deputados federais, estaduais e senadores, 2022 e 2026 */
 async function votadosCidade(uf,ue,nome,ano,cg){
@@ -416,10 +423,30 @@ async function emendasEstCidade(uf,nome){
    <p class="src">Valor empenhado (reservado no orçamento do estado para pagar). Fonte: <a href="${esc(EE.url)}" target="_blank" rel="noopener">${esc(EE.fonte)}</a>.</p>`;
   M.append(sec);
 }
+/* "Acontecendo agora": o que os representantes desta cidade fizeram nas últimas semanas, sem precisar saber o nome de ninguém. */
+async function agoraCidade(uf,ue,nome,m){
+  const box=$("#agora");if(!box)return;const lim=new Date(Date.now()-30*864e5).toISOString().slice(0,10),dt=d=>d?new Date(d+"T12:00").toLocaleDateString("pt-BR"):"";
+  const [S,VCa,VSa,C,Hh]=await Promise.all([getJSON("data/semana.json").catch(()=>null),getJSON("data/camara_votacoes.json").catch(()=>[]),getJSON("data/senado_votacoes.json").catch(()=>[]),
+    getJSON("data/cam/"+ue+".json").catch(()=>null),getJSON("data/gab/hist/m"+ue+".json").catch(()=>null)]);
+  if(!document.body.contains(box))return;
+  const it=[];
+  if(S)for(const w of S.semanas.slice(0,5)){
+    for(const i of w.c||[]){const x=VCa[i];if(x&&x[1]>=lim&&!/requerimento/i.test(x[7]||""))it.push([x[1],`<b>Câmara votou ${esc(x[5]||"")}</b>: ${x[2]==="1"?"aprovada":"rejeitada"} por ${x[3]} a ${x[4]}. <a href="#/votacao/C/${i}/${uf}">Como votou cada deputado ${deUF(BR.ufs[uf].nome)}</a>`])}
+    for(const i of w.s||[]){const x=VSa[i];if(x&&x[1]>=lim&&!/requerimento/i.test(x[4]||""))it.push([x[1],`<b>Senado votou ${esc(x[2]||"")}</b>: ${x[5]==="A"?"aprovada":"rejeitada"}${x[6]==="S"?" (voto secreto)":` por ${x[7]} a ${x[8]}`}. <a href="#/votacao/S/${i}/${uf}">Como votaram os senadores ${deUF(BR.ufs[uf].nome)}</a>`])}
+    for(const c of (w.contra||[]))if(c[4]===uf&&w.seg>=lim.slice(0,8)+"01")it.push([w.seg,`<a href="#/p/${c[0]==="C"?"c":"s"}/${c[1]}">${esc(c[2])}</a> (${esc(c[3])}) votou contra o próprio partido ${c[5]} vez${c[5]>1?"es":""} na semana de ${dt(w.seg)}`]);
+  }
+  if(C&&C.dep)for(const [k,d] of Object.entries(C.dep))for(const p of (d.props||[]))if(p[2]&&p[2]>=lim){const v=m[3][+k];it.push([p[2],`<b>${esc(p[0])}</b> de ${v?`<a href="#/p/m/${uf}/${ue}/${k}">${esc(title(v[0]))}</a>`:esc(d.nome||"vereador")}: ${esc(String(p[1]).slice(0,160))}`])}
+  if(Hh&&Hh.ev)for(const [k,L] of Object.entries(Hh.ev))for(const e of L)if(e[0]>=lim){const quem=k==="p"?"do prefeito":k==="v"?"do vice":m[3][+k]?"de "+title(m[3][+k][0]):"";if(quem)it.push([e[0],`${e[1]==="+"?"Entrou":"Saiu"} no gabinete ${esc(quem)}: ${esc(e[2])}${e[3]?" ("+esc(e[3])+")":""}`])}
+  it.sort((a,b)=>b[0].localeCompare(a[0]));
+  box.innerHTML=`<section class="card glass"><h2>Acontecendo agora em ${esc(nome)}</h2>
+    <p class="muted small" style="margin:0 0 8px">O que os representantes de quem mora aqui fizeram nos últimos 30 dias: votações no Congresso, projetos dos vereadores e mudanças nos gabinetes. Sem precisar saber o nome de ninguém.</p>
+    ${it.length?`<div class="tl">${it.slice(0,14).map(([d,h])=>`<div><span>${h}</span><b class="small muted">${dt(d)}</b></div>`).join("")}</div>`:'<p class="muted">Nada registrado nos últimos 30 dias para esta cidade.</p>'}
+    <p class="src">Votações nominais do Plenário (Câmara e Senado, Dados Abertos); projetos de vereadores onde a Câmara publica em formato aberto; gabinetes onde a Prefeitura e a Câmara publicam a lista de servidores.</p></section>`;
+}
 async function me(){
   setNav("me");const c=store.get("cidade");
   if(c)return location.replace("#/cidade/"+c.uf+"/"+c.ue);
-  M.innerHTML=`<section class="card glass"><span class="kick">Me representa</span><h1>Qual é a sua cidade?</h1><span class="fx"></span><p class="muted" style="margin:0">Escolha uma vez e esta aba passa a abrir direto nela, com prefeito, vereadores e os representantes do seu estado.</p>${searchBox("q2","Digite sua cidade")}</section>`;
+  M.innerHTML=`<section class="card glass"><span class="kick">Me representa</span><h1>Qual é a sua cidade?</h1><span class="fx"></span><p class="muted" style="margin:0">Digite o nome da cidade ou o seu CEP. Escolha uma vez e esta aba passa a abrir direto nela, com o que está acontecendo, o prefeito, os vereadores e os representantes do seu estado.</p>${searchBox("q2","Cidade ou CEP")}</section>`;
   wireSearch("q2",false);
 }
 async function quem(){

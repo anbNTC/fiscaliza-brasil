@@ -102,6 +102,7 @@ def uma(c):
         cg = (row.get(col(c["cargo"])) or "").strip() or ((row.get(col(c["cargo2"])) or "").strip() if c.get("cargo2") else "")
         if re.match(r"^\s*(VICE[\s-]*)?PREFEIT", cg, re.I): continue
         k = "v" if re.search(r"VICE", lot, re.I) else "p"
+        if re.match(r"^\s*SERVIDOR(A)?\s+P[UÚ]BLIC", row.get(col(c["nome"])) or "", re.I): continue   # nome protegido por lei (ex.: segurança): não dá para listar
         lin = [(row.get(col(c["nome"])) or "").strip().title(), (cg.capitalize() + (" · " + lot.split(" · ")[-1].title() if " · " in lot else "")), "", round(num(row.get(col(c["valor"]))), 2)]
         if c.get("liq"): lin.append(round(num(row.get(col(c["liq"]))), 2))
         out[k].append((pr, lin))
@@ -115,7 +116,8 @@ def uma(c):
         out[k] = list(jun.values())
     for v in out.values(): v.sort(key=lambda r: -r[3])
     out = {k: v for k, v in out.items() if v}
-    comp = re.search(r"(\d{2})[-_](20\d\d)", r.get("url") or ""); comp = f"{comp.group(1)}/{comp.group(2)}" if comp else ""
+    comp = re.search(r"(\d{2})[-_]?(20\d\d)", (r.get("url") or "").rsplit("/", 1)[-1]) or re.search(r"(\d{2})[-_/](20\d\d)", (r.get("name") or "") + " " + (r.get("description") or ""))
+    comp = f"{comp.group(1)}/{comp.group(2)}" if comp and 1 <= int(comp.group(1)) <= 12 else ""
     if topo != (0, 0): comp = f"{topo[1]:02d}/{topo[0]}"
     if out:
         grava(c["ue"], {"_tipo": "pref", "dep": out, "fonte": f"Prefeitura de {c['cidade']} · dados abertos (folha dos servidores)", "url": c["pagina"], "competencia": comp,

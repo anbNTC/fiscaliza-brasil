@@ -49,10 +49,49 @@ const bar = (v, max) => `<span class="hb"><i style="width:${max ? Math.max(2, (v
   dialog.rep{border:0;border-radius:24px;padding:0;max-width:min(480px,calc(100% - 32px));width:100%;background:transparent}
   dialog.rep::backdrop{background:rgba(11,11,12,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
   dialog.rep form{display:grid;gap:10px;padding:20px;border-radius:24px}
-  dialog.rep textarea,dialog.rep input{width:100%;padding:12px;border-radius:14px;border:1px solid rgba(11,11,12,.14);background:rgba(255,255,255,.9);font:inherit}
+  dialog.rep textarea,dialog.rep input:not([type=checkbox]),dialog.rep select{width:100%;padding:12px;border-radius:14px;border:1px solid rgba(11,11,12,.14);background:rgba(255,255,255,.9);font:inherit}
   .lst{display:grid;gap:8px}`;
   document.head.appendChild(s);
 })();
+
+/* -------- direito de resposta: o político ou a equipe envia a sua versão; aparece na ficha depois de revisada -------- */
+function direitoResposta(ref, ctx) {
+  let d = document.getElementById("dresdlg");
+  if (!d) { d = document.createElement("dialog"); d.id = "dresdlg"; d.className = "rep"; document.body.appendChild(d); }
+  d.innerHTML = `<form method="dialog" class="glass" style="max-height:88vh;overflow:auto"><h2>Direito de resposta</h2>
+    <p class="muted small" style="margin:0">Sobre: <b>${esc(ctx)}</b>. Se você é este político ou fala em nome dele e quer apresentar a sua versão sobre algum dado desta página, escreva aqui. Depois de conferida, a resposta aparece nesta ficha, com o nome de quem enviou. Se um dado estiver errado, nós corrigimos.</p>
+    <input id="drn" type="text" required maxlength="200" placeholder="Seu nome">
+    <select id="drr" required><option value="">Quem está enviando?</option><option>O próprio político</option><option>Assessoria ou gabinete</option><option>Advogado(a)</option><option>Partido</option><option>Outro</option></select>
+    <input id="drc" type="email" required maxlength="200" placeholder="E-mail para contato (não é publicado)">
+    <input id="drs" type="text" maxlength="200" placeholder="Sobre qual dado? (ex.: voto na PEC 45, gastos de gabinete)">
+    <textarea id="drt" rows="6" required minlength="20" maxlength="3000" placeholder="A sua resposta"></textarea>
+    <input id="drf" type="url" maxlength="500" placeholder="Link para documento ou fonte (opcional)">
+    <label class="small" style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" id="drok" required style="margin-top:3px"> Autorizo publicar esta resposta e o meu nome nesta página.</label>
+    <div class="err small" id="dre" style="color:var(--verm);min-height:18px"></div>
+    <div class="btns"><button class="btn" id="drsend" value="send">Enviar</button><button class="btn o" value="cancel" formnovalidate>Cancelar</button></div></form>`;
+  d.querySelector("form").onsubmit = async (e) => {
+    if (e.submitter && e.submitter.value === "cancel") return;
+    e.preventDefault(); const v = (id) => d.querySelector(id).value.trim(); const b = d.querySelector("#drsend");
+    if (v("#drt").length < 20) { d.querySelector("#dre").textContent = "Escreva pelo menos 20 caracteres."; return; }
+    const sb = sbClient(); b.disabled = true;
+    try {
+      if (!sb) throw new Error("Envio indisponível no momento.");
+      const r = await sb.from("respostas").insert({ ref, politico: ctx.slice(0, 200), remetente: v("#drn"), relacao: v("#drr"), contato: v("#drc"), sobre: v("#drs") || null, texto: v("#drt"), fonte: v("#drf") || null });
+      if (r.error) throw r.error;
+      d.close(); toast2("Recebemos a sua resposta. Vamos conferir e publicar.");
+    } catch (err) { d.querySelector("#dre").textContent = "Não foi possível enviar: " + (err.message || err); b.disabled = false; }
+  };
+  d.showModal();
+}
+async function respostasPublicadas(ref, nome) {
+  const box = document.getElementById("dres"); const sb = sbClient(); if (!box || !sb) return;
+  try {
+    const r = await sb.rpc("respostas_publicadas", { p_ref: ref }); if (r.error || !r.data || !r.data.length) return;
+    box.innerHTML = `<section class="card glass" style="border:1px solid rgba(31,79,191,.35)"><span class="kick">Direito de resposta</span><h2 style="margin:0">O que diz ${esc(nome)}</h2>
+      ${r.data.map((x) => `<div style="display:grid;gap:6px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.8);border:1px solid rgba(11,11,12,.08)">${x.sobre ? `<b>Sobre: ${esc(x.sobre)}</b>` : ""}<p style="margin:0;white-space:pre-line">${esc(x.texto)}</p>${x.fonte && /^https?:\/\//.test(x.fonte) ? `<a class="small" href="${esc(x.fonte)}" target="_blank" rel="noopener nofollow">Documento enviado</a>` : ""}<span class="small muted">Enviado por ${esc(x.remetente)}${x.relacao ? " (" + esc(x.relacao) + ")" : ""} · publicado em ${new Date(x.publicado_em).toLocaleDateString("pt-BR")}</span></div>`).join("")}
+      <p class="src">Texto de responsabilidade de quem enviou, publicado como recebido. Os dados da ficha continuam sendo os das fontes oficiais.</p></section>`;
+  } catch (e) {}
+}
 
 /* -------- reportar erro -------- */
 let SBC = null;
@@ -325,9 +364,13 @@ async function cracha(parts) {
   M.innerHTML = `<section class="card glass"><a class="muted small" href="${voltar}">← Voltar</a>
     <div class="hero">${av(o.nome, o.foto, "lg")}<div style="display:grid;gap:6px"><span class="kick">${esc(o.cargo)}</span><h1>${esc(o.nome)}</h1><div class="chips"><span class="chip">${esc(o.part)}</span><span class="chip">${esc(o.uf)}</span>${chips.join("")}</div></div></div>
     <div class="btns">${o.link ? `<a class="btn o" href="${o.link}" target="_blank" rel="noopener">${o.linkN}</a>` : ""}<a class="btn o" href="https://wa.me/?text=${share}" target="_blank" rel="noopener">WhatsApp</a>${o.plano ? `<a class="btn o" href="${o.plano}" target="_blank" rel="noopener">Plano de governo (TSE)</a>` : ""}<button class="btn o" id="acf" type="button">☆ Acompanhar</button>${casa ? '<button class="btn o" id="cmpf" type="button">+ Comparar</button>' : ""}<button class="btn o" id="rep">Reportar erro</button></div></section>
+   <div id="dres"></div>
    <section class="card glass" style="padding:8px"><div class="tabs2" role="tablist">${tabs.map(([k, l], i) => `<button role="tab" data-k="${k}" aria-selected="${i === 0}">${l}</button>`).join("")}</div></section>
    <section class="card glass" id="tb"></section>`;
   $("#rep").onclick = () => reportar(o.nome + " · " + o.cargo);
+  $("#rep").insertAdjacentHTML("afterend", '<button class="btn o" id="dresb" type="button">Direito de resposta</button>');
+  $("#dresb").onclick = () => direitoResposta(parts.join("/"), o.nome + " · " + o.cargo);
+  respostasPublicadas(parts.join("/"), o.nome);
   if (casa && window.FBCmp) FBCmp.botao($("#cmpf"), { ref: parts.join("/"), nome: o.nome, cargo: o.cargo, foto: o.foto || "", part: o.part || "", casa, uf: o.uf || "", id: parts[1] || "" });
   if (window.FBAcomp) FBAcomp.botao($("#acf"), { tipo: "p", ref: parts.join("/"), nome: o.nome, cargo: o.cargo, foto: o.foto || "", part: o.part || "", casa: casa || "", uf: o.uf || "", id: parts[1] || "" });
   const tb = $("#tb");

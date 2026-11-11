@@ -228,3 +228,35 @@ grant execute on function public.sair_resumo(uuid) to anon, authenticated;
 -- 14) "Avise-me quando": temas (palavras) acompanhados, que entram no alerta diário com as manchetes do dia
 alter table public.acompanha drop constraint if exists acompanha_tipo_check;
 alter table public.acompanha add constraint acompanha_tipo_check check (tipo in ('p', 'partido', 'tema'));
+
+-- 15) Direito de resposta: o político ou a equipe dele envia a sua versão sobre um dado da ficha.
+--     Entra como pendente; só aparece no site depois que o admin publica no painel.
+create table if not exists public.respostas (
+  id uuid primary key default gen_random_uuid(),
+  ref text not null check (char_length(ref) between 3 and 120),          -- endereço da ficha, ex.: c/178927
+  politico text check (char_length(politico) <= 200),
+  remetente text not null check (char_length(remetente) between 3 and 200),
+  relacao text check (char_length(relacao) <= 80),                       -- o próprio, assessoria, advogado...
+  contato text not null check (char_length(contato) between 5 and 200),  -- e-mail (não é publicado)
+  sobre text check (char_length(sobre) <= 200),                          -- qual dado
+  texto text not null check (char_length(texto) between 20 and 3000),
+  fonte text check (char_length(fonte) <= 500),
+  publicado boolean not null default false,
+  publicado_em timestamptz,
+  created_at timestamptz not null default now()
+);
+alter table public.respostas enable row level security;
+drop policy if exists "público envia resposta" on public.respostas;
+create policy "público envia resposta" on public.respostas for insert to anon, authenticated with check (not publicado and publicado_em is null);
+drop policy if exists "admin lê respostas" on public.respostas;
+create policy "admin lê respostas" on public.respostas for select using (public.is_admin());
+drop policy if exists "admin altera respostas" on public.respostas;
+create policy "admin altera respostas" on public.respostas for update using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "admin apaga respostas" on public.respostas;
+create policy "admin apaga respostas" on public.respostas for delete using (public.is_admin());
+-- o site lê só as respostas publicadas, sem o contato de quem enviou
+create or replace function public.respostas_publicadas(p_ref text) returns table (remetente text, relacao text, sobre text, texto text, fonte text, publicado_em timestamptz)
+language sql security definer set search_path = public stable as $$
+  select remetente, relacao, sobre, texto, fonte, publicado_em from public.respostas where ref = p_ref and publicado order by publicado_em desc limit 10
+$$;
+grant execute on function public.respostas_publicadas(text) to anon, authenticated;

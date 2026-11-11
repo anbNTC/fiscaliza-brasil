@@ -133,6 +133,7 @@ const SECTIONS = [
   { k: "pauta", n: "Pautas para vídeos", c: "Os fatos mais fortes da semana, com link para o card", h: "#/pautas" },
   { k: "links", n: "Links da bio", c: "Botões da página de links do Instagram", h: "#/links" },
   { k: "rep", n: "Reportes de erro", c: "Correções enviadas pelo público do site", h: "#/reportes" },
+  { k: "rep", n: "Direito de resposta", c: "Respostas de políticos e equipes: revisar e publicar na ficha", h: "#/respostas" },
   { k: "x", n: "Lateral do X", c: "Lista do X que aparece no ACONTECE AGORA", h: "#/x" },
   { k: "pix", n: "Colabore (Pix)", c: "Chave Pix e QR code da página de doações", h: "#/pix" },
   { k: "site", n: "Ver o site", c: "Abre a página inicial pública do site", h: L.go("/"), ext: true }
@@ -151,6 +152,7 @@ async function route() {
   const h = location.hash || "#/";
   if (h === "#/links") return linksUI();
   if (h === "#/reportes") return reportesUI();
+  if (h === "#/respostas") return respostasUI();
   if (h === "#/pautas") return pautasUI();
   if (h === "#/x") return xUI();
   if (h === "#/pix") return pixUI();
@@ -316,6 +318,33 @@ async function reportesUI() {
       <button class="btn o" data-r="${x.id}">${x.resolvido ? "Reabrir" : "Marcar como resolvido"}</button><button class="lnk" data-d="${x.id}">Apagar</button></div></section>`).join("") : '<p class="empty">Nenhum reporte.</p>';
     document.querySelectorAll("[data-r]").forEach((b) => b.onclick = async () => { const x = rows.find((y) => y.id === b.dataset.r); const e = (await sb.from("reportes").update({ resolvido: !x.resolvido }).eq("id", x.id)).error; if (e) return alert(e.message); x.resolvido = !x.resolvido; draw(); });
     document.querySelectorAll("[data-d]").forEach((b) => b.onclick = async () => { if (!confirm("Apagar este reporte?")) return; const e = (await sb.from("reportes").delete().in("id", [b.dataset.d])).error; if (e) return alert(e.message); rows = rows.filter((y) => y.id !== b.dataset.d); draw(); });
+  };
+  document.querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { ver = b.dataset.f; draw(); });
+  draw();
+}
+
+async function respostasUI() {
+  document.title = "Direito de resposta · Painel";
+  APP.innerHTML = `<div class="center"><span class="kick">Carregando…</span></div>`;
+  const r = await sb.from("respostas").select("*").order("created_at", { ascending: false });
+  if (r.error) { APP.innerHTML = `<div class="center"><div class="cfgwarn glass"><b>Não consegui ler as respostas.</b><p style="margin:0">Rode no Supabase a parte 15 do <code>schema.sql</code> (Direito de resposta).</p><small class="err">${esc(r.error.message)}</small><a class="lnk" href="#/">← Início</a></div></div>`; return; }
+  let rows = r.data || [], ver = "pend";
+  APP.innerHTML = `<div class="bar glass"><a class="lnk" href="#/">← Início</a><div class="st" id="st"></div><div style="display:flex;gap:6px"><button class="btn" data-f="pend">Para revisar</button><button class="btn o" data-f="pub">Publicadas</button><button class="btn o" data-f="todos">Todas</button></div></div>
+    <div style="max-width:820px;margin:0 auto;padding:20px 16px 80px;display:grid;gap:12px" id="rl"></div>`;
+  const draw = () => {
+    document.querySelectorAll("[data-f]").forEach((b) => b.className = "btn" + (b.dataset.f === ver ? "" : " o"));
+    const f = rows.filter((x) => ver === "todos" || (ver === "pub" ? x.publicado : !x.publicado));
+    $("#st").textContent = rows.filter((x) => !x.publicado).length + " para revisar";
+    $("#rl").innerHTML = f.length ? f.map((x) => `<section class="card glass"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><b>${esc(x.politico || x.ref)}</b><small style="color:var(--muted)">${new Date(x.created_at).toLocaleString("pt-BR")}${x.publicado ? " · publicada" : ""}</small></div>
+      ${x.sobre ? `<small>Sobre: <b>${esc(x.sobre)}</b></small>` : ""}<p style="margin:0;white-space:pre-wrap">${esc(x.texto)}</p>
+      ${x.fonte ? `<small>Documento: <a class="lnk" href="${esc(x.fonte)}" target="_blank" rel="noopener nofollow">${esc(x.fonte)}</a></small>` : ""}
+      <small>Enviado por <b>${esc(x.remetente)}</b>${x.relacao ? " (" + esc(x.relacao) + ")" : ""} · contato: <b>${esc(x.contato)}</b></small>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><a class="lnk" href="${L.go("/fiscalize#/p/" + x.ref)}" target="_blank" rel="noopener">Abrir a ficha</a><span style="flex:1"></span>
+      <button class="btn${x.publicado ? " o" : ""}" data-p="${x.id}">${x.publicado ? "Tirar do site" : "Publicar na ficha"}</button><button class="lnk" data-d="${x.id}">Apagar</button></div></section>`).join("") : '<p class="empty">Nenhuma resposta.</p>';
+    document.querySelectorAll("[data-p]").forEach((b) => b.onclick = async () => { const x = rows.find((y) => y.id === b.dataset.p); const pub = !x.publicado;
+      if (pub && !confirm("Publicar esta resposta na ficha? Ela fica visível para todos, com o nome de quem enviou (o contato não aparece).")) return;
+      const e = (await sb.from("respostas").update({ publicado: pub, publicado_em: pub ? new Date().toISOString() : null }).eq("id", x.id)).error; if (e) return alert(e.message); x.publicado = pub; draw(); });
+    document.querySelectorAll("[data-d]").forEach((b) => b.onclick = async () => { if (!confirm("Apagar esta resposta?")) return; const e = (await sb.from("respostas").delete().in("id", [b.dataset.d])).error; if (e) return alert(e.message); rows = rows.filter((y) => y.id !== b.dataset.d); draw(); });
   };
   document.querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { ver = b.dataset.f; draw(); });
   draw();

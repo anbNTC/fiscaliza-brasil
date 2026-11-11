@@ -169,7 +169,7 @@ jobs:
       - name: Câmara · verba de gabinete de cada deputado
         id: verba
         continue-on-error: true
-        timeout-minutes: 40
+        timeout-minutes: 75
         run: python coleta/camara_verba_gabinete.py 2>&1 | tail -4
 
       - name: Emendas de deputados estaduais (PE, MG, GO)

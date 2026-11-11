@@ -27,6 +27,13 @@ def extras(t):
     vg = re.search(r'Viagens em missão oficial.*?</h3>\s*<(?:a|span)[^>]*>\s*(\d+)\s*<', t, re.S)
     return {"imovel": im, "auxilio": au[:160], "viagens": int(vg.group(1)) if vg else None}
 
+def presenca(t):
+    """Presença em Plenário no ano da página: [presenças, ausências justificadas, ausências não justificadas] (em dias)."""
+    m = re.search(r'presenca-plenario/\d{4}"[\s\S]*?</section>', t)
+    if not m: return None
+    v = [int(x) for x in re.findall(r'presencas__qtd">\s*(\d+)\s*dias?', m.group(0))]
+    return v[:3] if len(v) >= 3 else None
+
 def missoes(idd):
     """Viagens em missão oficial: período, assunto, destino, passagens e diárias (página pública de cada deputado)."""
     for k in range(3):
@@ -66,15 +73,25 @@ def main():
     try: X = json.load(open(ARQ))
     except Exception: X = {"dep": {}}
     lim = X.get("limite"); n = 0; vazios = 0
-    VG = D / "gab" / "viagens.json"
+    VG = D / "gab" / "viagens.json"; PA = D / "gab" / "presenca.json"
+    try: PR = json.load(open(PA))["dep"]
+    except Exception: PR = {}
     try: Y = json.load(open(VG))
     except Exception: Y = {"dep": {}}
     for idd in ids:
         reg = X["dep"].setdefault(str(idd), {})
         for ano in ANOS:
-            if str(ano) in reg and ano not in REFAZ: continue
-            pag = []; m, l = um(idd, ano, pag if ano == HOJE.year else None); time.sleep(0.4)
+            if str(ano) in reg and ano not in REFAZ:
+                if str(ano) not in PR.get(str(idd), {}):
+                    pag = []; um(idd, ano, pag); time.sleep(0.4)
+                    pr = presenca(pag[0]) if pag else None
+                    if pr: PR.setdefault(str(idd), {})[str(ano)] = pr
+                continue
+            pag = []; m, l = um(idd, ano, pag); time.sleep(0.4)
             if pag:
+                pr = presenca(pag[0])
+                if pr: PR.setdefault(str(idd), {})[str(ano)] = pr
+            if pag and ano == HOJE.year:
                 ex = extras(pag[0]); y = Y["dep"].setdefault(str(idd), {"v": []}); y.update({"imovel": ex["imovel"], "auxilio": ex["auxilio"]})
                 if ex["viagens"]:
                     ms = missoes(idd); time.sleep(0.4)
@@ -91,6 +108,22 @@ def main():
     json.dump(X, open(ARQ, "w"), ensure_ascii=False, separators=(",", ":"))
     Y.update({"fonte": "Câmara dos Deputados · página oficial de cada deputado (benefícios e viagens em missão oficial)", "gerado": HOJE.isoformat()})
     json.dump(Y, open(VG, "w"), ensure_ascii=False, separators=(",", ":"))
+    json.dump({"fonte": "Câmara dos Deputados · página oficial de cada deputado (presença em Plenário)", "gerado": HOJE.isoformat(), "dep": PR}, open(PA, "w"), ensure_ascii=False, separators=(",", ":"))
+    # presença nas sessões (desde 2023, somando os anos) vai para a ficha de cada deputado: sess = [dias presente, dias com sessão deliberativa]
+    porUF = {}
+    for d in BR["dep"]: porUF.setdefault(d[3], []).append(str(d[0]))
+    atual = 0
+    for uf, L in porUF.items():
+        f = D / "c" / f"{uf}.json"
+        try: C = json.load(open(f))
+        except Exception: continue
+        for k in L:
+            a = PR.get(k)
+            if not a or k not in C: continue
+            p = sum(v[0] for v in a.values()); tot = sum(sum(v) for v in a.values())
+            if tot: C[k]["sess"] = [p, tot]; atual += 1
+        json.dump(C, open(f, "w"), ensure_ascii=False, separators=(",", ":"))
+    print("presença atualizada:", atual)
     print(json.dumps({"deputados": len(X["dep"]), "anos_lidos": n, "sem_dado": vazios, "limite": lim}))
 
 if __name__ == "__main__":

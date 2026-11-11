@@ -22,15 +22,23 @@ MASC = {"malexandre-leprevost", "mluciano-carvalho", "edr-leonidas", "ejairo-tam
 NOMES = {"emarcia-huculak": "Márcia Huculak"}
 slug = lambda s: unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower()
 
-def federais():
-    out = []
-    j = requests.get("https://dadosabertos.camara.leg.br/api/v2/deputados?siglaUf=PR&itens=100", headers={**UA, "accept": "application/json"}, timeout=60).json()
-    for d in j["dados"]:
-        time.sleep(0.4)
-        x = requests.get(f"https://dadosabertos.camara.leg.br/api/v2/deputados/{d['id']}", headers={**UA, "accept": "application/json"}, timeout=60).json()["dados"]
-        st = x.get("ultimoStatus") or {}; em = (st.get("gabinete") or {}).get("email") or st.get("email") or ""
-        out.append({"k": f"c{d['id']}", "nome": st.get("nomeEleitoral") or d["nome"], "sexo": x.get("sexo") or "", "cargo": "Deputado(a) Federal",
-                    "email": em, "link": f"{SITE}#/p/c/{d['id']}"})
+def federais(todas=False, feitos=None, lim=10**6):
+    """Deputados federais do PR ou de todo o Brasil (o PR vem primeiro). Só busca o detalhe (gênero e e-mail) de quem ainda vai receber."""
+    feitos = feitos or {}; out = []; H = {**UA, "accept": "application/json"}
+    j = requests.get("https://dadosabertos.camara.leg.br/api/v2/deputados?itens=1000&ordem=ASC&ordenarPor=nome" + ("" if todas else "&siglaUf=PR"), headers=H, timeout=60).json()
+    L = sorted(j["dados"], key=lambda d: (d.get("siglaUf") != "PR", d.get("siglaUf") or "", d.get("nome") or ""))
+    novos = 0
+    for d in L:
+        k = f"c{d['id']}"; p = {"k": k, "nome": d["nome"], "sexo": "", "cargo": "Deputado(a) Federal", "email": d.get("email") or "", "link": f"{SITE}#/p/c/{d['id']}", "uf": d.get("siglaUf")}
+        if k not in feitos and novos < lim:
+            time.sleep(0.4)
+            try:
+                x = requests.get(f"https://dadosabertos.camara.leg.br/api/v2/deputados/{d['id']}", headers=H, timeout=60).json()["dados"]
+                st = x.get("ultimoStatus") or {}; p["email"] = (st.get("gabinete") or {}).get("email") or st.get("email") or p["email"]
+                p["nome"] = st.get("nomeEleitoral") or p["nome"]; p["sexo"] = x.get("sexo") or ""
+            except Exception as e: print("detalhe", d["id"], repr(e)[:80])
+            if p["email"] and p["sexo"]: novos += 1
+        out.append(p)
     return out
 
 def estaduais():
@@ -181,7 +189,8 @@ def main():
     modo = os.environ.get("MODO", "lista"); grupos = os.environ.get("GRUPOS", "m e c").split(); lim = int(os.environ.get("LIMITE", "95"))
     resp = os.environ.get("RESPOSTA", "")
     L = []
-    for g, f in (("m", vereadores), ("e", estaduais), ("c", federais)):
+    feitos0 = json.load(open(REG)) if REG.exists() else {}
+    for g, f in (("m", vereadores), ("e", estaduais), ("c", federais), ("cBR", lambda: federais(True, feitos0, lim))):
         if g not in grupos: continue
         try: x = f(); L += x; print(f"{g}: {len(x)} pessoas, {sum(1 for p in x if p['email'])} com e-mail", flush=True)
         except Exception as e: print(g, "falhou:", repr(e)[:200], flush=True)
@@ -204,7 +213,7 @@ def main():
     n = 0
     for p in L:
         if n >= lim: print("limite desta execução atingido; o resto vai na próxima"); break
-        if not p["email"] or p["k"] in feitos: continue
+        if not p["email"] or p["k"] in feitos or (p["k"][0] == "c" and not p["sexo"]): continue
         if envia(p["email"], p, resp): feitos[p["k"]] = datetime.date.today().isoformat(); n += 1; print("enviado", p["k"])
         time.sleep(0.7)
     json.dump(feitos, open(REG, "w"), ensure_ascii=False, indent=0)

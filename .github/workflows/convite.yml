@@ -1,11 +1,15 @@
-# Convite por e-mail para parlamentares divulgarem o portal. Só roda quando alguém dispara.
+# Convite por e-mail para parlamentares divulgarem o portal. Roda todo dia (deputados federais de todo o Brasil, em lotes) ou quando alguém dispara.
 # modo: lista (não envia), teste (1 exemplo de cada grupo para o ALERTA_EMAIL), envia (de verdade, até 95 por execução).
 name: Convite a parlamentares
 on:
+  # todo dia às 10h13 (Brasília): mais um lote de convites aos deputados federais de todo o Brasil, até 85 por dia
+  # (o plano grátis do Resend permite 100 por dia; sobra espaço para o alerta diário). Quando todos tiverem recebido, não envia mais nada.
+  schedule:
+    - cron: "13 13 * * *"
   workflow_dispatch:
     inputs:
       modo: { description: "lista, teste ou envia", required: true, default: "lista" }
-      grupos: { description: "m = vereadores de Curitiba, e = deputados estaduais PR, c = deputados federais PR", required: false, default: "m e c" }
+      grupos: { description: "m = vereadores de Curitiba, e = deputados estaduais PR, c = deputados federais PR, cBR = deputados federais de todo o Brasil", required: false, default: "m e c" }
 concurrency: { group: convite, cancel-in-progress: false }
 permissions: { contents: write }
 jobs:
@@ -22,13 +26,14 @@ jobs:
           T: "${{ secrets.CLOUDFLARE_API_TOKEN }}"
           RESEND_API_KEY: "${{ secrets.RESEND_API_KEY }}"
           RESPOSTA: "${{ secrets.ALERTA_EMAIL }}"
-          MODO: "${{ inputs.modo }}"
-          GRUPOS: "${{ inputs.grupos }}"
+          MODO: "${{ inputs.modo || 'envia' }}"
+          GRUPOS: "${{ inputs.grupos || 'cBR' }}"
+          LIMITE: "${{ github.event_name == 'schedule' && '85' || '95' }}"
         run: |
           export CHAVE_BR=$(printf '%s' "$T-fiscaliza-br" | sha256sum | cut -c1-48); echo "::add-mask::$CHAVE_BR"
           python tools/convite_parlamentares.py
       - name: Grava quem já recebeu
-        if: ${{ inputs.modo == 'envia' }}
+        if: ${{ inputs.modo == 'envia' || github.event_name == 'schedule' }}
         run: |
           git config user.name "Fiscaliza Brasil (robô)"; git config user.email "robo@fiscalizaja.com.br"
           git add tools/convite_enviados.json

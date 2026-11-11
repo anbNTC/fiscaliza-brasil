@@ -43,6 +43,7 @@ JORN = {"AC": ["ac24horas.com"], "AL": ["tnh1.com.br", "cadaminuto.com.br"], "AP
         "RJ": ["odia.ig.com.br"], "RN": ["tribunadonorte.com.br", "saibamais.jor.br", "agorarn.com.br"], "RS": ["sul21.com.br", "correiodopovo.com.br", "matinaljornalismo.com.br"],
         "RO": ["rondoniaovivo.com", "tudorondonia.com", "rondoniagora.com"], "RR": ["folhabv.com.br", "roraimaemtempo.com.br"], "SC": ["ndmais.com.br", "nsctotal.com.br"],
         "SP": ["agora.folha.uol.com.br"], "SE": ["infonet.com.br", "f5news.com.br", "jlpolitica.com.br"], "TO": ["conexaoto.com.br", "afnoticias.com.br"]}
+YTH = {"accept-language": "pt-BR"}
 YT = ["@tvcamara", "@TVSenado", "@CNNbrasil", "@jovempannews", "@ICLNoticias", "@CanalMyNews", "@GloboNews", "@BandJornalismo", "@Poder360", "@RevistaOeste",
       "@BrasildeFato", "@folha", "@estadao", "@metropoles", "@STFoficial", "@camaradosdeputados", "@uolnoticias", "@cartacapital", "@gazetadopovo", "@tvbrasilgov"]
 BSKY = ["Folha de S.Paulo", "Estadão", "g1", "Metrópoles", "CartaCapital", "Brasil de Fato", "Agência Pública", "Aos Fatos", "Poder360", "Intercept Brasil",
@@ -70,41 +71,18 @@ def lote(nome, mapa):
     print("SEM FEED:", ruins, flush=True)
 
 lote("nacionais", NAC)
-lote("g1 por estado", {uf: [f"https://g1.globo.com/rss/g1/{s}/"] for uf, s in G1UF.items()})
-lote("assembleias", {uf: [f"https://www.{h}/feed/", f"https://{h}/feed/", f"https://www.{h}/rss", f"https://www.{h}/noticias/feed/", f"https://www.{h}/noticias/rss"] for uf, h in AL.items()})
-lote("jornais por estado", {uf + ":" + h: [f"https://{h}/feed/", f"https://www.{h}/feed/", f"https://www.{h}/rss", f"https://{h}/rss", f"https://www.{h}/rss.xml"] for uf, L in JORN.items() for h in L})
-
-print("\n##### youtube", flush=True)
-for h in YT:
+for h in ["@CamaraDeputadosOficial", "@camaradeputados", "@TVCamaraOficial", "@tvcamaraoficial", "@supremotribunalfederal", "@TVJustica", "@tvjusticaoficial", "@TSEJusBr", "@metropolesbr", "@Metropoles", "@tvbrasil", "@UOL"]:
     try:
-        t = requests.get("https://www.youtube.com/" + h, headers={"user-agent": "Mozilla/5.0", "accept-language": "pt-BR"}, cookies={"CONSENT": "YES+1"}, timeout=20).text
-        m = re.search(r'"externalId":"(UC[\w-]{22})"', t) or re.search(r'channel/(UC[\w-]{22})', t)
-        nome = re.search(r'<meta property="og:title" content="([^"]+)"', t)
-        if m:
-            f = testa("https://www.youtube.com/feeds/videos.xml?channel_id=" + m.group(1))
-            print(h, m.group(1), nome.group(1) if nome else "", "| feed itens:", f[2], "|", f[3], "|", f[4])
+        t = requests.get("https://www.youtube.com/" + h, headers=YTH, cookies={"CONSENT": "YES+1"}, timeout=20).text
+        m = re.search(r'"externalId":"(UC[\w-]{22})"', t); nome = re.search(r'<meta property="og:title" content="([^"]+)"', t)
+        if m: f = testa("https://www.youtube.com/feeds/videos.xml?channel_id=" + m.group(1)); print(h, m.group(1), nome.group(1) if nome else "", "| itens", f[2], "|", f[3])
         else: print(h, "sem id")
-    except Exception as e: print(h, "ERRO", repr(e)[:80])
-    sys.stdout.flush()
-
-print("\n##### bluesky", flush=True)
-for q in BSKY:
+    except Exception as e: print(h, "ERRO")
+for q in ["Café da Manhã", "O Assunto", "Os Pingos nos Is", "Estadão Notícias podcast", "Papo Antagonista", "Medo e Delírio em Brasília", "Oeste Sem Filtro"]:
     try:
-        j = requests.get("https://public.api.bsky.app/xrpc/app.bsky.actor.searchActors", params={"q": q, "limit": 4}, timeout=20).json()
-        print(q, "→", [(a["handle"], a.get("displayName", "")[:30]) for a in j.get("actors", [])])
-    except Exception as e: print(q, "ERRO", repr(e)[:80])
-for h in ["folha.com", "estadao.com.br", "g1.globo.com", "metropoles.com", "cartacapital.com.br", "brasildefato.com.br", "apublica.org", "aosfatos.org", "poder360.com.br", "intercept.com.br", "nexojornal.com.br", "uol.com.br"]:
-    f = testa(f"https://bsky.app/profile/{h}/rss"); print("rss", h, f[1], f[2], "|", f[3], "|", f[4])
-
-print("\n##### podcasts", flush=True)
-for q in POD:
-    try:
-        j = requests.get("https://itunes.apple.com/search", params={"term": q, "media": "podcast", "country": "BR", "limit": 2}, timeout=20).json()
-        for x in j.get("results", []):
-            f = testa(x.get("feedUrl", "")) if x.get("feedUrl") else ("", "", 0, "", "")
-            print(q, "→", x.get("collectionName"), "|", x.get("artistName"), "|", x.get("feedUrl"), "| itens", f[2], "|", f[4])
-    except Exception as e: print(q, "ERRO", repr(e)[:80])
-
+        j = requests.get("https://itunes.apple.com/search", params={"term": q, "media": "podcast", "country": "BR", "limit": 3}, timeout=20).json()
+        for x in j.get("results", []): print(q, "→", x.get("collectionName"), "|", x.get("artistName"), "|", x.get("feedUrl"))
+    except Exception as e: print(q, "ERRO")
 print("\n##### congresso agora", flush=True)
 import datetime
 h = datetime.date.today().isoformat()
@@ -112,5 +90,9 @@ for u in [f"https://dadosabertos.camara.leg.br/api/v2/eventos?dataInicio={h}&dat
           f"https://legis.senado.leg.br/dadosabertos/plenario/agenda/dia/{h.replace('-', '')}.json",
           f"https://legis.senado.leg.br/dadosabertos/comissao/agenda/{h.replace('-', '')}.json"]:
     try:
-        r = requests.get(u, headers={"accept": "application/json"}, timeout=30); print(u, r.status_code); print(r.text[:2500])
+        r = requests.get(u, headers={"accept": "application/json"}, timeout=30); print(u, r.status_code); print(r.text[:200])
+        j = r.json()
+        if "camara" in u:
+            for e in j["dados"][:40]: print("  ", e["dataHoraInicio"], e["situacao"], e["descricaoTipo"], "|", [o["sigla"] for o in e["orgaos"]], "|", (e.get("descricao") or "")[:80].replace("\n"," "), "|", e.get("urlRegistro"), "|", (e.get("localCamara") or {}).get("nome"))
+        else: print(json.dumps(j, ensure_ascii=False)[:3000])
     except Exception as e: print(u, "ERRO", repr(e)[:80])

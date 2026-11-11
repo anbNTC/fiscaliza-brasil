@@ -33,6 +33,23 @@ def get(u, js=True):
         except Exception as e: print(u, repr(e)[:120], flush=True)
         time.sleep(6 * (k + 1))
 
+def baixa(u):
+    """Baixa arquivos grandes em partes: se a conexão cair no meio, continua de onde parou (cabeçalho Range)."""
+    buf = bytearray(); total = None
+    for k in range(8):
+        try:
+            h = dict(H); h["accept-encoding"] = "identity"
+            if buf: h["range"] = f"bytes={len(buf)}-"
+            with requests.get(u, headers=h, timeout=300, stream=True) as r:
+                if r.status_code not in (200, 206): print(u, r.status_code, flush=True); time.sleep(6 * (k + 1)); continue
+                if buf and r.status_code == 200: buf = bytearray()   # o servidor não aceita continuar: recomeça
+                if total is None: total = int(r.headers.get("content-length") or 0) + len(buf) or None
+                for ch in r.iter_content(1 << 20): buf += ch
+            if not total or len(buf) >= total: return bytes(buf)
+        except Exception as e: print("download interrompido em", len(buf), "bytes:", repr(e)[:100], flush=True)
+        time.sleep(5 * (k + 1))
+    return bytes(buf) if buf and (not total or len(buf) >= total) else None
+
 def recente(res):
     """Escolhe o arquivo do mês mais recente pelo nome (ex.: ...-08-2025.csv) ou pela data de criação."""
     def chave(r):
@@ -50,7 +67,7 @@ def uma(c):
     if not j or not j.get("success"): return "conjunto de dados indisponível"
     r = recente(j["result"].get("resources") or [])
     if not r: return "sem arquivo CSV"
-    b = get(r["url"], js=False)
+    b = baixa(r["url"])
     if not b: return "arquivo indisponível"
     txt = b.decode("utf-8-sig") if b[:3] == b"\xef\xbb\xbf" or b"\xc3" in b[:50000] else b.decode("latin-1")
     sep = ";" if txt[:2000].count(";") > txt[:2000].count(",") else ","

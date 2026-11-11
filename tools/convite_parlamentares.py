@@ -18,6 +18,8 @@ EMAIL = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
 SITE = "https://fiscalizaja.com.br/fiscalize"
 UF = json.load(open(Path(__file__).resolve().parents[1] / "site" / "data" / "uf" / "PR.json"))
 FEM = {"xsargento-tania-guerreiro"}
+MASC = {"malexandre-leprevost", "mluciano-carvalho", "edr-leonidas", "ejairo-tamura", "epedro-paulo-bazana"}   # suplentes sem gênero na base do TSE usada aqui
+NOMES = {"emarcia-huculak": "Márcia Huculak"}
 slug = lambda s: unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower()
 
 def federais():
@@ -73,6 +75,8 @@ def vereadores():
     return out
 
 def tratamento(p):
+    if p["k"] in MASC: p["sexo"] = "M"
+    p["nome"] = NOMES.get(p["k"], p["nome"])
     f = p["sexo"] == "F"
     if p["sexo"] not in ("F", "M"): return "Excelentíssimo(a) Senhor(a) " + p["cargo"] + " " + p["nome"], None
     c = {"Deputado(a) Federal": ("Deputada Federal" if f else "Deputado Federal"), "Deputado(a) Estadual": ("Deputada Estadual" if f else "Deputado Estadual"),

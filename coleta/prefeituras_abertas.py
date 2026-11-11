@@ -19,12 +19,20 @@ PREF = [
      "pagina": "https://dados.recife.pe.gov.br/dataset/servidores",
      "nome": "nsalsenome", "cargo": "nsalsecarg", "lot": ["esalseunidade"], "valor": "vsalseprov", "liq": "vsalseliqd",
      "ano": "asalseanoo", "mes": "asalsemess"},
+    # São Paulo: um CSV por mês ("Remuneração do Funcionalismo"); os nomes dos arquivos mudaram ao longo dos anos, então vale o mais recente publicado.
+    {"cidade": "São Paulo", "uf": "SP", "ue": "71072", "ckan": "https://dados.prefeitura.sp.gov.br", "pacote": "remuneracao-servidores-prefeitura-de-sao-paulo",
+     "pagina": "https://dados.prefeitura.sp.gov.br/dataset/remuneracao-servidores-prefeitura-de-sao-paulo", "br": True, "ordem": "created",
+     "nome": "Nome completo", "cargo": "Cargo em Comissão", "cargo2": "Cargo Base", "lot": ["Unidade"], "valor": "Remuneração Bruta"},
 ]
 GABP = re.compile(r"GABINETE\s+DO\s+PREFEITO|GAB\.?\s*(DO\s+)?PREFEITO|VICE[\s-]*PREFEIT", re.I)
 num = lambda s: float(re.sub(r"[^\d,.-]", "", str(s or "0")).replace(".", "").replace(",", ".") or 0) if "," in str(s or "") else float(re.sub(r"[^\d.-]", "", str(s or "0")) or 0)
 MESES = {m: i + 1 for i, m in enumerate("jan fev mar abr mai jun jul ago set out nov dez".split())}
 
-def get(u, js=True):
+def get(u, js=True, br=False):
+    if br:
+        import saida_br
+        r = saida_br.get(u, headers={"accept": "application/json"}, timeout=180, tentativas=4)
+        return (r.json() if js else r.content) if r is not None and r.ok else None
     for k in range(4):
         try:
             r = requests.get(u, headers=H, timeout=300)
@@ -33,8 +41,17 @@ def get(u, js=True):
         except Exception as e: print(u, repr(e)[:120], flush=True)
         time.sleep(6 * (k + 1))
 
-def baixa(u):
+def texto(b):
+    """UTF-8 quando o arquivo é UTF-8 de verdade; senão Latin-1 (Windows-1252)."""
+    try: return b.decode("utf-8-sig")
+    except UnicodeDecodeError: return b.decode("cp1252", "replace")
+
+def baixa(u, br=False):
     """Baixa arquivos grandes em partes: se a conexão cair no meio, continua de onde parou (cabeçalho Range)."""
+    if br:   # pela saída do Brasil (sites que não respondem a acessos de fora do país)
+        import saida_br
+        r = saida_br.get(u, headers={"accept": "*/*"}, timeout=600, tentativas=4)
+        return r.content if r is not None and r.ok else None
     buf = bytearray(); total = None
     for k in range(8):
         try:
@@ -50,7 +67,7 @@ def baixa(u):
         time.sleep(5 * (k + 1))
     return bytes(buf) if buf and (not total or len(buf) >= total) else None
 
-def recente(res):
+def recente(res, ordem=None):
     """Escolhe o arquivo do mês mais recente pelo nome (ex.: ...-08-2025.csv) ou pela data de criação."""
     def chave(r):
         s = (r.get("name") or "") + " " + (r.get("url") or "")
@@ -60,16 +77,17 @@ def recente(res):
         m = re.search(r"\b(20\d\d)\b", s)
         return (int(m.group(1)), 0) if m else (0, 0)
     cs = [r for r in res if (r.get("format") or "").upper() == "CSV" or (r.get("url") or "").lower().endswith(".csv")]
+    if ordem == "created": return max(cs, key=lambda r: r.get("created") or "") if cs else None
     return max(cs, key=lambda r: (chave(r), r.get("created") or "")) if cs else None
 
 def uma(c):
-    j = get(f'{c["ckan"]}/api/3/action/package_show?id={c["pacote"]}')
+    j = get(f'{c["ckan"]}/api/3/action/package_show?id={c["pacote"]}', br=c.get("br"))
     if not j or not j.get("success"): return "conjunto de dados indisponível"
-    r = recente(j["result"].get("resources") or [])
+    r = recente([x for x in j["result"].get("resources") or [] if not re.search(r"inativ|aposent|pension", (x.get("name") or "") + (x.get("url") or ""), re.I)], c.get("ordem"))
     if not r: return "sem arquivo CSV"
-    b = baixa(r["url"])
+    b = baixa(r["url"], c.get("br"))
     if not b: return "arquivo indisponível"
-    txt = b.decode("utf-8-sig") if b[:3] == b"\xef\xbb\xbf" or b"\xc3" in b[:50000] else b.decode("latin-1")
+    txt = texto(b)
     sep = ";" if txt[:2000].count(";") > txt[:2000].count(",") else ","
     sa = lambda x: unicodedata.normalize("NFKD", x).encode("ascii", "ignore").decode().strip().upper()
     rd = csv.DictReader(io.StringIO(txt), delimiter=sep); cols = {sa(k): k for k in (rd.fieldnames or [])}
@@ -81,7 +99,7 @@ def uma(c):
         lot = " · ".join((row.get(col(k)) or "").strip() for k in c["lot"] if col(k))
         if re.search(r"GAB|PREFEIT", lot, re.I): gabs[lot] += 1
         if not GABP.search(lot): continue
-        cg = (row.get(col(c["cargo"])) or "").strip()
+        cg = (row.get(col(c["cargo"])) or "").strip() or ((row.get(col(c["cargo2"])) or "").strip() if c.get("cargo2") else "")
         if re.match(r"^\s*(VICE[\s-]*)?PREFEIT", cg, re.I): continue
         k = "v" if re.search(r"VICE", lot, re.I) else "p"
         lin = [(row.get(col(c["nome"])) or "").strip().title(), (cg.capitalize() + (" · " + lot.split(" · ")[-1].title() if " · " in lot else "")), "", round(num(row.get(col(c["valor"]))), 2)]

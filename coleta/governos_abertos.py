@@ -7,7 +7,7 @@ import csv, io, json, re, sys, datetime, unicodedata
 from pathlib import Path
 import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from prefeituras_abertas import recente, baixa, num, H
+from prefeituras_abertas import recente, baixa, num, H, texto, get
 
 D = Path(__file__).resolve().parents[1] / "site" / "data"
 sa = lambda x: unicodedata.normalize("NFKD", str(x or "")).encode("ascii", "ignore").decode().upper().strip()
@@ -20,23 +20,28 @@ GOV = [
      "fonte": "Governo de Santa Catarina · dados abertos (remuneração dos servidores)",
      "nome": "Nome", "cargo": ["Cargo"], "orgao": "OrgaoExercicio", "unid": "UnidadeExercicio", "bruto": "ValorBruto", "liq": None,
      "gov": r"GABINETE DO GOVERNADOR", "vice": r"GABINETE DO VICE-?GOVERNADOR"},
+    {"uf": "PE", "ckan": "https://dados.pe.gov.br", "pacote": "remuneracao-de-servidores", "pagina": "https://dados.pe.gov.br/dataset/remuneracao-de-servidores", "br": True,
+     "fonte": "Governo de Pernambuco · dados abertos (remuneração dos servidores)",
+     "nome": "r_nome", "cargo": ["r_funcao", "r_cargo"], "orgao": "r_instituicao", "unid": None, "bruto": "r_total_vantagens", "liq": "*liquid",
+     "gov": r"^GOVERNADORIA DO ESTADO$", "vice": r"^VICE-?GOVERNADORIA"},
 ]
-CHEFE = re.compile(r"^(VICE-?)?GOVERNADOR(A)? DO ESTADO$")
+CHEFE = re.compile(r"^(VICE[- ]?)?GOVERNADOR(A)?( DO ESTADO)?$")
 
 def um(c, BR):
-    j = requests.get(f'{c["ckan"]}/api/3/action/package_show', params={"id": c["pacote"]}, headers=H, timeout=90).json()
+    j = get(f'{c["ckan"]}/api/3/action/package_show?id={c["pacote"]}', br=c.get("br"))
     r = recente([x for x in j["result"]["resources"] if not re.search(r"inativ|pension|estagi", (x.get("name") or "") + (x.get("url") or ""), re.I)])
     if not r: return "sem arquivo"
-    b = baixa(r["url"])
+    b = baixa(r["url"], c.get("br"))
     if not b: return "arquivo indisponível"
-    t = b.decode("utf-8-sig", "ignore") if b"\xc3" in b[:300000] else b.decode("latin-1"); del b
+    t = texto(b); del b
     sep = ";" if t[:3000].count(";") > t[:3000].count(",") else ","
     rd = csv.DictReader(io.StringIO(t), delimiter=sep)
+    if c.get("liq", "") and c["liq"].startswith("*"): c = dict(c, liq=next((k for k in rd.fieldnames or [] if c["liq"][1:] in k.lower()), None))
     equipe = {"gov": [], "vice": []}; chefes = {}; comp = ""
     for row in rd:
-        o = sa(row.get(c["orgao"])); u = sa(row.get(c["unid"])); cg = " / ".join(x for x in (sa(row.get(k)) for k in c["cargo"]) if x)
+        o = sa(row.get(c["orgao"])); u = sa(row.get(c["unid"])) if c.get("unid") else ""; cg = " / ".join(x for x in (sa(row.get(k)) for k in c["cargo"]) if x)
         if not comp: comp = row.get("mes_ano") or ""
-        if CHEFE.search(cg.split(" / ")[0]): chefes["vice" if cg.startswith("VICE") else "gov"] = sa(row.get(c["nome"])); continue
+        if any(CHEFE.search(x) for x in cg.split(" / ")): chefes["vice" if re.search(r"(^| / )VICE", cg) else "gov"] = sa(row.get(c["nome"])); continue
         lugar = o + " | " + u
         k = "vice" if re.search(c["vice"], lugar) else "gov" if re.search(c["gov"], u) or re.search(c["gov"], o) else None
         if not k: continue

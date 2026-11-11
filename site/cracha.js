@@ -270,7 +270,8 @@ async function cracha(parts) {
     const uf = parts[1]; const D = await loadUF(uf); voltar = "#/uf/" + uf; src = FONTE_TSE;
     if (t === "g") { P = (parts[3] === "26" ? BR.ufs[uf].gov26 : BR.ufs[uf].gov)[+parts[2]]; if (!P) return notFound(); const pp = pTSE(P);
       o = { nome: pp.nome, cargo: cargo(parts[2] === "0" ? "gov" : "vice", pp.g) + " · " + BR.ufs[uf].nome, part: pp.part, uf }; o.mand = parts[3] === "26" ? (empossado("gov") ? "Eleito em 2026 · mandato 2027–2030" : "Eleito em 2026 · posse em 6/01/2027") : "Eleito em 2022 · mandato 2023–2026" + (empossado("gov") ? " (encerrado)" : "");
-      if (parts[3] === "26") chips.push(empossado("gov") ? '<span class="chip ok">Em exercício</span>' : '<span class="chip new">Eleito em 2026</span>'); else if (empossado("gov")) chips.push('<span class="chip">Mandato encerrado</span>'); }
+      if (parts[3] === "26") chips.push(empossado("gov") ? '<span class="chip ok">Em exercício</span>' : '<span class="chip new">Eleito em 2026</span>'); else if (empossado("gov")) chips.push('<span class="chip">Mandato encerrado</span>');
+      if (parts[3] !== "26" ? !empossado("gov") : empossado("gov")) { const GG = await getJSON("data/gabg/" + uf + ".json").catch(() => null); if (GG && GG.dep[parts[2]] && GG.dep[parts[2]].length) { o.gab = GG.dep[parts[2]]; o.gabInfo = GG; o.gabMun = true; } } }
     else if (t === "e" || t === "f" || t === "n") { const arr = t === "e" ? (parts[2] === "26" ? D.de26 : D.de22) : t === "f" ? D.df26 : D.se26; P = arr[+parts[3]]; if (!P) return notFound(); const pp = pTSE(P);
       const ck = t === "e" ? (uf === "DF" ? "dd" : "de") : t === "f" ? "dep" : "sen"; o = { nome: pp.nome, cargo: cargo(ck, pp.g) + " · " + uf, part: pp.part, uf };
       const pl = empossado("leg"); o.mand = parts[2] === "26" ? (pl ? "Eleito em 2026 · mandato 2027–" + (t === "n" ? "2035" : "2031") : "Eleito em 2026 · posse em 1º/02/2027") : "Eleito em 2022 · mandato 2023–2027" + (pl ? " (encerrado)" : "");
@@ -408,7 +409,7 @@ function lacunasHTML(o, parts) {
   if (t === "e") { org = "Assembleia Legislativa " + (typeof deUF === "function" && BR.ufs[uf] ? deUF(BR.ufs[uf].nome) : "do estado"); if (!o.est || o.estInfo.temVotos === false || !(o.est.vlist || []).length) falta.push("votos"); if (!o.est || !(o.est.props || []).length) falta.push("projetos"); if (!o.gab) falta.push("gabinete"); }
   else if (t === "m" && parts[3] !== "p" && parts[3] !== "v") { org = "Câmara Municipal de " + cid; if (!o.est || o.estInfo.temVotos === false || !(o.est.vlist || []).length) falta.push("votos"); if (!o.est || !(o.est.props || []).length) falta.push("projetos"); if (!o.gab) falta.push("gabinete"); }
   else if (t === "m") { org = "Prefeitura Municipal de " + cid; if (!o.gab) falta.push("gabinete"); }
-  else if (t === "g") { org = "Governo do Estado " + (typeof deUF === "function" && BR.ufs[uf] ? deUF(BR.ufs[uf].nome) : ""); falta.push("gabinete"); }
+  else if (t === "g") { org = "Governo do Estado " + (typeof deUF === "function" && BR.ufs[uf] ? deUF(BR.ufs[uf].nome) : ""); if (!o.gab) falta.push("gabinete"); }
   if (!falta.length || !org) return "";
   const busca = "https://www.google.com/search?q=" + encodeURIComponent("e-SIC " + org);
   const art = /^Governo/.test(org) ? "o" : "a";

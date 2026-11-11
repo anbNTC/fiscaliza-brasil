@@ -17,7 +17,7 @@ PREF = [
     # Recife: um arquivo por ano, com a coluna do mês; ficamos com o mês mais recente do arquivo.
     {"cidade": "Recife", "uf": "PE", "ue": "25313", "ckan": "https://dados.recife.pe.gov.br", "pacote": "servidores",
      "pagina": "https://dados.recife.pe.gov.br/dataset/servidores",
-     "nome": "nsalsenome", "cargo": "nsalsecarg", "lot": ["esalseunidade", "eslserlotacao"], "valor": "vsalseremu", "liq": "vsalseliqd",
+     "nome": "nsalsenome", "cargo": "nsalsecarg", "lot": ["esalseunidade"], "valor": "vsalseremu", "liq": "vsalseliqd",
      "ano": "asalseanoo", "mes": "asalsemess"},
 ]
 GABP = re.compile(r"GABINETE\s+DO\s+PREFEITO|GAB\.?\s*(DO\s+)?PREFEITO|VICE[\s-]*PREFEIT", re.I)

@@ -14,6 +14,11 @@ PREF = [
     {"cidade": "Belo Horizonte", "uf": "MG", "ue": "41238", "ckan": "https://ckan.pbh.gov.br", "pacote": "relatorio-do-funcionalismo-publico-administracao-direta",
      "pagina": "https://dados.pbh.gov.br/dataset/relatorio-do-funcionalismo-publico-administracao-direta",
      "nome": "NOME", "cargo": "CARGO", "lot": ["ORGAO", "UNIDADE DE LOTACAO"], "valor": "REMUNERACAO TOTAL"},
+    # Recife: um arquivo por ano, com a coluna do mês; ficamos com o mês mais recente do arquivo.
+    {"cidade": "Recife", "uf": "PE", "ue": "25313", "ckan": "https://dados.recife.pe.gov.br", "pacote": "servidores",
+     "pagina": "https://dados.recife.pe.gov.br/dataset/servidores",
+     "nome": "nsalsenome", "cargo": "nsalsecarg", "lot": ["esalseunidade", "eslserlotacao"], "valor": "vsalseremu", "liq": "vsalseliqd",
+     "ano": "asalseanoo", "mes": "asalsemess"},
 ]
 GABP = re.compile(r"GABINETE\s+DO\s+PREFEITO|GAB\.?\s*(DO\s+)?PREFEITO|VICE[\s-]*PREFEIT", re.I)
 num = lambda s: float(re.sub(r"[^\d,.-]", "", str(s or "0")).replace(".", "").replace(",", ".") or 0) if "," in str(s or "") else float(re.sub(r"[^\d.-]", "", str(s or "0")) or 0)
@@ -35,7 +40,8 @@ def recente(res):
         m = re.search(r"(\d{2})[-_/](20\d\d)", s) or re.search(r"(20\d\d)[-_/](\d{2})", s)
         if m:
             a, b = m.groups(); return (int(b), int(a)) if len(a) == 2 else (int(a), int(b))
-        return (0, 0)
+        m = re.search(r"\b(20\d\d)\b", s)
+        return (int(m.group(1)), 0) if m else (0, 0)
     cs = [r for r in res if (r.get("format") or "").upper() == "CSV" or (r.get("url") or "").lower().endswith(".csv")]
     return max(cs, key=lambda r: (chave(r), r.get("created") or "")) if cs else None
 
@@ -51,22 +57,27 @@ def uma(c):
     sa = lambda x: unicodedata.normalize("NFKD", x).encode("ascii", "ignore").decode().strip().upper()
     rd = csv.DictReader(io.StringIO(txt), delimiter=sep); cols = {sa(k): k for k in (rd.fieldnames or [])}
     col = lambda nome: cols.get(sa(nome))
-    out = {"p": [], "v": []}; n = 0; gabs = Counter()
+    out = {"p": [], "v": []}; n = 0; gabs = Counter(); topo = (0, 0)
+    per = lambda row: (int(num(row.get(col(c["ano"])))), int(num(row.get(col(c["mes"]))))) if c.get("mes") else (0, 0)
     for row in rd:
-        n += 1
+        n += 1; pr = per(row); topo = max(topo, pr)
         lot = " · ".join((row.get(col(k)) or "").strip() for k in c["lot"] if col(k))
         if re.search(r"GAB|PREFEIT", lot, re.I): gabs[lot] += 1
         if not GABP.search(lot): continue
         cg = (row.get(col(c["cargo"])) or "").strip()
         if re.match(r"^\s*(VICE[\s-]*)?PREFEIT", cg, re.I): continue
         k = "v" if re.search(r"VICE", lot, re.I) else "p"
-        out[k].append([(row.get(col(c["nome"])) or "").strip().title(), (cg.capitalize() + (" · " + lot.split(" · ")[-1].title() if " · " in lot else "")), "", round(num(row.get(col(c["valor"]))), 2)])
+        lin = [(row.get(col(c["nome"])) or "").strip().title(), (cg.capitalize() + (" · " + lot.split(" · ")[-1].title() if " · " in lot else "")), "", round(num(row.get(col(c["valor"]))), 2)]
+        if c.get("liq"): lin.append(round(num(row.get(col(c["liq"]))), 2))
+        out[k].append((pr, lin))
+    out = {k: [l for pr, l in v if pr == topo] for k, v in out.items()}
     for v in out.values(): v.sort(key=lambda r: -r[3])
     out = {k: v for k, v in out.items() if v}
     comp = re.search(r"(\d{2})[-_](20\d\d)", r.get("url") or ""); comp = f"{comp.group(1)}/{comp.group(2)}" if comp else ""
+    if topo != (0, 0): comp = f"{topo[1]:02d}/{topo[0]}"
     if out:
         grava(c["ue"], {"_tipo": "pref", "dep": out, "fonte": f"Prefeitura de {c['cidade']} · dados abertos (folha dos servidores)", "url": c["pagina"], "competencia": comp,
-                        "obs": f"Remuneração total{' de ' + comp if comp else ''}, como publicada pela Prefeitura em dados abertos. Só servidores lotados no gabinete do prefeito ou do vice."})
+                        "obs": f"Remuneração {'bruta e líquida' if c.get('liq') else 'total'}{' de ' + comp if comp else ''}, como publicada pela Prefeitura em dados abertos. Só servidores lotados no gabinete do prefeito ou do vice."})
     return {"linhas": n, "gabinete": {k: len(v) for k, v in out.items()}, "arquivo": r.get("name"), "lotacoes_gab": gabs.most_common(12) if not out else []}
 
 def main():

@@ -1,12 +1,8 @@
-"""Sonda (temporária): APIs do Senado para autoria de proposições e discursos."""
-import requests, json
-H = {"user-agent": "Mozilla/5.0 FiscalizaBrasil/1.0", "accept": "application/json"}
-for u in ("https://legis.senado.leg.br/dadosabertos/processo?codigoParlamentarAutor=345&dataInicioApresentacao=2026-01-01",
-          "https://legis.senado.leg.br/dadosabertos/senador/345/autorias.json?ano=2026",
-          "https://legis.senado.leg.br/dadosabertos/senador/345/discursos.json?dataInicio=20260101&dataFim=20261111"):
-    try:
-        r = requests.get(u, headers=H, timeout=120); print("==", u, r.status_code, len(r.content))
-        j = r.json(); s = json.dumps(j, ensure_ascii=False)
-        print(s[:1800])
-        if isinstance(j, list): print("itens", len(j), "chaves", sorted(j[0].keys()) if j else None)
-    except Exception as e: print(u, repr(e)[:200])
+"""Sonda (temporária): compara o coletor novo do Senado com os dados atuais (Flávio Arns, 345)."""
+import sys, os, json
+sys.path.insert(0, os.path.dirname(__file__))
+import senado_perfil as SP
+y = json.load(open(SP.D / "s" / "PR.json"))["345"]
+au = SP.projetos("345", "Flávio Arns"); di = SP.discursos("345")
+print("AU velho", y["au"]["c"], len(y["au"]["l"])); print("AU novo ", au["c"], len(au["l"]), au["l"][0] if au["l"] else None)
+print("DISC velho", {k: y["disc"][k] for k in ("n", "ano", "tipos")}, y["disc"]["kw"][:5]); print("DISC novo ", {k: di[k] for k in ("n", "ano", "tipos")}, di["kw"][:5])

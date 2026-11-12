@@ -27,6 +27,16 @@ print("CAND", len(cand), flush=True)
 redes = {}
 for x in zcsv(f"{C}/rede_social_candidato_2024.zip", "_PR"):
     redes.setdefault(x.get("SQ_CANDIDATO"), []).append(x.get("DS_URL"))
+import itertools
+for ano in ("2024", "2026"):
+    cc = [c for c in zcsv(f"{C}/consulta_cand_{ano}.zip", "_PR") if c.get("SG_UE") in ("75353", "PR")]
+    rr = {}
+    for x in zcsv(f"{C}/rede_social_candidato_{ano}.zip", "_PR"): rr.setdefault(x.get("SQ_CANDIDATO"), []).append(x.get("DS_URL"))
+    for c in cc:
+        n = sa(c["NM_URNA_CANDIDATO"]) + " " + sa(c["NM_CANDIDATO"])
+        if re.search(r"GIORGIA|OLIMPIO|MATTEUS", n):
+            print("XTRA", ano, c["NM_URNA_CANDIDATO"], "|", c["NM_CANDIDATO"], "|", c.get("DS_CARGO"), "|", rr.get(c["SQ_CANDIDATO"]), flush=True)
+VER = []
 for v in VER:
     a = sa(v["nome"])
     c = [c for c in cand if sa(c["NM_URNA_CANDIDATO"]) == a] or [c for c in cand if a in sa(c["NM_URNA_CANDIDATO"]) or sa(c["NM_URNA_CANDIDATO"]) in a]

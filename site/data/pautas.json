@@ -1,38 +1,62 @@
 {
-"gerado": "2026-11-10",
+"gerado": "2026-11-12",
 "uf": "PR",
 "itens": [
 {
-"tipo": "votacao",
-"titulo": "PLP 281/2019 na Câmara, 252 a 176: Rejeitada a Subemenda Substitutiva ao Projeto de Lei Complementar nº 281, de 2019, adotada pelo relator da Comissão Especial. Veja como votou cada deputado do PR",
-"texto": "14/10/2026. O que foi votado: Rejeitada a Subemenda Substitutiva ao Projeto de Lei Complementar nº 281, de 2019, adotada pelo relator da Comissão Especial. Sim: 252; Não: 176; Total: 428. Tema: Dispõe sobre os regimes de resolução das instituições autorizadas a funcionar pelo Banco Central do Brasil, pela Superintendência de Seguros Privados e pela Com",
-"link": "#/votacao/C/1127/PR",
-"fonte": "Câmara/Senado · Dados Abertos",
-"peso": 51.1
-},
-{
 "tipo": "cota",
-"titulo": "46% da cota de Sandro Alex (PSD-PR) foi para um só fornecedor",
-"texto": "Kd Comunicacoes Ltda recebeu R$ 90.000 de um total de R$ 196.499 desde 2023.",
-"link": "#/p/c/160621",
-"fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 43.7
-},
-{
-"tipo": "cota",
-"titulo": "42% da cota de Ricardo Barros (PP-PR) foi para um só fornecedor",
-"texto": "Orn Midia Comunicação Eireli recebeu R$ 231.500 de um total de R$ 547.614 desde 2023.",
+"titulo": "50% da cota de Ricardo Barros (PP-PR) foi para um só fornecedor",
+"texto": "Orn Midia Comunicação Eireli recebeu R$ 231.500 de um total de R$ 465.126 desde 2023.",
 "link": "#/p/c/73788",
 "fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 42.7
+"peso": 44.9
 },
 {
 "tipo": "cota",
-"titulo": "37% da cota de Vermelho (PL-PR) foi para um só fornecedor",
-"texto": "3Front Comunicacao Ltda recebeu R$ 715.259 de um total de R$ 2,0 milhões desde 2023.",
+"titulo": "49% da cota de Sandro Alex (PSD-PR) foi para um só fornecedor",
+"texto": "Kd Comunicacoes Ltda recebeu R$ 90.000 de um total de R$ 184.001 desde 2023.",
+"link": "#/p/c/160621",
+"fonte": "Câmara · Dados Abertos (cota parlamentar)",
+"peso": 44.7
+},
+{
+"tipo": "cota",
+"titulo": "41% da cota de Vermelho (PL-PR) foi para um só fornecedor",
+"texto": "3Front Comunicacao Ltda recebeu R$ 715.259 de um total de R$ 1,8 milhões desde 2023.",
 "link": "#/p/c/204396",
 "fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 41.0
+"peso": 42.2
+},
+{
+"tipo": "cota",
+"titulo": "33% da cota de Filipe Barros (PL-PR) foi para um só fornecedor",
+"texto": "Canaa Imóveis Ltda recebeu R$ 412.305 de um total de R$ 1,2 milhões desde 2023.",
+"link": "#/p/c/204411",
+"fonte": "Câmara · Dados Abertos (cota parlamentar)",
+"peso": 39.9
+},
+{
+"tipo": "cota",
+"titulo": "33% da cota de Welter (PT-PR) foi para um só fornecedor",
+"texto": "Zocca & Silva Ltda Me recebeu R$ 506.000 de um total de R$ 1,5 milhões desde 2023.",
+"link": "#/p/c/224333",
+"fonte": "Câmara · Dados Abertos (cota parlamentar)",
+"peso": 39.8
+},
+{
+"tipo": "cota",
+"titulo": "32% da cota de Padovani (PP-PR) foi para um só fornecedor",
+"texto": "Araucar - Locação De Veículos Ltda recebeu R$ 381.659 de um total de R$ 1,2 milhões desde 2023.",
+"link": "#/p/c/220706",
+"fonte": "Câmara · Dados Abertos (cota parlamentar)",
+"peso": 39.6
+},
+{
+"tipo": "cota",
+"titulo": "30% da cota de Pedro Lupion (REPUBLICANOS-PR) foi para um só fornecedor",
+"texto": "Pineapple Marketing Ltda recebeu R$ 375.865 de um total de R$ 1,2 milhões desde 2023.",
+"link": "#/p/c/204395",
+"fonte": "Câmara · Dados Abertos (cota parlamentar)",
+"peso": 39.1
 },
 {
 "tipo": "emenda",
@@ -44,11 +68,11 @@
 },
 {
 "tipo": "cota",
-"titulo": "Diego Garcia (UNIÃO-PR) está entre os 10% de deputados que mais gastaram a cota parlamentar: R$ 2,1 milhões desde 2023",
-"texto": "Gasto típico (mediana) na Câmara: R$ 1,7 milhões.",
-"link": "#/p/c/178929",
+"titulo": "Dilceu Sperafico (PP-PR) está entre os 10% de deputados que mais gastaram a cota parlamentar: R$ 1,9 milhões desde 2023",
+"texto": "Gasto típico (mediana) na Câmara: R$ 1,5 milhões.",
+"link": "#/p/c/73768",
 "fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 35.3
+"peso": 35.2
 },
 {
 "tipo": "emenda",
@@ -180,22 +204,6 @@
 },
 {
 "tipo": "votacao",
-"titulo": "PEC 221/2019 no Senado, 75 a 1: Proposta de Emenda à Constituição nº 221, de 2019, em primeiro turno. Veja como votou cada senador do PR",
-"texto": "14/10/2026. O que foi votado: Votação nominal da Proposta de Emenda à Constituição nº 221, de 2019, em primeiro turno. Tema: Altera o art. 7º da Constituição Federal para reduzir a duração máxima semanal do trabalho e prever 2 (dois) dias de repouso semanal remunerado, sem qualquer re",
-"link": "#/votacao/S/423/PR",
-"fonte": "Câmara/Senado · Dados Abertos",
-"peso": 26.3
-},
-{
-"tipo": "votacao",
-"titulo": "PEC 221/2019 no Senado, 75 a 1: Proposta de Emenda à Constituição nº 221, de 2019, em segundo turno. Veja como votou cada senador do PR",
-"texto": "14/10/2026. O que foi votado: Votação nominal da Proposta de Emenda à Constituição nº 221, de 2019, em segundo turno. Tema: Altera o art. 7º da Constituição Federal para reduzir a duração máxima semanal do trabalho e prever 2 (dois) dias de repouso semanal remunerado, sem qualquer re",
-"link": "#/votacao/S/424/PR",
-"fonte": "Câmara/Senado · Dados Abertos",
-"peso": 26.3
-},
-{
-"tipo": "votacao",
 "titulo": "PEC 18/2025 no Senado, 73 a 0: Proposta de Emenda à Constituição nº 18, de 2025, nos termos dos pareceres, ressalvado o destaque (1º Turno). Veja como votou cada senador do PR",
 "texto": "03/11/2026. O que foi votado: Votação nominal da Proposta de Emenda à Constituição nº 18, de 2025, nos termos dos pareceres, ressalvado o destaque (1º Turno). Tema: Altera os arts. 5º, 15, 22, 23, 24, 40, 49, 84, 103-B, 130-A e 144 da Constituição Federal e o art.76 do Ato das Disposições Constitucionais Transitórias; acres",
 "link": "#/votacao/S/427/PR",
@@ -217,22 +225,6 @@
 "link": "#/votacao/S/429/PR",
 "fonte": "Câmara/Senado · Dados Abertos",
 "peso": 25.0
-},
-{
-"tipo": "votacao",
-"titulo": "PLP 186/2026 na Câmara, 461 a 4: Aprovada a Subemenda Substitutiva Global ao Projeto de Lei Complementar nº 186, de 2026, adotada pelo relator da Comissão de Indústria, Comércio e Ser. Veja como votou cada deputado do PR",
-"texto": "14/10/2026. O que foi votado: Aprovada a Subemenda Substitutiva Global ao Projeto de Lei Complementar nº 186, de 2026, adotada pelo relator da Comissão de Indústria, Comércio e Serviços, ressalvados os destaques. Sim: 461; Não: 4; Tema: Altera a Lei Complementar nº 123, de 14 de dezembro de 2006, para dispor sobre o limite de receita bruta anual e o número de empregados do Microempreendedor Ind",
-"link": "#/votacao/C/1126/PR",
-"fonte": "Câmara/Senado · Dados Abertos",
-"peso": 10.9
-},
-{
-"tipo": "votacao",
-"titulo": "PLP 186/2026 no Senado, 78 a 0: Projeto de Lei Complementar nº 186, de 2026, nos termos do parecer. Veja como votou cada senador do PR",
-"texto": "15/10/2026. O que foi votado: Votação nominal do Projeto de Lei Complementar nº 186, de 2026, nos termos do parecer. Tema: Altera a Lei Complementar nº 123, de 14 de dezembro de 2006, para atualizar o limite de receita bruta anual e o número de empregados do Microempreendedor Indivi",
-"link": "#/votacao/S/425/PR",
-"fonte": "Câmara/Senado · Dados Abertos",
-"peso": 0.0
 }
 ]
 }

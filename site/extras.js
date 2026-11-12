@@ -516,7 +516,7 @@ async function agora() {
       const [VCa, VSa, S] = await Promise.all([getJSON("data/camara_votacoes.json").catch(() => []), getJSON("data/senado_votacoes.json").catch(() => []), getJSON("data/semana.json").catch(() => null)]);
       const lim = new Date(Date.now() - 10 * 864e5).toISOString().slice(0, 10); const it = [];
       VCa.forEach((x, i) => { if (x && x[1] >= lim && !/requerimento/i.test(x[7] || "")) it.push([x[1], `<b>Câmara</b> ${x[2] === "1" ? "aprovou" : "rejeitou"} ${esc(x[5] || "votação")} por ${x[3]} a ${x[4]}. <a href="#/votacao/C/${i}">Como votou cada deputado</a>`]); });
-      VSa.forEach((x, i) => { if (x && x[1] >= lim && !/requerimento/i.test(x[4] || "")) it.push([x[1], `<b>Senado</b> ${x[5] === "A" ? "aprovou" : "rejeitou"} ${esc(x[2] || "votação")}${x[6] === "S" ? " em voto secreto" : ` por ${x[7]} a ${x[8]}`}. <a href="#/votacao/S/${i}">Como votou cada senador</a>`]); });
+      VSa.forEach((x, i) => { if (x && x[1] >= lim && !/requerimento/i.test(x[4] || "")) it.push([x[1], `<b>Senado</b> ${x[5] === "A" ? "aprovou" : "rejeitou"} ${esc(x[2] || "votação")}${x[6] === "S" ? " em voto secreto" : (+x[7] + +x[8] > 0 ? ` por ${x[7]} a ${x[8]}` : "")}. <a href="#/votacao/S/${i}">Como votou cada senador</a>`]); });
       it.sort((a, b) => b[0].localeCompare(a[0]));
       const w = S && S.semanas && S.semanas[0]; const contra = w ? (w.contra || []).slice().sort((a, b) => b[5] - a[5]).slice(0, 4) : [];
       const dt = (d) => new Date(d + "T12:00").toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });

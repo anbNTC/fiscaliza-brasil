@@ -242,6 +242,7 @@ async function bluesky(request, ctx) {
 }
 
 /* ---------- Ao vivo no Congresso: agenda de hoje da Câmara (eventos) e do Senado (plenário e comissões), dados abertos ---------- */
+const hhmm = (t) => { const m = String(t || "").match(/(\d{1,2})\s*(?::|h| horas?)\s*(\d{2})?/i); return m ? m[1].padStart(2, "0") + ":" + (m[2] || "00") : ""; };
 const situ = (s) => /andamento|aberta|iniciad/i.test(s) ? "andamento" : /cancel|não realiz|nao realiz|adiad/i.test(s) ? "cancelada" : /encerrad|realizada|finaliz/i.test(s) ? "encerrada" : /suspens/i.test(s) ? "suspensa" : "agendada";
 function acha(o, teste, out = []) { if (Array.isArray(o)) o.forEach((x) => acha(x, teste, out)); else if (o && typeof o === "object") { if (teste(o)) out.push(o); else Object.values(o).forEach((x) => acha(x, teste, out)); } return out; }
 async function montaCongresso() {
@@ -258,7 +259,7 @@ async function montaCongresso() {
   for (const x of acha(P, (o) => o.CodigoSessao && (o.Data || o.Hora))) {
     if (x.Data && x.Data !== dia) continue;
     const sit = (x.Realizada && x.Realizada.Status === "Sim") ? "encerrada" : situ(x.SituacaoSessao || "");
-    ev.push({ casa: "S", h: (x.Hora || "").slice(0, 5), sit, tipo: String(x.TipoSessao || "Sessão").trim().replace(/\s+/g, " "), org: "PLEN", orgn: "Plenário do Senado",
+    ev.push({ casa: "S", h: hhmm(x.Hora || x.Horario), sit, tipo: String(x.TipoSessao || "Sessão").trim().replace(/\s+/g, " "), org: "PLEN", orgn: "Plenário do Senado",
       d: String((x.Evento && x.Evento.DescricaoEvento) || x.LocalSessao || "").slice(0, 160), u: sit === "andamento" ? "https://www.youtube.com/@TVSenado/live" : "https://www12.senado.leg.br/hpsenado", plen: true, cpi: false });
   }
   for (const r of acha(K, (o) => o.colegiadoCriador && o.dataInicio)) {
@@ -271,7 +272,7 @@ async function montaCongresso() {
   return JSON.stringify({ gerado: new Date().toISOString(), dia, ok: { camara: !!C, senado: !!(P || K) }, ev });
 }
 async function congresso(request, ctx) {
-  const cache = caches.default; const chave = new Request(new URL("/api/congresso?v=1", request.url).toString());
+  const cache = caches.default; const chave = new Request(new URL("/api/congresso?v=2", request.url).toString());
   const salvar = async () => { const body = await montaCongresso(); await guarda(cache, chave, body); return body; };
   const hit = await cache.match(chave);
   if (hit) { if (Date.now() - Number(hit.headers.get("x-gerado") || 0) > 2 * 6e4) ctx.waitUntil(salvar().catch(() => {})); return jresp(await hit.text(), 60); }

@@ -2,8 +2,8 @@
    Guarda a escolha no aparelho; sem escolha, segue o modo do celular/computador. */
 (function () {
   const K = "fb_tema";
-  const CX = [".glass", ".card", ".lead", ".pc", ".tile", ".menu a", ".nw", ".hot", ".vimp", ".vrow", ".pcard", ".accard", ".sess", ".it", ".kv > div", ".cal button:not(:disabled)", ".nums div", ".go", ".note", ".cb-key", ".pnum div", ".wk div", ".acst div", ".pbox", ".xfb", ".tn li.it3", ".res a", ".ufb", ".step", ".lk-a", ".mapa", ".stage", ".cfgwarn", ".item", ".panel", ".tabs2", ".dt", ".dcard.w", ".search", ".rep form", ".live", ".cmpbar a"];
-  const INK = [".btn:not(.o)", ".menu i", ".cal button[aria-pressed=\"true\"]", ".yrs button[aria-pressed=\"true\"]", ".trend button[aria-pressed=\"true\"]", ".nav a[aria-current]", ".tabs2 button[aria-selected=\"true\"]", ".tabs button[aria-pressed=\"true\"]", ".xlogo", ".chip.sg", ".acn", ".tg2.pol", ".vimp .pl span.s", ".cb-list li i", ".acbtn[aria-pressed=\"true\"]", ".dcard.k", ".cmpbar", ".chip[aria-pressed=\"true\"]", ".step i", ".rk", ".dterm .dcard.k", ".lk-av", ".tema-fixo-x"];
+  const CX = [".glass", ".card", ".lead", ".pc", ".tile", ".menu a", ".nw", ".hot", ".vimp", ".vrow", ".pcard", ".accard", ".sess", ".it", ".kv > div", ".cal button:not(:disabled)", ".nums div", ".go", ".note", ".cb-key", ".pnum div", ".wk div", ".acst div", ".pbox", ".xfb", ".tn li.it3", ".res a", ".ufb", ".step", ".lk-a", ".mapa", ".stage", ".cfgwarn", ".item", ".panel", ".tabs2", ".dt", ".dcard.w", ".search", ".rep form", ".live:not(i)", ".cmpbar a", ".cg li", ".bs", ".avc button:not(.on)", ".pch a"];
+  const INK = [".btn:not(.o)", ".menu i", ".cal button[aria-pressed=\"true\"]", ".yrs button[aria-pressed=\"true\"]", ".trend button[aria-pressed=\"true\"]", ".nav a[aria-current]", ".tabs2 button[aria-selected=\"true\"]", ".tabs button[aria-pressed=\"true\"]", ".xlogo", ".chip.sg", ".acn", ".tg2.pol", ".vimp .pl span.s", ".cb-list li i", ".acbtn[aria-pressed=\"true\"]", ".dcard.k", ".cmpbar", ".chip[aria-pressed=\"true\"]", ".step i", ".rk", ".dterm .dcard.k", ".lk-av", ".tema-fixo-x", ".avc button.on"];
   const css = `
   html.escuro{color-scheme:dark;--ink:#EDEDEA;--muted:#A4A7AD;--bg:#0D0F12;--surface:rgba(255,255,255,.05);--edge:rgba(255,255,255,.10);
     --fb-base:#0B0D10;--fb-verde:rgba(0,156,59,.16);--fb-amarelo:rgba(255,214,0,.10);--fb-azul:rgba(30,100,235,.16)}
@@ -21,6 +21,8 @@
   html.escuro :is(.go,.tile,.pc,.lk-a){isolation:isolate}
   /* desfoque (vidro) dentro de outro vidro: o Chrome desenha um retângulo claro atrás do elemento de dentro. Só o de fora fica com desfoque. */
   html.escuro :is(.glass,.card,.go,.tile,.pc,.top,.nav) *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  html.escuro .cg li.on{background-color:rgba(217,48,37,.14)!important;border-color:rgba(217,48,37,.45)!important}
+  html.escuro .cg .mt a,html.escuro .pch a{color:var(--ink)!important}
   html.escuro .go .seta{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.18)!important;color:var(--ink)}
   html.escuro .av{background:linear-gradient(135deg,#2A2D33,#1E2126)!important;color:#C9CBD0!important}
   html.escuro .tagv.g,html.escuro .res2.a{background:rgba(30,158,85,.18)!important;color:#7FD6A2!important}

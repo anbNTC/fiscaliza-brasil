@@ -5,7 +5,7 @@ IDS = sys.argv[1:] or os.environ.get("PADROES", "").split()
 os.makedirs("/tmp/r", exist_ok=True)
 for c in IDS:
     t, i = c.split(":")
-    subprocess.run(["yt-dlp", "-q", "--no-warnings", "-f", "ba/b", "-o", f"/tmp/r/{t}_{i}.%(ext)s",
+    subprocess.run(["yt-dlp", "-q", "--no-warnings", "--no-simulate", "-f", "ba/b", "-o", f"/tmp/r/{t}_{i}.%(ext)s",
                     "--print", "INFO " + t + " " + i + " | %(duration)s s | curtidas %(like_count)s | comentários %(comment_count)s",
                     f"https://www.instagram.com/reel/{i}/"])
 from faster_whisper import WhisperModel

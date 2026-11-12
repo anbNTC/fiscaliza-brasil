@@ -1,6 +1,6 @@
 """Temporário: transcreve reels públicos do perfil (para estudar o padrão dos roteiros). Não grava nada no repositório."""
 import subprocess, sys, glob, os
-subprocess.run([sys.executable, "-m", "pip", "install", "-q", "yt-dlp", "faster-whisper"], check=False)
+subprocess.run([sys.executable, "-m", "pip", "install", "-q", "yt-dlp", "faster-whisper", "av<15"], check=False)
 IDS = sys.argv[1:] or os.environ.get("PADROES", "").split()
 os.makedirs("/tmp/r", exist_ok=True)
 for c in IDS:

@@ -1,6 +1,6 @@
 """Sonda temporária: Instagram de cada vereador de Curitiba.
-1) site da Câmara (campo instagram do perfil); 2) redes sociais declaradas ao TSE no registro da candidatura de 2024 (DivulgaCandContas)."""
-import re, sys, json, time, unicodedata
+1) site da Câmara (campo instagram do perfil); 2) redes sociais declaradas ao TSE em 2024 (dados abertos: rede_social_candidato_2024)."""
+import re, sys, io, csv, time, zipfile, unicodedata
 sys.path.insert(0, "coleta")
 import requests
 from saida_br import get
@@ -13,29 +13,24 @@ for s in dict.fromkeys(re.findall(r'/vereadores/([a-z0-9-]+)"', t)):
     if r is None or not r.ok: continue
     j = r.json()
     if j.get("@type") != "vereador" or j.get("ex_vereador"): continue
-    VER.append({"nome": j.get("title"), "civil": j.get("nome_civil") or j.get("nome_completo") or "", "cmc": j.get("instagram") or ""})
+    VER.append({"nome": j.get("title"), "cmc": j.get("instagram") or ""})
     time.sleep(0.2)
-print("CMC", len(VER), "vereadores; chaves de nome:", flush=True)
 
-T = "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura"
-HD = {"accept": "application/json", "user-agent": "Mozilla/5.0"}
-def tse(u):
-    for _ in range(3):
-        try:
-            r = requests.get(u, headers=HD, timeout=60)
-            if r.ok: return r.json()
-            print("TSE", r.status_code, u[-60:], flush=True)
-        except Exception as e: print("TSE erro", repr(e)[:120], flush=True)
-        time.sleep(3)
-lst = tse(f"{T}/listar/2024/75353/2045202024/13/candidatos")
-cands = (lst or {}).get("candidatos") or []
-print("TSE", len(cands), "candidatos a vereador em Curitiba", flush=True)
+C = "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand"
+def zcsv(url, filtro):
+    z = zipfile.ZipFile(io.BytesIO(requests.get(url, timeout=600).content))
+    nomes = [n for n in z.namelist() if filtro in n and n.endswith(".csv")]
+    print("ZIP", url.rsplit("/", 1)[1], nomes[:3], flush=True)
+    return list(csv.DictReader(io.StringIO(z.read(nomes[0]).decode("latin-1")), delimiter=";"))
+cand = [c for c in zcsv(f"{C}/consulta_cand_2024.zip", "_PR") if c.get("SG_UE") == "75353" and c.get("CD_CARGO") == "13"]
+print("CAND", len(cand), flush=True)
+redes = {}
+for x in zcsv(f"{C}/rede_social_candidato_2024.zip", "_PR"):
+    redes.setdefault(x.get("SQ_CANDIDATO"), []).append(x.get("DS_URL"))
 for v in VER:
-    alvo = sa(v["nome"])
-    c = next((c for c in cands if sa(c.get("nomeUrna")) == alvo), None) or next((c for c in cands if alvo and (alvo in sa(c.get("nomeUrna")) or sa(c.get("nomeUrna")) in alvo) and "ELEIT" in sa(c.get("descricaoTotalizacao")) + "ELEIT"), None)
-    sites = []
-    if c:
-        d = tse(f"{T}/buscar/2024/75353/2045202024/candidato/{c['id']}") or {}
-        sites = d.get("sites") or []
-        time.sleep(0.5)
-    print("VER", v["nome"], "|", c and c.get("nomeUrna"), "|", c and c.get("descricaoTotalizacao"), "| CMC:", v["cmc"], "| TSE:", sites, flush=True)
+    a = sa(v["nome"])
+    c = [c for c in cand if sa(c["NM_URNA_CANDIDATO"]) == a] or [c for c in cand if a in sa(c["NM_URNA_CANDIDATO"]) or sa(c["NM_URNA_CANDIDATO"]) in a]
+    for k in c[:2]:
+        ig = [u for u in redes.get(k["SQ_CANDIDATO"], []) if "instagram" in (u or "").lower()]
+        print("VER", v["nome"], "|", k["NM_URNA_CANDIDATO"], "|", k.get("DS_SIT_TOT_TURNO"), "| CMC:", v["cmc"], "| IG:", ig, flush=True)
+    if not c: print("VER", v["nome"], "| sem candidatura achada | CMC:", v["cmc"], flush=True)

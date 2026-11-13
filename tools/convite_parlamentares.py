@@ -18,6 +18,9 @@ REG = Path(__file__).resolve().parent / "convite_enviados.json"
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
 # endereços da instituição (rodapé do site, ouvidoria, imprensa...): nunca são do parlamentar, não recebem convite
 GENERICO = re.compile(r"^(ouvidoria|contato|contatos|faleconosco|fale|imprensa|comunicacao|ascom|protocolo|presidencia|sic|esic|transparencia|webmaster|suporte|ti|informatica|noreply|no-reply|nao-responda|secretaria|sgm|cerimonial|biblioteca|rh|licitacao|licitacoes|dl|diretoria|escola|tv|radio|portal)([._-].*)?@", re.I)
+def generico(e):
+    """endereço de setor da instituição (ouvidoria@assembleia..., contato@camara...): no domínio próprio do parlamentar, "contato@" vale"""
+    return bool(GENERICO.search(e)) and bool(re.search(r"(leg|gov)\.br$|assembleia|camara|cmc", e.split("@")[-1], re.I))
 SITE = "https://fiscalizaja.com.br/fiscalize"
 UF = json.load(open(Path(__file__).resolve().parents[1] / "site" / "data" / "uf" / "PR.json"))
 FEM = {"xsargento-tania-guerreiro"}
@@ -56,7 +59,8 @@ def estaduais():
         p = S.get(f"https://www.assembleia.pr.leg.br/deputados/perfil/{sl}", timeout=60).text
         nome = re.search(r"<h1[^>]*>([\s\S]*?)</h1>", p); nome = " ".join(re.sub(r"<[^>]+>", " ", html.unescape(nome.group(1))).split()) if nome else sl
         nome = re.sub(r"^(PRESIDENTE|\d+º\s+(SECRETÁRI[OA]|VICE-PRESIDENTE)|DEPUTAD[OA])\s+", "", nome, flags=re.I).title()
-        ems = [e for e in dict.fromkeys(EMAIL.findall(html.unescape(p))) if ("assembleia.pr.leg.br" in e or "alep" in e) and not GENERICO.search(e)]
+        # só o e-mail do bloco de contato do gabinete ("Email" + mailto); o do rodapé é da Ouvidoria e vale para a casa toda
+        ems = [e for e in re.findall(r'>\s*E-?mail\s*:?\s*<a[^>]*href="mailto:\s*([^"?\s]+)', html.unescape(p), re.I) if EMAIL.fullmatch(e) and not generico(e)]
         k = chave[sl]; nome = E["dep"][k].get("nome") or nome
         try: sx = UF["de" + ano][int(k)][4]
         except Exception: sx = ""
@@ -80,7 +84,7 @@ def vereadores():
         r = saida_br.get(f"https://www.cmc.pr.gov.br/++api++/vereadores/{sl}", headers={**UA, "accept": "application/json"}, timeout=90)
         j = r.json() if r is not None and r.ok else {}
         if j.get("ex_vereador"): continue
-        ems = [e for e in dict.fromkeys(EMAIL.findall(json.dumps(j, ensure_ascii=False))) if "cmc.pr.gov.br" in e and not GENERICO.search(e)]
+        ems = [e for e in dict.fromkeys(EMAIL.findall(json.dumps(j, ensure_ascii=False))) if "cmc.pr.gov.br" in e and not generico(e)]
         out.append({"k": f"m{sl}", "nome": j.get("title") or X[chave[sl]]["nome"], "sexo": sexo_ver(chave[sl]),
                     "cargo": "Vereador(a)", "email": ems[0] if ems else "", "link": f"{SITE}#/p/m/PR/75353/{chave[sl]}"})
     return out
@@ -200,8 +204,8 @@ def main():
     # trava: e-mail genérico da instituição ou o mesmo e-mail para mais de uma pessoa (rodapé repetido em todas as páginas) não recebe
     rep = Counter(p["email"].lower() for p in L if p["email"])
     for p in L:
-        if p["email"] and (GENERICO.search(p["email"]) or rep[p["email"].lower()] > 1):
-            print(f"  BLOQUEADO {p['k']}: e-mail {'genérico da instituição' if GENERICO.search(p['email']) else 'repetido em ' + str(rep[p['email'].lower()]) + ' pessoas'}", flush=True)
+        if p["email"] and (generico(p["email"]) or rep[p["email"].lower()] > 1):
+            print(f"  BLOQUEADO {p['k']}: e-mail {'genérico da instituição' if generico(p['email']) else 'repetido em ' + str(rep[p['email'].lower()]) + ' pessoas'}", flush=True)
             p["email"] = ""
     feitos = json.load(open(REG)) if REG.exists() else {}
     for p in L:

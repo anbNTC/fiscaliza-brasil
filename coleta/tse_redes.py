@@ -50,7 +50,7 @@ def linhas(z, uf=None):
 
 def interesse():
     """quem o site mostra: nomes civis por UF (estado/federal) e SQ de 2024 (municípios)"""
-    nomes = defaultdict(set); sq24 = defaultdict(set)
+    nomes = defaultdict(set); sq24 = defaultdict(set); civ24 = {}
     BR = json.load(open(D / "br.json"))
     for d in BR["dep"]: nomes[d[3]].add(normd(d[5]))
     for s in BR["sen"]: nomes[s[4]].add(normd(s[2]))
@@ -64,20 +64,20 @@ def interesse():
             for p in U.get(k) or []: nomes[uf].add(normd(p[1]))
         for m in (U.get("mun") or {}).values():
             for p in [m[1], m[2]] + list(m[3] or []):
-                if p and len(p) > 10 and p[10]: sq24[uf].add(str(p[10]))
+                if p and len(p) > 10 and p[10]: sq24[uf].add(str(p[10])); civ24[(uf, normd(p[1]))] = str(p[10])
     for f in (D / "est").glob("*.json"):
         try:
             for e in json.load(open(f)).get("dep", {}).values():
                 if e.get("civil"): nomes[f.stem].add(normd(e["civil"]))
         except Exception: pass
     nomes = {uf: {n for n in v if n} for uf, v in nomes.items()}
-    return nomes, sq24
+    return nomes, sq24, civ24
 
 def main():
     g = OUT / "_gerado.txt"
     if not os.environ.get("REFAZ") and g.exists() and (datetime.date.today() - datetime.date.fromisoformat(g.read_text().strip())).days < 7:
         print("redes: gravadas há menos de 7 dias, nada a fazer"); return
-    nomes, sq24 = interesse()
+    nomes, sq24, civ24 = interesse()
     redes_n = defaultdict(dict); redes_s = defaultdict(dict)   # [uf][nome] / [uf][sq24] -> {rede: [perfis]} (ano mais novo primeiro)
     nome_sq24 = {}   # (uf, nome civil) -> sq de 2024, para casar a candidatura de 2026 dos prefeitos e vereadores
     c26 = defaultdict(dict); c26m = defaultdict(dict)
@@ -88,6 +88,7 @@ def main():
             if ano == 2024:
                 if sq in sq24.get(uf, ()): quem[sq] = (uf, nm, sq); nome_sq24[(uf, nm)] = sq
             elif nm in nomes.get(uf, ()): quem[sq] = (uf, nm, None)
+            elif (uf, nm) in civ24: quem[sq] = (uf, nm, civ24[(uf, nm)])   # prefeito ou vereador que concorreu em 2022 ou 2026: redes mais novas
             if ano == 2026:
                 turno = int(r.get("NR_TURNO") or 1)
                 v = [str(r.get("DS_CARGO") or "").capitalize(), str(r.get("DS_SIT_TOT_TURNO") or ""), str(r.get("DS_SITUACAO_CANDIDATURA") or ""), turno]

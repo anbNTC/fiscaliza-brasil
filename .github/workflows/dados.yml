@@ -196,10 +196,16 @@ jobs:
         timeout-minutes: 60
         run: python coleta/campanha_doadores.py 2>&1 | tail -4 | tee -a /tmp/assembleias.log
 
+      - name: TSE · redes sociais declaradas e candidatura de 2026 (uma vez por semana)
+        id: redes
+        continue-on-error: true
+        timeout-minutes: 40
+        run: python coleta/tse_redes.py 2>&1 | tail -6 | tee -a /tmp/assembleias.log
+
       - name: Salva o progresso (Assembleias)
         if: always()
         run: |
-          git add site/data/est site/data/emendas_est site/data/cam site/data/vm site/data/camp 2>/dev/null || true
+          git add site/data/est site/data/emendas_est site/data/cam site/data/vm site/data/camp site/data/redes 2>/dev/null || true
           git diff --cached --quiet || (git commit -m "Assembleias estaduais $(date -u +%F)" && for i in 1 2 3; do git pull --rebase --autostash -X theirs origin main && git push && break; git rebase --abort 2>/dev/null; sleep 7; done)
 
       - name: Recalcula partidos, ranking, resumo da semana e médias da cota
@@ -243,7 +249,7 @@ jobs:
           RESEND_API_KEY: "${{ secrets.RESEND_API_KEY }}"
           ALERTA_EMAIL: "${{ secrets.ALERTA_EMAIL }}"
           RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          ETAPAS: '{"fvotos": "${{ steps.fvotos.outcome }}", "fperfil": "${{ steps.fperfil.outcome }}", "sperfil": "${{ steps.sperfil.outcome }}", "orient": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}", "alesp": "${{ steps.alesp.outcome }}", "alesc": "${{ steps.alesc.outcome }}", "alba": "${{ steps.alba.outcome }}", "alepe": "${{ steps.alepe.outcome }}", "ales": "${{ steps.ales.outcome }}", "alrs": "${{ steps.alrs.outcome }}", "alep": "${{ steps.alep.outcome }}", "sgab": "${{ steps.sgab.outcome }}", "gabm": "${{ steps.gabm.outcome }}", "gabp": "${{ steps.gabp.outcome }}", "gabg": "${{ steps.gabg.outcome }}", "verba": "${{ steps.verba.outcome }}", "cmc": "${{ steps.cmc.outcome }}", "emest": "${{ steps.emest.outcome }}", "camaras": "${{ steps.camaras.outcome }}", "vm": "${{ steps.vm.outcome }}", "camp": "${{ steps.camp.outcome }}", "gab": "${{ steps.gab.outcome }}", "calc": "${{ steps.calc.outcome }}"}'
+          ETAPAS: '{"fvotos": "${{ steps.fvotos.outcome }}", "fperfil": "${{ steps.fperfil.outcome }}", "sperfil": "${{ steps.sperfil.outcome }}", "orient": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}", "alesp": "${{ steps.alesp.outcome }}", "alesc": "${{ steps.alesc.outcome }}", "alba": "${{ steps.alba.outcome }}", "alepe": "${{ steps.alepe.outcome }}", "ales": "${{ steps.ales.outcome }}", "alrs": "${{ steps.alrs.outcome }}", "alep": "${{ steps.alep.outcome }}", "sgab": "${{ steps.sgab.outcome }}", "gabm": "${{ steps.gabm.outcome }}", "gabp": "${{ steps.gabp.outcome }}", "gabg": "${{ steps.gabg.outcome }}", "verba": "${{ steps.verba.outcome }}", "cmc": "${{ steps.cmc.outcome }}", "emest": "${{ steps.emest.outcome }}", "camaras": "${{ steps.camaras.outcome }}", "vm": "${{ steps.vm.outcome }}", "camp": "${{ steps.camp.outcome }}", "redes": "${{ steps.redes.outcome }}", "gab": "${{ steps.gab.outcome }}", "calc": "${{ steps.calc.outcome }}"}'
         run: python tools/email_resend.py
 
   publica:

@@ -60,7 +60,11 @@ def estaduais():
         nome = re.search(r"<h1[^>]*>([\s\S]*?)</h1>", p); nome = " ".join(re.sub(r"<[^>]+>", " ", html.unescape(nome.group(1))).split()) if nome else sl
         nome = re.sub(r"^(PRESIDENTE|\d+º\s+(SECRETÁRI[OA]|VICE-PRESIDENTE)|DEPUTAD[OA])\s+", "", nome, flags=re.I).title()
         # só o e-mail do bloco de contato do gabinete ("Email" + mailto); o do rodapé é da Ouvidoria e vale para a casa toda
-        ems = [e for e in re.findall(r'>\s*E-?mail\s*:?\s*<a[^>]*href="mailto:\s*([^"?\s]+)', html.unescape(p), re.I) if EMAIL.fullmatch(e) and not generico(e)]
+        pg = html.unescape(p); ems = []
+        for m in re.finditer(r'href="mailto:\s*([^"?\s]+)', pg, re.I):
+            antes = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", pg[max(0, m.start() - 400):m.start()]))[-80:]
+            if "ouvidoria" in antes.lower() or not EMAIL.fullmatch(m.group(1)) or generico(m.group(1)): continue
+            ems.append(m.group(1))
         k = chave[sl]; nome = E["dep"][k].get("nome") or nome
         try: sx = UF["de" + ano][int(k)][4]
         except Exception: sx = ""

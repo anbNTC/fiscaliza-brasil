@@ -1,6 +1,6 @@
 """Emendas de deputados estaduais ao orçamento do estado, onde o governo publica em dados abertos com o nome do autor.
-Hoje: Pernambuco (dados.pe.gov.br), Minas Gerais (dados.mg.gov.br) e Goiás (dadosabertos.go.gov.br), de 2023 em diante.
-Os três portais são CKAN: lemos a lista de arquivos do conjunto e baixamos os que trazem autor, município e valores.
+Hoje: Pernambuco (dados.pe.gov.br), Minas Gerais (dados.mg.gov.br), Goiás (dadosabertos.go.gov.br) e Espírito Santo (dados.es.gov.br), de 2023 em diante.
+Os quatro portais são CKAN: lemos a lista de arquivos do conjunto e baixamos os que trazem autor, município e valores.
 Saída: site/data/emendas_est/{UF}.json
   {"fonte", "url", "gerado", "metrica", "dep": {"chave": [nome, k_de22 (int) | chave "x..." da Assembleia | None, total, pago, [[cidade, valor] x10]]},
    "cid": {CIDADE_NORMALIZADA: [[chave, valor] ...]}}"""
@@ -74,8 +74,17 @@ def go():
         g = lambda *ps: next((r[v] for c, v in k.items() if all(p in c for p in ps)), "")
         if ano_ok(g("EXERCICIO")): yield g("AUTOR"), g("MUNICIPIO"), num(g("VALOR EMPENHO")), num(g("OP")), g("BENEFICIARIO NOME")
 
+def es():
+    rs = recursos("https://dados.es.gov.br", "portal-da-transparencia-emendas-parlamentares-do-estado")
+    for x in rs:
+        m = re.fullmatch(r"Emendas-Estaduais-(20\d\d)\.csv", x["name"])
+        if not m or int(m.group(1)) < ANO0: continue
+        for r in linhas(baixa(x["url"])):
+            yield re.sub(r"^Dep\.?\s*", "", r.get("NomeAutor") or ""), r.get("Municipio"), num(r.get("ValorEmpenho")), num(r.get("ValorPago")), r.get("Favorecido")
+
 ESTADOS = {"PE": (pe, "Governo de Pernambuco · Portal de Dados Abertos (dados.pe.gov.br), Emendas Parlamentares Estaduais", "https://dados.pe.gov.br/dataset/emendasparlamentaresestaduais"),
            "MG": (mg, "Governo de Minas Gerais · Portal de Dados Abertos (dados.mg.gov.br), Emendas Parlamentares Estaduais", "https://dados.mg.gov.br/dataset/portal_emendas_estaduais"),
+           "ES": (es, "Governo do Espírito Santo · Dados Abertos (dados.es.gov.br), Emendas Parlamentares do Estado", "https://dados.es.gov.br/dataset/portal-da-transparencia-emendas-parlamentares-do-estado"),
            "GO": (go, "Governo de Goiás · Dados Abertos (dadosabertos.go.gov.br), Emendas Parlamentares", "https://dadosabertos.go.gov.br/dataset/emendas-parlamentares")}
 
 def liga(nomes, de):

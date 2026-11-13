@@ -20,7 +20,7 @@ ANOS = [2022, 2024, 2026]
 normd = lambda s: re.sub(r"\s+", " ", re.sub(r"[^A-Z0-9 ]", " ", unicodedata.normalize("NFKD", str(s or "")).encode("ascii", "ignore").decode().upper())).strip()
 REDE = [("ig", r"instagram\.com/"), ("tt", r"tiktok\.com/@?"), ("yt", r"youtube\.com/(?:@|c/|user/|channel/)?"), ("x", r"(?:twitter|x)\.com/"),
         ("fb", r"facebook\.com/(?:people/)?"), ("th", r"threads\.(?:net|com)/@?")]
-RUIM = {"p", "reel", "reels", "share", "watch", "profile.php", "pages", "groups", "explore", "stories", "home", "intent", "hashtag", "search", "tv", "accounts", "sharer"}
+RUIM = {"p", "reel", "reels", "share", "watch", "profile.php", "pages", "groups", "explore", "stories", "home", "intent", "hashtag", "search", "tv", "accounts", "sharer", "channel", "direct", "about", "web", "www", "login", "watch"}
 
 def perfil(u):
     """endereço → (rede, nome do perfil); None se não der para tirar um perfil limpo"""
@@ -30,7 +30,7 @@ def perfil(u):
         if m:
             h = m.group(1).strip(".").lstrip("@")
             if not h or h.lower() in RUIM or len(h) < 2 or len(h) > 60: return None
-            return k, (h.lower() if k in ("ig", "tt", "th", "x") else h)
+            return k, (h if k == "yt" and re.match(r"^UC[\w-]{22}$", h) else h.lower())
     return None
 
 def baixa(nome):

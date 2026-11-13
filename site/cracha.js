@@ -342,6 +342,10 @@ async function cracha(parts) {
   const fem = (pp && pp.g === "F") || /^(Deputada|Senadora|Governadora|Vice-governadora|Prefeita|Vice-prefeita|Vereadora)/.test(o.cargo || "");
   if (fem) { o.mand = String(o.mand || "").replace(/\bEleito\b/, "Eleita"); chips = chips.map((c) => c.replace(/\bReeleito\b/, "Reeleita").replace(/\bEleito\b/, "Eleita")); }
   const age = pp ? idade(pp.nasc) : null;
+  { const RS = await redesTSE(t, parts, P, o); o.redes = RS;
+    const novo = (t === "e" || t === "f" || t === "n") ? parts[2] === "26" : t === "g" ? parts[3] === "26" : false;
+    const atual = t === "c" ? "DEPUTADO FEDERAL" : t === "s" ? "SENADOR" : (t === "e" || t === "x") ? (o.uf === "DF" ? "DEPUTADO DISTRITAL" : "DEPUTADO ESTADUAL") : t === "g" ? (parts[2] === "0" ? "GOVERNADOR" : "VICE GOVERNADOR") : "";
+    const ch = novo ? "" : chip26(RS, atual, fem); if (ch && !chips.some((x) => /Reeleit/.test(x))) chips.push(ch); }
   const kv = [];
   if (o.civil) kv.push(["Nome civil", esc(o.civil), ""]);
   kv.push(["Partido", esc(o.part) + (pp && pp.fed ? ` <span class="s">federação ${esc(pp.fed)}</span>` : ""), ""]);
@@ -362,7 +366,7 @@ async function cracha(parts) {
   const share = encodeURIComponent(o.nome + " (" + o.cargo + ") no Fiscaliza Brasil: " + location.origin + "/p/" + parts.map(encodeURIComponent).join("/"));
   const atual = new Date(BR.gerado + "T12:00").toLocaleDateString("pt-BR");
   M.innerHTML = `<section class="card glass"><a class="muted small" href="${voltar}">← Voltar</a>
-    <div class="hero">${av(o.nome, o.foto, "lg")}<div style="display:grid;gap:6px"><span class="kick">${esc(o.cargo)}</span><h1>${esc(o.nome)}</h1><div class="chips"><span class="chip">${esc(o.part)}</span><span class="chip">${esc(o.uf)}</span>${chips.join("")}</div></div></div>
+    <div class="hero">${av(o.nome, o.foto, "lg")}<div style="display:grid;gap:6px"><span class="kick">${esc(o.cargo)}</span><h1>${esc(o.nome)}</h1><div class="chips"><span class="chip">${esc(o.part)}</span><span class="chip">${esc(o.uf)}</span>${chips.join("")}</div></div></div>${redesHTML(o.redes)}
     <div class="btns">${o.link ? `<a class="btn o" href="${o.link}" target="_blank" rel="noopener">${o.linkN}</a>` : ""}<a class="btn o" href="https://wa.me/?text=${share}" target="_blank" rel="noopener">WhatsApp</a>${o.plano ? `<a class="btn o" href="${o.plano}" target="_blank" rel="noopener">Plano de governo (TSE)</a>` : ""}<button class="btn o" id="acf" type="button">☆ Acompanhar</button>${casa ? '<button class="btn o" id="cmpf" type="button">+ Comparar</button>' : ""}<button class="btn o" id="rep">Reportar erro</button></div></section>
    <div id="dres"></div>
    <section class="card glass" style="padding:8px"><div class="tabs2" role="tablist">${tabs.map(([k, l], i) => `<button role="tab" data-k="${k}" aria-selected="${i === 0}">${l}</button>`).join("")}</div></section>
@@ -397,6 +401,33 @@ async function cracha(parts) {
   if (!X && casa) tb.insertAdjacentHTML("beforebegin", "");
   await show("resumo");
   window.scrollTo(0, 0);
+}
+
+/* redes sociais que o próprio político informou ao TSE no registro da candidatura (coleta/tse_redes.py) e candidatura de 2026 */
+const nrm = (x) => String(x || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+const REDES = { ig: ["Instagram", (h) => "https://www.instagram.com/" + h + "/"], tt: ["TikTok", (h) => "https://www.tiktok.com/@" + h], yt: ["YouTube", (h) => "https://www.youtube.com/" + (/^UC[\w-]{22}$/.test(h) ? "channel/" : "@") + h], x: ["X", (h) => "https://x.com/" + h], th: ["Threads", (h) => "https://www.threads.net/@" + h], fb: ["Facebook", (h) => "https://www.facebook.com/" + h] };
+async function redesTSE(t, parts, P, o) {
+  try {
+    if (t === "m") { const R = await getJSON("data/redes/m" + o.uf + ".json"); const sq = P && String(P[10]); return { r: R.s[sq] || null, c26: R.c26[sq] || null }; }
+    const nome = nrm(P ? P[1] : o.civil); if (!nome) return null; const R = await getJSON("data/redes/" + o.uf + ".json"); return { r: R.n[nome] || null, c26: R.c26[nome] || null };
+  } catch (e) { return null; }
+}
+function redesHTML(R) {
+  if (!R || !R.r) return "";
+  const l = Object.keys(REDES).filter((k) => R.r[k] && R.r[k].length).map((k) => `<a class="rd" href="${esc(REDES[k][1](R.r[k][0]))}" target="_blank" rel="noopener nofollow"><span>${REDES[k][0]}</span>@${esc(R.r[k][0])}</a>`);
+  return l.length ? `<div class="redes" aria-label="Redes sociais">${l.join("")}</div><p class="muted small" style="margin:6px 0 0">Redes informadas pelo próprio político ao TSE no registro da candidatura.</p>` : "";
+}
+/* selo com o que aconteceu na eleição de 2026 para quem tem mandato até 2027 (ou concorreu no meio do mandato) */
+function chip26(R, atual, fem) {
+  if (!R || !R.c26) return "";
+  const [cg, res, sit] = R.c26, r = nrm(res); let c = cg.toLowerCase();
+  if (fem) c = c.replace(/^deputado/, "deputada").replace(/^senador$/, "senadora").replace(/governador$/, "governadora");
+  const mesmo = atual && nrm(cg) === atual; const e = fem ? "a" : "o";
+  if (/^ELEITO/.test(r)) return mesmo ? "" : `<span class="chip new">Eleit${e} ${esc(c)} em 2026</span>`;
+  if (/^SUPLENTE/.test(r)) return `<span class="chip warn">Suplente em 2026 · concorreu a ${esc(c)}</span>`;
+  if (/NAO ELEITO/.test(r)) return `<span class="chip warn">${mesmo ? `Não reeleit${e} em 2026` : `Não eleit${e} em 2026 · concorreu a ${esc(c)}`}</span>`;
+  if (/INAPTO/.test(nrm(sit))) return `<span class="chip">Candidatura a ${esc(c)} em 2026 não deferida</span>`;
+  return "";
 }
 
 /* números do card para Stories */

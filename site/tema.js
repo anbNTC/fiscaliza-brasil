@@ -14,7 +14,7 @@
   html.escuro :is(.top,.nav){background-color:rgba(16,18,22,.72)!important}
   html.escuro :is(${INK.join(",")}){background:#EDEDEA!important;color:#0B0B0C!important;border-color:#EDEDEA!important}
   html.escuro :is(${INK.join(",")}) *{color:#0B0B0C}
-  html.escuro :is(.btn.o,.tab,.home,.yrs button,.trend button,.chip,.tagv.n,.dnav button,.mnav button,.az button,.x,.seta,.minb + *,.cb-form input,.cb-form textarea,.aclogin input,.in,input,select,textarea){background-color:rgba(255,255,255,.07)!important;color:var(--ink)!important;border-color:rgba(255,255,255,.16)!important}
+  html.escuro :is(.btn.o,.redes .rd,.tab,.home,.yrs button,.trend button,.chip,.tagv.n,.dnav button,.mnav button,.az button,.x,.seta,.minb + *,.cb-form input,.cb-form textarea,.aclogin input,.in,input,select,textarea){background-color:rgba(255,255,255,.07)!important;color:var(--ink)!important;border-color:rgba(255,255,255,.16)!important}
   html.escuro :is(input,select,textarea)::placeholder{color:#8C9097}
   html.escuro :is(.go,.tile,.pc,.lk-a){box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.07)!important}
   html.escuro :is(.go,.tile,.pc,.lk-a):hover{transform:none!important;background-color:rgba(255,255,255,.09)!important;border-color:rgba(255,255,255,.22)!important;box-shadow:0 10px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.10)!important}

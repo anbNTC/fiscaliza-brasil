@@ -1,18 +1,16 @@
-"""Sonda temporária: portais estaduais de dados abertos (CKAN) com emendas parlamentares estaduais."""
-import sys, json, requests
+"""Sonda temporária: colunas das emendas parlamentares estaduais do Espírito Santo (dados.es.gov.br)."""
+import sys, csv, io, requests
 sys.path.insert(0, "coleta")
 from prefeituras_abertas import H
-from saida_br import get as gbr
-P = ["dados.sc.gov.br", "dados.rs.gov.br", "dados.es.gov.br", "dados.pr.gov.br", "dadosabertos.pr.gov.br", "dados.sp.gov.br", "dados.ba.gov.br", "dados.ce.gov.br",
-     "dados.al.gov.br", "dados.rj.gov.br", "dados.df.gov.br", "dados.ms.gov.br", "dados.to.gov.br", "dados.pa.gov.br", "dados.mt.gov.br", "dados.am.gov.br",
-     "dados.rn.gov.br", "dados.pb.gov.br", "dados.pi.gov.br", "dados.ma.gov.br", "dados.se.gov.br", "dados.ro.gov.br", "dados.ap.gov.br", "dados.ac.gov.br", "dados.rr.gov.br"]
-for p in P:
-    u = f"https://{p}/api/3/action/package_search?q=emenda%20parlamentar&rows=8"
-    try:
-        r = requests.get(u, headers=H, timeout=25)
-        if not r.ok: r = gbr(u, headers=H, timeout=40)
-        j = r.json()["result"]
-        print("CKAN", p, j["count"], flush=True)
-        for x in j["results"]:
-            print("  PKG", p, x["name"], "|", x.get("title"), "|", sorted({(y.get("format") or "?") for y in x.get("resources", [])}), "|", (x.get("metadata_modified") or "")[:10], flush=True)
-    except Exception as e: print("CKAN", p, "falhou", repr(e)[:120], flush=True)
+r = requests.get("https://dados.es.gov.br/api/3/action/package_show?id=portal-da-transparencia-emendas-parlamentares-do-estado", headers=H, timeout=60).json()["result"]
+for x in r["resources"]: print("RES", x["name"], "|", x.get("format"), "|", x["url"], flush=True)
+u = next(x["url"] for x in r["resources"] if (x.get("format") or "").upper() == "CSV")
+b = requests.get(u, headers=H, timeout=300).content
+t = b.decode("utf-8-sig", "replace") if b[:3] == b"\xef\xbb\xbf" or b"\xc3" in b[:5000] else b.decode("latin-1")
+sep = ";" if t[:2000].count(";") >= t[:2000].count(",") else ","
+rd = list(csv.DictReader(io.StringIO(t), delimiter=sep))
+print("COLS", len(rd), list(rd[0].keys()), flush=True)
+for row in rd[:3]: print("ROW", dict(row), flush=True)
+from collections import Counter
+for c in rd[0]:
+    if any(k in c.lower() for k in ("autor", "parlament", "ano", "exerc", "munic")): print("TOP", c, Counter(x[c] for x in rd).most_common(6), flush=True)

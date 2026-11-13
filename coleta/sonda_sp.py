@@ -11,12 +11,11 @@ def j(u):
         m = re.search(r">\s*(\[.*\]|\{.*\})\s*<", r.text, re.S)
         if m: return json.loads(m.group(1))
         print("RAW", u, r.status_code, r.text[:400].replace("\n", " "), flush=True); return []
-au = j("ProjetosAutoresJSON?ano=2025") or j("ProjetosAutoresJSON?ano=2025&tipo=") or j("ProjetosAutoresJSON?ano=2025&tipo=PL"); print("AUT", len(au), json.dumps(au[:3], ensure_ascii=False)[:800], flush=True)
 V = j("VereadoresCMSPJSON")
-at = [v for v in V if any((m.get("fim") or "9999") >= "2026" and (m.get("inicio") or "") >= "2024" for m in v.get("mandatos") or [])]
-print("VER atuais", len(at), flush=True)
-print("VER1", json.dumps({k: v for k, v in at[0].items() if k != "cargos"}, ensure_ascii=False)[:1500], flush=True)
-print("VERN", [v["nome"] for v in at], flush=True)
-P = j("PromoventesCMSPJSON"); print("PROMTIPOS", Counter(p["tipo"]["nome"] for p in P), flush=True)
-print("PROMVER", [p for p in P if p["tipo"]["nome"].startswith("VEREADOR")][:5], flush=True)
-pj = j("ProjetosPorAnoJSON?ano=2025"); print("TIPOS", Counter(p["tipo"] for p in pj).most_common(30), flush=True)
+at = [v for v in V if any((m.get("fim") or "") >= "2026" and (m.get("inicio") or "") >= "2025" for m in v.get("mandatos") or [])]
+print("VERN", len(at), [(v["chave"], v["nome"]) for v in at], flush=True)
+c = at[0]["chave"]
+for op in ["ProjetosEmTramitacaoPorPromoventeJSON", "LeisAprovadasPorPromoventeJSON", "ProjetosVetadosPorPromoventeJSON"]:
+    for q in [f"promovente={c}", f"promovente={c}&ano=2025", f"codigo={c}", f"chave={c}"]:
+        x = j(f"{op}?{q}")
+        if x: print("RES", op, q, len(x), json.dumps(x[:2], ensure_ascii=False)[:700], flush=True); break

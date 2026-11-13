@@ -76,6 +76,10 @@ def main():
     dep = {}; sem = []
     for ch, v in atuais.items():
         k = idx.get(norm(v["nome"])); k = idx.get(limpa(v["nome"])) if k is None else k
+        if k is None:   # nome de urna contido no nome da Câmara ("TRIPOLI" em "Roberto Trípoli") ou 2+ palavras do nome civil ("Kenji Ito")
+            tt = set(limpa(v["nome"]).split())
+            cs = [i for i, x in enumerate(tse) if limpa(x[0]) and set(limpa(x[0]).split()) <= tt] or [i for i, x in enumerate(tse) if len(tt & set(limpa(x[1]).split())) >= 2]
+            if len(cs) == 1: k = cs[0]
         cont = Counter(); props = []
         for kk, princ in sorted(autoria.get(ch, []), key=lambda t: (mats.get(_chave(t[0])) or ["", ""])[1], reverse=True):
             tp = kk.split()[0]; cont[tp] += 1

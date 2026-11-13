@@ -52,6 +52,7 @@ def main():
     # autores, com cache
     try: cache = json.load(open(CACHE))
     except Exception: cache = {}
+    cache = {k: v for k, v in cache.items() if v and all(c is not None for c, _ in v)}   # consulta sem autor reconhecido: tenta de novo
     novos = 0
     for (tp, n, a) in sorted(mats, key=lambda k: (k[2], k[1]), reverse=True):
         if tp not in PROJ and tp not in OUTROS: continue
@@ -60,8 +61,8 @@ def main():
         if novos >= LIMITE: break
         r = j(f"ProjetosAutoresJSON?tipo={tp}&numero={n}&ano={a}")
         if r is None: continue
-        if novos == 0: print("exemplo de autores:", k, json.dumps(r, ensure_ascii=False)[:400], flush=True)
-        cache[k] = [[(x.get("promovente") or x).get("chave"), 1 if i == 0 else 0] for i, x in enumerate(r if isinstance(r, list) else [])]
+        aut = [a for x in (r if isinstance(r, list) else []) for a in (x.get("autores") or [])]
+        cache[k] = [[a.get("chave"), 1 if i == 0 else 0] for i, a in enumerate(aut) if a.get("chave") is not None]
         novos += 1; time.sleep(0.25)
     json.dump(cache, open(CACHE, "w"), separators=(",", ":"))
     falta = sum(1 for (tp, n, a) in mats if (tp in PROJ or tp in OUTROS) and f"{tp} {n}/{a}" not in cache)

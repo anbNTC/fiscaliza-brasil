@@ -22,9 +22,14 @@ REDE = [("ig", r"instagram\.com/"), ("tt", r"tiktok\.com/@?"), ("yt", r"youtube\
         ("fb", r"facebook\.com/(?:people/)?"), ("th", r"threads\.(?:net|com)/@?")]
 RUIM = {"p", "reel", "reels", "share", "watch", "profile.php", "pages", "groups", "explore", "stories", "home", "intent", "hashtag", "search", "tv", "accounts", "sharer", "channel", "direct", "about", "web", "www", "login", "watch"}
 
+def perfis(u):
+    """um campo do TSE pode trazer mais de um endereço colado ("instagram.com/a https://instagram.com/b")"""
+    return [p for x in re.split(r"[\s,;]+(?=(?:https?:|www\.|instagram|tiktok|youtube|facebook|twitter|x\.com|threads))", str(u or ""), flags=re.I) for p in [perfil(x)] if p]
+
 def perfil(u):
     """endereço → (rede, nome do perfil); None se não der para tirar um perfil limpo"""
     u = re.sub(r"\s+", "", str(u or "")).strip("'\" ")
+    u = re.split(r"(?<=.)(?=https?:)", u, flags=re.I)[0]
     for k, pad in REDE:
         m = re.search(pad + r"([A-Za-z0-9_.\-]+)", u, re.I)
         if m:
@@ -99,10 +104,9 @@ def main():
         for uf, r in linhas(zr):
             q = quem.get(r.get("SQ_CANDIDATO"))
             if not q: continue
-            p = perfil(r.get("DS_URL"))
-            if not p: continue
             alvo = novo_s[q[0]][q[2]] if q[2] else novo_n[q[0]][q[1]]
-            if p not in alvo: alvo.append(p)
+            for p in perfis(r.get("DS_URL")):
+                if p not in alvo: alvo.append(p)
         del zr
         for dst, src in ((redes_n, novo_n), (redes_s, novo_s)):
             for uf, pessoas in src.items():

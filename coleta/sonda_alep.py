@@ -7,6 +7,8 @@ t = html.unescape(S.get("https://www.assembleia.pr.leg.br/deputados/conheca", ti
 ems = list(dict.fromkeys(EMAIL.findall(t)))
 print("CONHECA emails:", len(ems), "| genericos:", sum(1 for e in ems if GENERICO.search(e)), "| mailto:", t.count("mailto:"), flush=True)
 print("CONHECA formatos:", sorted({re.sub(r"[a-z]", "x", e.split("@")[0])[:3] + "...@" + e.split("@")[1] for e in ems})[:10], flush=True)
-for sl in ["alexandre-amaro", "goura"]:
+for sl in ["alexandre-amaro", "goura", "alexandre-curi"]:
     p = html.unescape(S.get(f"https://www.assembleia.pr.leg.br/deputados/perfil/{sl}", timeout=60).text); time.sleep(1)
-    print("PERFIL", sl, "emails:", len(set(EMAIL.findall(p))), "| palavras:", [w for w in ("gabinete", "e-mail", "email", "telefone", "contato") if w in p.lower()], "| links:", sorted(set(re.findall(r'href="(/[^"]*(?:contato|gabinete)[^"]*)"', p)))[:5], flush=True)
+    for e in dict.fromkeys(EMAIL.findall(p)):
+        i = p.find(e); ctx = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", p[max(0, i - 300):i]))[-70:]
+        print("PERFIL", sl, "| dominio:", e.split("@")[1], "| generico:", bool(GENERICO.search(e)), "| antes:", ctx, flush=True)

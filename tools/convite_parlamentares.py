@@ -227,6 +227,8 @@ def main():
             if g in vistos or not p["email"]: continue
             vistos.add(g); print("teste", p["k"], "→ ALERTA_EMAIL:", envia(resp, p, resp))
         return
+    hoje = sum(1 for v in feitos.values() if v == datetime.date.today().isoformat())
+    if hoje: lim = max(0, lim - hoje); print(f"já saíram {hoje} convites hoje: nesta execução vão no máximo {lim}", flush=True)
     n = 0
     for p in L:
         if n >= lim: print("limite desta execução atingido; o resto vai na próxima"); break

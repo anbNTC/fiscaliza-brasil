@@ -442,7 +442,7 @@ async function statsCard(o, X, casa) {
     const au = (X.au && X.au.c) || {}; st.push([["PL", "PLP", "PEC", "PDL", "PRS"].reduce((s, t) => s + (au[t] || 0), 0), "Projetos apresentados"]);
     if (X.cota) st.push([brlc(Object.values(X.cota.a).reduce((s, t) => s + Object.values(t).reduce((x, y) => x + y, 0), 0)), "Cota parlamentar gasta"]);
   }
-  if (o.est) { const cs = o.estInfo && o.estInfo.casa ? "na Câmara" : "na Assembleia"; const pc = ["PLO", "PL", "PLC", "PEC", "PDL", "PRE", "PLL", "PLCM", "PLI", "PCOL"].reduce((x, k) => x + ((o.est.cont || {})[k] || 0), 0); st.push([mil(pc), "Projetos " + cs + " desde " + ((o.estInfo && o.estInfo.desde) || (o.estInfo && o.estInfo.casa ? "2025" : "2023"))]);
+  if (o.est) { const cs = o.estInfo && o.estInfo.casa ? "na Câmara" : "na Assembleia"; const pc = ["PLO", "PL", "PLC", "PEC", "PDL", "PRE", "PEL", "PLL", "PLCM", "PLI", "PCOL"].reduce((x, k) => x + ((o.est.cont || {})[k] || 0), 0); st.push([mil(pc), "Projetos " + cs + " desde " + ((o.estInfo && o.estInfo.desde) || (o.estInfo && o.estInfo.casa ? "2025" : "2023"))]);
     const tv = Object.values(o.est.votos || {}).reduce((x, y) => x + y, 0); if (tv) st.push([mil(tv), "Votos registrados " + cs]); }
   if (st.length < 4 && o.vc && o.vc.v) st.push([mil(o.vc.v[0]), "Votos em " + o.ano]);
   if (st.length < 4 && o.vc && o.vc.c) st.push([brlc(o.vc.c[0]), "Arrecadou na campanha"]);
@@ -460,7 +460,7 @@ const REGIAO = { AC: "NORTE", AM: "NORTE", AP: "NORTE", PA: "NORTE", RO: "NORTE"
 function planoURL(uf, ano, ue, sq) { if (!sq || !ELEI[ano]) return ""; return `https://divulgacandcontas.tse.jus.br/divulga/#/candidato/${REGIAO[uf] || "BR"}/${uf}/${ELEI[ano]}/${sq}/${ano}/${ue}`; }
 
 /* deputados estaduais: dados das Assembleias que publicam no SAPL */
-const TIPOS_EST = { PLI: "Projetos de autoria própria", PCOL: "Projetos em coautoria", REQP: "Requerimentos à Prefeitura", PLO: "Projetos de lei", PL: "Projetos de lei", PLC: "Projetos de lei complementar", PEC: "Propostas de emenda à Constituição", PDL: "Projetos de decreto legislativo", PRE: "Projetos de resolução", PR: "Projetos de resolução", IND: "Indicações", REQ: "Requerimentos", MOC: "Moções", PINF: "Pedidos de informação" };
+const TIPOS_EST = { PLI: "Projetos de autoria própria", PCOL: "Projetos em coautoria", REQP: "Requerimentos à Prefeitura", PLO: "Projetos de lei", PL: "Projetos de lei", PLC: "Projetos de lei complementar", PEC: "Propostas de emenda à Constituição", PDL: "Projetos de decreto legislativo", PRE: "Projetos de resolução", PR: "Projetos de resolução", IND: "Indicações", REQ: "Requerimentos", MOC: "Moções", PINF: "Pedidos de informação", PEL: "Emendas à Lei Orgânica", PELOM: "Emendas à Lei Orgânica" };
 /* emendas do deputado estadual ao orçamento do estado (onde o governo publica com o nome do autor) */
 function secEmEst(o) {
   const [, , emp, pago, cs] = o.emEst, I = o.emEstInfo; const mx = cs.length ? cs[0][1] : 1;

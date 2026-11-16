@@ -15,11 +15,16 @@ D = Path(__file__).resolve().parents[1] / "site" / "data"; OUT = D / "cam"; OUT.
 DESDE = "2025-01-01"; ANOS = range(2025, datetime.date.today().year + 1)
 PADROES = ["https://sapl.{s}.{u}.leg.br", "https://sapl.camara{s}.{u}.gov.br", "https://sapl.cm{s}.{u}.gov.br", "https://sapl.{s}.{u}.gov.br", "https://sapl.camara{s}.{u}.leg.br"]
 MIN_CIDADE = float(os.environ.get("MIN_CIDADE", "14")); MAX_TOTAL = float(os.environ.get("MAX_TOTAL", "40")) * 60
+# capitais: endereço do SAPL fora do padrão e mais tempo por cidade (têm dezenas de milhares de matérias)
+CAPITAIS = {"01392", "27855", "06050", "02550", "38490", "13897", "57053", "93734", "09210", "90670", "90514", "41238", "04278", "20516", "75353", "25313",
+            "12190", "60011", "17612", "88013", "00035", "03018", "81051", "71072", "31054", "73440"}
+EXTRA = {"02550": "https://sapl.cmm.am.gov.br"}   # Manaus
+MIN_CAPITAL = float(os.environ.get("MIN_CAPITAL", "35"))
 slug = lambda s: re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower())
 
 def sonda(a):
     uf, ue, nome = a[:3]
-    for pd in PADROES:
+    for pd in ([EXTRA[ue]] if ue in EXTRA else []) + PADROES:
         b = pd.format(s=slug(nome), u=uf.lower())
         try:
             r = requests.get(f"{b}/api/materia/materialegislativa/", params={"ano": 2025, "page_size": 1}, headers=H, timeout=12)
@@ -43,10 +48,10 @@ def main():
     try: idx = json.load(open(OUT / "index.json"))
     except Exception: pass
     # quem nunca foi coletado vai primeiro; depois, as coletadas há mais tempo (o tempo não dá para todas num dia)
-    ativas.sort(key=lambda x: (x["ue"] in idx, (idx.get(x["ue"]) or [""] * 6)[5:6] or [""], -x["mat"]))
+    ativas.sort(key=lambda x: (x["ue"] not in CAPITAIS, x["ue"] in idx, (idx.get(x["ue"]) or [""] * 6)[5:6] or [""], -x["mat"]))
     def um(x):
         if time.time() - t0 > MAX_TOTAL: return x, {"erro": "sem tempo"}
-        A = SAPL(base=x["base"], lim_min=MIN_CIDADE)
+        A = SAPL(base=x["base"], lim_min=MIN_CAPITAL if x["ue"] in CAPITAIS else MIN_CIDADE)
         r = coleta_sapl(A, TSE.get(x["ue"], []), DESDE, ANOS)
         if "erro" in r: return x, r
         out = {"fonte": f"Câmara Municipal de {x['nome'].title()} ({x['uf']}) · SAPL, dados abertos", "url": x["base"], "gerado": datetime.date.today().isoformat(),
@@ -57,7 +62,7 @@ def main():
         return x, {"vereadores": len(r["parl"]), "ligados": len(r["parl"]) - len(r["sem"]), "materias": len(r["mats"]), "votos": len(r["vp"])}
     with cf.ThreadPoolExecutor(8) as ex: R = list(ex.map(um, ativas))
     json.dump(idx, open(OUT / "index.json", "w"), ensure_ascii=False, separators=(",", ":"))
-    for x, r in R: print(x["uf"], x["nome"], json.dumps(r, ensure_ascii=False), flush=True)
+    for x, r in sorted(R, key=lambda t: t[0]["ue"] not in CAPITAIS): print(("CAPITAL " if x["ue"] in CAPITAIS else "") + x["uf"], x["nome"], json.dumps(r, ensure_ascii=False), flush=True)
     print(json.dumps({"camaras": len(idx), "com_votos": sum(1 for v in idx.values() if v[3]), "min": round((time.time() - t0) / 60, 1)}))
 
 if __name__ == "__main__":

@@ -19,4 +19,8 @@ wb = openpyxl.load_workbook(io.BytesIO(b), read_only=True)
 for ws in wb.worksheets:
     rows = list(ws.iter_rows(values_only=True)); print("XLS", ws.title, len(rows), flush=True)
     for x in rows[:14]: print("ROW", x, flush=True)
-print("FILTRO", re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", t[t.find("FResumo_search"):t.find("FResumo_search") + 3000]))[:800], flush=True)
+j = t.find('name="FResumo_search"'); fr = t[j:t.find("</form>", j)]
+print("FRFIELDS", re.findall(r'<(input|select)[^>]*name="([^"]+)"[^>]*?(?:value="([^"]*)")?', fr)[:30], flush=True)
+print("FRSCRIPT", sorted(set(re.findall(r"nm_(?:gp_)?submit\w*|nmgp_opcao\.value\s*=\s*['\"](\w+)", t)))[:20], flush=True)
+k = t.find("function scSubmitResumo") if "function scSubmitResumo" in t else t.find("FResumo_search.submit")
+print("FRJS", re.sub(r"\s+", " ", t[max(0, k - 1200):k + 400]), flush=True)

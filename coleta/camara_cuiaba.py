@@ -74,6 +74,8 @@ def main():
         if k is None:
             tt = set(limpa(nome).split())
             cs = [i for i, x in enumerate(tse) if limpa(x[0]) and set(limpa(x[0]).split()) <= tt] or [i for i, x in enumerate(tse) if len(tt & set(limpa(x[1]).split())) >= 2]
+            if not cs and len(tt) == 1:   # nome de uma palavra só ("Ranalli"): vale se só um eleito tiver essa palavra no nome
+                cs = [i for i, x in enumerate(tse) if tt <= set(limpa(x[0]).split()) | set(limpa(x[1]).split())]
             if len(cs) == 1: k = cs[0]
         reg = {"nome": nome, "civil": "", "partido": "", "foto": "", "cont": dict(cont),
                "props": sorted(props, key=lambda p: p[2], reverse=True)[:80], "parcial": parcial, "leis": [], "votos": {}, "vlist": [],

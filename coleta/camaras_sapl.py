@@ -24,13 +24,14 @@ slug = lambda s: re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", s).encode("
 
 def sonda(a):
     uf, ue, nome = a[:3]
+    to = 45 if ue in CAPITAIS else 12   # SAPL de capital é grande e demora a responder
     for pd in ([EXTRA[ue]] if ue in EXTRA else []) + PADROES:
         b = pd.format(s=slug(nome), u=uf.lower())
         try:
-            r = requests.get(f"{b}/api/materia/materialegislativa/", params={"ano": 2025, "page_size": 1}, headers=H, timeout=12)
+            r = requests.get(f"{b}/api/materia/materialegislativa/", params={"ano": 2025, "page_size": 1}, headers=H, timeout=to)
             if r.status_code != 200 or "json" not in r.headers.get("content-type", ""): continue
             mat = r.json().get("pagination", {}).get("total_entries") or 0
-            v = requests.get(f"{b}/api/sessao/votoparlamentar/", params={"page_size": 1, "o": "-id"}, headers=H, timeout=12).json()
+            v = requests.get(f"{b}/api/sessao/votoparlamentar/", params={"page_size": 1, "o": "-id"}, headers=H, timeout=to).json()
             ult = (v.get("results") or [{}])[0].get("data_hora") or ""
             return {"uf": uf, "ue": ue, "nome": nome, "base": b, "mat": mat, "voto": ult >= DESDE}
         except Exception: continue

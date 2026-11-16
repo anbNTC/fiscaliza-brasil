@@ -1,12 +1,10 @@
-"""Sonda temporária: paginação, mapa por tipo e filtros da produção por autor em Cuiabá."""
+"""Sonda temporária: consulta por tipo de Cuiabá e mapa por tipo de um vereador."""
 import re, sys, html
 sys.path.insert(0, "coleta")
 from saida_br import get
 from assembleias_sapl import H
 B = "https://legislativo.camaracuiaba.mt.gov.br/spl/"
-p = html.unescape(get(B + "consulta-producao.aspx?autor=8219&ano=2025", headers={**H, "accept": "text/html"}, timeout=90).text)
-print("ITENS", len(re.findall(r"Processo N°:", re.sub(r"<[^>]+>", " ", p))), "| total:", re.findall(r"Localizada\(s\)[\s\S]{0,200}?(\d+)", re.sub(r"<[^>]+>", " ", p))[:1], flush=True)
-i = p.find("MAPA DE PROPOSI"); print("MAPA", re.sub(r"\s+", " ", re.sub(r"<(script|style|svg)[\s\S]*?</\1>|<[^>]+>", " | ", p[i:i + 6000]))[:1500], flush=True)
-print("MAPALINKS", sorted(set(re.findall(r"href='([^']*consulta-producao[^']*)'", p)))[:20], flush=True)
-print("PAG", sorted(set(re.findall(r"(?:href|onclick)='([^']*(?:pagina|page|Page\$)[^']*)'", p)))[:10], re.findall(r"__doPostBack\('([^']+)','([^']*)'\)", p)[:8], flush=True)
-print("DOWN", re.findall(r"href='([^']*(?:download|Download|xls|csv|pdf)[^']*)'", p)[:5], flush=True)
+t = html.unescape(get(B + "consulta-tipo.aspx", headers={**H, "accept": "text/html"}, timeout=90).text)
+ls = re.findall(r"<div class='card-title[^>]*>([^<]+?)\((\d+)\)<[\s\S]*?</div></div></div>", t)
+print("TIPOS", [(a.strip(), b) for a, b in ls][:40], flush=True)
+print("TLINKS", sorted(set(re.findall(r"href='(consulta-[a-z]+\.aspx\?[^']*(?:2025|2026)[^']*)'", t)))[:40], flush=True)

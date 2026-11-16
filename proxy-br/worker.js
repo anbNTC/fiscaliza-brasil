@@ -5,7 +5,7 @@
 const PERMITIDOS = [/(^|\.)ce\.gov\.br$/, /(^|\.)prefeitura\.sp\.gov\.br$/, /(^|\.)df\.gov\.br$/, /(^|\.)rs\.gov\.br$/, /(^|\.)vitoria\.es\.gov\.br$/, /(^|\.)sp\.gov\.br$/, /(^|\.)go\.gov\.br$/, /(^|\.)pe\.gov\.br$/, /(^|\.)almg\.gov\.br$/, /(^|\.)alepe\.pe\.gov\.br$/, /(^|\.)al\.rs\.gov\.br$/, /(^|\.)al\.es\.gov\.br$/,
   /(^|\.)al\.ma\.leg\.br$/, /(^|\.)al\.ap\.gov\.br$/, /(^|\.)al\.ap\.leg\.br$/, /(^|\.)cl\.df\.gov\.br$/, /(^|\.)cmc\.pr\.gov\.br$/, /(^|\.)eloweb\.net$/, /(^|\.)curitiba\.pr\.gov\.br$/, /(^|\.)assembleia\.pr\.leg\.br$/, /^www\.cloudflare\.com$/,
   /(^|\.)(cuiaba\.mt|saoluis\.ma|recife\.pe|goiania\.go|teresina\.pi|palmas\.to|aracaju\.se|macapa\.ap)\.leg\.br$/, /(^|\.)camara\.rio$/, /(^|\.)camara\.rj\.gov\.br$/, /(^|\.)cmbh\.mg\.gov\.br$/,
-  /(^|\.)cms\.ba\.gov\.br$/, /^cmsalvador\.sys\.inf\.br$/, /(^|\.)cmb\.pa\.gov\.br$/, /(^|\.)cmm\.am\.gov\.br$/];
+  /(^|\.)cms\.ba\.gov\.br$/, /^cmsalvador\.sys\.inf\.br$/, /(^|\.)cmb\.pa\.gov\.br$/, /(^|\.)cmm\.am\.gov\.br$/, /(^|\.)camaracuiaba\.mt\.gov\.br$/];
 const UA = "Mozilla/5.0 (FiscalizaBrasil/1.0; +https://fiscalizaja.com.br)";
 
 async function busca(p) {

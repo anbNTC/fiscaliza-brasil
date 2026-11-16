@@ -1,18 +1,16 @@
-"""Sonda temporária: pesquisar.php da CMBH e conteúdo da grade de produtividade de Salvador."""
+"""Sonda temporária: exportação da grade de produtividade parlamentar de Salvador (ScriptCase)."""
 import re, sys, html, requests
 sys.path.insert(0, "coleta")
 from assembleias_sapl import H
-U = "https://www.cmbh.mg.gov.br/atividade-legislativa/pesquisar-proposicoes"
+B = "http://45.4.247.157/leg/salvador/LEG_SYS_produtividade_parlamentar_proposicao/"
 S = requests.Session(); S.headers.update(H)
-t = S.get(U, timeout=60).text; i = t.find("form_pesquisa_proposicoes")
-f = {k: v for k, v in re.findall(r'<input[^>]*type="hidden"[^>]*name="([^"]+)"[^>]*value="([^"]*)"', t[i:i + 20000])}
-f.update({"tipo": "2c907f7801d41f2001024943e5ec004a", "ano": "2025", "numero": "", "autor": "[autor]", "assunto": "[assunto]", "assunto2": "[assunto2]", "fase": "[Selecione]", "paginaRequerida": "1", "buscarPorProtocolo": "false"})
-r = S.post("https://www.cmbh.mg.gov.br/sites/all/modules/proposicoes/pesquisar.php", data=f, timeout=90, headers={"referer": U, "x-requested-with": "XMLHttpRequest"})
-txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " | ", html.unescape(r.text)))
-print("BHR", r.status_code, len(r.text), txt[:2500], flush=True)
-print("BHA", sorted(set(re.findall(r'data-caminho="([^"]+)"', r.text)))[:5], re.findall(r"(?:de|total)\s*(\d+)\s*(?:resultado|proposi|registro)", txt, re.I)[:5], flush=True)
-r = requests.get("http://45.4.247.157/leg/salvador/LEG_SYS_produtividade_parlamentar_proposicao/", headers=H, timeout=60); t = r.text
-i = t.find("scGridTabela") if "scGridTabela" in t else 0
-body = t[t.find("<body"):]
-print("SSA", re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " | ", html.unescape(re.sub(r"<(script|style)[\s\S]*?</\1>", "", body))))[:3000], flush=True)
-print("SSAEXP", sorted(set(re.findall(r"nmgp_opcao=(\w+)|(csv|xls|json|pdf)_", t, re.I)))[:20], flush=True)
+t = S.get(B, timeout=60).text
+print("FORMS", re.findall(r'<form[^>]*name="([^"]+)"[^>]*action="([^"]*)"', t)[:8], flush=True)
+print("CAMPOS", sorted(set(re.findall(r'name="(nm\w+|sc_\w+|script_case_\w+)"', t)))[:30], flush=True)
+print("AJAX", sorted(set(re.findall(r'["\']([\w./]*index\.php\?[^"\']{0,120})["\']', t)))[:15], flush=True)
+for op in ["csv", "json", "xls"]:
+    try:
+        r = S.post(B + "index.php", data={"nmgp_opcao": op, "script_case_init": re.search(r'script_case_init["\']?\s*(?:value=|:)\s*["\']?(\d+)', t).group(1) if re.search(r'script_case_init["\']?\s*(?:value=|:)\s*["\']?(\d+)', t) else "1"}, timeout=60)
+        tx = r.text
+        print("EXP", op, r.status_code, r.headers.get("content-type"), len(tx), re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", tx))[:600], "| links:", re.findall(r'["\']([^"\']*\.(?:csv|json|xls)x?)["\']', tx)[:5], flush=True)
+    except Exception as e: print("EXP", op, "falhou", repr(e)[:150], flush=True)

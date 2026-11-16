@@ -190,6 +190,16 @@ jobs:
         timeout-minutes: 30
         run: python coleta/camara_sp.py 2>&1 | tail -5 | tee -a /tmp/assembleias.log
 
+      - name: Câmara Municipal de Cuiabá · proposições de cada vereador (uma vez por semana)
+        id: cuiaba
+        continue-on-error: true
+        timeout-minutes: 40
+        env:
+          T: "${{ secrets.CLOUDFLARE_API_TOKEN }}"
+        run: |
+          export CHAVE_BR=$(printf '%s' "$T-fiscaliza-br" | sha256sum | cut -c1-48); echo "::add-mask::$CHAVE_BR"
+          python coleta/camara_cuiaba.py 2>&1 | tail -4 | tee -a /tmp/assembleias.log
+
       - name: TSE · votos de cada candidato em cada cidade (só baixa o ano que ainda não está gravado)
         id: vm
         continue-on-error: true
@@ -255,7 +265,7 @@ jobs:
           RESEND_API_KEY: "${{ secrets.RESEND_API_KEY }}"
           ALERTA_EMAIL: "${{ secrets.ALERTA_EMAIL }}"
           RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          ETAPAS: '{"fvotos": "${{ steps.fvotos.outcome }}", "fperfil": "${{ steps.fperfil.outcome }}", "sperfil": "${{ steps.sperfil.outcome }}", "orient": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}", "alesp": "${{ steps.alesp.outcome }}", "alesc": "${{ steps.alesc.outcome }}", "alba": "${{ steps.alba.outcome }}", "alepe": "${{ steps.alepe.outcome }}", "ales": "${{ steps.ales.outcome }}", "alrs": "${{ steps.alrs.outcome }}", "alep": "${{ steps.alep.outcome }}", "sgab": "${{ steps.sgab.outcome }}", "gabm": "${{ steps.gabm.outcome }}", "gabp": "${{ steps.gabp.outcome }}", "gabg": "${{ steps.gabg.outcome }}", "verba": "${{ steps.verba.outcome }}", "cmc": "${{ steps.cmc.outcome }}", "emest": "${{ steps.emest.outcome }}", "camaras": "${{ steps.camaras.outcome }}", "cmsp": "${{ steps.cmsp.outcome }}", "vm": "${{ steps.vm.outcome }}", "camp": "${{ steps.camp.outcome }}", "redes": "${{ steps.redes.outcome }}", "gab": "${{ steps.gab.outcome }}", "calc": "${{ steps.calc.outcome }}"}'
+          ETAPAS: '{"fvotos": "${{ steps.fvotos.outcome }}", "fperfil": "${{ steps.fperfil.outcome }}", "sperfil": "${{ steps.sperfil.outcome }}", "orient": "${{ steps.orient.outcome }}", "emendas": "${{ steps.emendas.outcome }}", "assembleias": "${{ steps.assembleias.outcome }}", "alesp": "${{ steps.alesp.outcome }}", "alesc": "${{ steps.alesc.outcome }}", "alba": "${{ steps.alba.outcome }}", "alepe": "${{ steps.alepe.outcome }}", "ales": "${{ steps.ales.outcome }}", "alrs": "${{ steps.alrs.outcome }}", "alep": "${{ steps.alep.outcome }}", "sgab": "${{ steps.sgab.outcome }}", "gabm": "${{ steps.gabm.outcome }}", "gabp": "${{ steps.gabp.outcome }}", "gabg": "${{ steps.gabg.outcome }}", "verba": "${{ steps.verba.outcome }}", "cmc": "${{ steps.cmc.outcome }}", "emest": "${{ steps.emest.outcome }}", "camaras": "${{ steps.camaras.outcome }}", "cmsp": "${{ steps.cmsp.outcome }}", "cuiaba": "${{ steps.cuiaba.outcome }}", "vm": "${{ steps.vm.outcome }}", "camp": "${{ steps.camp.outcome }}", "redes": "${{ steps.redes.outcome }}", "gab": "${{ steps.gab.outcome }}", "calc": "${{ steps.calc.outcome }}"}'
         run: python tools/email_resend.py
 
   publica:

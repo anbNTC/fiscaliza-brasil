@@ -43,7 +43,10 @@ def arquivo_curitiba():
     return {"url": ls[0], "name": ls[0].rsplit("/", 1)[-1]} if ls else None
 
 GABP = re.compile(r"GABINETE\s+DO\s+PREFEITO|GAB\.?\s*(DO\s+)?PREFEITO|VICE[\s-]*PREFEIT", re.I)
-num = lambda s: float(re.sub(r"[^\d,.-]", "", str(s or "0")).replace(".", "").replace(",", ".") or 0) if "," in str(s or "") else float(re.sub(r"[^\d.-]", "", str(s or "0")) or 0)
+def num(s):
+    """número em formato brasileiro (1.234,56) ou com ponto decimal; texto que não é número (ex.: linha separadora "---") vale 0"""
+    try: return float(re.sub(r"[^\d,.-]", "", str(s or "0")).replace(".", "").replace(",", ".") or 0) if "," in str(s or "") else float(re.sub(r"[^\d.-]", "", str(s or "0")) or 0)
+    except ValueError: return 0.0
 MESES = {m: i + 1 for i, m in enumerate("jan fev mar abr mai jun jul ago set out nov dez".split())}
 
 def get(u, js=True, br=False):

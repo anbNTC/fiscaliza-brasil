@@ -20,12 +20,18 @@ GOV = [
      "fonte": "Governo de Santa Catarina · dados abertos (remuneração dos servidores)",
      "nome": "Nome", "cargo": ["Cargo"], "orgao": "OrgaoExercicio", "unid": "UnidadeExercicio", "bruto": "ValorBruto", "liq": None,
      "gov": r"GABINETE DO GOVERNADOR", "vice": r"GABINETE DO VICE-?GOVERNADOR"},
+    {"uf": "GO", "ckan": "https://dadosabertos.go.gov.br", "pacote": "folha-de-pagamento", "pagina": "https://dadosabertos.go.gov.br/dataset/folha-de-pagamento",
+     "fonte": "Governo de Goiás · Dados Abertos (folha de pagamento do Executivo, SEAD)",
+     "nome": "NOMESERVIDOR", "cargo": ["NOMECARGOSECUNDARIO", "NOMECARGO"], "orgao": "ORGAO", "unid": None, "bruto": "VALORPROVENTOMES", "liq": None,
+     "gov": r"^SECRETARIA-GERAL DE GOVERNO$", "vice": r"^VICE-GOVERNADORIA",
+     "obs_gov": "Em Goiás o atendimento direto ao governador fica na Secretaria-Geral de Governo; a lista mostra quem está lotado nela."},
     {"uf": "PE", "ckan": "https://dados.pe.gov.br", "pacote": "remuneracao-de-servidores", "pagina": "https://dados.pe.gov.br/dataset/remuneracao-de-servidores", "br": True,
      "fonte": "Governo de Pernambuco · dados abertos (remuneração dos servidores)",
      "nome": "r_nome", "cargo": ["r_funcao", "r_cargo"], "orgao": "r_instituicao", "unid": None, "bruto": "r_total_vantagens", "liq": "*liquid",
      "gov": r"^GOVERNADORIA DO ESTADO$", "vice": r"^VICE-?GOVERNADORIA"},
 ]
-CHEFE = re.compile(r"^(VICE[- ]?)?GOVERNADOR(A)?( DO ESTADO)?$")
+CHEFE = re.compile(r"^(VICE[- ]?)?GOVERNADOR(A)?( DO ESTADO)?( - [A-Z]+-?\d*)?$")
+NADA = {"NAO SE APLICA", "SECUNDARIO NAO INFORMADO", "NAO INFORMADO"}
 
 def um(c, BR):
     j = get(f'{c["ckan"]}/api/3/action/package_show?id={c["pacote"]}', br=c.get("br"))
@@ -39,8 +45,10 @@ def um(c, BR):
     if c.get("liq", "") and c["liq"].startswith("*"): c = dict(c, liq=next((k for k in rd.fieldnames or [] if c["liq"][1:] in k.lower()), None))
     equipe = {"gov": [], "vice": []}; chefes = {}; comp = ""
     for row in rd:
-        o = sa(row.get(c["orgao"])); u = sa(row.get(c["unid"])) if c.get("unid") else ""; cg = " / ".join(x for x in (sa(row.get(k)) for k in c["cargo"]) if x)
-        if not comp: comp = row.get("mes_ano") or ""
+        o = sa(row.get(c["orgao"])); u = sa(row.get(c["unid"])) if c.get("unid") else ""; cg = " / ".join(x for x in (sa(row.get(k)) for k in c["cargo"]) if x and x not in NADA)
+        if not comp:
+            comp = row.get("mes_ano") or row.get("ANOMES") or ""
+            if re.fullmatch(r"20\d\d\d\d", comp): comp = comp[4:] + "/" + comp[:4]
         if any(CHEFE.search(x) for x in cg.split(" / ")): chefes["vice" if re.search(r"(^| / )VICE", cg) else "gov"] = sa(row.get(c["nome"])); continue
         lugar = o + " | " + u
         k = "vice" if re.search(c["vice"], lugar) else "gov" if re.search(c["gov"], u) or re.search(c["gov"], o) else None
@@ -50,18 +58,22 @@ def um(c, BR):
         if c.get("liq"): lin.append(round(num(row.get(c["liq"])), 2))
         equipe[k].append(lin)
     # de quem é cada equipe: procura o nome do governador/vice da folha na chapa eleita em 2022
-    chapa = BR["ufs"][c["uf"]]["gov"]; dep = {}
+    chapa = BR["ufs"][c["uf"]]["gov"]; dep = {}; vago = 0
     for k, idx0 in (("gov", "0"), ("vice", "1")):
         if not equipe[k]: continue
         idx = idx0
         if chefes.get(k):
             for i, P in enumerate(chapa):
                 if sa(P[1]) == chefes[k] or sa(P[0]) in chefes[k]: idx = str(i)
+        if idx in dep:   # vice que assumiu o governo: a Vice-Governadoria está sem titular e não vai para a ficha de ninguém
+            vago = len(equipe[k]); continue
         dep[idx] = sorted(equipe[k], key=lambda x: -x[3])
     m = re.search(r"(20\d\d)[-_](\d\d)", r.get("url") or "") or re.search(r"(\d\d)/(20\d\d)", comp)
     competencia = (f"{m.group(2)}/{m.group(1)}" if m.group(1).startswith("20") else f"{m.group(1)}/{m.group(2)}") if m else comp
     obs = (f"Remuneração bruta{' e líquida' if c.get('liq') else ''} de {competencia}, como publicada pelo governo do estado em dados abertos. "
-           "Só servidores lotados na unidade do governador ou no gabinete do vice; não inclui as secretarias.")
+           + ("Só servidores lotados na unidade do governador ou no gabinete do vice; não inclui as secretarias." if not c.get("obs_gov") else ""))
+    if c.get("obs_gov"): obs += " " + c["obs_gov"]
+    if vago: obs += f" O cargo de vice-governador está vago; as {vago} pessoas lotadas na Vice-Governadoria não aparecem em nenhuma ficha."
     if chefes.get("gov") and dep and "0" not in dep and any(sa(P[1]) == chefes["gov"] for P in chapa[1:]):
         obs += " O vice eleito em 2022 assumiu o governo; a equipe do governador aparece na ficha dele."
     if dep:

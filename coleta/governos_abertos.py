@@ -102,8 +102,9 @@ def um(c, BR):
     if vago: obs += f" O cargo de vice-governador está vago; as {vago} pessoas lotadas na Vice-Governadoria não aparecem em nenhuma ficha."
     if chefes.get("gov") and dep and "0" not in dep and any(sa(P[1]) == chefes["gov"] for P in chapa[1:]):
         obs += " O vice eleito em 2022 assumiu o governo; a equipe do governador aparece na ficha dele."
+    assumiu = next((str(i) for i, P in enumerate(chapa) if i > 0 and chefes.get("gov") and sa(P[1]) == chefes["gov"]), None)
     if dep:
-        json.dump({"fonte": c["fonte"], "url": c["pagina"], "competencia": competencia, "gerado": datetime.date.today().isoformat(), "obs": obs, "dep": dep},
+        json.dump({"fonte": c["fonte"], "url": c["pagina"], "competencia": competencia, "gerado": datetime.date.today().isoformat(), "obs": obs, "dep": dep, "assumiu": assumiu},
                   open(D / "gabg" / f"{c['uf']}.json", "w"), ensure_ascii=False, separators=(",", ":"))
     return {"arquivo": r.get("name"), "chefes": chefes, "equipes": {k: len(v) for k, v in dep.items()}}
 

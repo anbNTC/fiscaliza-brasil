@@ -34,6 +34,6 @@ def valida(c):
 with cf.ThreadPoolExecutor(40) as ex: V = list(ex.map(valida, com))
 novos = [v for v in V if not v[3].startswith("SEMAPI")]
 print("RES SAPL novos com API", len(novos), flush=True)
-print("RESN", json.dumps({v[1]: [v[0], v[2], v[3], v[4]] for v in novos}, ensure_ascii=False), flush=True)
+for v in novos: print("RESN", v[1], v[3], v[4], flush=True)
 print("RES sem API", [v[3][7:] for v in V if v[3].startswith("SEMAPI")][:30], flush=True)
 print("RES sistemas citados nos sites sem SAPL", collections.Counter(k for r in ok if not r[2] for k in r[3]).most_common(), flush=True)

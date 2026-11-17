@@ -1,12 +1,15 @@
-"""Sonda temporária: campos e órgãos da API de remuneração da Paraíba (09/2026)."""
-import sys, json, requests
+"""Sonda temporária: unidades da Secretaria de Governo e da Vice-Governadoria da Paraíba (09/2026)."""
+import sys, json, requests, collections
 sys.path.insert(0, "coleta")
 from prefeituras_abertas import H
-A = "https://api.dadosabertos.codata.pb.gov.br/api/v1/remuneracao/"
-r = requests.get(A + "servidor", params={"ano": 2026, "mes": 9, "page": 1, "per_page": 1}, headers=H, timeout=60).json()
-print("REC", json.dumps({k: (v if "cpf" not in k.lower() else "...") for k, v in r["dados"][0].items()}, ensure_ascii=False), r["paginacao"], flush=True)
-o = requests.get(A + "orgaos", params={"ano": 2026, "mes": 9}, headers=H, timeout=60).json()
-print("ORGS", json.dumps(o, ensure_ascii=False)[:600], flush=True)
-txt = json.dumps(o, ensure_ascii=False)
-import re
-print("GOV", re.findall(r'\{[^{}]*(?:GOVERN|CASA CIVIL|VICE)[^{}]*\}', txt)[:8], flush=True)
+A = "https://api.dadosabertos.codata.pb.gov.br/api/v1/remuneracao/servidor"
+for cnpj in ("08761124000100", "08761124000363", "08761124000282"):
+    L = []; p = 1
+    while True:
+        r = requests.get(A, params={"ano": 2026, "mes": 9, "cnpj_orgao": cnpj, "page": p, "per_page": 500}, headers=H, timeout=90).json()
+        L += r["dados"]; pg = r["paginacao"]
+        if p >= pg["total_paginas"] or p > 20: break
+        p += 1
+    print("ORG", cnpj, len(L), pg, collections.Counter(x["orgaoLotacao"] for x in L).most_common(3), flush=True)
+    print("UNI", cnpj, collections.Counter(x["nomeUnidadeTrabalho"] for x in L).most_common(25), flush=True)
+    print("CHEFE", cnpj, [(x["nomeServidor"], x["nomeCargo"], x["nomeUnidadeTrabalho"], x["valorBruto"]) for x in L if "GOVERNADOR" in (x["nomeCargo"] or "").upper()][:6], flush=True)

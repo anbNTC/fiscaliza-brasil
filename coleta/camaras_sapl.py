@@ -19,12 +19,15 @@ MIN_CIDADE = float(os.environ.get("MIN_CIDADE", "14")); MAX_TOTAL = float(os.env
 CAPITAIS = {"01392", "27855", "06050", "02550", "38490", "13897", "57053", "93734", "09210", "90670", "90514", "41238", "04278", "20516", "75353", "25313",
             "12190", "60011", "17612", "88013", "00035", "03018", "81051", "71072", "31054", "73440"}
 EXTRA = {"02550": "https://sapl.cmm.am.gov.br"}   # Manaus
+# endereços já confirmados (achados pelo link no site da própria câmara ou em coletas anteriores): testados primeiro e com mais paciência
+try: EXTRA.update(json.load(open(Path(__file__).resolve().parent / "sapl_bases.json")))
+except Exception: pass
 MIN_CAPITAL = float(os.environ.get("MIN_CAPITAL", "35"))
 slug = lambda s: re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower())
 
 def sonda(a):
     uf, ue, nome = a[:3]
-    to = 45 if ue in CAPITAIS else 12   # SAPL de capital é grande e demora a responder
+    to = 45 if ue in CAPITAIS or ue in EXTRA else 12   # SAPL de capital ou já conhecido: espera mais (servidor lento não é "sem SAPL")
     for pd in ([EXTRA[ue]] if ue in EXTRA else []) + PADROES:
         b = pd.format(s=slug(nome), u=uf.lower())
         try:
@@ -39,6 +42,9 @@ def sonda(a):
 
 def main():
     t0 = time.time(); alvos = []; TSE = {}
+    try:   # quem já foi coletado entra como endereço conhecido
+        for ue, v in json.load(open(OUT / "index.json")).items(): EXTRA.setdefault(ue, v[2])
+    except Exception: pass
     for f in sorted((D / "uf").glob("*.json")):
         U = json.load(open(f))
         for ue, m in U.get("mun", {}).items(): alvos.append((f.stem, ue, m[0])); TSE[ue] = m[3]

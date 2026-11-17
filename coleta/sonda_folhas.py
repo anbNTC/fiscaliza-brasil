@@ -21,7 +21,7 @@ def um(p):
             if not r.ok: r = gbr(u, headers=H, timeout=40) or r
             j = r.json()["result"]
             for x in j["results"]:
-                out.append((x["name"], (x.get("title") or "")[:70], sorted({(y.get("format") or "?").upper() for y in x.get("resources", [])})[:4], (x.get("metadata_modified") or "")[:10]))
+                out.append((x["name"], (x.get("title") or "")[:70], "/".join(sorted({(y.get("format") or "?").upper() for y in x.get("resources", [])})[:4]), (x.get("metadata_modified") or "")[:10]))
         except BaseException as e:
             return p, "falhou " + repr(e)[:60]
     return p, list(dict.fromkeys(out))[:8]

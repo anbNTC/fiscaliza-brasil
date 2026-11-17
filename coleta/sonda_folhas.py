@@ -1,26 +1,14 @@
-"""Sonda temporária: colunas das folhas da Paraíba, de Goiás (SEAD) e da Prefeitura de Fortaleza."""
-import sys, io, csv, json, re, requests, collections
+"""Sonda temporária: órgãos do governador em Goiás, arquivos de Fortaleza e recurso da Paraíba."""
+import sys, io, csv, re, requests, collections
 sys.path.insert(0, "coleta")
-from prefeituras_abertas import H, recente, texto
-def pkg(ck, nome):
-    return requests.get(f"{ck}/api/3/action/package_show?id={nome}", headers=H, timeout=60).json()["result"]
-for ck, nome in [("https://dados.pb.gov.br", "remuneracao-servidores"), ("https://dadosabertos.go.gov.br", "folha-de-pagamento"), ("https://dados.fortaleza.ce.gov.br", "servidores-pmf")]:
-    try:
-        r = pkg(ck, nome); rs = r["resources"]
-        print("PKG", nome, len(rs), [(x.get("name"), x.get("format"), (x.get("last_modified") or x.get("created") or "")[:10]) for x in rs][-6:], flush=True)
-        x = recente(rs) or rs[-1]; print("URL", x["url"], flush=True)
-        resp = requests.get(x["url"], headers={**H, "Range": "bytes=0-400000"}, timeout=120); b = resp.content
-        if b[:2] == b"PK":
-            import zipfile; z = zipfile.ZipFile(io.BytesIO(requests.get(x["url"], headers=H, timeout=300).content)); n = z.namelist()[0]; b = z.read(n)[:400000]; print("ZIP", n, flush=True)
-        t = texto(b)
-        if t.lstrip()[:1] in "[{":
-            print("JSON", t[:1500], flush=True); continue
-        sep = ";" if t[:3000].count(";") > t[:3000].count(",") else ","
-        rows = list(csv.DictReader(io.StringIO(t.rsplit("\n", 1)[0]), delimiter=sep))
-        print("COLS", nome, list(rows[0].keys()), flush=True)
-        for row in rows[:2]: print("ROW", nome, {k: v for k, v in row.items()}, flush=True)
-        for c in rows[0]:
-            if re.search(r"lota|orgao|órgão|unidade|secretaria|cargo", c, re.I): print("TOP", nome, c, collections.Counter(r[c] for r in rows).most_common(6), flush=True)
-        gov = [r for r in rows if re.search(r"GOVERNAD|GABINETE DO PREFEITO|CHEFIA DE GABINETE|GAB\.? PREF", json.dumps(r, ensure_ascii=False), re.I)]
-        print("GAB", nome, len(gov), [dict(list(g.items())[:8]) for g in gov[:2]], flush=True)
-    except Exception as e: print("ERRO", nome, repr(e)[:200], flush=True)
+from prefeituras_abertas import H, texto
+pk = lambda ck, n: requests.get(f"{ck}/api/3/action/package_show?id={n}", headers=H, timeout=60).json()["result"]
+r = pk("https://dados.pb.gov.br", "remuneracao-servidores"); print("PB", [{k: v for k, v in x.items() if k in ("name", "url", "format", "description", "access_url", "download_url")} for x in r["resources"]][:2], r.get("url"), flush=True)
+r = pk("https://dados.fortaleza.ce.gov.br", "servidores-pmf"); print("FOR", [(x["name"], x["url"][-30:]) for x in r["resources"]], flush=True)
+u = "https://dadosabertos.go.gov.br/dataset/9cec56e2-8e10-472f-b060-d925ba3b29b5/resource/5a09150b-5708-4c09-a094-da432b179c91/download/folhapagamento_202608.csv"
+t = texto(requests.get(u, headers=H, timeout=600).content)
+rows = list(csv.DictReader(io.StringIO(t), delimiter=";"))
+og = collections.Counter(r["ORGAO"] for r in rows)
+print("GOORG", [(o, n) for o, n in og.items() if re.search(r"GOVERN|VICE|CASA CIVIL|GABINETE|MILITAR DO GOV|CERIMON", o, re.I)], flush=True)
+ch = [(r["NOMESERVIDOR"], r["NOMECARGO"], r["NOMECARGOSECUNDARIO"], r["ORGAO"]) for r in rows if re.search(r"^(VICE-?)?GOVERNADOR", r["NOMECARGO"] + " " + r["NOMECARGOSECUNDARIO"], re.I) or re.search(r"\bGOVERNADOR\b", r["NOMECARGO"], re.I)]
+print("GOCHEFE", ch[:6], flush=True)

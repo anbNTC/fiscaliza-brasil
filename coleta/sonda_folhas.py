@@ -1,16 +1,14 @@
-"""Sonda temporária: parâmetros do endpoint de servidores na documentação (Swagger) da API da Paraíba."""
+"""Sonda temporária: endereço da especificação no Swagger da Paraíba e parâmetros do endpoint de servidores."""
 import sys, json, re, requests
 sys.path.insert(0, "coleta")
 from prefeituras_abertas import H
 B = "https://api.dadosabertos.codata.pb.gov.br"
-for u in ["/swagger/doc.json", "/swagger.json", "/openapi.json", "/swagger/v1/swagger.json", "/api/v1/openapi.json", "/swagger/", "/docs/swagger.json"]:
-    try:
-        r = requests.get(B + u, headers=H, timeout=30)
-        print("TRY", u, r.status_code, r.headers.get("content-type"), len(r.text), flush=True)
-        if r.ok and "json" in r.headers.get("content-type", ""):
-            j = r.json(); ps = j.get("paths", {})
-            for k, v in ps.items():
-                if "servidor" in k: print("PATH", k, json.dumps(v, ensure_ascii=False)[:1500], flush=True)
-            break
-        if r.ok: print("REFS", re.findall(r'(?:url|src)\s*[:=]\s*["\']([^"\']+)', r.text)[:10], flush=True)
-    except Exception as e: print("TRY", u, "falhou", repr(e)[:80])
+t = requests.get(B + "/swagger/", headers=H, timeout=30).text
+i = t.find("SwaggerUIBundle"); print("JS", re.sub(r"\s+", " ", t[i:i + 700]), flush=True)
+for u in re.findall(r'url[s]?\s*:\s*["\']([^"\']+)["\']', t[i:i + 2000]) + ["/apispec_1.json", "/apispec.json", "/swagger.yaml", "/api/v1/swagger.json"]:
+    r = requests.get(u if u.startswith("http") else B + u, headers=H, timeout=30)
+    print("TRY", u, r.status_code, len(r.text), flush=True)
+    if r.ok and r.text.lstrip()[:1] == "{":
+        for k, v in r.json().get("paths", {}).items():
+            if "servidor" in k: print("PATH", k, json.dumps([p.get("name") for m in v.values() if isinstance(m, dict) for p in m.get("parameters", [])], ensure_ascii=False), flush=True)
+        break

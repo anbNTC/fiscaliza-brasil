@@ -18,11 +18,11 @@ def um(p):
         u = f"https://{p}/api/3/action/package_search?q={q.replace(' ', '%20')}&rows=6"
         try:
             r = requests.get(u, headers=H, timeout=20)
-            if not r.ok: r = gbr(u, headers=H, timeout=40)
+            if not r.ok: r = gbr(u, headers=H, timeout=40) or r
             j = r.json()["result"]
             for x in j["results"]:
                 out.append((x["name"], (x.get("title") or "")[:70], sorted({(y.get("format") or "?").upper() for y in x.get("resources", [])})[:4], (x.get("metadata_modified") or "")[:10]))
-        except Exception as e:
+        except BaseException as e:
             return p, "falhou " + repr(e)[:60]
     return p, list(dict.fromkeys(out))[:8]
 with cf.ThreadPoolExecutor(16) as ex:

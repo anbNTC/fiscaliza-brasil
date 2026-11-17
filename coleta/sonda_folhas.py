@@ -1,14 +1,15 @@
-"""Sonda temporária: endereço da especificação no Swagger da Paraíba e parâmetros do endpoint de servidores."""
-import sys, json, re, requests
+"""Sonda temporária: unidades da Secretaria de Governo, Casa Militar e Vice-Governadoria da Paraíba (09/2026)."""
+import sys, json, requests, collections
 sys.path.insert(0, "coleta")
 from prefeituras_abertas import H
-B = "https://api.dadosabertos.codata.pb.gov.br"
-t = requests.get(B + "/swagger/", headers=H, timeout=30).text
-i = t.find("SwaggerUIBundle"); print("JS", re.sub(r"\s+", " ", t[i:i + 700]), flush=True)
-for u in re.findall(r'url[s]?\s*:\s*["\']([^"\']+)["\']', t[i:i + 2000]) + ["/apispec_1.json", "/apispec.json", "/swagger.yaml", "/api/v1/swagger.json"]:
-    r = requests.get(u if u.startswith("http") else B + u, headers=H, timeout=30)
-    print("TRY", u, r.status_code, len(r.text), flush=True)
-    if r.ok and r.text.lstrip()[:1] == "{":
-        for k, v in r.json().get("paths", {}).items():
-            if "servidor" in k: print("PATH", k, json.dumps([p.get("name") for m in v.values() if isinstance(m, dict) for p in m.get("parameters", [])], ensure_ascii=False), flush=True)
-        break
+A = "https://api.dadosabertos.codata.pb.gov.br/api/v1/remuneracao/servidor"
+for cnpj in ("08761124000100", "08761124000363", "08761124000282"):
+    L = []; p = 1
+    while True:
+        r = requests.get(A, params={"ano": 2026, "mes": 9, "cnpjOrgao": cnpj, "page": p, "per_page": 500}, headers=H, timeout=90).json()
+        L += r["dados"]; pg = r["paginacao"]
+        if p >= pg["total_paginas"] or p > 30: break
+        p += 1
+    print("ORG", cnpj, len(L), pg["total"], collections.Counter(x["orgaoLotacao"] for x in L).most_common(3), flush=True)
+    print("UNI", cnpj, collections.Counter(x["nomeUnidadeTrabalho"] for x in L).most_common(25), flush=True)
+    print("CHEFE", cnpj, [(x["nomeServidor"], x["nomeCargo"], x["nomeUnidadeTrabalho"], x["valorBruto"]) for x in L if "GOVERNADOR" in (x["nomeCargo"] or "").upper()][:6], flush=True)

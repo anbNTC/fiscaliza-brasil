@@ -1,16 +1,34 @@
-"""Sonda temporária: quantas câmaras com SAPL existem e quantas ainda não foram coletadas."""
-import sys, json, concurrent.futures as cf, collections
+"""Sonda temporária: acha o SAPL de câmaras maiores sem dados pelo link no próprio site da câmara (Portal Modelo e afins)."""
+import sys, re, json, requests, concurrent.futures as cf, collections
 sys.path.insert(0, "coleta")
 import camaras_sapl as C
+from assembleias_sapl import H
+idx = json.load(open(C.OUT / "index.json"))
 alvos = []
 for f in sorted((C.D / "uf").glob("*.json")):
     U = json.load(open(f))
-    for ue, m in U.get("mun", {}).items(): alvos.append((f.stem, ue, m[0]))
-with cf.ThreadPoolExecutor(96) as ex: achou = [x for x in ex.map(C.sonda, alvos) if x]
-ativas = [x for x in achou if x["mat"] or x["voto"]]
-idx = json.load(open(C.OUT / "index.json"))
-falta = [x for x in ativas if x["ue"] not in idx]
-print("RES municípios", len(alvos), "| SAPL", len(achou), "| ativas", len(ativas), "| no índice", len(idx), "| faltam", len(falta), flush=True)
-print("RES faltam por UF", collections.Counter(x["uf"] for x in falta).most_common(), flush=True)
-print("RES maiores que faltam", sorted([(x["mat"], x["uf"], x["nome"]) for x in falta], reverse=True)[:25], flush=True)
-velhas = sorted(idx.values(), key=lambda v: v[5])[:5]; print("RES mais antigas no índice", [(v[1], v[5]) for v in velhas], flush=True)
+    for ue, m in U.get("mun", {}).items():
+        if ue not in idx and len(m[3] or []) >= 13: alvos.append((f.stem, ue, m[0], len(m[3])))
+print("RES alvos (13+ vereadores, sem dados):", len(alvos), flush=True)
+def acha(a):
+    uf, ue, nome, nv = a; s = C.slug(nome); u = uf.lower()
+    for site in [f"https://www.{s}.{u}.leg.br", f"https://{s}.{u}.leg.br", f"https://www.camara{s}.{u}.gov.br", f"https://www.cm{s}.{u}.gov.br", f"https://www.camara{s}.{u}.leg.br"]:
+        try: t = requests.get(site, headers=H, timeout=10).text
+        except Exception: continue
+        hs = sorted(set(re.findall(r'https?://(sapl[\w.-]*\.(?:leg|gov)\.br|[\w.-]+/sapl)', t, re.I)))
+        sist = [k for k in ("sapl", "siscam", "legislativo", "splegis", "sino.", "ipm", "betha", "e-legis", "atende.net", "portaltransparencia", "camaradigital", "legisla") if k in t.lower()]
+        return a, site, hs, sist
+    return a, None, [], []
+with cf.ThreadPoolExecutor(64) as ex: R = list(ex.map(acha, alvos))
+ok = [r for r in R if r[1]]; com = [r for r in ok if r[2]]
+print("RES site achado", len(ok), "| com link de SAPL", len(com), flush=True)
+novos = []
+for a, site, hs, _ in com:
+    for h in hs:
+        b = "https://" + h.rstrip("/")
+        try:
+            r = requests.get(f"{b}/api/materia/materialegislativa/", params={"ano": 2025, "page_size": 1}, headers=H, timeout=15)
+            if r.ok and "json" in r.headers.get("content-type", ""): novos.append((a[0], a[1], a[2], b, r.json().get("pagination", {}).get("total_entries"))); break
+        except Exception: pass
+print("RES SAPL novos com API", len(novos), novos[:40], flush=True)
+print("RES sistemas citados nos sites sem SAPL", collections.Counter(k for r in ok if not r[2] for k in r[3]).most_common(), flush=True)

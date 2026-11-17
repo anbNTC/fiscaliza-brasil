@@ -1,15 +1,16 @@
-"""Sonda temporária: unidades da Secretaria de Governo e da Vice-Governadoria da Paraíba (09/2026)."""
-import sys, json, requests, collections
+"""Sonda temporária: parâmetros do endpoint de servidores na documentação (Swagger) da API da Paraíba."""
+import sys, json, re, requests
 sys.path.insert(0, "coleta")
 from prefeituras_abertas import H
-A = "https://api.dadosabertos.codata.pb.gov.br/api/v1/remuneracao/servidor"
-for cnpj in ("08761124000100", "08761124000363", "08761124000282"):
-    L = []; p = 1
-    while True:
-        r = requests.get(A, params={"ano": 2026, "mes": 9, "cnpj_orgao": cnpj, "page": p, "per_page": 500}, headers=H, timeout=90).json()
-        L += r["dados"]; pg = r["paginacao"]
-        if p >= pg["total_paginas"] or p > 20: break
-        p += 1
-    print("ORG", cnpj, len(L), pg, collections.Counter(x["orgaoLotacao"] for x in L).most_common(3), flush=True)
-    print("UNI", cnpj, collections.Counter(x["nomeUnidadeTrabalho"] for x in L).most_common(25), flush=True)
-    print("CHEFE", cnpj, [(x["nomeServidor"], x["nomeCargo"], x["nomeUnidadeTrabalho"], x["valorBruto"]) for x in L if "GOVERNADOR" in (x["nomeCargo"] or "").upper()][:6], flush=True)
+B = "https://api.dadosabertos.codata.pb.gov.br"
+for u in ["/swagger/doc.json", "/swagger.json", "/openapi.json", "/swagger/v1/swagger.json", "/api/v1/openapi.json", "/swagger/", "/docs/swagger.json"]:
+    try:
+        r = requests.get(B + u, headers=H, timeout=30)
+        print("TRY", u, r.status_code, r.headers.get("content-type"), len(r.text), flush=True)
+        if r.ok and "json" in r.headers.get("content-type", ""):
+            j = r.json(); ps = j.get("paths", {})
+            for k, v in ps.items():
+                if "servidor" in k: print("PATH", k, json.dumps(v, ensure_ascii=False)[:1500], flush=True)
+            break
+        if r.ok: print("REFS", re.findall(r'(?:url|src)\s*[:=]\s*["\']([^"\']+)', r.text)[:10], flush=True)
+    except Exception as e: print("TRY", u, "falhou", repr(e)[:80])

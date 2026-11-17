@@ -29,6 +29,19 @@ PREF = [
      "nome": "nome_cargo", "cargo": "nome_cargo", "lot": ["origem"], "gabp": r"^GP$", "vicep": r"^$",
      "valor": ["remuneracao_basica", "remuneracao_eventual"], "desc": ["deducoes_obrigatorias", "abate_teto"], "anomes": "competencia", "extra": "tipovinc"},
 ]
+# Curitiba: portal próprio (não é CKAN); um CSV por mês com uma linha por evento da folha (vantagem ou desconto), e os totais
+# da pessoa repetidos em cada linha. "porevento" faz contar cada pessoa uma vez só.
+PREF.append({"cidade": "Curitiba", "uf": "PR", "ue": "75353", "arquivos": "curitiba", "pagina": "https://dadosabertos.curitiba.pr.gov.br/conjuntodado/detalhe?chave=CB9CBEB2-1C2C-48BA-A632-25EDCB766744",
+             "nome": "NOME", "cargo": "CARGO", "lot": ["LOTACAO"], "valor": "TOT_VANTAGENS", "liq": "TOTAL_LIQUIDO", "ano": "ANO", "mes": "MES", "porevento": True})
+
+def arquivo_curitiba():
+    """o mais recente da lista de arquivos do conjunto "Relações de servidores, cargos e encargos" (Secretaria de Gestão de Pessoal)"""
+    import html as _h
+    j = requests.get("https://dadosabertos.curitiba.pr.gov.br/ConjuntoDado/DownloadArquivos/", params={"conjuntoDadoChave": "cb9cbeb2-1c2c-48ba-a632-25edcb766744",
+                     "conjuntoDadoExtensao": "377f4e23-0e4f-4f11-954f-ae06ba689558", "pagina": 1, "tamanhoPagina": 50}, headers={**H, "x-requested-with": "XMLHttpRequest"}, timeout=90).json()
+    ls = sorted(re.findall(r"href='(https://mid-dadosabertos\.curitiba\.pr\.gov\.br/[^']+Base_de_Dados\.csv)'", _h.unescape(j.get("tabela") or "")), reverse=True)
+    return {"url": ls[0], "name": ls[0].rsplit("/", 1)[-1]} if ls else None
+
 GABP = re.compile(r"GABINETE\s+DO\s+PREFEITO|GAB\.?\s*(DO\s+)?PREFEITO|VICE[\s-]*PREFEIT", re.I)
 num = lambda s: float(re.sub(r"[^\d,.-]", "", str(s or "0")).replace(".", "").replace(",", ".") or 0) if "," in str(s or "") else float(re.sub(r"[^\d.-]", "", str(s or "0")) or 0)
 MESES = {m: i + 1 for i, m in enumerate("jan fev mar abr mai jun jul ago set out nov dez".split())}
@@ -86,9 +99,11 @@ def recente(res, ordem=None):
     return max(cs, key=lambda r: (chave(r), r.get("created") or "")) if cs else None
 
 def uma(c):
-    j = get(f'{c["ckan"]}/api/3/action/package_show?id={c["pacote"]}', br=c.get("br"))
-    if not j or not j.get("success"): return "conjunto de dados indisponível"
-    r = recente([x for x in j["result"].get("resources") or [] if not re.search(r"inativ|aposent|pension", (x.get("name") or "") + (x.get("url") or ""), re.I)], c.get("ordem"))
+    if c.get("arquivos") == "curitiba": r = arquivo_curitiba()
+    else:
+        j = get(f'{c["ckan"]}/api/3/action/package_show?id={c["pacote"]}', br=c.get("br"))
+        if not j or not j.get("success"): return "conjunto de dados indisponível"
+        r = recente([x for x in j["result"].get("resources") or [] if not re.search(r"inativ|aposent|pension", (x.get("name") or "") + (x.get("url") or ""), re.I)], c.get("ordem"))
     if not r: return "sem arquivo CSV"
     b = baixa(r["url"], c.get("br"))
     if not b: return "arquivo indisponível"
@@ -126,6 +141,7 @@ def uma(c):
     for k, v in out.items():
         if c.get("semnome"): continue
         jun = {}
+        if c.get("porevento"): v = list({tuple(l): l for l in v}.values())   # mesma pessoa, mesmos totais em cada linha de evento: conta uma vez
         for l in v:
             if l[0] in jun: jun[l[0]][3:] = [round(a + b, 2) for a, b in zip(jun[l[0]][3:], l[3:])]
             else: jun[l[0]] = list(l)

@@ -25,6 +25,10 @@ GOV = [
      "nome": "NOMESERVIDOR", "cargo": ["NOMECARGOSECUNDARIO", "NOMECARGO"], "orgao": "ORGAO", "unid": None, "bruto": "VALORPROVENTOMES", "liq": None,
      "gov": r"^SECRETARIA-GERAL DE GOVERNO$", "vice": r"^VICE-GOVERNADORIA",
      "obs_gov": "Em Goiás o atendimento direto ao governador fica na Secretaria-Geral de Governo; a lista mostra quem está lotado nela."},
+    {"uf": "PB", "api": "pb", "cnpjs": ["08761124000100", "08761124000363"], "pagina": "https://dados.pb.gov.br/dataset/remuneracao-servidores",
+     "fonte": "Governo da Paraíba · Dados Abertos (API de remuneração dos servidores, CODATA)",
+     "nome": "nomeServidor", "cargo": ["nomeCargo"], "orgao": "orgaoLotacao", "unid": "nomeUnidadeTrabalho", "bruto": "valorBruto", "liq": "valorLiquido",
+     "gov": r"GOVERNADOR|CERIMONIAL", "vice": r"VICE GOVERNADOR"},
     {"uf": "PE", "ckan": "https://dados.pe.gov.br", "pacote": "remuneracao-de-servidores", "pagina": "https://dados.pe.gov.br/dataset/remuneracao-de-servidores", "br": True,
      "fonte": "Governo de Pernambuco · dados abertos (remuneração dos servidores)",
      "nome": "r_nome", "cargo": ["r_funcao", "r_cargo"], "orgao": "r_instituicao", "unid": None, "bruto": "r_total_vantagens", "liq": "*liquid",
@@ -33,16 +37,38 @@ GOV = [
 CHEFE = re.compile(r"^(VICE[- ]?)?GOVERNADOR(A)?( DO ESTADO)?( - [A-Z]+-?\d*)?$")
 NADA = {"NAO SE APLICA", "SECUNDARIO NAO INFORMADO", "NAO INFORMADO"}
 
+def pb_api(c):
+    """Paraíba: API de remuneração (só os órgãos do governador e do vice, mês mais recente publicado)"""
+    A = "https://api.dadosabertos.codata.pb.gov.br/api/v1/remuneracao/servidor"; hoje = datetime.date.today()
+    for k in range(0, 8):
+        ano, mes = (hoje.year * 12 + hoje.month - 1 - k) // 12, (hoje.year * 12 + hoje.month - 1 - k) % 12 + 1
+        L = []
+        for cnpj in c["cnpjs"]:
+            p = 1
+            while True:
+                j = requests.get(A, params={"ano": ano, "mes": mes, "cnpjOrgao": cnpj, "page": p, "per_page": 500}, headers=H, timeout=90).json()
+                L += j.get("dados") or []
+                if p >= (j.get("paginacao") or {}).get("total_paginas", 0) or p > 20: break
+                p += 1
+        if L:
+            for x in L: x["mes_ano"] = f"{mes:02d}/{ano}"
+            return {"url": "", "name": f"API {mes:02d}/{ano}"}, L
+    return None, []
+
 def um(c, BR):
-    j = get(f'{c["ckan"]}/api/3/action/package_show?id={c["pacote"]}', br=c.get("br"))
-    r = recente([x for x in j["result"]["resources"] if not re.search(r"inativ|pension|estagi", (x.get("name") or "") + (x.get("url") or ""), re.I)])
-    if not r: return "sem arquivo"
-    b = baixa(r["url"], c.get("br"))
-    if not b: return "arquivo indisponível"
-    t = texto(b); del b
-    sep = ";" if t[:3000].count(";") > t[:3000].count(",") else ","
-    rd = csv.DictReader(io.StringIO(t), delimiter=sep)
-    if c.get("liq", "") and c["liq"].startswith("*"): c = dict(c, liq=next((k for k in rd.fieldnames or [] if c["liq"][1:] in k.lower()), None))
+    if c.get("api") == "pb":
+        r, rd = pb_api(c)
+        if not r: return "sem dados nos últimos meses"
+    else:
+        j = get(f'{c["ckan"]}/api/3/action/package_show?id={c["pacote"]}', br=c.get("br"))
+        r = recente([x for x in j["result"]["resources"] if not re.search(r"inativ|pension|estagi", (x.get("name") or "") + (x.get("url") or ""), re.I)])
+        if not r: return "sem arquivo"
+        b = baixa(r["url"], c.get("br"))
+        if not b: return "arquivo indisponível"
+        t = texto(b); del b
+        sep = ";" if t[:3000].count(";") > t[:3000].count(",") else ","
+        rd = csv.DictReader(io.StringIO(t), delimiter=sep)
+    if c.get("liq", "") and c["liq"].startswith("*"): c = dict(c, liq=next((k for k in getattr(rd, "fieldnames", None) or [] if c["liq"][1:] in k.lower()), None))
     equipe = {"gov": [], "vice": []}; chefes = {}; comp = ""
     for row in rd:
         o = sa(row.get(c["orgao"])); u = sa(row.get(c["unid"])) if c.get("unid") else ""; cg = " / ".join(x for x in (sa(row.get(k)) for k in c["cargo"]) if x and x not in NADA)

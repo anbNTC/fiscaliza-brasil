@@ -22,13 +22,18 @@ def acha(a):
 with cf.ThreadPoolExecutor(64) as ex: R = list(ex.map(acha, alvos))
 ok = [r for r in R if r[1]]; com = [r for r in ok if r[2]]
 print("RES site achado", len(ok), "| com link de SAPL", len(com), flush=True)
-novos = []
-for a, site, hs, _ in com:
+def valida(c):
+    a, site, hs, _ = c
     for h in hs:
         b = "https://" + h.rstrip("/")
         try:
-            r = requests.get(f"{b}/api/materia/materialegislativa/", params={"ano": 2025, "page_size": 1}, headers=H, timeout=15)
-            if r.ok and "json" in r.headers.get("content-type", ""): novos.append((a[0], a[1], a[2], b, r.json().get("pagination", {}).get("total_entries"))); break
+            r = requests.get(f"{b}/api/materia/materialegislativa/", params={"ano": 2025, "page_size": 1}, headers=H, timeout=20)
+            if r.ok and "json" in r.headers.get("content-type", ""): return (a[0], a[1], a[2], b, r.json().get("pagination", {}).get("total_entries"))
         except Exception: pass
-print("RES SAPL novos com API", len(novos), novos[:40], flush=True)
+    return (a[0], a[1], a[2], "SEMAPI " + " ".join(hs[:2]), None)
+with cf.ThreadPoolExecutor(40) as ex: V = list(ex.map(valida, com))
+novos = [v for v in V if not v[3].startswith("SEMAPI")]
+print("RES SAPL novos com API", len(novos), flush=True)
+print("RESN", json.dumps({v[1]: [v[0], v[2], v[3], v[4]] for v in novos}, ensure_ascii=False), flush=True)
+print("RES sem API", [v[3][7:] for v in V if v[3].startswith("SEMAPI")][:30], flush=True)
 print("RES sistemas citados nos sites sem SAPL", collections.Counter(k for r in ok if not r[2] for k in r[3]).most_common(), flush=True)

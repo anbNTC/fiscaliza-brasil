@@ -1,23 +1,19 @@
-"""Sonda temporária: colunas da "Relação de servidores, cargos e encargos" de Curitiba."""
+"""Sonda temporária: link do CSV de servidores de Curitiba e lotações do gabinete do prefeito e do vice."""
 import sys, re, io, csv, html, requests, collections
 sys.path.insert(0, "coleta")
 from prefeituras_abertas import H, texto
 B = "https://dadosabertos.curitiba.pr.gov.br"
 d = html.unescape(requests.get(B + "/conjuntodado/detalhe?chave=CB9CBEB2-1C2C-48BA-A632-25EDCB766744", headers=H, timeout=40).text)
-print("TIT", re.findall(r"<h\d[^>]*>([^<]{5,90})</h", d)[:4], flush=True)
-arqs = sorted(set(re.findall(r'href="([^"]+)"[^>]*>[^<]*(?:csv|CSV|Download|Baixar)', d))) + sorted(set(re.findall(r'href="([^"]+\.(?:csv|zip)[^"]*)"', d, re.I)))
-print("ARQ", len(arqs), arqs[-10:], flush=True)
-print("TXT", re.sub(r"\s+", " ", re.sub(r"<(script|style)[\s\S]*?</\1>|<[^>]+>", " ", d))[300:2200], flush=True)
-for u in arqs[-3:]:
-    u = u if u.startswith("http") else B + u
-    try:
-        b = requests.get(u, headers={**H, "Range": "bytes=0-400000"}, timeout=120).content
-        tt = texto(b); sep = ";" if tt[:3000].count(";") > tt[:3000].count(",") else ","
-        rows = list(csv.DictReader(io.StringIO(tt.rsplit("\n", 1)[0]), delimiter=sep))
-        print("COLS", u[-70:], list(rows[0].keys()), flush=True); print("ROW", rows[0], flush=True)
-        for c in rows[0]:
-            if re.search(r"lota|orgao|órgão|unidade|secret|cargo", c, re.I): print("TOP", c, collections.Counter(x[c] for x in rows).most_common(6), flush=True)
-        g = [x for x in rows if re.search(r"GABINETE DO PREFEITO|PREFEITO MUNICIPAL|CHEFE DE GABINETE", " ".join(x.values()), re.I)]
-        print("GAB", len(g), g[:2], flush=True)
-        break
-    except Exception as e: print("ERRO", u[-60:], repr(e)[:150], flush=True)
+i = d.find("Servidores_Cargos_Encargos"); print("CTX", re.sub(r"\s+", " ", d[max(0, i - 900):i + 300]), flush=True)
+us = sorted(set(re.findall(r'(?:href|data-\w+|onclick)="([^"]*(?:Servidores_Cargos|\.csv|download|arquivo)[^"]*)"', d, re.I)))
+print("URLS", us[:10], flush=True)
+u = next((x for x in us if "Servidores_Cargos" in x or ".csv" in x.lower()), None)
+if u:
+    u = u if u.startswith("http") else B + ("" if u.startswith("/") else "/") + u
+    b = requests.get(u, headers=H, timeout=600).content; t = texto(b); del b
+    rows = list(csv.DictReader(io.StringIO(t), delimiter=";" if t[:3000].count(";") > t[:3000].count(",") else ","))
+    print("N", len(rows), list(rows[0].keys()), flush=True)
+    lot = collections.Counter(r["LOTACAO"] for r in rows)
+    print("LOT", len(lot), [x for x in lot.items() if re.search(r"GABINETE|PREFEIT|GOVERNO|VICE", x[0])][:20], flush=True)
+    print("CHEFE", sorted({(r["NOME"], r["CARGO"], r["CARGO_COMISSAO"], r["LOTACAO"]) for r in rows if re.search(r"^(VICE-?)?PREFEITO", r["CARGO"] + " " + r["CARGO_COMISSAO"])})[:6], flush=True)
+    print("EVENTOS", collections.Counter(r["TIPO_EVENTO"] for r in rows).most_common(4), len({r["NOME"] for r in rows}), flush=True)

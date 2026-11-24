@@ -1,7 +1,47 @@
 {
-"gerado": "2026-11-23",
+"gerado": "2026-11-24",
 "uf": "PR",
 "itens": [
+{
+"tipo": "contra",
+"titulo": "Leandre (PSD-PR) votou contra o próprio partido 9 vezes nesta semana",
+"texto": "Voto diferente da maioria da bancada do partido nas votações nominais do Plenário.",
+"link": "#/p/c/178832",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 75
+},
+{
+"tipo": "contra",
+"titulo": "Paulo Litro (UNIÃO-PR) votou contra o próprio partido 9 vezes nesta semana",
+"texto": "Voto diferente da maioria da bancada do partido nas votações nominais do Plenário.",
+"link": "#/p/c/220685",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 75
+},
+{
+"tipo": "falta",
+"titulo": "Itamar Paim (PL-PR) não registrou voto em 10 de 10 votações da semana",
+"texto": "Os dados abertos não dizem o motivo (pode ser licença, missão oficial ou ausência). Vale perguntar ao gabinete antes de publicar.",
+"link": "#/p/c/225846",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 55
+},
+{
+"tipo": "votacao",
+"titulo": "PLP 299/2026 na Câmara, 172 a 282: Rejeitada a Emenda de Plenário nº 38. Veja como votou cada deputado do PR",
+"texto": "23/11/2026. O que foi votado: Rejeitada a Emenda de Plenário nº 38. Sim: 172; Não: 282; Abstenção: 2; Total: 456. Tema: Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2",
+"link": "#/votacao/C/1134/PR",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 47.9
+},
+{
+"tipo": "cota",
+"titulo": "51% da cota de Giacobo (PSD-PR) foi para um só fornecedor",
+"texto": "Galzon Editora Grafica Ltda recebeu R$ 880.970 de um total de R$ 1,7 milhões desde 2023.",
+"link": "#/p/c/74383",
+"fonte": "Câmara · Dados Abertos (cota parlamentar)",
+"peso": 45.4
+},
 {
 "tipo": "cota",
 "titulo": "46% da cota de Sandro Alex (PSD-PR) foi para um só fornecedor",
@@ -19,6 +59,14 @@
 "peso": 42.2
 },
 {
+"tipo": "votacao",
+"titulo": "PLP 299/2026 na Câmara, 146 a 315: Rejeitada a Emenda de Plenário nº 23. Veja como votou cada deputado do PR",
+"texto": "23/11/2026. O que foi votado: Rejeitada a Emenda de Plenário nº 23. Sim: 146; Não: 315; Abstenção: 1; Total: 462. Tema: Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2",
+"link": "#/votacao/C/1133/PR",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 41.7
+},
+{
 "tipo": "cota",
 "titulo": "36% da cota de Vermelho (PL-PR) foi para um só fornecedor",
 "texto": "3Front Comunicacao Ltda recebeu R$ 715.259 de um total de R$ 2,0 milhões desde 2023.",
@@ -27,12 +75,52 @@
 "peso": 40.9
 },
 {
+"tipo": "votacao",
+"titulo": "PLP 299/2026 na Câmara, 310 a 132: Mantido o texto. Veja como votou cada deputado do PR",
+"texto": "23/11/2026. O que foi votado: Mantido o texto. Sim: 310; Não: 132; Total: 442. Tema: Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2",
+"link": "#/votacao/C/1136/PR",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 39.9
+},
+{
+"tipo": "votacao",
+"titulo": "PLP 299/2026 na Câmara, 333 a 138: Mantido o texto. Veja como votou cada deputado do PR",
+"texto": "23/11/2026. O que foi votado: Mantido o texto. Sim: 333; Não: 138; Abstenção: 1; Total: 472. Tema: Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2",
+"link": "#/votacao/C/1135/PR",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 39.3
+},
+{
+"tipo": "votacao",
+"titulo": "PLP 299/2026 na Câmara, 129 a 319: Rejeitadas as Emendas de Plenário. Veja como votou cada deputado do PR",
+"texto": "23/11/2026. O que foi votado: Rejeitadas as Emendas de Plenário. Sim: 129; Não: 319; Abstenção: 4; Total: 452. Tema: Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2",
+"link": "#/votacao/C/1131/PR",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 38.8
+},
+{
+"tipo": "votacao",
+"titulo": "PLP 299/2026 na Câmara, 319 a 127: Mantido o texto. Veja como votou cada deputado do PR",
+"texto": "23/11/2026. O que foi votado: Mantido o texto. Sim: 319; Não: 127; Abstenção: 1; Total: 447. Tema: Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2",
+"link": "#/votacao/C/1137/PR",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 38.5
+},
+{
 "tipo": "emenda",
 "titulo": "Filipe Barros (PL) mandou R$ 10,4 milhões em emendas para Bela Vista Do Paraíso, cidade onde 8.669 pessoas votaram para deputado federal",
 "texto": "Valor pago desde 2023, pelo favorecido na cidade. Vale ver no Portal da Transparência para que serviu.",
 "link": "#/cidade/PR/74535",
 "fonte": "Portal da Transparência (CGU) · TSE",
 "peso": 38.4
+},
+{
+"tipo": "votacao",
+"titulo": "PLP 299/2026 na Câmara, 353 a 128: Aprovado o Projeto de Lei Complementar nº 299, de 2026, ressalvados os destaques. Veja como votou cada deputado do PR",
+"texto": "23/11/2026. O que foi votado: Aprovado o Projeto de Lei Complementar nº 299, de 2026, ressalvados os destaques. Sim: 353; Não: 128; Abstenção: 5; Total: 486. Tema: Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2",
+"link": "#/votacao/C/1130/PR",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 36.6
 },
 {
 "tipo": "cota",
@@ -169,6 +257,14 @@
 "link": "#/p/c/204395",
 "fonte": "TSE · prestação de contas",
 "peso": 31.0
+},
+{
+"tipo": "votacao",
+"titulo": "PLP 299/2026 na Câmara, 413 a 29: Mantido o texto. Veja como votou cada deputado do PR",
+"texto": "23/11/2026. O que foi votado: Mantido o texto. Sim: 413; Não: 29; Total: 442. Tema: Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2",
+"link": "#/votacao/C/1132/PR",
+"fonte": "Câmara/Senado · Dados Abertos",
+"peso": 16.6
 }
 ]
 }

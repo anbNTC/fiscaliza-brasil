@@ -1,11 +1,11 @@
-"""Sonda temporária: parâmetros da lista de servidores Elotech."""
-import sys, re, requests, json
+"""Sonda temporária: lista de servidores Elotech com os cabeçalhos certos."""
+import sys, re, requests, json, collections
 sys.path.insert(0, "coleta")
 from prefeituras_abertas import H
 B = "https://maringa.oxy.elotech.com.br/portaltransparencia-api"
-s = requests.get("https://maringa.oxy.elotech.com.br/portaltransparencia/static/js/main.ad8f87f3.chunk.js", headers=H, timeout=60).text
-print("EXJS", sorted(set(re.findall(r'"(/api/[\w/-]*exercici[\w/?=-]*)', s)))[:10], flush=True)
-j = s.find("SERVIDORES_OXY_LIST")
-for k in [m.start() for m in re.finditer(r"\bkl\(", s)][:4]: print("KL", s[max(0, k - 900):k + 200].replace("\n", " "), flush=True)
-r = requests.get(B + "/api/servidores?entidade=1&exercicio=2026&page=0&size=3", headers={**H, "accept": "application/json"}, timeout=40)
-print("ERR", r.text[:800], flush=True)
+ex = requests.get(B + "/api/exercicios/entidade/1", headers={**H, "accept": "application/json", "entidade": "1"}, timeout=40).json()
+print("EX", json.dumps(ex, ensure_ascii=False)[:500], flush=True)
+eid = next((x.get("id") for x in (ex if isinstance(ex, list) else ex.get("content", [])) if str(x.get("ano") or x.get("exercicio")) == "2026"), 2026)
+hd = {**H, "accept": "application/json", "entidade": "1", "exercicio": str(eid)}
+r = requests.get(B + f"/api/servidores?entidade=1&exercicio={eid}&page=0&size=3", headers=hd, timeout=60)
+print("SV", r.status_code, r.text[:1800], flush=True)

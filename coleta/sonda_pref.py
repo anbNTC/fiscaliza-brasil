@@ -1,28 +1,22 @@
-"""Sonda temporária: portais de dados abertos (CKAN) de cidades grandes com folha de servidores."""
-import sys, requests, concurrent.futures as cf
+"""Sonda temporária: API do portal da transparência Elotech (Maringá)."""
+import sys, re, requests, json
 sys.path.insert(0, "coleta")
 from prefeituras_abertas import H
 from saida_br import get as gbr
-P = ["dados.campinas.sp.gov.br", "dadosabertos.campinas.sp.gov.br", "dados.guarulhos.sp.gov.br", "dadosabertos.sjc.sp.gov.br", "dados.sjc.sp.gov.br",
-     "dados.ribeiraopreto.sp.gov.br", "dados.santoandre.sp.gov.br", "dados.osasco.sp.gov.br", "dados.sorocaba.sp.gov.br", "dados.santos.sp.gov.br",
-     "dados.londrina.pr.gov.br", "dadosabertos.londrina.pr.gov.br", "dados.maringa.pr.gov.br", "dadosabertos.maringa.pr.gov.br", "dados.joinville.sc.gov.br",
-     "dadosabertos.joinville.sc.gov.br", "dados.blumenau.sc.gov.br", "dados.uberlandia.mg.gov.br", "dados.contagem.mg.gov.br", "dados.juizdefora.mg.gov.br",
-     "dados.niteroi.rj.gov.br", "dadosabertos.niteroi.rj.gov.br", "dados.caxiasdosul.rs.gov.br", "dados.feiradesantana.ba.gov.br", "dados.jaboatao.pe.gov.br",
-     "dados.saobernardo.sp.gov.br", "dados.cascavel.pr.gov.br", "dados.pontagrossa.pr.gov.br", "dados.fozdoiguacu.pr.gov.br", "dados.saojosedospinhais.pr.gov.br",
-     "dados.serra.es.gov.br", "dados.vilavelha.es.gov.br", "dados.anapolis.go.gov.br", "dados.aparecida.go.gov.br", "dados.betim.mg.gov.br", "dados.montesclaros.mg.gov.br",
-     "dados.piracicaba.sp.gov.br", "dados.jundiai.sp.gov.br", "dados.bauru.sp.gov.br", "dados.mogidascruzes.sp.gov.br", "dados.pelotas.rs.gov.br", "dados.canoas.rs.gov.br"]
-def um(p):
-    out = []
-    for q in ("remuneracao", "servidores", "folha"):
-        u = f"https://{p}/api/3/action/package_search?q={q}&rows=5"
-        try:
-            r = requests.get(u, headers=H, timeout=15)
-            if not r.ok: r = gbr(u, headers=H, timeout=30) or r
-            for x in r.json()["result"]["results"]: out.append((x["name"], (x.get("title") or "")[:60], (x.get("metadata_modified") or "")[:10]))
-        except BaseException: return p, None
-    return p, list(dict.fromkeys(out))[:6]
-with cf.ThreadPoolExecutor(16) as ex:
-    for p, r in ex.map(um, P):
-        if r is None: continue
-        print("PORTAL", p, len(r), flush=True)
-        for x in r: print("  PKG", p, " | ".join(x), flush=True)
+B = "https://maringa.oxy.elotech.com.br"
+def g(u, **k):
+    try:
+        r = requests.get(u, headers={**H, **k.get("h", {})}, timeout=30)
+        if r.ok: return r
+    except Exception: pass
+    return gbr(u, headers={**H, **k.get("h", {})}, timeout=60)
+t = g(B + "/portaltransparencia/1/servidores").text
+js = re.findall(r'src="([^"]+\.js)"', t); print("JS", js[:8], flush=True)
+for j in js:
+    s = g(j if j.startswith("http") else B + "/portaltransparencia/" + j.lstrip("/")).text if j else ""
+    apis = sorted(set(re.findall(r'["\'`](/?portaltransparencia-api/[\w/{}$.-]*)', s)))
+    sv = sorted(set(re.findall(r'["\'`]([\w/-]*servidor[\w/-]*)["\'`]', s)))[:30]
+    if apis or sv: print("API", j[-40:], apis[:20], sv, flush=True)
+for u in [B + "/portaltransparencia-api/api/servidores?entidade=1&exercicio=2026&page=0&size=2", B + "/portaltransparencia-api/api/entidades",
+          B + "/portaltransparencia-api/api/servidores/folha?entidade=1&exercicio=2026&mes=10&page=0&size=2"]:
+    r = g(u, h={"accept": "application/json"}); print("TRY", u[len(B):], r.status_code if r is not None else None, (r.text[:500] if r is not None else "").replace("\n", " "), flush=True)

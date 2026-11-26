@@ -149,6 +149,12 @@ def uma(c):
             if l[0] in jun: jun[l[0]][3:] = [round(a + b, 2) for a, b in zip(jun[l[0]][3:], l[3:])]
             else: jun[l[0]] = list(l)
         out[k] = list(jun.values())
+    # o próprio prefeito e o vice não entram na lista da equipe (em BH o prefeito aparece lotado no próprio gabinete)
+    try:
+        M = json.load(open(Path(__file__).resolve().parents[1] / "site" / "data" / "uf" / f"{c['uf']}.json"))["mun"][c["ue"]]
+        chefes = {sa(P[1] or "") for P in (M[1], M[2]) if P}
+    except Exception: chefes = set()
+    out = {k: [l for l in v if sa(l[0]) not in chefes] for k, v in out.items()}
     for v in out.values(): v.sort(key=lambda r: -r[3])
     out = {k: v for k, v in out.items() if v}
     comp = re.search(r"(\d{2})[-_]?(20\d\d)", (r.get("url") or "").rsplit("/", 1)[-1]) or re.search(r"(\d{2})[-_/](20\d\d)", (r.get("name") or "") + " " + (r.get("description") or ""))

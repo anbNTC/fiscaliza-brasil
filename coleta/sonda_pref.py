@@ -1,22 +1,9 @@
-"""Sonda temporária: API do portal da transparência Elotech (Maringá)."""
-import sys, re, requests, json
+"""Sonda temporária: caminhos da API de servidores no código do portal Elotech."""
+import sys, re, requests
 sys.path.insert(0, "coleta")
 from prefeituras_abertas import H
-from saida_br import get as gbr
 B = "https://maringa.oxy.elotech.com.br"
-def g(u, **k):
-    try:
-        r = requests.get(u, headers={**H, **k.get("h", {})}, timeout=30)
-        if r.ok: return r
-    except Exception: pass
-    return gbr(u, headers={**H, **k.get("h", {})}, timeout=60)
-t = g(B + "/portaltransparencia/1/servidores").text
-js = re.findall(r'src="([^"]+\.js)"', t); print("JS", js[:8], flush=True)
-for j in js:
-    s = g(j if j.startswith("http") else B + "/portaltransparencia/" + j.lstrip("/")).text if j else ""
-    apis = sorted(set(re.findall(r'["\'`](/?portaltransparencia-api/[\w/{}$.-]*)', s)))
-    sv = sorted(set(re.findall(r'["\'`]([\w/-]*servidor[\w/-]*)["\'`]', s)))[:30]
-    if apis or sv: print("API", j[-40:], apis[:20], sv, flush=True)
-for u in [B + "/portaltransparencia-api/api/servidores?entidade=1&exercicio=2026&page=0&size=2", B + "/portaltransparencia-api/api/entidades",
-          B + "/portaltransparencia-api/api/servidores/folha?entidade=1&exercicio=2026&mes=10&page=0&size=2"]:
-    r = g(u, h={"accept": "application/json"}); print("TRY", u[len(B):], r.status_code if r is not None else None, (r.text[:500] if r is not None else "").replace("\n", " "), flush=True)
+s = requests.get(B + "/portaltransparencia/static/js/main.ad8f87f3.chunk.js", headers=H, timeout=60).text
+print("LEN", len(s), flush=True)
+for m in sorted(set(re.findall(r'["\'`]([/\w.${}-]*(?:servidor|folha|remunera)[/\w.${}?=&-]*)["\'`]', s, re.I)))[:60]: print("PATH", m, flush=True)
+i = s.find("servidores"); print("CTX", s[max(0, i - 600):i + 600].replace("\n", " "), flush=True)

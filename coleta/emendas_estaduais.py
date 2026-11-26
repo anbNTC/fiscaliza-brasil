@@ -69,8 +69,9 @@ def go():
     rs = recursos("https://dadosabertos.go.gov.br", "emendas-parlamentares")
     # o arquivo mais recente traz de 2020 até hoje
     csvs = [x for x in rs if (x.get("format") or "").upper() == "CSV" or (x.get("url") or "").lower().endswith(".csv")]
+    print("GO: arquivos", [(x.get("name"), (x.get("last_modified") or x.get("created") or "")[:10]) for x in csvs], flush=True)
     if not csvs: raise RuntimeError("Goiás: nenhum CSV no conjunto de emendas")
-    x = max(csvs, key=lambda x: (max([int(a) for a in re.findall(r"20\d\d", x.get("name") or "")] or [0]), x.get("last_modified") or x.get("created") or ""))
+    x = max(csvs, key=lambda x: x.get("last_modified") or x.get("created") or "")   # o mais recente traz de 2020 até hoje
     print("GO: arquivo", x.get("name"), flush=True); u = x["url"]
     for r in linhas(baixa(u)):
         k = {norm(a): a for a in r}
@@ -137,6 +138,7 @@ def um(uf):
         if not a or (not emp and not pago): continue
         ch = limpa(a) or norm(a); nome.setdefault(ch, a)
         tot[ch][0] += emp; tot[ch][1] += pago; cid[ch][m or "SEM MUNICIPIO"] += emp or pago; n += 1
+    if not n: raise RuntimeError(f"{uf}: nenhuma linha lida; mantido o arquivo anterior")
     de, ANO_LEG = lista_est(json.load(open(D / "uf" / f"{uf}.json")))
     L = liga([nome[c] for c in tot], de)
     L.update({n: k for n, k in liga_est([n for n, k in L.items() if k is None], uf).items()})

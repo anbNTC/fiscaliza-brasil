@@ -101,7 +101,7 @@ def uma(uf, ue, base):
     if not a or not tipos: return ue, "sem tipos ou autores"
     autores = []
     for nome, p in cards(a):
-        anos = re.findall(r"consulta-producao\.aspx\?autor=(\d+)&ano=(\d{4})", p); nome = re.sub(r"\s*\(Câmara Digital\)\s*", "", nome).strip(" .")
+        anos = re.findall(r"consulta-producao\.aspx\?autor=(\d+)&ano=(\d{4})", p); nome = re.sub(r"^vereador[a]?\s+|\s*\(Câmara Digital\)\s*", "", nome, flags=re.I).strip(" .")
         if anos and any(int(x) in ANOS for _, x in anos) and not FORA.search(nome): autores.append((nome, anos[0][0], {int(x) for _, x in anos}))
     casados = [n for n, _, _ in autores if casa_tse(n, tse, idx) is not None]
     if not autores or len(casados) < max(3, 0.5 * len(autores)):
@@ -138,7 +138,8 @@ def uma(uf, ue, base):
            "dep": dep}
     json.dump(out, open(OUT / f"{ue}.json", "w"), ensure_ascii=False, separators=(",", ":"))
     stamp.write_text(datetime.date.today().isoformat())
-    return ue, {"cidade": m[0], "vereadores": len(dep), "sem_casar": sem, "base": base}
+    ex1 = next(iter(dep.values()))
+    return ue, {"cidade": m[0], "vereadores": len(dep), "sem_casar": sem, "base": base, "exemplo": [ex1["nome"], ex1["cont"], ex1["props"][:1]]}
 
 def main():
     feitos = []

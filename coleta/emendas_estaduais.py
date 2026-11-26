@@ -82,9 +82,18 @@ def es():
         for r in linhas(baixa(x["url"])):
             yield re.sub(r"^Dep\.?\s*", "", r.get("NomeAutor") or ""), r.get("Municipio"), num(r.get("ValorEmpenho")), num(r.get("ValorPago")), r.get("Favorecido")
 
+def al():
+    """Alagoas: JSON do Portal da Transparência Graciliano Ramos (responde só a acessos do Brasil); hoje traz o exercício corrente"""
+    from saida_br import get as gbr
+    r = gbr("https://transparencia.al.gov.br/despesa/json-emendas-parlamentares/?limit=5000&offset=0", headers={"user-agent": "Mozilla/5.0 FiscalizaBrasil/1.0", "accept": "application/json"}, timeout=180)
+    for x in (r.json().get("rows") if r is not None and r.ok else []) or []:
+        if int(x.get("ano") or 0) < ANO0: continue
+        yield x.get("parlamentar"), x.get("municipio") or x.get("localidade"), num(x.get("valor_empenhado")), num(x.get("valor_pago")), x.get("beneficiario")
+
 ESTADOS = {"PE": (pe, "Governo de Pernambuco · Portal de Dados Abertos (dados.pe.gov.br), Emendas Parlamentares Estaduais", "https://dados.pe.gov.br/dataset/emendasparlamentaresestaduais"),
            "MG": (mg, "Governo de Minas Gerais · Portal de Dados Abertos (dados.mg.gov.br), Emendas Parlamentares Estaduais", "https://dados.mg.gov.br/dataset/portal_emendas_estaduais"),
            "ES": (es, "Governo do Espírito Santo · Dados Abertos (dados.es.gov.br), Emendas Parlamentares do Estado", "https://dados.es.gov.br/dataset/portal-da-transparencia-emendas-parlamentares-do-estado"),
+           "AL": (al, "Governo de Alagoas · Portal da Transparência Graciliano Ramos, Emendas Parlamentares Estaduais", "https://transparencia.al.gov.br/despesa/emendas-parlamentares-estaduais/"),
            "GO": (go, "Governo de Goiás · Dados Abertos (dadosabertos.go.gov.br), Emendas Parlamentares", "https://dadosabertos.go.gov.br/dataset/emendas-parlamentares")}
 
 def liga(nomes, de):

@@ -190,15 +190,15 @@ jobs:
         timeout-minutes: 30
         run: python coleta/camara_sp.py 2>&1 | tail -5 | tee -a /tmp/assembleias.log
 
-      - name: Câmara Municipal de Cuiabá · proposições de cada vereador (uma vez por semana)
+      - name: Câmaras no sistema Câmara sem Papel (Cuiabá, Teresina, Sorocaba e outras 22) · cada uma uma vez por semana
         id: cuiaba
         continue-on-error: true
-        timeout-minutes: 40
+        timeout-minutes: 50
         env:
           T: "${{ secrets.CLOUDFLARE_API_TOKEN }}"
         run: |
           export CHAVE_BR=$(printf '%s' "$T-fiscaliza-br" | sha256sum | cut -c1-48); echo "::add-mask::$CHAVE_BR"
-          python coleta/camara_cuiaba.py 2>&1 | tail -4 | tee -a /tmp/assembleias.log
+          python coleta/camara_sem_papel.py 2>&1 | tail -30 | tee -a /tmp/assembleias.log
 
       - name: TSE · votos de cada candidato em cada cidade (só baixa o ano que ainda não está gravado)
         id: vm

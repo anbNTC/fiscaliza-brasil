@@ -5,6 +5,7 @@ from assembleias_sapl import H
 from saida_br import get
 B = "https://sorocaba.camarasempapel.com.br/spl/"
 t = html.unescape(get(B + "consulta-tipo.aspx", headers=H, timeout=90).text)
+print("RAW", len(t), re.sub(r"\s+", " ", t[t.find("card"):t.find("card")+1500]), flush=True)
 cards = re.findall(r"<div class='card-title[^>]*>([^<]+?)\((\d+)\)<([\s\S]*?)</div></div></div>", t)
 print("TIPOS", [(a.strip(), sorted(set(re.findall(r"tipo=(\d+)", c)))[:2]) for a, n, c in cards][:40], flush=True)
 a = html.unescape(get(B + "consulta-autor.aspx", headers=H, timeout=90).text)

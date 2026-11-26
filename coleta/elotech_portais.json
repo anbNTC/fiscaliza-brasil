@@ -736,5 +736,95 @@
 "ent": 2,
 "pref": null,
 "host_pref": null
+},
+{
+"host": "maringa.oxy.elotech.com.br",
+"uf": "PR",
+"ue": "76910",
+"cidade": "MARINGÁ",
+"ent": null,
+"pref": 1,
+"host_pref": null
+},
+{
+"host": "paranagua.oxy.elotech.com.br",
+"uf": "PR",
+"ue": "77453",
+"cidade": "PARANAGUÁ",
+"ent": null,
+"pref": 1,
+"host_pref": null
+},
+{
+"host": "bentogoncalves.oxy.elotech.com.br",
+"uf": "RS",
+"ue": "85413",
+"cidade": "BENTO GONÇALVES",
+"ent": null,
+"pref": 1,
+"host_pref": null
+},
+{
+"host": "brumado.oxy.elotech.com.br",
+"uf": "BA",
+"ue": "33910",
+"cidade": "BRUMADO",
+"ent": null,
+"pref": 1,
+"host_pref": null
+},
+{
+"host": "navirai.oxy.elotech.com.br",
+"uf": "MS",
+"ue": "91138",
+"cidade": "NAVIRAÍ",
+"ent": null,
+"pref": 1,
+"host_pref": null
+},
+{
+"host": "pitanga.oxy.elotech.com.br",
+"uf": "PR",
+"ue": "77712",
+"cidade": "PITANGA",
+"ent": null,
+"pref": 1,
+"host_pref": null
+},
+{
+"host": "piraquara.oxy.elotech.com.br",
+"uf": "PR",
+"ue": "77690",
+"cidade": "PIRAQUARA",
+"ent": null,
+"pref": 1,
+"host_pref": null
+},
+{
+"host": "pinhao.oxy.elotech.com.br",
+"uf": "PR",
+"ue": "77658",
+"cidade": "PINHÃO",
+"ent": null,
+"pref": 1,
+"host_pref": null
+},
+{
+"host": "mangaratiba.oxy.elotech.com.br",
+"uf": "RJ",
+"ue": "58513",
+"cidade": "MANGARATIBA",
+"ent": null,
+"pref": 1,
+"host_pref": null
+},
+{
+"host": "vilhena.oxy.elotech.com.br",
+"uf": "RO",
+"ue": "00132",
+"cidade": "VILHENA",
+"ent": null,
+"pref": 1,
+"host_pref": null
 }
 ]

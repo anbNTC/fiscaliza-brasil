@@ -13,7 +13,8 @@ from assembleias_sapl import limpa
 D = Path(__file__).resolve().parents[1] / "site" / "data"; OUT = D / "gabm"; OUT.mkdir(exist_ok=True)
 H = {"user-agent": "Mozilla/5.0 (FiscalizaBrasil/1.0; +https://fiscalizaja.com.br)", "accept": "application/json"}
 HOJE = datetime.date.today()
-PREF = re.compile(r"GAB(INETE)?\.?\s*(DO|DA)?\s*(VICE[\s-]*)?PREFEIT|VICE[\s-]*PREFEIT|GABINETE\s+DO\s+PREFEITO", re.I)
+PREF = re.compile(r"GAB(INETE)?\.?\s*(DO|DA)?\s*(VICE[\s-]*)?PREFEIT|VICE[\s-]*PREFEIT|GABINETE\s+DO\s+PREFEITO|CHEFIA\s+DE\s+GABINETE|\bGAPRE\b|ASSESSORIA\s+EXECUTIVA\s+DO\s+PREFEITO", re.I)
+FORA_SIT = re.compile(r"DESLIG|EXONER|DEMIT|APOSENT|FALEC|RESCIS|CEDIDO|AFAST", re.I)   # ativo = "ATIVO", "Trabalhando", "Férias"...
 GAB = re.compile(r"\bGAB(INETE)?\.?\s*(DO|DA|DE)?\s*(VER|VEREADOR|VEREADORA)\b|\bGAB\.?\s*VER\b|GABINETE\s+(DO|DA)\s+VEREADOR", re.I)
 
 def get(host, path, ent=None, ex=None, tent=3):
@@ -31,7 +32,7 @@ def get(host, path, ent=None, ex=None, tent=3):
 def servidores(host, ent):
     ex = HOJE.year; pessoas = []; pg = 0
     while True:
-        j = get(host, f"/api/servidores?entidade={ent}&exercicio={ex}&page={pg}&size=200", ent, ex)
+        j = get(host, f"/api/servidores?entidade={ent}&exercicio={ex}&page={pg}&size=500", ent, ex)
         if not j: break
         pessoas += j.get("content") or []
         if j.get("last", True) or pg > 250: break
@@ -44,9 +45,9 @@ def prefeitura(p):
     if not ent: return None
     out = {"p": [], "v": []}
     for s in servidores(host, ent):
-        if (s.get("situacao") or "").upper() != "ATIVO": continue
+        if FORA_SIT.search(s.get("situacao") or "") or s.get("dataDemissao"): continue
         lot = s.get("descricaoLotacao") or ""; cg = s.get("descricaoCargo") or ""
-        if not PREF.search(lot) or re.match(r"^\s*(VICE[\s-]*)?PREFEIT", cg, re.I): continue
+        if not PREF.search(lot) or re.search(r"SECRET[AÁ]RI", lot, re.I) or re.match(r"^\s*(VICE[\s-]*)?PREFEIT", cg, re.I): continue
         k = "v" if re.search(r"VICE", lot, re.I) else "p"
         out[k].append([(s.get("nome") or "").title(), cg.strip().capitalize(), s.get("dataAdmissao") or "", round(float(s.get("remuneracao") or 0), 2)])
     for v in out.values(): v.sort(key=lambda r: -r[3])

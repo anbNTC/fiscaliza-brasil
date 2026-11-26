@@ -68,7 +68,10 @@ def mg():
 def go():
     rs = recursos("https://dadosabertos.go.gov.br", "emendas-parlamentares")
     # o arquivo mais recente traz de 2020 até hoje
-    u = next(x["url"] for x in rs if "2026" in x["name"] and (x.get("format") or "").upper() == "CSV")
+    csvs = [x for x in rs if (x.get("format") or "").upper() == "CSV" or (x.get("url") or "").lower().endswith(".csv")]
+    if not csvs: raise RuntimeError("Goiás: nenhum CSV no conjunto de emendas")
+    x = max(csvs, key=lambda x: (max([int(a) for a in re.findall(r"20\d\d", x.get("name") or "")] or [0]), x.get("last_modified") or x.get("created") or ""))
+    print("GO: arquivo", x.get("name"), flush=True); u = x["url"]
     for r in linhas(baixa(u)):
         k = {norm(a): a for a in r}
         g = lambda *ps: next((r[v] for c, v in k.items() if all(p in c for p in ps)), "")

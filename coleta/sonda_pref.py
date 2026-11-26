@@ -5,5 +5,9 @@ from prefeituras_abertas import H
 B = "https://maringa.oxy.elotech.com.br"
 s = requests.get(B + "/portaltransparencia/static/js/main.ad8f87f3.chunk.js", headers=H, timeout=60).text
 print("LEN", len(s), flush=True)
-for m in sorted(set(re.findall(r'["\'`]([/\w.${}-]*(?:servidor|folha|remunera)[/\w.${}?=&-]*)["\'`]', s, re.I)))[:60]: print("PATH", m, flush=True)
-i = s.find("servidores"); print("CTX", s[max(0, i - 600):i + 600].replace("\n", " "), flush=True)
+for k in ['"/api/servidores?"', "/api/servidores?"]:
+    j = s.find(k)
+    while j >= 0 and j < len(s):
+        print("CALL", s[max(0, j - 500):j + 400].replace("\n", " "), flush=True); j = s.find(k, j + 1)
+        if j < 0: break
+    break

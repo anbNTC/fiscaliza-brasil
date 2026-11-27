@@ -1,5 +1,5 @@
 {
-"gerado": "2026-11-26",
+"gerado": "2026-11-27",
 "uf": "PR",
 "itens": [
 {
@@ -36,27 +36,19 @@
 },
 {
 "tipo": "cota",
-"titulo": "59% da cota de Giacobo (PSD-PR) foi para um só fornecedor",
-"texto": "Galzon Editora Grafica Ltda recebeu R$ 880.970 de um total de R$ 1,5 milhões desde 2023.",
+"titulo": "51% da cota de Giacobo (PSD-PR) foi para um só fornecedor",
+"texto": "Galzon Editora Grafica Ltda recebeu R$ 880.970 de um total de R$ 1,7 milhões desde 2023.",
 "link": "#/p/c/74383",
 "fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 47.7
+"peso": 45.4
 },
 {
 "tipo": "cota",
-"titulo": "49% da cota de Sandro Alex (PSD-PR) foi para um só fornecedor",
-"texto": "Kd Comunicacoes Ltda recebeu R$ 90.000 de um total de R$ 184.296 desde 2023.",
+"titulo": "46% da cota de Sandro Alex (PSD-PR) foi para um só fornecedor",
+"texto": "Kd Comunicacoes Ltda recebeu R$ 90.000 de um total de R$ 196.794 desde 2023.",
 "link": "#/p/c/160621",
 "fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 44.7
-},
-{
-"tipo": "cota",
-"titulo": "47% da cota de Ricardo Barros (PP-PR) foi para um só fornecedor",
-"texto": "Orn Midia Comunicação Eireli recebeu R$ 231.500 de um total de R$ 488.045 desde 2023.",
-"link": "#/p/c/73788",
-"fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 44.2
+"peso": 43.7
 },
 {
 "tipo": "votacao",
@@ -68,11 +60,11 @@
 },
 {
 "tipo": "cota",
-"titulo": "40% da cota de Vermelho (PL-PR) foi para um só fornecedor",
-"texto": "3Front Comunicacao Ltda recebeu R$ 715.259 de um total de R$ 1,8 milhões desde 2023.",
-"link": "#/p/c/204396",
+"titulo": "41% da cota de Ricardo Barros (PP-PR) foi para um só fornecedor",
+"texto": "Orn Midia Comunicação Eireli recebeu R$ 231.500 de um total de R$ 570.533 desde 2023.",
+"link": "#/p/c/73788",
 "fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 42.1
+"peso": 42.2
 },
 {
 "tipo": "votacao",
@@ -83,6 +75,14 @@
 "peso": 41.7
 },
 {
+"tipo": "cota",
+"titulo": "36% da cota de Vermelho (PL-PR) foi para um só fornecedor",
+"texto": "3Front Comunicacao Ltda recebeu R$ 715.259 de um total de R$ 2,0 milhões desde 2023.",
+"link": "#/p/c/204396",
+"fonte": "Câmara · Dados Abertos (cota parlamentar)",
+"peso": 40.8
+},
+{
 "tipo": "votacao",
 "titulo": "PLP 299/2026 na Câmara, 310 a 132: Mantido o texto. Veja como votou cada deputado do PR",
 "texto": "23/11/2026. O que foi votado: Mantido o texto. Sim: 310; Não: 132; Total: 442. Tema: Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2",
@@ -91,44 +91,12 @@
 "peso": 39.9
 },
 {
-"tipo": "cota",
-"titulo": "33% da cota de Filipe Barros (PL-PR) foi para um só fornecedor",
-"texto": "Canaa Imóveis Ltda recebeu R$ 412.305 de um total de R$ 1,3 milhões desde 2023.",
-"link": "#/p/c/204411",
-"fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 39.9
-},
-{
-"tipo": "cota",
-"titulo": "32% da cota de Padovani (PP-PR) foi para um só fornecedor",
-"texto": "Araucar - Locação De Veículos Ltda recebeu R$ 381.659 de um total de R$ 1,2 milhões desde 2023.",
-"link": "#/p/c/220706",
-"fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 39.6
-},
-{
-"tipo": "cota",
-"titulo": "32% da cota de Welter (PT-PR) foi para um só fornecedor",
-"texto": "Zocca & Silva Ltda Me recebeu R$ 506.000 de um total de R$ 1,6 milhões desde 2023.",
-"link": "#/p/c/224333",
-"fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 39.6
-},
-{
 "tipo": "votacao",
 "titulo": "PLP 299/2026 na Câmara, 333 a 138: Mantido o texto. Veja como votou cada deputado do PR",
 "texto": "23/11/2026. O que foi votado: Mantido o texto. Sim: 333; Não: 138; Abstenção: 1; Total: 472. Tema: Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2",
 "link": "#/votacao/C/1135/PR",
 "fonte": "Câmara/Senado · Dados Abertos",
 "peso": 39.3
-},
-{
-"tipo": "cota",
-"titulo": "30% da cota de Pedro Lupion (REPUBLICANOS-PR) foi para um só fornecedor",
-"texto": "Pineapple Marketing Ltda recebeu R$ 375.865 de um total de R$ 1,2 milhões desde 2023.",
-"link": "#/p/c/204395",
-"fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 39.1
 },
 {
 "tipo": "votacao",
@@ -164,11 +132,11 @@
 },
 {
 "tipo": "cota",
-"titulo": "Dilceu Sperafico (PP-PR) está entre os 10% de deputados que mais gastaram a cota parlamentar: R$ 1,9 milhões desde 2023",
-"texto": "Gasto típico (mediana) na Câmara: R$ 1,5 milhões.",
-"link": "#/p/c/73768",
+"titulo": "Diego Garcia (UNIÃO-PR) está entre os 10% de deputados que mais gastaram a cota parlamentar: R$ 2,1 milhões desde 2023",
+"texto": "Gasto típico (mediana) na Câmara: R$ 1,7 milhões.",
+"link": "#/p/c/178929",
 "fonte": "Câmara · Dados Abertos (cota parlamentar)",
-"peso": 35.1
+"peso": 35.4
 },
 {
 "tipo": "emenda",
